@@ -1,0 +1,171 @@
+.sportDetailPage {
+  background-attachment: fixed;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: 44px;
+
+  @include rwd-min('lg') {
+    flex: none;
+    overflow: initial;
+    padding-top: 0;
+    padding: 0 8px;
+    padding-right: 0;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    /* 顶栏 48 + padding 8 + OptionBar 36 = 92；有公告再 + gap 4 + 公告 30 */
+    --pc-sticky-header-top: 92px;
+    --pc-sticky-tabs-top: 120px;
+
+    &.hasPcNotice {
+      --pc-sticky-header-top: 126px;
+      --pc-sticky-tabs-top: 154px;
+    }
+  }
+
+  /** 右侧栏嵌入：占满侧栏剩余高度，盘口区单独滚动 */
+  &.embeddedSidebar {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    @include rwd-min('lg') {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding-right: 8px;
+    }
+  }
+}
+.matchDetailsHeader {
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  position: relative;
+
+  @include rwd-min('lg') {
+    // min-height: 52px;
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 4px;
+  }
+}
+.matchDetails {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--Background-700);
+  color: var(--White-100);
+  width: 100%;
+  flex: 1;
+
+  &.embeddedSidebar {
+    @include rwd-min('lg') {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding-left: 8px;
+    }
+  }
+}
+
+.pcTopArea {
+  display: none;
+  background: var(--Background-700);
+  @include rwd-min('lg') {
+    display: flex;
+    position: sticky;
+    z-index: 12;
+    padding: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding-bottom: 4px;
+    box-sizing: border-box;
+    padding-top: 4px;
+    top: 48px;
+  }
+}
+
+.noticeBar {
+  background: var(--Background-300);
+  padding: 10px;
+  border-radius: 4px;
+  color: var(--Text-Main-10);
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  span {
+    color: var(--Text-800);
+  }
+}
+
+.loading,
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 16px;
+  color: var(--Text-800);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  // padding: 0 12px 12px 12px;
+  gap: 12px;
+  padding-bottom: 80px;
+
+  /**
+   * 最小高度取「一屏 − Tab 行」即可：可滚距离 ≈ 上方头图高度，刚好够吸顶；
+   */
+  @include rwd-max('lg') {
+    min-height: calc(100vh - 88px);
+    min-height: calc(100dvh - 88px);
+  }
+
+  @include rwd-min('lg') {
+    padding-bottom: 24px;
+  }
+
+  &.embeddedSidebar {
+    @include rwd-min('lg') {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding-bottom: 12px;
+    }
+  }
+}
+
+.marketsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+
+  &.embeddedSidebar {
+    @include rwd-min('lg') {
+      flex: 1;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
+.emptyMarkets {
+  padding: 180px 20px;
+  text-align: center;
+  color: var(--Text-800);
+}

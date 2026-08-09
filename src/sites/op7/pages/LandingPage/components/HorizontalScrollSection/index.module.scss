@@ -1,0 +1,93 @@
+@use '@/common/styles/mixins' as *;
+
+.nav {
+  display: flex;
+  height: 26px;
+  align-items: center;
+  overflow: hidden;
+  gap: 8px;
+}
+
+.navButton {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  background: var(--Background-300);
+  color: var(--Text-700);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+
+  @include can-hover {
+    &:not(:disabled):hover {
+      background: var(--Background-500);
+      color: var(--ThemeColor-Main);
+    }
+  }
+
+  &:not(:disabled):active {
+    background: var(--Background-500);
+    color: var(--ThemeColor-Main);
+  }
+
+  &:disabled {
+    color: var(--Text-500);
+    cursor: not-allowed;
+    opacity: 1;
+  }
+
+  @include theme-night() {
+    color: var(--Text-800);
+
+    @include can-hover {
+      &:not(:disabled):hover {
+        background: var(--Button-500);
+        color: var(--White-100);
+      }
+    }
+
+    &:not(:disabled):active {
+      background: var(--Button-500);
+      color: var(--White-100);
+    }
+
+    &:disabled {
+      color: var(--Text-500);
+    }
+  }
+}
+
+.flushEndOnMobile {
+  width: calc(100% + 14px);
+  margin-right: -14px;
+  padding-right: 14px;
+}
+
+.labelTicker {
+  height: 18px;
+  overflow: hidden;
+  min-width: 120px;
+  max-width: 220px;
+  flex: 1;
+  @include rwd-min('lg') {
+    min-width: 120px;
+    max-width: 800px;
+  }
+}
+
+.labelSwiper {
+  height: 18px;
+  width: 100%;
+}
+
+.labelTicker p {
+  height: 18px;
+  line-height: 18px;
+  white-space: nowrap;
+}

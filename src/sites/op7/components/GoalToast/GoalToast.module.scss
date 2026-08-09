@@ -1,0 +1,129 @@
+.goalToastPortal {
+  position: fixed;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-toast, 1200);
+  pointer-events: none;
+}
+
+.goalToast {
+  width: 351px;
+  min-height: 64px;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--Red-900);
+  box-shadow: 0 2px 10px 0 rgba(163, 177, 204, 0.2);
+  color: var(--White-100);
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  &.awayToast {
+    background: var(--ThemeColor-900);
+  }
+}
+
+.enter {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.leave {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.minute {
+  font-family: DINPro;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/** 对齐 Flutter TImg.common(..., width: 32).animateRotateRepeat() */
+@keyframes goalBallRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ballIcon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  animation: goalBallRotate 1s linear infinite;
+}
+
+.teamBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.teamName {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--White-100);
+}
+
+.normal {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.scorer {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.goalText {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.divider {
+  width: 1px;
+  height: 44px;
+  background: var(--White-40);
+}
+
+.scoreColumn {
+  width: 9px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score {
+  font-family: DINPro;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--White-100);
+}

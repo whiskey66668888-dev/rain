@@ -1,0 +1,142 @@
+.questionnaire {
+  .questionnaireIcon {
+    width: 46px;
+    height: 43px;
+    background: url('/images/common/promotion/question/wenjuan.png') no-repeat;
+    background-size: 100% 100%;
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 99;
+  }
+}
+
+.myCenterpop {
+  .modalWrap {
+    height: auto !important;
+  }
+
+  :global {
+    .adm-center-popup-wrap {
+      width: 100vw;
+      max-width: 100vw;
+      .adm-center-popup-body {
+        background-color: transparent !important;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+
+  .questionBox {
+    width: 335px;
+    position: relative;
+    background: linear-gradient(0deg, #fff 69.46%, #a6cbff 100%);
+    border-radius: 20px;
+    &::after {
+      content: '';
+      background-image: url('/images/common/promotion/question/img_qa.png');
+      background-size: 100% 100%;
+      display: block;
+      position: absolute;
+      width: 68px;
+      height: 72px;
+      top: 10px;
+      right: 10px;
+    }
+    @include theme-night() {
+      background: linear-gradient(0deg, var(--Background-300) 69.46%, rgba(15, 31, 51, 1) 100%);
+    }
+  }
+  .closeBtn {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+    img {
+      width: 28px;
+    }
+  }
+  // 状态模版样式
+  .statusBox {
+    padding: 40px 24px 24px 24px;
+    .title {
+      color: var(--ThemeColor-Main);
+      // font-family: HYYakuHei;
+      font-family: HYYakuHei;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 32px; /* 133.333% */
+      .wellDownTitle {
+        display: flex;
+        align-items: center;
+        img {
+          width: 26px;
+          height: 26px;
+          margin-right: 4px;
+        }
+      }
+    }
+    .content {
+      margin-top: 24px;
+      color: var(--Text-Main-10);
+      font-family: 'PingFang SC';
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+    }
+    .btn {
+      margin-top: 32px;
+      height: 40px;
+      border-radius: 20px;
+      background: var(--ThemeColor-Main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--White-100);
+      text-align: center;
+      font-family: 'PingFang SC';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+    }
+    .btn2 {
+      height: 40px;
+      border-radius: 20px;
+      border-radius: 22px;
+      border: 1px solid var(--ThemeColor-Main, #1a81ff);
+      margin-top: 10px;
+      color: var(--ThemeColor-Main, #1a81ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family: 'PingFang SC';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px; /* 150% */
+    }
+  }
+  .tips {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    img {
+      width: 16px;
+      height: 16px;
+    }
+    p {
+      margin-left: 4px;
+      color: var(--Text-800);
+      text-align: left;
+      font-family: 'PingFang SC';
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 133.333% */
+    }
+  }
+}

@@ -1,0 +1,116 @@
+.transferDirectionWeb {
+  position: relative;
+  padding-left: 12px;
+  background: var(--Background-300);
+  border-radius: 12px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+
+  @include rwd-min('lg') {
+    display: flex;
+  }
+
+  &.inModal {
+    @include rwd-min('lg') {
+      display: none;
+    }
+  }
+
+  .row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .label {
+    color: var(--Text-Main-10);
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .tagOut {
+    display: flex;
+    flex-shrink: 0;
+    padding: 2px 6px;
+    margin-right: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ThemeColor-Main);
+    border-radius: 4px;
+    background: var(--ThemeColor-15);
+  }
+
+  .tagIn {
+    display: flex;
+    flex-shrink: 0;
+    padding: 2px 6px;
+    margin-right: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--Green-300);
+    border-radius: 4px;
+    background: rgba(19, 191, 48, 0.1);
+  }
+
+  .rowContent {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background: var(--Background-700);
+    height: 44px;
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 20px;
+    flex: 1;
+
+    .left {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      flex: 1;
+    }
+  }
+
+  .walletName {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    color: var(--Text-Main-10-10);
+    font-family: 'PingFang SC';
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .walletNameText {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .arrowIconBox {
+    flex: none;
+    .icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .rightArrow {
+    flex-shrink: 0;
+    width: 14px;
+    margin-left: auto;
+    object-fit: cover;
+  }
+}

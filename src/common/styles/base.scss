@@ -1,0 +1,232 @@
+/* ============================================= */
+/*          现代常用 CSS Reset (2025-2026)       */
+/* ============================================= */
+
+/* 1. 基础盒模型统一 + 去除默认间距 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 2. 移除列表默认样式 */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 3. 移除链接默认下划线和颜色继承 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.message-center {
+  a {
+    text-decoration: underline;
+    color: var(--ThemeColor-Main);
+  }
+}
+
+/* 4. 图片、媒体元素默认行为优化 */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 5. 表单元素重置 */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* 6. 去除一些浏览器特有默认样式 */
+button {
+  cursor: pointer;
+}
+
+iframe {
+  border: none;
+}
+
+a,
+button,
+input,
+textarea,
+select,
+// 加了 cursor: pointer 的元素，默认会有 tap 高亮，这里去除
+div,
+p,
+section,
+span,
+li {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration {
+  display: none;
+}
+
+/* 7. 表格重置 */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 8. 文本元素统一继承 */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* 9. html 和 body 基础设置 */
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* 仅 mine_h5 页面放开 iOS 纵向回弹，不影响其他页面 */
+html.mine-h5-rubberband,
+body.mine-h5-rubberband {
+  overscroll-behavior: auto !important;
+  overflow: auto !important;
+}
+
+html.mine-h5-rubberband #root {
+  overscroll-behavior: auto !important;
+  overflow: auto !important;
+}
+
+html,
+body {
+  background: var(--h5-safe-area-top-color, var(--Background-300));
+}
+
+#root {
+  background: var(--Background-700);
+}
+
+body {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'PingFang SC',
+    sans-serif;
+  --adm-color-text: var(--Text-Main-10);
+  --adm-font-size-main: 14px;
+  --adm-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  min-width: 350px;
+}
+
+:root {
+  --header-height: 56px;
+  --bottom-gradient-end: 256px;
+  @include rwd-min('lg') {
+    --bottom-gradient-end: 176px;
+  }
+}
+
+// .base-main-background {
+//   background: linear-gradient(
+//       180deg,
+//       #0b1016 0,
+//       #3d4b62 var(--bottom-gradient-end),
+//       var(--Background-700) var(--bottom-gradient-end),
+//       var(--Background-700) 100%
+//     )
+//     local;
+// }
+// [data-theme='light'] {
+//   .base-main-background {
+//     background: linear-gradient(
+//         180deg,
+//         #0b1016 0,
+//         #3d4b62 var(--bottom-gradient-end),
+//         var(--Background-700) var(--bottom-gradient-end),
+//         var(--Background-700) 100%
+//       )
+//       local;
+//   }
+// }
+/* --- antd-mobile 样式覆盖 --- */
+.adm-popover,
+.adm-popover-inner,
+.adm-popover .adm-popover-arrow {
+  --background: var(--Background-300);
+  // color: var(--Text-Main-10) !important;
+}
+
+.op7-picker-view.adm-picker-view {
+  --adm-color-background: var(--Background-300);
+  --item-height: 48px;
+
+  .adm-picker-view-column-item-active {
+    color: var(--ThemeColor-Main);
+  }
+}
+
+/* swiper/css/navigation 在构建产物中会给 .swiper-horizontal 加 left/right，
+   导致布局错位，统一重置 */
+.swiper-horizontal,
+.swiper-vertical {
+  --swiper-navigation-sides-offset: 0px;
+}
+
+.antd-mobile-calendar-custom.adm-calendar {
+  --adm-font-size-10: 15px;
+  .adm-calendar-header {
+    a.adm-calendar-arrow-button {
+      color: var(--ThemeColor-Main);
+
+      svg {
+        height: 16px;
+        color: currentColor;
+      }
+    }
+  }
+}

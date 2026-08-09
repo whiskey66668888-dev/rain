@@ -1,0 +1,31 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin size($w, $h: $w) {
+  width: $w;
+  height: $h;
+}
+
+@mixin can-hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// 默认主题
+@mixin theme-light() {
+  :global([data-theme='light']) & {
+    @content;
+  }
+}
+// 黑夜主题
+@mixin theme-night() {
+  :global([data-theme='dark']) & {
+    @content;
+  }
+}

@@ -1,0 +1,412 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+/* 外层：不裁剪，让底部齿轮可探出 */
+.betCard {
+  width: min(100%, 285px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 上半圆角主体：单独 overflow，不影响底部齿轮 */
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+}
+
+.cardHead {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding: 8px 10px 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 0.5px solid var(--Line-100);
+  background: var(--Background-300);
+  text-align: left;
+}
+
+.headAccent {
+  flex-shrink: 0;
+  width: 2px;
+  height: 16px;
+  margin-right: 8px;
+  background: var(--ThemeColor-Main);
+}
+
+.headTitle {
+  flex: 1;
+  min-width: 0;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headSeries {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-wrap: nowrap;
+  gap: 6px;
+  min-width: 0;
+  padding-left: 8px;
+}
+
+.seriesLabel {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.seriesTitle {
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 16px;
+  flex-shrink: 0;
+}
+
+.seriesOdds {
+  color: var(--ThemeColor-Main);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.at {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 对齐 emc itemHeader getSrIcon width: 28 */
+.resultIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  margin-right: 2px;
+  object-fit: contain;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px 0 6px;
+  background: var(--Background-300);
+}
+
+.teamBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 串关场次之间：正图 + 翻转图拼接成齿轮连接 */
+.ticketJoin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  line-height: 0;
+}
+
+.ticketEdge {
+  display: block;
+  width: 100%;
+  height: 5px;
+  object-fit: fill;
+}
+
+.ticketEdgeFlip {
+  transform: scaleY(-1);
+}
+
+/* 卡片最底部齿轮：略向下探出半透明齿 */
+.ticketEdgeBottom {
+  display: block;
+  width: 100%;
+  height: 5px;
+  margin-top: -1px;
+  object-fit: fill;
+  position: relative;
+  z-index: 1;
+}
+
+.matchInfo {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+.leagueRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.leagueName {
+  flex: 1;
+  min-width: 0;
+  color: var(--Text-800);
+  font-size: 13px;
+  line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.startTime {
+  flex-shrink: 0;
+  color: var(--Text-800);
+  font-size: 13px;
+  line-height: 18px;
+  font-family: PingFang SC;
+}
+
+.marketBox {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background: var(--Background-gradient-50);
+}
+
+.marketTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.marketValue {
+  flex: 1;
+  min-width: 0;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.odds {
+  flex-shrink: 0;
+  color: var(--ThemeColor-Main);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.playRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.playLine {
+  flex: 1;
+  min-width: 0;
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scoreSide {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.cornerIcon {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+}
+
+.scoreText {
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.expandToggleWrap {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+  background: var(--Background-300);
+}
+
+.expandToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.collapsedList {
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsedItem {
+  padding: 8px 10px;
+  background: var(--Background-300);
+}
+
+.collapsedMatch {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  font-family: PingFang SC;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collapsedRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.collapsedMarket {
+  flex: 1;
+  min-width: 0;
+  color: var(--Text-800);
+  font-size: 14px;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collapsedAmount {
+  flex-shrink: 0;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.amountRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px 10px;
+  border-top: 0.5px solid var(--Line-100);
+  background: var(--Background-300);
+}
+
+.collapsedAmountRow {
+  padding-top: 8px;
+  border-top-color: var(--Line-200);
+}
+
+.amountItem {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  gap: 5px;
+}
+
+.amountRightAlign {
+  justify-content: flex-end;
+}
+
+.amountLabel {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.amountValue {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  font-family: PingFang SC;
+}
+
+.backValue {
+  color: var(--ThemeColor-Main);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  font-family: PingFang SC;
+}
+
+.followWrap {
+  padding: 0 10px 6px;
+  background: var(--Background-300);
+}
+
+.followBtn {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 16px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:disabled {
+    background: var(--ThemeColor-100);
+    cursor: not-allowed;
+  }
+}

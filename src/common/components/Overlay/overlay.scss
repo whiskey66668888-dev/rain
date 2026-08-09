@@ -1,0 +1,61 @@
+.global-overlay-container {
+  position: fixed;
+  z-index: var(--global-overlay-z-index);
+  inset: 0;
+  touch-action: none;
+}
+
+.global-overlay-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  cursor: default;
+}
+
+.global-overlay-body {
+  position: fixed;
+  z-index: 1;
+  max-width: var(--global-overlay-body-max-width, 100%);
+  max-height: var(--global-overlay-body-max-height, 100%);
+  overflow: hidden;
+}
+
+/* center：居中定位，framer-motion 只控制 opacity 不会覆盖此 transform */
+/* center 居中由 framer-motion 的 x/y 实现，避免与 scale 动画的 transform 冲突 */
+.global-overlay-body-position-center {
+  top: 50%;
+  left: 50%;
+}
+
+.global-overlay-body-position-center.global-overlay-body-center-fullscreen {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.global-overlay-body-position-bottom {
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+.global-overlay-body-position-top {
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.global-overlay-body-position-left {
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.global-overlay-body-position-right {
+  height: 100%;
+  top: 0;
+  right: 0;
+}

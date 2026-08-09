@@ -1,0 +1,207 @@
+.captchaModal {
+  width: 332px;
+  max-width: 90vw;
+  background: var(--Background-300);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.line {
+  width: 100%;
+  height: 7px;
+  background: #5380ff;
+  transition: background 0.2s ease;
+
+  &.failed {
+    background: #ff5d39;
+  }
+
+  &.passed {
+    background: #3ac522;
+  }
+}
+
+.passedBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 367px;
+  gap: 12px;
+
+  .passedIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #3ac522;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  span {
+    font-size: 14px;
+    color: #40c629;
+  }
+}
+
+.captchaContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 18px 16px;
+  min-height: 367px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 15px 0;
+  font-size: 16px;
+  color: #292f3a;
+  width: 100%;
+  text-align: center;
+}
+
+.imgBox {
+  position: relative;
+  width: 100%;
+  max-width: 295px;
+  height: 195.5px;
+  overflow: hidden;
+  background: #f7f7f7;
+  border-radius: 2px;
+
+  .captchaImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0.97);
+  }
+
+  .loadingPlaceholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #aaa;
+  }
+
+  .failedMessage {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    color: #fff;
+    background: #ff5d39;
+  }
+}
+
+.bottom {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 295px;
+  height: 25px;
+  margin: 11px 0 39px;
+
+  .input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 4px 8px;
+    font-size: 12px;
+    background: #f7f7f7;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+    color: #292f3a;
+    outline: none;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  .submit {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 83px;
+    height: 100%;
+    font-size: 12px;
+    color: #fff;
+    background: #2c9af9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover:not(.disable) {
+      opacity: 0.9;
+    }
+
+    &.disable {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  max-width: 295px;
+  justify-content: flex-start;
+
+  .footerBtn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--Text-700);
+    padding: 0;
+    transition:
+      color 0.2s,
+      background 0.2s;
+    border-radius: 4px;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    &:hover {
+      color: var(--ThemeColor-Main);
+      background: var(--Background-500);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

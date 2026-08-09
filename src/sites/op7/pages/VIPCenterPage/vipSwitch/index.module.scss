@@ -1,0 +1,244 @@
+.vipSwitchBox {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  @include rwd-min('lg') {
+    width: 100%;
+    padding: 0 24px;
+    position: relative;
+  }
+  // ✅ 移动端 Slide 样式
+  .vipSlideMobile {
+    width: 100% !important; // 移动端占满整个宽度
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  // ✅ PC 端 Slide 样式
+  .vipSlideDesktop {
+    width: 351px !important; // PC 端固定 351px
+    flex-shrink: 0;
+  }
+
+  .vip_card {
+    position: relative;
+    width: calc(100% - 6%);
+    height: 170px;
+    // margin: 0 3%;
+    background-size: 100% 100% !important;
+    border-radius: 10px;
+    z-index: 1;
+    @include rwd-min('lg') {
+      width: 351px;
+    }
+    // background: linear-gradient(104deg, #E5EAF1 0.06%, #DFE3E8 50.06%, #C6CCD3 100.06%), linear-gradient(104deg, #E3E7EB 0.06%, #CBD0D7 50.06%, #B4B9C1 100.06%);
+    // overflow: hidden;
+    .nowLevelBox {
+      position: absolute;
+      top: 24px;
+      left: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .nowLevelMark {
+      color: var(--Black-60);
+      text-align: center;
+      font-family: 'PingFang TC';
+      font-size: calc(10px * var(--text-scale, 1));
+      font-style: normal;
+      font-weight: 400;
+      text-transform: uppercase;
+      // margin-top: 4px;
+    }
+    .nowLevelMark_2 {
+      color: #f3c98b;
+    }
+    .vip_levelText {
+      font-family: 'DIN Alternate', sans-serif;
+      font-size: calc(38px * var(--text-scale, 1));
+      font-weight: 700;
+      color: #010204;
+    }
+    .vip_levelText_2 {
+      background: linear-gradient(180deg, #4c6280 -0.45%, #2a384d 99.82%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .vip_levelText_3 {
+      // background: linear-gradient(180deg, #FFF 0%, #D9E5FF 100%);
+      // background-clip: text;
+      // -webkit-background-clip: text;
+      // -webkit-text-fill-color: transparent;
+      background: linear-gradient(180deg, #fbedad 0%, #bd8048 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .vip_levelIconContainer {
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 13px;
+      right: 22px;
+    }
+    .progress_box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      bottom: 40px;
+      left: 20px;
+      width: calc(100% - 40px);
+      color: #030910;
+      .userLevel {
+        // color: var(--themecolor-main);
+        font-family: 'DIN Alternate', sans-serif;
+        font-size: calc(12px * var(--text-scale, 1));
+        font-weight: 500;
+      }
+      .usernextLevel {
+        // color: #F3C98B;
+        font-family: 'DIN Alternate', sans-serif;
+        font-size: calc(12px * var(--text-scale, 1));
+        font-weight: 700;
+        letter-spacing: 0.24px;
+      }
+      .userLevel_2 {
+        color: #f3c98b;
+      }
+    }
+    .vip_bottom {
+      position: absolute;
+      bottom: 20px;
+      left: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-weight: 700;
+      color: #fff;
+      text-align: left;
+
+      .detail_card_fonts {
+        color: rgba(243, 201, 139, 0.8);
+        font-family: 'PingFang SC';
+        font-size: calc(12px * var(--text-scale, 1));
+        font-style: normal;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+      }
+      .detail_card_fonts_right {
+        text-align: right;
+      }
+      .detail_card_fonts_2 {
+        color: #f3c98b;
+        font-family: 'DIN Alternate', sans-serif;
+        font-weight: 600;
+      }
+      .detail_card_fonts_other {
+        flex-direction: column;
+        font-size: calc(10px * var(--text-scale, 1));
+        width: 33.3%;
+        .detail_card_fonts_2 {
+          font-size: calc(16px * var(--text-scale, 1));
+          margin-top: 6px;
+        }
+      }
+      .detail_card_fonts_white {
+        color: var(--Black-60);
+        .detail_card_fonts_2_white {
+          color: #030910;
+        }
+      }
+      .detail_card_fonts_center {
+        text-align: center;
+      }
+      .detail_card_line {
+        width: 0.5px;
+        height: 38px;
+      }
+      .detail_card_line_2 {
+        background: var(--Black-40);
+      }
+      .detail_card_line_1 {
+        background: var(--White-20);
+      }
+    }
+    .vip_bottom_active {
+      bottom: 14px;
+      left: 20px;
+      width: calc(100% - 40px);
+    }
+
+    .vip_bottom_max {
+      left: 20px;
+      width: calc(100% - 40px);
+      justify-content: space-around;
+    }
+  }
+  .nowMode0 {
+    background: radial-gradient(183.58% 118.81% at 14.93% 17.06%, #fff 0%, #d7d7d7 100%);
+  }
+  .nowMode1 {
+    background: radial-gradient(183.58% 118.81% at 14.93% 17.06%, #e3eef6 0%, #d5e0ed 100%);
+  }
+  .nowMode2 {
+    background: radial-gradient(183.58% 118.81% at 14.93% 17.06%, #e6eeff 0%, #cdd9f1 100%);
+  }
+  .nowMode3 {
+    background: radial-gradient(180.14% 93.51% at 14.93% 17.06%, #f1f2ff 0%, #d0d4ff 100%);
+  }
+  .nowMode4 {
+    background: radial-gradient(180.14% 93.51% at 14.93% 17.06%, #f8edef 0%, #ead2d7 100%);
+  }
+  .nowMode5 {
+    background: radial-gradient(180.14% 93.51% at 14.93% 17.06%, #fff7e9 0%, #e7c195 100%);
+  }
+  .nowMode6 {
+    background: radial-gradient(180.14% 93.51% at 14.93% 17.06%, #fff3dd 0%, #e6bb9e 100%);
+  }
+  .nowMode7 {
+    background: radial-gradient(180.14% 93.51% at 14.93% 17.06%, #ffeeda 0%, #dea789 100%);
+  }
+  .nowMode8 {
+    background: radial-gradient(
+      232.59% 123.14% at 11.55% 7.06%,
+      #533132 0%,
+      #391f20 27.3%,
+      #301919 100%
+    );
+  }
+  .nowMode9 {
+    background: radial-gradient(232.59% 123.14% at 11.55% 7.06%, #2e3c5f 0%, #111c3a 94.45%);
+  }
+  .nowMode10 {
+    background: radial-gradient(184.27% 117.89% at 13.1% 17.06%, #38294f 0%, #1e1330 100%);
+  }
+
+  .swiperButtonPrev {
+    height: 170px;
+    top: 74px;
+    left: -15px;
+    display: flex;
+  }
+  .swiperButtonNext {
+    height: 170px;
+    top: 74px;
+    right: -15px;
+    display: flex;
+  }
+  :global {
+    .swiper-navigation-icon {
+      display: none;
+    }
+    .swiper-navigation-icon {
+      display: none;
+    }
+  }
+}

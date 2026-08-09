@@ -1,0 +1,59 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* 隐藏真实 input */
+.hiddenInput {
+  color: transparent;
+  caret-color: transparent; // 隐藏光标
+  border: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+/* 格子容器 */
+.boxContainer {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* 单个格子 */
+.box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--Background-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid transparent;
+
+  font-size: 20px;
+  transition: all 0.2s ease;
+}
+
+/* 当前输入位置 */
+.active {
+  border-color: var(--ThemeColor-Main);
+}
+
+.error {
+  border-color: var(--Red-400);
+}
+
+.cursor {
+  width: 1px;
+  height: 14px;
+  background: var(--ThemeColor-Main);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

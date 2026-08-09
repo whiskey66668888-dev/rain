@@ -1,0 +1,31 @@
+.virtualActivity {
+  border-radius: 12px;
+  background: var(--Background-300);
+
+  .title {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    border-bottom: 0.5px solid var(--Line-100);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0 12px;
+    color: var(--Text-Main-10);
+  }
+
+  .list {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .activityImage {
+    width: 100%;
+    // height: 67px;
+    border-radius: 12px;
+    object-fit: cover;
+    cursor: pointer;
+    display: block;
+  }
+}

@@ -1,0 +1,308 @@
+.betItem {
+  --bet-type-color: var(--Text-Main-10);
+  --base-color: var(--Text-800);
+  // 单关--投注界面
+  &.betItemSingleBetPanel {
+    --padding-bottom: 0px;
+    --border-radius: 12px;
+    --background: none;
+
+    --odds-color: var(--ThemeColor-Main);
+    --odds-value-font-size: 30px;
+    --odds-value-line-height: 30px;
+    --at-symbol-font-size: 16px;
+    --at-symbol-line-height: 22px;
+    --league-name-font-size: 16px;
+    --league-name-line-height: 16px;
+    --teams-row-margin-top: 2px;
+    --teams-row-font-size: 16px;
+    --teams-row-line-height: 24px;
+
+    border: 0.5px solid var(--Line-200);
+    min-height: 115px;
+
+    &.betItemClosed {
+      --odds-color: var(--Text-800);
+    }
+  }
+
+  // 单关--订单界面
+  &.betItemSingleOrderPanel {
+    --padding-bottom: 16px;
+    --border-radius: 0px;
+    --background: var(--Background-700);
+
+    --odds-color: var(--Text-Main-10);
+    --odds-value-font-size: 30px;
+    --odds-value-line-height: 30px;
+    --at-symbol-font-size: 16px;
+    --at-symbol-line-height: 22px;
+    --league-name-font-size: 16px;
+    --league-name-line-height: 16px;
+    --teams-row-margin-top: 8px;
+    --teams-row-font-size: 16px;
+    --teams-row-line-height: 16px;
+  }
+
+  // 单关--投注界面
+  &.betItemSingleBetPanel,
+  // 串关--投注界面
+  &.betItemParlayBetPanel {
+    &.betItemClosed {
+      --odds-color: var(--Text-800);
+      --bet-type-color: var(--Text-800);
+      --base-color: var(--Text-700);
+    }
+  }
+
+  // 串关--投注界面
+  &.betItemParlayBetPanel {
+    --padding-bottom: 8px;
+    --border-radius: 0px;
+    --background: var(--Background-600);
+
+    --odds-color: var(--ThemeColor-Main);
+    --odds-value-font-size: 18px;
+    --odds-value-line-height: 20px;
+    --at-symbol-font-size: 14px;
+    --at-symbol-line-height: 17px;
+    --league-name-font-size: 14px;
+    --league-name-line-height: 16px;
+    --teams-row-margin-top: 2px;
+    --teams-row-font-size: 14px;
+    --teams-row-line-height: 20px;
+
+    border-bottom: 0.5px solid var(--Line-100);
+
+    &.betItemClosed {
+      --odds-color: var(--Text-800);
+    }
+  }
+
+  // 串关--订单界面
+  &.betItemParlayOrderPanel {
+    --padding-bottom: 8px;
+    --border-radius: 0px;
+    --background: var(--Background-300);
+
+    --odds-color: var(--Text-Main-10);
+    --odds-value-font-size: 30px;
+    --odds-value-line-height: 30px;
+    --at-symbol-font-size: 16px;
+    --at-symbol-line-height: 22px;
+    --league-name-font-size: 16px;
+    --league-name-line-height: 16px;
+    --teams-row-margin-top: 8px;
+    --teams-row-font-size: 16px;
+    --teams-row-line-height: 16px;
+  }
+
+  &.topBlueBg {
+    --background:
+      linear-gradient(180deg, rgba(23, 139, 255, 0.15) 0%, rgba(23, 139, 255, 0) 100%) top center /
+        100% 60px no-repeat,
+      var(--Background-600);
+  }
+
+  padding-top: 8px;
+  padding-inline: 14px;
+  padding-bottom: var(--padding-bottom);
+  border-radius: var(--border-radius);
+  background: var(--background);
+  position: relative;
+  overflow: hidden;
+}
+
+.championBetItem {
+  .teamsRow {
+    visibility: hidden;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .betType {
+    color: var(--bet-type-color);
+
+    font-family: 'PingFang SC';
+    font-size: text-scale(16px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .marketType {
+    color: var(--Text-800);
+
+    font-family: 'PingFang SC';
+    font-size: text-scale(12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+  }
+}
+
+.oddsInfo {
+  &.odds-up {
+    --odds-color: var(--Red-300);
+    .oddsChangeArrow {
+      display: block;
+    }
+  }
+  &.odds-down {
+    --odds-color: var(--Green-300);
+    .oddsChangeArrow {
+      display: block;
+      transform: rotate(180deg);
+    }
+  }
+
+  display: flex;
+  align-items: baseline;
+  color: var(--odds-color);
+
+  .atSymbol {
+    font-size: text-scale(var(--at-symbol-font-size));
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--at-symbol-line-height);
+  }
+
+  .oddValueContainer {
+    display: flex;
+    align-items: center;
+  }
+
+  .oddValue {
+    text-align: right;
+    font-family: DINPro;
+    font-size: text-scale(var(--odds-value-font-size));
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--odds-value-line-height); /* 100% */
+    letter-spacing: -1.3px;
+  }
+
+  .oddsChangeArrow {
+    display: none;
+    margin-left: 4px;
+    width: 8px;
+    height: 10px;
+  }
+}
+
+.infoRow {
+  margin-top: 6px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.matchDetailClickable {
+  cursor: pointer;
+}
+
+.leagueName {
+  max-width: 75%;
+  color: var(--base-color);
+  font-family: 'PingFang SC';
+  font-size: text-scale(var(--league-name-font-size));
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--league-name-line-height);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selectionInfo {
+  max-width: 75%;
+  color: var(--base-color);
+  text-align: right;
+
+  font-family: 'PingFang SC';
+  font-size: text-scale(14px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teamsRow {
+  margin-top: var(--teams-row-margin-top);
+  color: var(--base-color);
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* CN/H2 */
+  font-family: 'PingFang SC';
+  font-size: text-scale(var(--teams-row-font-size));
+  font-style: normal;
+  font-weight: 600;
+  line-height: var(--teams-row-line-height); /* 150% */
+}
+
+.footerRow {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  z-index: 222;
+}
+
+.canotParlayIcon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.marketClose {
+  background-color: var(--Red-100);
+  border-radius: 8px 0 0 0;
+
+  color: var(--Red-200);
+  padding-inline: 6px;
+
+  font-family: 'PingFang SC';
+  font-size: text-scale(12px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.deleteBtn {
+  &.withMarketClose {
+    background-color: var(--Red-100);
+  }
+
+  .deleteBtnInner {
+    width: 36px;
+    height: 16px;
+    background: linear-gradient(var(--Button-400), var(--Button-400)), var(--Background-600);
+    border-radius: 8px 0 0 0;
+
+    color: var(--Text-800);
+    text-align: center;
+
+    font-family: 'PingFang SC';
+    font-size: text-scale(12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+  }
+}

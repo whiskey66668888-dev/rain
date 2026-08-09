@@ -1,0 +1,79 @@
+.weather {
+  overflow: hidden;
+  padding: 0 10px;
+
+  .card {
+    color: var(--White-100);
+    border-radius: 8px;
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    height: 90px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url('/images/common/discover/weather/bg.png');
+
+    /* PC 主内容区加高 */
+    @include rwd-min('lg') {
+      background-size: cover;
+      height: 200px;
+    }
+
+    .weatherLeft {
+      padding-left: 20px;
+      padding-right: 16px;
+      min-width: 40px;
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        &:first-child {
+          font-size: 24px;
+          font-family: 'DIN Pro', Avenir, sans-serif;
+        }
+
+        &:last-child {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .weatherDivider {
+      width: 0.5px;
+      height: 20px;
+      background: var(--background-card);
+    }
+
+    .weatherRight {
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .rightItem {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 18px;
+        color: var(--white-100);
+        font-size: 12px;
+        font-weight: 400;
+        span {
+          font-family: 'DIN Pro', Avenir, sans-serif;
+        }
+      }
+    }
+  }
+
+  /* PC 右侧栏保持与 H5 一致的 90px */
+  &.compact .card {
+    @include rwd-min('lg') {
+      background-size: 100% 100%;
+      height: 90px;
+    }
+  }
+}

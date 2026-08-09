@@ -1,0 +1,149 @@
+.swiperBoxs {
+  width: 100%;
+  // max-width: 263px;
+  margin: 0 auto;
+
+  :global {
+    .swiper {
+      display: flex;
+      flex-direction: column;
+
+      .swiper-pagination-bullet {
+        width: 6px;
+        height: 2px;
+        background: var(--Icon-star);
+        opacity: 0.6;
+        border-radius: 2px;
+      }
+
+      .swiper-pagination-bullet-active {
+        width: 10px;
+        background: var(--ThemeColor-Main, #1a81ff) !important;
+        opacity: 1;
+      }
+
+      .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+      .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+        margin: 0 2px;
+      }
+
+      .swiper-pagination {
+        position: static;
+        padding-top: 16px;
+        line-height: 0;
+      }
+
+      .swiper-slide {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        opacity: 0.5;
+        transition: opacity 0.8s ease;
+      }
+
+      .swiper-slide-active {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.sildBox {
+  position: relative;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.gradient {
+  width: 100%;
+  position: absolute;
+  top: -5px;
+  left: 0;
+  height: 34px;
+  background: transparent;
+  z-index: 5;
+  transition: 0.5s;
+  display: none;
+}
+
+.gradient1 {
+  width: 100%;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 34px;
+  background: transparent;
+  z-index: 5;
+  transition: 0.5s;
+  display: none;
+}
+
+.slideWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.allTitle {
+  width: 100%;
+  line-height: calc(20px * var(--text-scale, 1));
+  color: var(--Text-Main-10);
+  font-size: tf(14);
+  font-weight: 500;
+  text-align: left;
+}
+
+.noticeBox {
+  max-height: min(36vh, 240px);
+  overflow-y: auto;
+  position: relative;
+}
+
+.content {
+  width: 100%;
+  font-weight: 400;
+  font-size: tf(12);
+  line-height: calc(18px * var(--text-scale, 1));
+  color: var(--Text-Main-10);
+  text-align: left;
+
+  :global {
+    img {
+      max-width: 100%;
+    }
+
+    p {
+      margin: revert;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    a {
+      text-decoration: revert;
+      color: var(--ThemeColor-Main);
+      font-size: inherit;
+    }
+
+    ol,
+    ul {
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    li {
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    ol {
+      list-style-position: inside;
+    }
+  }
+}
+
+.time {
+  margin-top: 12px;
+  font-size: tf(12);
+  line-height: calc(18px * var(--text-scale, 1));
+  color: var(--Text-800);
+  text-align: right;
+}

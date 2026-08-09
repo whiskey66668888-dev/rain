@@ -1,0 +1,71 @@
+/* 活动规则弹窗 */
+.rulesModalWrapper {
+  border-radius: 16px 16px 0 0;
+  background: transparent;
+  .rulesModal {
+    background: #ffffff;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 28px rgba(12, 17, 29, 0.18);
+    overflow: hidden;
+    .rulesModalHeader {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      background: linear-gradient(180deg, #c2e1fd 0.04%, #fff 99.97%);
+      z-index: 1;
+
+      .rulesModalTitle {
+        position: relative;
+        // padding-left: 9px;
+        color: #323757;
+        font-family: 'PingFang SC';
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: -10px;
+      }
+
+      .rulesCloseIcon {
+        position: absolute;
+        right: 20px;
+        top: 18px;
+        transform: translateY(-50%);
+      }
+    }
+
+    .rulesModalBody {
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -3px 3px rgba(164, 176, 192, 0.1);
+
+      fill: #fff;
+      position: relative;
+      z-index: 2;
+      padding: 16px 16px 20px;
+      margin-top: -10px;
+      color: #474f59;
+      font-family: 'PingFang SC';
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 22px;
+      p {
+        margin: 0;
+      }
+      .rulesModalList {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        li {
+          color: #4b5569;
+          text-align: left;
+        }
+      }
+    }
+  }
+}

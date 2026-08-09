@@ -1,0 +1,55 @@
+@use '@/common/styles/rwd' as *;
+
+.walletModal {
+  background: var(--Background-400);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  width: 450px;
+  max-height: 90vh;
+  border-radius: 12px;
+
+  header {
+    height: 48px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--Text-Main-10);
+    flex: none;
+    background: var(--Background-300);
+
+    .actions {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .button {
+      width: 24px;
+      height: 24px;
+      // border-radius: 24px;
+      // background: var(--Line-100);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  section {
+    flex: 1;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+}

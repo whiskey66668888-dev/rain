@@ -1,0 +1,87 @@
+.secondaryTabs {
+  padding: 8px 14px;
+  background: var(--Background-300, #fff);
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1176px;
+  margin: 0 auto;
+}
+
+/* 灰色大圆角容器 */
+.scrollContainer {
+  height: 36px;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+
+  border-radius: 30px;
+  background: var(--Background-700, #f5f7fa);
+
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* 隐藏滚动条（可选） */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  @include rwd-min('lg') {
+    // background: var(--Background-300, #f5f7fa);
+    width: 100%;
+  }
+}
+
+/* 单个 tab */
+.tabItem {
+  flex-shrink: 0;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--Text-800, #7a8499);
+  font-family: 'PingFang SC';
+  font-size: text-scale(12px);
+  font-style: normal;
+  font-weight: 400;
+  height: 32px;
+  padding: 6px 12.5px;
+
+  border-radius: 30px;
+  cursor: pointer;
+  /* 只过渡颜色和背景，不过渡会引起布局偏移的属性 */
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+
+  /* 用伪元素预占 bold 宽度，防止 font-weight 切换时引起布局偏移 */
+  @include rwd-min('lg') {
+    font-size: text-scale(14px);
+    flex: 1;
+  }
+  &::after {
+    content: attr(data-label);
+    font-weight: 600;
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+}
+
+.tabItem:last-child {
+  margin-right: 0;
+}
+
+/* 选中状态 */
+.active {
+  border-radius: 30px;
+  background: var(--ThemeColor-Main, #1a81ff);
+  color: var(--White-100, #fff);
+  font-weight: 600;
+}

@@ -1,0 +1,20 @@
+.singleBetSwiper {
+  --swiper-pagination-bottom: 0px;
+  --swiper-pagination-bullet-width: 8px;
+  --swiper-pagination-bullet-height: 2px;
+  --swiper-pagination-bullet-border-radius: 1px;
+  --swiper-pagination-bullet-horizontal-gap: 2px;
+  --swiper-pagination-bullet-inactive-color: var(--Icon-star);
+  --swiper-pagination-bullet-inactive-opacity: 0.5;
+  --swiper-pagination-color: var(--ThemeColor-Main);
+
+  :global(.swiper-pagination.swiper-pagination-bullets) {
+    width: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    --swiper-pagination-bullet-width: 16px;
+  }
+}

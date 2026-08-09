@@ -1,0 +1,47 @@
+.card {
+  margin-top: 16px;
+  padding: 12px 13px 20px;
+
+  border-radius: 10px;
+  background: var(--Background-300, #fff);
+}
+
+.section + .section {
+  margin-top: 8px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--Text-Main-10, #000);
+
+  /* 主文字 */
+  font-family: 'PingFang SC';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 21px */
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ThemeColor-Main, #2f80ed);
+  flex-shrink: 0;
+}
+
+.content {
+  margin-top: 8px;
+  padding-left: 12px;
+  color: var(--Text-800, #596980);
+
+  /* 主文字辅助文字 */
+  font-family: 'PingFang SC';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21px */
+  white-space: pre-wrap;
+}

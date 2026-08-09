@@ -1,0 +1,585 @@
+@use '@/common/styles/rwd' as *;
+
+.marketGroup {
+  background: var(--Background-300);
+  border-radius: 6px;
+  // overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 12px;
+  padding-top: 0 !important;
+  @include rwd-min('lg') {
+    border-radius: 4px;
+  }
+}
+.collapsed {
+  //
+  padding-bottom: 1px !important;
+  // padding-top: 1px !important;
+}
+.marketHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 0.5px solid var(--Line-100);
+}
+.collapsedHeader {
+  border-bottom: none;
+}
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.pinButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // width: 30px;
+  // height: 30px;
+  // background-color: var(--Background-700);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  // &:hover {
+  //   color: rgba(255, 255, 255, 0.8);
+  // }
+}
+
+.marketName {
+  font-weight: 500;
+  color: var(--Text-800);
+}
+
+.collapseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  // background: var(--Background-700);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.collapseIcon {
+  width: 10px !important;
+  transition: transform 0.3s;
+}
+
+.collapsedIcon {
+  transform: rotate(180deg);
+}
+
+.emptyMarkets {
+  padding: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.marketRow {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.twoColumn {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &.threeColumn {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// 波胆盘口三列布局（主胜、平局、客胜）- 所有屏幕都保持三列
+.correctScoreContainer {
+  display: flex;
+  flex-direction: row; // 所有屏幕都保持三列水平布局
+  gap: 8px;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.correctScoreColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.correctScoreBtn {
+  font-family: 'DINPro';
+  width: 100%;
+  min-height: 50px;
+}
+
+.correctScoreButton {
+  display: flex;
+  flex-direction: column; // 小屏幕默认垂直布局（选项名在上，赔率在下）
+  align-items: center;
+  justify-content: center;
+  // padding: 12px 8px;
+  background: var(--Background-500);
+  border: none;
+  border-radius: 8px;
+  color: var(--Text-Main-10, #1f2634);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 50px;
+  width: 100%;
+
+  // 大屏幕时改为水平布局（选项名在左，赔率在右）
+  @include rwd-min('lg') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    // min-height: auto;
+  }
+
+  // &:hover:not(.locked) {
+  //   background: #eeeeee;
+  // }
+
+  &.selected {
+    background: var(--ThemeColor-Main);
+    border-color: var(--ThemeColor-Main);
+    color: var(--White-100);
+
+    .scoreText {
+      color: var(--White-100);
+    }
+
+    .odds {
+      color: var(--White-100) !important;
+
+      &.oddsUp,
+      &.oddsDown,
+      &.oddsStable {
+        color: var(--White-100) !important;
+      }
+
+      .oddsValue {
+        color: var(--White-100) !important;
+      }
+
+      .oddsArrow {
+        color: var(--White-100) !important;
+
+        path {
+          fill: var(--White-100) !important;
+        }
+      }
+    }
+  }
+
+  &.locked {
+    // opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--Background-500);
+    justify-content: center;
+  }
+}
+
+.scoreText {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--Text-800, #7a8499);
+  text-align: center; // 小屏幕时居中
+  line-height: 1.2;
+  flex-shrink: 0;
+  margin-bottom: 4px; // 小屏幕时添加间距
+  min-height: 50px; // 确保即使内容为空也保持高度
+
+  font-family: 'DINPro';
+  // 大屏幕时左对齐，移除底部间距
+  @include rwd-min('lg') {
+    text-align: left;
+    margin-bottom: 0;
+    // min-height: auto; // 大屏幕时不需要最小高度
+  }
+
+  // 空内容时使用伪元素保持高度
+  &:empty::before {
+    content: '\200B'; // 零宽空格，保持高度但不显示
+    display: inline-block;
+  }
+}
+
+.oddsBtn {
+  font-family: 'DINPro';
+  min-height: 50px;
+}
+
+.oddsBtn.handicapLayout,
+.oddsBtn.overUnderLayout,
+.oddsBtn.horizontalLayout,
+.oddsBtn.twoColumnLayout,
+.oddsBtn.threeColumnLayout {
+  @include rwd-min('lg') {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+  }
+}
+.oddsBtn.horizontalLayout {
+  justify-content: space-between !important;
+  padding: 0 15px;
+}
+
+/** 与 OddBtn 同根节点：class 是 oddsBtn + lockedPc，不是 .oddsButton 的子节点；勿写在 .oddsButton 内否则会编成 .oddsButton .lockedPc 永远不命中 */
+.oddsBtn.lockedPc {
+  @include rwd-min('lg') {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+}
+
+.oddsBtn.horizontalLayout.lockedPc {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.oddsButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+
+  border-radius: 8px;
+  background: var(--Background-500, #eff1f5);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--Text-800, #7a8499);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 50px;
+
+  // 让球盘口水平布局：大屏幕水平，小屏幕垂直
+  &.handicapLayout {
+    // 小屏幕保持默认的 column 布局（垂直）
+    // 大屏幕时改为水平布局
+    @include rwd-min('lg') {
+      flex-direction: row !important;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      // min-height: auto;
+    }
+  }
+
+  // 大小球盘口水平布局：大屏幕水平，小屏幕垂直
+  &.overUnderLayout {
+    // 小屏幕保持默认的 column 布局（垂直）
+    // 大屏幕时改为水平布局
+    @include rwd-min('lg') {
+      flex-direction: row !important;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      // min-height: auto;
+    }
+  }
+
+  // 单列时水平布局（左右对齐）- 需要更高优先级覆盖默认的 column 布局
+  &.horizontalLayout {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    // min-height: auto;
+  }
+
+  // 两列布局：大屏幕水平，小屏幕垂直（默认已经是 column，所以只需要在大屏幕时覆盖）
+  &.twoColumnLayout {
+    // 小屏幕保持默认的 column 布局（垂直）
+    // 大屏幕时改为水平布局
+    @include rwd-min('lg') {
+      flex-direction: row !important;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      // min-height: auto;
+    }
+  }
+
+  // 三列布局：大屏幕水平，小屏幕垂直（默认已经是 column，所以只需要在大屏幕时覆盖）
+  &.threeColumnLayout {
+    // 小屏幕保持默认的 column 布局（垂直）
+    // 大屏幕时改为水平布局
+    @include rwd-min('lg') {
+      flex-direction: row !important;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      // min-height: auto;
+    }
+  }
+
+  // &:hover:not(.locked) {
+  //   background: var(--Background-300, #5a6575);
+  //   border-color: rgba(59, 130, 246, 0.5);
+  // }
+
+  &.selected {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+
+    .handicapValue {
+      color: #fff;
+    }
+
+    .overUnderLabel {
+      .optionName,
+      .lineValue {
+        color: #fff;
+      }
+    }
+
+    .optionLabel {
+      .optionName,
+      .lineValue {
+        color: #fff;
+      }
+    }
+
+    .odds {
+      // 选中状态下，赔率文字和箭头都显示白色
+      color: #fff !important;
+
+      &.oddsUp,
+      &.oddsDown,
+      &.oddsStable {
+        color: #fff !important;
+      }
+
+      .oddsValue {
+        color: #fff !important;
+      }
+
+      .oddsArrow {
+        color: #fff !important;
+
+        path {
+          fill: #fff !important;
+        }
+      }
+    }
+  }
+
+  &.locked {
+    background: var(--Background-500);
+    cursor: not-allowed;
+    justify-content: center;
+    align-items: center;
+
+    // 大屏时锁定状态仅显示锁图标，强制居中（覆盖 handicapLayout/overUnderLayout/horizontalLayout 的 space-between）
+    @include rwd-min('lg') {
+      justify-content: center !important;
+      align-items: center !important;
+    }
+  }
+}
+
+.optionLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  flex-shrink: 0;
+
+  .oddsButton.horizontalLayout & {
+    align-items: flex-start;
+  }
+}
+
+.optionName {
+  font-size: 14px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+
+  // 大屏幕时移除底部间距
+  @include rwd-min('lg') {
+    margin-bottom: 0;
+  }
+
+  .oddsButton.horizontalLayout & {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Text-800, #7a8499);
+    margin-bottom: 0;
+  }
+}
+
+.lineValue {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 4px;
+
+  .oddsButton.horizontalLayout & {
+    font-size: 12px;
+    color: var(--Text-800, #7a8499);
+    margin-bottom: 0;
+  }
+}
+
+.handicapValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--Text-800, #7a8499);
+  flex-shrink: 0;
+  line-height: 1.5;
+
+  .oddsButton.selected & {
+    color: #fff;
+  }
+}
+
+.overUnderLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+
+  .optionName {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Text-800, #7a8499);
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+
+  .lineValue {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Text-800, #7a8499);
+    margin-bottom: 0;
+  }
+
+  .oddsButton.selected & {
+    .optionName,
+    .lineValue {
+      color: #fff;
+    }
+  }
+}
+
+.odds {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 0;
+  transition: color 0.3s ease;
+  line-height: 1.2;
+
+  // 默认颜色（仅在稳定状态且没有变化时使用）
+  &.positive {
+    color: #4ade80;
+  }
+
+  &.negative {
+    color: #f87171;
+  }
+
+  // 赔率变化颜色（优先级更高，会覆盖默认颜色）
+  &.oddsUp {
+    color: var(--Red-400) !important; // 红色 - 赔率上升
+  }
+
+  &.oddsDown {
+    color: var(--Green-300) !important; // 绿色 - 赔率下降
+  }
+
+  &.oddsStable {
+    // 稳定状态（3秒内无变化）显示黑色
+    color: var(--Text-Main-10, #1f2634);
+  }
+
+  .oddsArrowContainer {
+    display: inline-flex;
+    // align-items: center;
+    gap: 3px;
+
+    &.oddsArrowUp {
+      align-items: flex-start; // 上对齐
+    }
+
+    &.oddsArrowDown {
+      align-items: flex-end; // 下对齐
+    }
+  }
+
+  .oddsValue {
+    line-height: 1;
+    white-space: nowrap;
+    font-family: 'SF Pro Text';
+  }
+
+  .oddsArrow {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    opacity: 1;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/** PC 右侧栏嵌入赛事详情：与侧栏列表 30px 赔率行对齐 */
+.marketGroup.embeddedInSidebar {
+  .oddsBtn {
+    min-height: 30px;
+  }
+
+  .oddsButton {
+    min-height: 30px;
+  }
+
+  .scoreText {
+    min-height: 30px;
+  }
+
+  .correctScoreBtn {
+    min-height: 30px;
+  }
+
+  .correctScoreButton {
+    min-height: 30px;
+  }
+}

@@ -1,0 +1,182 @@
+.deposit {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+
+  .depositTypeList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc((100% - 12px * 3) / 4), 1fr));
+    gap: 12px;
+
+    .depositTypeItem {
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      background: var(--Background-300);
+      border: 1px solid transparent;
+      font-size: 12px;
+      color: var(--Text-800);
+      border-radius: 12px;
+      cursor: pointer;
+      padding: 8px;
+
+      &.active {
+        // border: 1px solid var(--ThemeColor-Main);
+        background-color: var(--ThemeColor-Main);
+        color: var(--White-100);
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .logoWrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+      }
+
+      .pay_type_hot {
+        position: absolute;
+        width: 36px;
+        height: auto;
+        pointer-events: none;
+      }
+
+      .pay_type_hotOnIcon {
+        top: -6px;
+        right: -20px;
+      }
+
+      .pay_type_hotOnLabel {
+        display: none;
+      }
+
+      .channelLabel {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        line-height: 1.2;
+      }
+    }
+  }
+
+  .main {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  &.inModal {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+
+    .depositTypeList {
+      flex: none;
+    }
+
+    .main {
+      flex: none;
+      overflow: visible;
+      padding-bottom: 0;
+    }
+  }
+
+  &.autoPC {
+    @include rwd-min('lg') {
+      padding: 0;
+      .depositTypeList {
+        border-radius: 20px;
+        background: var(--Background-300);
+        padding: 2px;
+
+        .depositTypeItem {
+          height: 40px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: 0;
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--Text-800);
+
+          &.active {
+            border: 0;
+            border-radius: 20px;
+            color: var(--White-100);
+            background: var(--ThemeColor-Main);
+          }
+
+          .pay_type_hotOnIcon {
+            display: none;
+          }
+
+          .pay_type_hotOnLabel {
+            width: 24px;
+            display: block;
+            top: -6px;
+            right: -10px;
+            transform: translate(50%, -30%);
+          }
+        }
+      }
+    }
+  }
+
+  /** 独立充值页（DepositPage），与转账页 section 内内容一致，由外层滚动 */
+  &.pageLayout {
+    flex: none;
+    min-height: auto;
+    overflow: visible;
+
+    .main {
+      flex: none;
+      overflow: visible;
+      padding-bottom: 12px;
+    }
+  }
+}
+
+.lockBankBox {
+  .lockTimes {
+    font-size: 14px;
+    color: var(--Text-Main-10);
+  }
+
+  .lockTip {
+    font-size: 12px;
+    color: var(--Red-400);
+  }
+}
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+
+  .button {
+    height: 40px;
+    flex: 1;
+  }
+
+  .cancel {
+    background: var(--Background-500);
+  }
+}

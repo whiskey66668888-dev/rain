@@ -1,0 +1,536 @@
+@use '@/common/styles/rwd' as *;
+
+.modal {
+  width: 100%;
+  background: var(--Background-700);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &.mobile {
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-radius: 0;
+  }
+
+  &.desktop {
+    width: 450px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+    background: var(--Background-300);
+  }
+}
+
+.header {
+  position: relative;
+  flex-shrink: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Background-300, #fff);
+  border-bottom: 1px solid var(--Line-100);
+
+  .mobile & {
+    padding: 0 12px;
+  }
+
+  .desktop & {
+    padding: 0 16px;
+    height: 52px;
+    border-bottom: none;
+    background: var(--Background-300);
+  }
+}
+
+.backBtn {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  .desktop & {
+    left: 16px;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+}
+
+.title {
+  margin: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--Text-Main-10);
+  text-align: center;
+
+  .desktop & {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.customerBtn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+}
+
+.headerCloseBtn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  .desktop & {
+    right: 16px;
+  }
+}
+
+.content {
+  flex: 1;
+  padding: 12px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .desktop & {
+    padding: 8px 24px 24px;
+  }
+}
+
+.stepDownload {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.downloadCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 12px 0;
+  border-radius: 12px;
+  background: var(--Background-300, #fff);
+}
+
+.authenticatorIcon {
+  width: 80px;
+  height: 80px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.appName {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--Text-Main-10);
+  margin-bottom: 16px;
+}
+
+.downloadList {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--Text-Main-10);
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+
+  li {
+    margin-bottom: 4px;
+  }
+}
+
+.downloadBtn {
+  width: 100%;
+  align-self: stretch;
+  height: 44px;
+  border: 1px solid var(--ThemeColor-Main);
+  border-radius: 100px;
+  background: transparent;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ThemeColor-Main);
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.reminder {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--Red-400, #ff4b4b);
+  text-align: center;
+}
+
+.stepPrepare,
+.stepVerify {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stepCard {
+  padding: 0;
+  border-radius: 12px;
+  background: var(--Background-300, #fff);
+  overflow: hidden;
+}
+
+.stepHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+}
+
+.stepHeadStep3 {
+  margin-bottom: 24px;
+  padding-left: 0;
+}
+
+.stepNum {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ThemeColor-Main);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.stepDivider {
+  height: 1px;
+  background: var(--Line-100);
+  margin: 0;
+}
+
+.secretArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.qrCodeWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.qrCodeImg {
+  display: block;
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+}
+
+.secretRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 12px 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--Text-Main-10);
+  word-break: break-all;
+}
+
+.copyBtn {
+  flex-shrink: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tutorialSection {
+  padding: 0 12px 6px;
+}
+
+.tutorialLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  margin-left: -12px;
+  padding-left: 12px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--Text-Main-10);
+}
+
+.tutorialLabelLine {
+  width: 2px;
+  height: 16px;
+  flex-shrink: 0;
+  background: var(--ThemeColor-Main);
+  border-radius: 1px;
+  position: absolute;
+  left: -12px;
+  border-radius: 0 10px 10px 0;
+}
+
+.tutorialBtns {
+  display: flex;
+  gap: 12px;
+}
+
+.tutorialBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 57px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--Background-700);
+  border: none;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+}
+
+.tutorialIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--ThemeColor-Main);
+}
+
+.tutorialArrow {
+  font-size: 18px;
+  color: var(--Text-800);
+}
+
+.actionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nextBtn {
+  width: 100%;
+  height: 44px;
+  border-radius: 100px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+
+  &.active {
+    background: var(--ThemeColor-Main) !important;
+  }
+}
+
+.stepDownload > .nextBtn {
+  width: calc(100% - 24px);
+  align-self: center;
+}
+
+.reminder {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Red-400, #ff4b4b);
+  text-align: center;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inputLabel {
+  flex-shrink: 0;
+  width: 56px;
+  font-size: 14px;
+  color: var(--Text-Main-10);
+}
+
+.inputWrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.verifyInput {
+  flex: 1;
+  height: 44px;
+  padding: 0 60px 0 12px;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 0.5px var(--Line-100);
+  background: var(--Background-300);
+  font-size: 14px;
+  color: var(--Text-Main-10);
+  &::placeholder {
+    color: var(--Text-700);
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 0.5px var(--ThemeColor-Main);
+  }
+  @include rwd-min('lg') {
+    background: var(--Background-700);
+  }
+}
+
+.pasteBtn {
+  position: absolute;
+  right: 12px;
+  font-size: 14px;
+  color: var(--ThemeColor-Main);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tutorialModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1001;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  transform: translate(-50%, -50%);
+}
+
+.tutorialModalContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.tutorialIframe {
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 80vh;
+  border: none;
+  background: var(--Background-300);
+  border-radius: 16px;
+}
+
+.tutorialSwiperWrap {
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 80vh;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--Background-300);
+}
+
+.tutorialSwiper {
+  width: 100%;
+  height: 100%;
+}
+
+.tutorialSwiperSlide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Background-300);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+.tutorialClose {
+  position: fixed;
+  top: 8vh;
+  right: calc(50% - 187.5px - 40px);
+  z-index: 1002;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Background-300);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+
+  @media (max-width: 767px) {
+    right: calc(50% - 40vw - 40px);
+  }
+}

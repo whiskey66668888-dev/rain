@@ -1,0 +1,31 @@
+.systemSettingsPage {
+  // padding: 12px;
+  color: var(--Text-Main-10);
+
+  .btnBox {
+    border-radius: 12px;
+    background: var(--Background-300);
+
+    margin: 0 12px;
+    margin-top: 10px;
+    & > li {
+      display: flex;
+      height: 44px;
+      padding: 14px 12px;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      border-bottom: 0.5px solid var(--Line-100);
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+  .logoutButton {
+    margin: 20px 12px;
+    height: 44px;
+    @include rwd-min('lg') {
+      display: none;
+    }
+  }
+}

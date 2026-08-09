@@ -1,0 +1,190 @@
+.compareCard {
+  background: var(--Background-300);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.compareTeams,
+.ringRow,
+.barLine {
+  display: flex;
+  align-items: center;
+}
+
+.compareTeams {
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ringRow {
+  justify-content: space-around;
+  gap: clamp(14px, 7vw, 40px);
+  margin-bottom: 10px;
+}
+
+.ringMetric {
+  width: 78px;
+  text-align: center;
+}
+
+.metricTitle {
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.ringLine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ring {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(51, 143, 255, 0.8) 0 calc(100% - var(--ring-home)),
+    rgba(51, 143, 255, 0.25) calc(100% - var(--ring-home)) 100%
+  );
+  position: relative;
+  flex-shrink: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: inherit;
+    background: var(--Background-300);
+  }
+}
+
+.compareBar {
+  margin-top: 4px;
+}
+
+.barComparisonSection {
+  position: relative;
+}
+
+.barLine {
+  gap: 8px;
+}
+
+.sideNumber {
+  width: 51px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  &:first-child {
+    text-align: right;
+  }
+}
+
+.foulBadge {
+  display: grid;
+  width: 29px;
+  height: 16px;
+  place-items: center;
+  border-radius: 2px;
+  background: var(--Red-900);
+  color: var(--White-100);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.foulValue {
+  color: var(--Red-900);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.foulOverlayLeft,
+.foulOverlayRight {
+  position: absolute;
+  top: 16px;
+  z-index: 1;
+  display: flex;
+  width: 51px;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.foulOverlayLeft {
+  left: 0;
+}
+
+.foulOverlayRight {
+  right: 0;
+  align-items: flex-start;
+}
+
+.foulOverlayLeft .foulValue,
+.foulOverlayRight .foulValue {
+  position: absolute;
+  top: 38px;
+  display: grid;
+  width: 29px;
+  height: 16px;
+  place-items: center;
+}
+
+.foulOverlayLeft .foulValue {
+  left: 0;
+}
+
+.foulOverlayRight .foulValue {
+  right: 0;
+}
+
+.foulOverlayLeft .foulBadge {
+  align-self: flex-start;
+}
+
+.foulOverlayRight .foulBadge {
+  position: absolute;
+  right: 0;
+}
+
+.splitBars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+  flex: 1;
+}
+
+.homeTrack,
+.awayTrack {
+  height: 4px;
+  background: var(--Line-100);
+  overflow: hidden;
+
+  i {
+    display: block;
+    height: 100%;
+  }
+}
+
+.homeTrack i {
+  margin-left: auto;
+  background: rgba(51, 143, 255, 0.25);
+}
+
+.awayTrack i {
+  background: rgba(51, 143, 255, 0.8);
+}
+
+@media (max-width: 390px) {
+  .ringRow {
+    gap: 8px;
+  }
+}

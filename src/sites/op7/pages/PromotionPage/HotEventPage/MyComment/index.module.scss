@@ -1,0 +1,150 @@
+.commentContent {
+  height: 395px;
+  overflow-y: scroll;
+  padding: 12px 24px 24px;
+  .list {
+    .item {
+      padding: 11px 0;
+      position: relative;
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   display: block;
+      //   width: 100%;
+      //   height: 1px;
+      //   bottom: 0;
+      //   transform: scaleY(0.5);
+      //   background: #a8b3c3;
+      //   opacity: 0.5;
+      // }
+      .text {
+        color: var(--Text-Main-10, #000);
+        text-align: justify;
+        font-family: 'PingFang SC';
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px; /* 142.857% */
+      }
+      .bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+        line-height: normal;
+        .timeWrap {
+          display: flex;
+          align-items: center;
+          .time {
+            color: var(--Text-800, #596980);
+            font-family: 'SF Pro Text';
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px; /* 133.333% */
+            width: 77px;
+          }
+          .tag {
+            width: 32px;
+            height: 13px;
+            border-radius: 2px;
+            background: linear-gradient(270deg, #76bcf3 0%, #177cff 100%);
+            font-size: 9px;
+            color: #fff;
+            text-align: center;
+            flex-shrink: 0;
+            &.notshow {
+              width: 44px;
+              background: #7c8591;
+            }
+            &.hide {
+              display: none;
+            }
+          }
+        }
+        .status {
+          color: var(--Green-300, #0c0);
+          font-family: 'PingFang SC';
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 16px; /* 133.333% */
+
+          &.refuse {
+            color: var(--Red-300, #f24949);
+            font-family: 'PingFang SC';
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px; /* 133.333% */
+            display: flex;
+            align-items: center;
+            position: relative;
+            .tipsWrap {
+              display: flex;
+              align-items: center;
+            }
+            .refuseIcon {
+              height: 13px;
+              margin-left: 5.5px;
+            }
+            .tips {
+              text-align: left;
+              width: 181px;
+              height: 77px;
+              background-size: 100% 100%;
+              background: url('/images/light/hotEvent/info-bg.png') no-repeat;
+              background-size: 100% 100%;
+              padding: 16px 11px 8px;
+              position: absolute;
+              right: -13.5px;
+              top: 16px;
+              color: #666;
+              z-index: 10;
+
+              .container {
+                width: 100%;
+                height: 100%;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                line-height: 19px;
+              }
+            }
+          }
+        }
+        .pending {
+          color: var(--ThemeColor-Main, #1a81ff);
+          font-family: 'PingFang SC';
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 16px; /* 133.333% */
+        }
+      }
+    }
+  }
+}
+.noDataWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  .noDataImg {
+    width: 171px;
+  }
+  p {
+    color: #7c8591;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-top: 0;
+    &:nth-child(2) {
+      margin-top: 16px;
+    }
+  }
+}

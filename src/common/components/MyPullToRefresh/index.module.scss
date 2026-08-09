@@ -1,0 +1,70 @@
+// 下拉状态
+.statusWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-700, #8f9eb2);
+  text-align: center;
+  font-family: 'PingFang SC';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  transform: scale(0.16);
+  // transform-origin: center -20px;
+  // position: fixed;
+  // z-index: 8;
+  // left: 0;
+  // right: 0;
+  &.success {
+    // color: var(--green-300);
+    font-family: 'PingFang SC';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 133.333% */
+  }
+  .downImage {
+    width: 16px;
+    height: 16px;
+
+    background-size: 100% 100%;
+    margin-right: 4px;
+  }
+  .upImage {
+    width: 16px;
+    height: 16px;
+
+    margin-right: 4px;
+  }
+  .loadingImg {
+    width: 16px;
+    height: 16px;
+
+    background-size: 100% 100%;
+    margin-right: 4px;
+    animation: spin 1s linear infinite;
+  }
+  .successImg {
+    width: 16px;
+    height: 16px;
+
+    background-size: 100% 100%;
+    margin-right: 4px;
+  }
+  .errorImg {
+    width: 16px;
+    height: 16px;
+
+    background-size: 100% 100%;
+    margin-right: 4px;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

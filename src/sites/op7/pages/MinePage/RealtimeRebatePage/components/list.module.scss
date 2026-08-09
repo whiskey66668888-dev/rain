@@ -1,0 +1,218 @@
+.wrap {
+  align-self: stretch;
+  padding: 12px;
+  background: var(--Background-300);
+  overflow: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 0;
+}
+
+.wrapMh {
+  justify-content: center;
+  min-height: 240px;
+}
+
+.radius {
+  border-radius: 16px;
+}
+.mx {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  height: 100%;
+}
+
+.grow {
+  height: 100%;
+}
+
+.header {
+  align-self: stretch;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.headerRow {
+  align-self: stretch;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  color: var(--Text-Main-10);
+  font-family: 'PingFang SC';
+  font-weight: 500;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.more {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+  .isClickable {
+    cursor: pointer;
+  }
+}
+
+.moreText {
+  color: var(--ThemeColor-Main);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.moreIcon {
+  width: 14px;
+  height: 14px;
+  position: relative;
+  overflow: hidden;
+  color: var(--ThemeColor-Main);
+}
+
+.row {
+  align-self: stretch;
+  height: 48px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.leftIconWrap {
+  width: 38px;
+  height: 38px;
+  padding: 3px 8px;
+  background: var(--Line-100);
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.leftIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--Text-800);
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.leftIconLayer0 {
+  width: 24px;
+  height: 24px;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.leftIconLayer1 {
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  position: absolute;
+  background: var(--Text-Main-10);
+}
+
+.leftIconLayer2 {
+  width: 9.9px;
+  height: 9.9px;
+  left: 16.95px;
+  top: 16.95px;
+  position: absolute;
+  transform: rotate(180deg);
+  transform-origin: top left;
+  background: var(--Text-Main-10);
+}
+
+.rowMain {
+  flex: 1 1 0;
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftText {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.nameRow {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.name {
+  color: var(--Text-Main-10);
+  font-family: 'PingFang SC';
+  font-weight: 500;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.time {
+  color: var(--Text-800);
+  font-family: DINPro, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.rightText {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.amount {
+  text-align: center;
+  color: var(--Text-Main-10);
+  font-family: DINPro, sans-serif;
+  font-weight: 500;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.status {
+  text-align: right;
+  color: var(--Text-800);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+.noReceive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  color: var(--ThemeColor-Main);
+  cursor: pointer;
+}

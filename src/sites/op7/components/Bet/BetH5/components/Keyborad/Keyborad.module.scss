@@ -1,0 +1,73 @@
+.keyboardContainer {
+  flex-shrink: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.open {
+    max-height: 270px; // 根据实际键盘高度调整
+  }
+}
+
+.keyboard {
+  display: flex;
+  gap: 4px;
+  user-select: none;
+
+  .leftConfig {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 8px;
+    background: var(--Background-700);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 44px);
+    row-gap: 8px;
+    column-gap: 4px;
+  }
+
+  .rightConfig {
+    width: 95px;
+    flex-shrink: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 8px;
+    background: var(--Background-700);
+
+    .key {
+      flex: 1;
+    }
+  }
+
+  .key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Text-Main-10);
+    font-size: tf(20);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    transition: all 0.1s;
+    border-radius: 6px;
+    background: var(
+      --gradient-bg-keyboard,
+      linear-gradient(180deg, var(--Background-gradient-40,) 0%, var(--Button-200,) 100%)
+    );
+
+    &:active {
+      background: var(--Background-700);
+      transform: translateY(1px);
+    }
+  }
+
+  .parlayRight {
+    .key {
+      &:nth-child(2) {
+        flex: 2;
+      }
+    }
+  }
+}

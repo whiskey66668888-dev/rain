@@ -1,0 +1,127 @@
+.header {
+  position: relative;
+  flex-shrink: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Background-300);
+
+  &.mobile {
+    padding: 0 12px;
+  }
+
+  &.desktop {
+    padding: 0 16px;
+    height: 52px;
+  }
+}
+
+.backBtn {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  .header.desktop & {
+    left: 16px;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+}
+
+.titleWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--security-modal-header-title-gap, 0);
+}
+
+.title {
+  margin: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 500;
+  font-size: var(--security-modal-header-title-font-size, 16px);
+  line-height: var(--security-modal-header-title-line-height, 22px);
+  color: var(--Text-Main-10);
+  text-align: center;
+
+  .header.desktop & {
+    font-size: var(--security-modal-header-title-font-size-desktop, 18px);
+    line-height: var(--security-modal-header-title-line-height-desktop, 24px);
+  }
+}
+
+.subtitle {
+  margin: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: var(--security-modal-header-subtitle-font-size, 12px);
+  line-height: var(--security-modal-header-subtitle-line-height, 14px);
+  color: var(--Text-700);
+  text-align: center;
+}
+
+.headerRight {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  .header.desktop & {
+    right: 24px;
+  }
+}
+
+.headerCloseBtn {
+  position: static !important;
+  top: auto !important;
+  right: 24px !important;
+  transform: none !important;
+  width: 24px;
+  height: 24px;
+}
+
+.customerBtn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+}

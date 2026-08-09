@@ -1,0 +1,178 @@
+.periodTabs {
+  display: flex;
+  gap: 1px;
+  padding: 0 10px;
+}
+
+.periodButton,
+.filterButton {
+  height: 28px;
+  border: none;
+  border-radius: 30px;
+  background: var(--Background-300);
+  color: var(--Text-800);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.periodButton {
+  flex: 1;
+  border-radius: 0;
+  background: var(--Line-100);
+
+  &:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+
+  &:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+}
+
+.periodActive,
+.filterActive {
+  background: var(--ThemeColor-Main) !important;
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.filterTabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 10px 0;
+}
+
+.filterButton {
+  min-width: min(82px, 25%);
+  padding: 0 12px;
+  background: var(--Line-100);
+}
+
+.timeline {
+  padding: 10px 10px 14px;
+}
+
+.liveEvent {
+  display: grid;
+  grid-template-columns: 26px 34px 5px minmax(0, 1fr);
+  gap: 4px 6px;
+  align-items: stretch;
+}
+
+.playerAvatar {
+  display: grid;
+  width: 26px;
+  place-items: center;
+
+  img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--Line-100);
+  }
+}
+
+.eventTime {
+  display: flex;
+  align-items: center;
+  color: var(--Text-700);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timelineDot {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2px;
+    width: 1px;
+    background: var(--Line-100);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: -2px;
+    border-radius: 50%;
+    background: var(--ThemeColor-Main);
+  }
+}
+
+.eventBody {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 34px;
+  margin: 4px 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.homeScoring {
+  background: var(--Warning-90-New);
+}
+
+.awayScoring {
+  background: var(--ThemeColor-90);
+}
+
+.eventTeamLogo {
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+}
+
+.eventContent {
+  flex: 1;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+}
+
+.eventScore {
+  color: var(--Text-700);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'SF Pro Text';
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.eventPoint {
+  color: var(--green-new);
+  font-size: 14px;
+  font-weight: 800;
+  font-family: Avenir;
+  text-align: right;
+  width: 22px;
+}
+
+.emptyState {
+  display: grid;
+  min-height: 140px;
+  place-items: center;
+  color: var(--Text-700);
+  font-size: 14px;
+}
+
+.loadingSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 140px;
+  padding: 12px 10px 14px;
+}

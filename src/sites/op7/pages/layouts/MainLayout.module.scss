@@ -1,0 +1,70 @@
+.h5MainSafePaddingTop {
+  padding-top: calc(40px + env(safe-area-inset-top, 0));
+}
+
+.h5NotchBar {
+  display: none;
+  @include rwd-max('lg') {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-top, 0);
+    background: var(--h5-safe-area-top-color, var(--Background-700, #ecf2ff));
+    z-index: calc(var(--z-header) - 1);
+    pointer-events: none;
+  }
+}
+
+.header {
+  --header-bg-opacity: 0;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: transparent;
+
+  @include rwd-max('lg') {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: env(safe-area-inset-top, 0px);
+  }
+}
+
+.sportMainLayout {
+  /* 顶图渐变仅 H5；PC 用纯色底，避免 theme-night 选择器盖掉 lg 的 background-image: none */
+  @include rwd-max('lg') {
+    background-image:
+      url('/images/light/bg_top.webp'),
+      linear-gradient(
+        180deg,
+        var(--Background-gradient-110) 0,
+        var(--Background-gradient-100) 196px,
+        var(--Background-700) 196px,
+        var(--Background-700) 100%
+      );
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size:
+      100% auto,
+      100% 100%;
+    background-attachment: fixed;
+
+    @include theme-night() {
+      background-image:
+        url('/images/dark/bg_top.webp'),
+        linear-gradient(
+          180deg,
+          var(--Background-gradient-110) 0,
+          var(--Background-gradient-100) 196px,
+          var(--Background-700) 196px,
+          var(--Background-700) 100%
+        );
+    }
+  }
+
+  @include rwd-min('lg') {
+    background-image: none;
+  }
+}

@@ -1,0 +1,146 @@
+.matchItem {
+  display: flex;
+  width: 100%;
+  padding: 0 12px;
+  background: var(--Background-300);
+  min-height: 97px;
+  border-bottom: 1px solid var(--Line-100);
+  justify-content: space-between;
+
+  &.noBorder {
+    border-bottom: none;
+  }
+
+  .leftInfo {
+    flex: 0 0 180px;
+    max-width: 180px;
+
+    &.leftInfoCompact {
+      flex: 0 0 150px;
+      max-width: 150px;
+    }
+    .leftTitle {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      padding: 8px 0 8px 0;
+      position: relative;
+      .titleLeftBox {
+        min-height: 20px;
+        // background: linear-gradient(
+        //   90deg,
+        //   var(--Background-500, rgba(31, 38, 52, 0)) 0%,
+        //   var(--Background-700, #151b26) 100%
+        // );
+        // clip-path: polygon(0 0, 100% 0, 100% calc(100% - 31px), calc(100% - 14px) 100%, 0 100%);
+        background: var(--Button-200);
+        display: flex;
+        padding: 0 10px 0 12px;
+        align-items: center;
+        gap: 5px;
+        color: var(--Text-800);
+        flex-shrink: 0;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        margin-left: -12px;
+      }
+      .scoreList {
+        position: absolute;
+        bottom: 0;
+        left: calc(100% - 8px);
+        margin: 8px 0;
+        display: flex;
+        gap: 10px;
+        color: var(--Text-800);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left: -4px;
+        font-family: 'DINPro';
+        & > div {
+          gap: 2px;
+          display: flex;
+          align-items: center;
+        }
+        &.specialScoreList {
+          position: relative;
+          margin: 0;
+          left: 0;
+          overflow: auto;
+          font-family: 'DINPro';
+          max-width: 100px;
+          .scoreItemHighlight {
+            color: var(--ThemeColor-Main);
+          }
+        }
+      }
+    }
+  }
+  .rightInfo {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    margin-left: 20px;
+  }
+}
+
+.teams {
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  .teamInfo {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--Text-Main-10);
+    gap: 10px;
+    @include rwd-max('lg') {
+      pointer-events: none;
+    }
+    .team {
+      display: flex;
+      gap: 5px;
+      min-height: 20px;
+      align-items: center;
+      & > div {
+        flex-shrink: 0;
+      }
+    }
+    .score {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-family: 'DINPro';
+      .redCard,
+      .yellowCard {
+        min-height: 14px;
+        padding: 0 2px;
+        border-radius: 2px;
+        background: var(--Red-300);
+        color: var(--White-100);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 9px;
+        position: relative;
+        top: -1px;
+        line-height: 1;
+        padding-top: 2px;
+      }
+      .yellowCard {
+        background: yellow;
+        color: #000;
+      }
+      .teamScore {
+        color: var(--Text-Main-10);
+        min-width: 15px;
+        text-align: center;
+        font-family: 'DINPro';
+      }
+    }
+  }
+}

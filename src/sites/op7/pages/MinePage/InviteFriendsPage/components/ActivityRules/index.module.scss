@@ -1,0 +1,50 @@
+.activityRules {
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+}
+
+.bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ThemeColor-Main);
+  flex-shrink: 0;
+}
+
+.itemContent {
+  padding-left: 10px;
+}
+
+.rulesList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruleItem {
+  margin-bottom: 8px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

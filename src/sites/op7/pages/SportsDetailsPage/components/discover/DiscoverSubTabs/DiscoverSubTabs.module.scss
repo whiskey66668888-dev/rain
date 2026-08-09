@@ -1,0 +1,105 @@
+/** 一级 BettingTabs 吸顶高度，用于二级 tab 叠在其下方 */
+$betting-tabs-height: 44px;
+
+.subTabsContainer {
+  position: sticky;
+  z-index: 8;
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--Background-300);
+  border-top: 0.5px solid var(--Line-100);
+  border-bottom: 0.5px solid var(--Line-100);
+  top: $betting-tabs-height;
+
+  &.video {
+    top: $betting-tabs-height + 44px;
+  }
+
+  &.dataBoardCollapsed {
+    background: var(--Background-300);
+  }
+
+  @include rwd-min('lg') {
+    top: calc(var(--pc-sticky-tabs-top, 120px) + #{$betting-tabs-height});
+    flex-shrink: 0;
+
+    &.video {
+      top: calc(108px + 208px + #{$betting-tabs-height});
+    }
+  }
+
+  &.embeddedInSidebar {
+    @include rwd-min('lg') {
+      position: relative;
+      top: auto !important;
+      z-index: 1;
+    }
+  }
+}
+
+.subTabsWrapper {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  overflow: hidden;
+
+  &.scrollable {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.subTab {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--Text-800);
+  font-weight: 400;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &.scrollableTab {
+    flex: 0 0 calc(100% / 7);
+    min-width: calc(100% / 7);
+  }
+}
+
+.labelRow {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  width: fit-content;
+  max-width: 100%;
+  position: relative;
+}
+
+.label {
+  line-height: 1.43;
+  white-space: nowrap;
+}
+
+.active {
+  color: var(--ThemeColor-Main);
+  font-weight: 600;
+
+  .labelRow::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ThemeColor-Main);
+  }
+}

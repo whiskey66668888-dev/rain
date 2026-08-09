@@ -1,0 +1,590 @@
+.page {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--Background-700);
+}
+
+.scrollBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.scrollBody::-webkit-scrollbar {
+  display: none;
+}
+
+.panel {
+  padding: 0 10px 12px;
+  background: var(--Background-300);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.tabGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0px;
+}
+
+.tabItem {
+  flex: 0 0 calc((100% - 16px) / 3);
+  height: 28px;
+  border: none;
+  border-radius: 30px;
+  background: var(--Button-200);
+  color: var(--Text-800);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tabItemActive {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.sectionTitle {
+  margin: 6px 0 10px;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.43;
+}
+
+.loadingWrap {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 10px;
+  min-width: 0;
+}
+
+.filterRowLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.filterRowMatchLeft {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 8px;
+  margin-right: 8px;
+}
+
+.filterRowMatchLeft > .teamHeader {
+  flex: 0 1 auto;
+  // margin-right: 8px;
+}
+
+.filterRowSpacer {
+  flex: 1;
+  min-width: 8px;
+}
+
+.filterChip {
+  flex-shrink: 0;
+  height: 24px;
+  padding: 0 10px;
+  border: 0.5px solid var(--Line-200);
+  border-radius: 42px;
+  background: transparent;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.filterChipActive {
+  border-color: var(--ThemeColor-Main);
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+}
+
+.filterCountControl {
+  flex-shrink: 0;
+}
+
+.teamHeaderRow .teamName {
+  flex: 1;
+  min-width: 0;
+}
+
+.teamHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.teamHeaderRow .teamHeader {
+  flex: 0 1 45%;
+  max-width: 45%;
+}
+
+.teamHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.teamHeaderRight {
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-left: auto;
+  text-align: right;
+}
+
+.teamLogo {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.teamLogoSmall {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.teamNameCol {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.teamName {
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teamRecord {
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.overviewRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.overviewRowEven {
+  background: var(--Line-100);
+}
+
+.overviewVal {
+  flex: 1;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.overviewValRight {
+  text-align: right;
+}
+
+.overviewLabel {
+  width: 80px;
+  color: var(--Text-800);
+  font-size: 12px;
+  text-align: center;
+}
+
+.circleRow {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 8px;
+}
+
+.circleItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.circleLabel {
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.circleContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 80px;
+  height: 40px;
+}
+
+.ringValue {
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.statValue {
+  width: 40px;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+}
+
+.statValueLeft {
+  text-align: right;
+}
+
+.statBarWrap {
+  flex: 1;
+  height: 3px;
+  background: var(--Line-100);
+}
+
+.statBarLeft {
+  height: 100%;
+  margin-left: auto;
+  background: rgba(51, 143, 255, 0.25);
+}
+
+.statBarRight {
+  height: 100%;
+  background: rgba(51, 143, 255, 0.8);
+}
+
+.statLabel {
+  width: 60px;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  text-align: center;
+}
+
+.statsSummary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.recentCountBox {
+  display: flex;
+  flex-direction: column;
+  width: 39px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.recentCountTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  background: var(--Line-100);
+  color: var(--Text-800);
+  font-size: 10px;
+}
+
+.recentCountBottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  border: 1px solid var(--Line-100);
+  background: var(--Background-300);
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.statColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.statColumnLabel {
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.statColumnRate {
+  color: var(--Red-900);
+  font-size: 14px;
+}
+
+.statColumnDesc {
+  color: var(--Text-700);
+  font-size: 11px;
+}
+
+.tableHeader {
+  display: flex;
+  align-items: center;
+  padding: 7px 8px;
+  background: var(--Line-100);
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.tableRow {
+  display: flex;
+  align-items: center;
+  padding: 7px 8px;
+}
+
+.colDate {
+  width: 70px;
+  flex-shrink: 0;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.colTeam {
+  flex: 2;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--Text-Main-10);
+}
+
+.colTeamRight {
+  text-align: right;
+}
+
+.colScore {
+  width: 60px;
+  flex-shrink: 0;
+  text-align: center;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.colHalfScore {
+  color: var(--Text-700);
+  font-size: 12px;
+}
+
+.colOdds {
+  width: 40px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 12px;
+}
+
+.winColor {
+  color: var(--Red-900);
+}
+
+.loseColor {
+  color: var(--green-new);
+}
+
+.neutralColor {
+  color: var(--Text-Main-10);
+}
+
+.distTableHeader,
+.distTableRow {
+  display: flex;
+  align-items: stretch;
+}
+
+.distCell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  text-align: center;
+}
+
+.distCellHeader {
+  color: var(--Text-800);
+  background: var(--Line-100);
+}
+
+.distCellRed {
+  color: var(--Red-900);
+}
+
+.distCenterCell {
+  width: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  border-left: 0.5px solid var(--Line-100);
+  border-right: 0.5px solid var(--Line-100);
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  text-align: center;
+}
+
+.distCenterCellHeader {
+  color: var(--Text-800);
+  background: var(--Line-100);
+}
+
+.distRowBorder {
+  border: 0.5px solid var(--Line-100);
+}
+
+.distributionSection {
+  width: 100%;
+}
+
+.scheduleSection + .scheduleSection {
+  margin-top: 24px;
+}
+
+.scheduleTeamBar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.scheduleTableHeader {
+  display: flex;
+  padding: 6.5px 0;
+  background: var(--Line-100);
+  color: var(--Text-800);
+  font-size: 12px;
+  text-align: center;
+}
+
+.scheduleColDate {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  text-align: center;
+}
+
+.scheduleColMatch {
+  flex: 5;
+  min-width: 0;
+}
+
+.scheduleColInterval {
+  flex: 1;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.scheduleRow {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  border: 0.5px solid var(--Line-100);
+  background: var(--Background-300);
+  color: var(--Text-Main-10);
+  font-size: 12px;
+}
+
+.scheduleRowCurrent {
+  color: var(--ThemeColor-Main);
+}
+
+.scheduleLeagueName {
+  font-size: 10px;
+  color: inherit;
+}
+
+.scheduleMatchRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  color: inherit;
+}
+
+.scheduleTeamName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.scheduleTeamNameLeft {
+  text-align: left;
+}
+
+.scheduleTeamNameRight {
+  text-align: right;
+}
+
+.scheduleScore {
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.moreBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--Text-800);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.recentRecordSection + .recentRecordSection {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--Line-100);
+}

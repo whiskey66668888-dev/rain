@@ -1,0 +1,218 @@
+.template2 {
+  .coinLink {
+    width: 100%;
+    height: 56px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    background: var(--Background-300, #fff);
+    position: relative;
+
+    .linkImage {
+      margin: 12px;
+      width: 20px;
+      height: 20px;
+      background-image: url('/images/common/helpCenter/bitcoin.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    .linkText {
+      color: var(--Text-Main-10, #000);
+      font-family: 'PingFang SC';
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+    }
+
+    .forwardIcon {
+      position: absolute;
+      right: 12px;
+      width: 14px;
+      height: 14px;
+      background-image: url('/images/light/help/forward.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      @include theme-night() {
+        background-image: url('/images/dark/help/forward.png');
+      }
+    }
+  }
+  .detailContent {
+    padding: 16px 11px 20px 13px;
+
+    .contentHeader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 25px;
+      width: 100%;
+
+      .img {
+        width: 16px;
+        height: 16px;
+        margin: 7px;
+      }
+
+      .subtitle {
+        font-family: PingFang SC;
+        font-weight: 600;
+        font-style: Semibold;
+        font-size: 16px;
+        line-height: 100%;
+        letter-spacing: 0px;
+        text-align: center;
+        color: rgba(51, 51, 51, 1);
+      }
+    }
+
+    .contentItem {
+      margin: 16px 0;
+      width: 100%;
+      padding: 16px 17px 16px 15px;
+      background: white;
+      border-radius: 10px;
+
+      .itemTitle {
+        min-height: 22px;
+        display: flex;
+        align-items: center;
+
+        .number {
+          width: 18px;
+          height: 18px;
+          color: white;
+          background-color: #1a81ff;
+          border-radius: 50%;
+          margin-right: 9px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 14px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          justify-content: center;
+        }
+
+        .text {
+          font-family: PingFang SC;
+          font-weight: 600;
+          font-style: Semibold;
+          font-size: 16px;
+          line-height: 100%;
+          letter-spacing: 0px;
+          color: #333333;
+        }
+      }
+
+      .itemContent {
+        width: 100%;
+        background: #f3f9ff;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0 8px;
+
+        .text {
+          font-family: PingFang HK;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          letter-spacing: 0.35px;
+          vertical-align: middle;
+          color: #303030;
+        }
+      }
+
+      .coinItemContent {
+        padding-top: 16px;
+
+        .text {
+          font-family: PingFang SC;
+          font-weight: 400;
+          font-style: Regular;
+          font-size: 12px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          text-align: justify;
+          color: var(--Text-Main-10);
+          *:not(a):not(a *) {
+            color: inherit !important;
+          }
+          a {
+            color: #1a81ff;
+            * {
+              color: inherit !important;
+            }
+          }
+        }
+      }
+
+      .videoPlayer {
+        width: 100%;
+        height: 180px;
+        border-radius: 10px;
+        margin-top: 16px;
+      }
+
+      .downloadBtnWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 40px;
+        margin-top: 16px;
+        border-radius: 5px;
+        background: #1a81ff;
+
+        .text {
+          padding: 0 10px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 14px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          text-align: center;
+          color: white;
+        }
+      }
+
+      .imageContent {
+        margin-top: 16px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        .imageWrapper {
+          width: 155px;
+        }
+      }
+    }
+    .coinItemContent {
+      padding-top: 16px;
+
+      .text {
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 12px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        text-align: justify;
+        color: var(--Text-Main-10);
+        *:not(a):not(a *) {
+          color: inherit !important;
+        }
+        a {
+          color: #1a81ff;
+          * {
+            color: inherit !important;
+          }
+        }
+      }
+    }
+  }
+}

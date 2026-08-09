@@ -1,0 +1,72 @@
+.historyWapper {
+  padding-top: 4px;
+
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--Text-Main-10);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+
+    .clear {
+      color: var(--Text-700);
+      font-size: 13px;
+      line-height: 18px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+  }
+
+  .list {
+    padding: 0;
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 48px;
+      margin-bottom: 0;
+      color: var(--Text-Main-10);
+      font-size: 13px;
+      line-height: 18px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      .clearButton {
+        position: static !important;
+        width: 16px !important;
+        height: 16px !important;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: var(--Text-700);
+        cursor: pointer;
+
+        &:hover {
+          background: transparent;
+          opacity: 0.8;
+        }
+
+        svg {
+          width: 12px;
+          height: 12px;
+        }
+      }
+    }
+  }
+}

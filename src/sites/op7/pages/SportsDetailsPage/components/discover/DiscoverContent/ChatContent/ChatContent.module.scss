@@ -1,0 +1,70 @@
+.chatRoot {
+  position: relative;
+  width: 100%;
+}
+
+.chatAnchor {
+  width: 100%;
+  height: 0;
+}
+
+.chatSpacer {
+  width: 100%;
+  pointer-events: none;
+}
+
+.chatWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--Background-700);
+  box-sizing: border-box;
+  position: relative;
+
+  .chatFilter {
+    flex-shrink: 0;
+    margin: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+  }
+}
+
+/** 消息区 + VIP 进场横幅叠层（对齐 Flutter Stack + Positioned top） */
+.mainStack {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.vipOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.ruleButton {
+  border: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.onlineUsers {
+  margin-left: auto;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Text-500);
+}

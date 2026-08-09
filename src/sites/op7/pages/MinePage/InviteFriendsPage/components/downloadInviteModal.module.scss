@@ -1,0 +1,194 @@
+@use '../invite-friends-numeric.scss' as ifn;
+
+.downloadPage {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  color: var(--Text-800);
+}
+
+.imageWrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 0 0 12px;
+}
+
+.imageWrapperH5 {
+  padding: 0 28px 36px;
+}
+
+.inviteImage {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.imageContent {
+  position: relative;
+  background-color: var(--Background-300);
+  border-radius: 12px;
+}
+
+.bigbg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.inviteInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px 20px;
+}
+
+.round {
+  width: 48px;
+  height: 48px;
+}
+
+.codeInfo {
+  color: var(--Text-Main-10);
+}
+
+.inviteCode {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.code {
+  @include ifn.inviteFriendsDinPro;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 8px;
+}
+
+.qrCode {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--White-100);
+  border-radius: 8px;
+  margin-left: auto;
+}
+
+.noQrCode {
+  font-size: 10px;
+  color: var(--Text-800);
+}
+
+.footer {
+  padding: 0 0 20px;
+  background: var(--Background-300);
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+.footerPc {
+  border-radius: 16px;
+}
+
+.inviteInfoItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0 12px;
+  min-height: 48px;
+  border-radius: 12px;
+  background: var(--Background-500);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.label {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--Text-Main-10);
+  font-weight: 400;
+}
+
+.value {
+  @include ifn.inviteFriendsDinPro;
+  flex: 1;
+  font-size: 14px;
+  color: var(--Text-Main-10);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+.copyBtn {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.inviteCon {
+  padding: 12px 16px 0;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px;
+  margin-top: 16px;
+}
+
+.cancelBtn {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--Line-100);
+  background: var(--Background-100);
+  color: var(--Text-800);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.saveButton {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  border: none;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}

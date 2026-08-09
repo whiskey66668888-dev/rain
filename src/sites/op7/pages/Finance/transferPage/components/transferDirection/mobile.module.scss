@@ -1,0 +1,188 @@
+.transferDirectionMobile {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 12px;
+  background: var(--Background-300);
+  border-radius: 12px;
+
+  @include rwd-min('lg') {
+    display: none;
+  }
+
+  &.inModal {
+    @include rwd-min('lg') {
+      display: flex;
+    }
+  }
+
+  .contentRow {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-width: 0;
+    height: 96px;
+    gap: 8px;
+    align-items: stretch;
+    margin-right: calc(30px + 12px);
+  }
+
+  .leftRail {
+    position: relative;
+    display: flex;
+    width: 24px;
+    height: 96px;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .leftRailTop,
+  .leftRailBottom {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+  }
+
+  .dots {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transform: translate(-50%, -50%);
+  }
+
+  .dot {
+    flex-shrink: 0;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--Icon-Secondary-gray, #c3d1e5);
+  }
+
+  .rows {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    height: 96px;
+  }
+
+  .row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .row + .row {
+    &::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 0.5px;
+      content: '';
+      background: var(--Line-100);
+    }
+  }
+
+  .label {
+    color: var(--Text-Main-10);
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .tagOut {
+    display: flex;
+    flex-shrink: 0;
+    padding: 2px 6px;
+    margin-right: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ThemeColor-Main);
+    border-radius: 4px;
+    background: var(--ThemeColor-15);
+  }
+
+  .tagIn {
+    display: flex;
+    flex-shrink: 0;
+    padding: 2px 6px;
+    margin-right: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--Green-300);
+    border-radius: 4px;
+    background: rgba(19, 191, 48, 0.1);
+  }
+
+  .walletName {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    color: var(--Text-Main-10-10);
+    font-family: 'PingFang SC';
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .walletNameText {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .arrowIconBox {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    .icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .moreIcon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    width: 3px;
+    transform: translateY(-50%);
+  }
+
+  .rightArrow {
+    flex-shrink: 0;
+    width: 14px;
+    margin-left: auto;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+}
+
+[data-theme='dark'] {
+  .transferDirectionMobile .dot {
+    background: var(--White-100);
+  }
+}

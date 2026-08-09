@@ -1,0 +1,194 @@
+.navBarMenuWrapper {
+  margin-bottom: 4px;
+  background: var(--Background-300);
+  border-radius: 4px;
+  overflow: hidden;
+  .navBarMenuTitle {
+    display: flex;
+    height: 40px;
+    background: var(--Background-300);
+    padding: 0 12px;
+    align-items: center;
+    justify-content: space-between;
+    & > p {
+      color: var(--Text-Main-10);
+      font-weight: 500;
+    }
+    .buttonWrapper {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      .button {
+        display: flex;
+        align-items: center;
+        height: 22px;
+        gap: 3px;
+        color: var(--Text-800);
+        cursor: pointer;
+        flex-shrink: 0;
+        position: relative;
+        & > span {
+          &.active {
+            color: var(--ThemeColor-Main);
+          }
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: -10px;
+          height: 12px;
+          width: 1px;
+          background: var(--Line-200);
+        }
+      }
+      .iconExpandAll {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        &.collapsed {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+  .calendar {
+    padding: 10px;
+    background: var(--Background-300);
+    border-top: 1px solid var(--Line-100);
+
+    .calendarWrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      .calendarItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        height: 30px;
+        width: 101px;
+        color: var(--Text-Main-10);
+        gap: 2px;
+        line-height: 1;
+        flex-shrink: 0;
+        cursor: pointer;
+        border: 1px solid var(--Line-100);
+        border-radius: 4px;
+
+        &.active {
+          color: var(--White-100);
+          background: var(--ThemeColor-Main);
+          border-radius: 4px;
+          border: none;
+        }
+      }
+    }
+  }
+  .navBarMenuContainer {
+    position: relative;
+    padding: 0 20px;
+    .navBarMenu {
+      display: flex;
+      overflow-x: auto;
+      flex-shrink: 0;
+      height: 78px;
+      padding: 10px 0;
+      align-items: center;
+
+      .menuItem {
+        display: flex;
+        height: 58px;
+        justify-content: center;
+        align-items: start;
+        border-radius: 8px;
+        color: var(--Text-800);
+        font-weight: 400;
+        flex-direction: column;
+        flex: 0 0 auto;
+        padding: 10px 14px;
+        // min-width: 90px;
+        gap: 5px;
+        .menuItemIcon {
+          width: 20px;
+          height: 20px;
+          flex-shrink: 0;
+          transition: scale 0.2s ease;
+          &:hover {
+            scale: 1.2;
+          }
+        }
+        .menuItemContent {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: start;
+          gap: 4px;
+          .menuItemCount {
+            font-weight: 500;
+            background: var(--Button-200);
+            color: var(--Text-800);
+            border-radius: 4px;
+            padding: 1px 4px;
+          }
+        }
+        &.menuItemActive {
+          background: linear-gradient(180deg, var(--Background-500) 0%, var(--Background-300) 100%);
+          color: var(--ThemeColor-Main);
+          .menuItemContent > .menuItemCount {
+            color: var(--White-100);
+            background: var(--ThemeColor-Main);
+          }
+        }
+      }
+
+      .navScrollBtn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        width: 14px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--Background-500);
+        border: none;
+        cursor: pointer;
+        flex-shrink: 0;
+        padding: 0;
+
+        .navScrollBtnArrow {
+          width: 0;
+          height: 0;
+          border-top: 4px solid transparent;
+          border-bottom: 4px solid transparent;
+          border-right: 5px solid var(--Text-800);
+        }
+
+        &.left {
+          left: 0;
+          border-radius: 0 4px 4px 0;
+        }
+
+        &.right {
+          right: 0;
+          border-radius: 4px 0 0 4px;
+
+          .navScrollBtnArrow {
+            transform: rotate(180deg);
+          }
+        }
+
+        &.disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

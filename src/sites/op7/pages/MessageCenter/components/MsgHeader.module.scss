@@ -1,0 +1,17 @@
+.msgActionPopover {
+  :global(.adm-popover-inner) {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px var(--Shadow-400);
+  }
+
+  :global(.adm-popover-inner-content) {
+    padding: 0 !important;
+  }
+
+  /* placement=bottom-end：箭头在内容上方，上移与气泡贴合 */
+  :global(.adm-popover-arrow) {
+    top: calc(var(--arrow-size) * -1 + 2px) !important;
+    color: var(--Background-300);
+  }
+}

@@ -1,0 +1,517 @@
+@use '@/common/styles/rwd' as *;
+
+.registerModal {
+  width: 100%;
+  background: var(--Background-300);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  // H5 底部抽屉样式
+  &.mobile {
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    height: auto;
+    max-height: 100dvh;
+    overflow: hidden;
+
+    // 自定义滚动条
+  }
+
+  // Pad/Web 居中弹窗样式
+  &.desktop {
+    width: 700px;
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 16px;
+    flex-direction: row;
+    // box-shadow: 0 8px 32px var(--Shadow-400);
+    overflow: hidden;
+    background: transparent;
+  }
+}
+
+// Banner区域
+.banner {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  // H5样式
+  .mobile & {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+  }
+
+  // Pad/Web样式
+  .desktop & {
+    flex: 1 0 0;
+    min-width: 0;
+    border-radius: 16px 0 0 16px;
+    overflow: hidden;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Line-100);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--Background-500);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mobile & {
+    background: transparent;
+    border-radius: 0;
+
+    &:hover {
+      background: transparent;
+      opacity: 0.8;
+    }
+  }
+}
+
+// 表单区域
+.formContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  // H5样式
+  .mobile & {
+    flex: 0 0 500px;
+    height: 500px;
+    min-height: 500px;
+    max-height: 500px;
+    box-sizing: border-box;
+    padding: 24px 24px 20px;
+    gap: 24px;
+    overflow: hidden;
+  }
+
+  // Pad/Web样式
+  .desktop & {
+    width: 350px;
+    flex-shrink: 0;
+    padding: 20px 20px 0 20px;
+    gap: 25px;
+    overflow-y: auto;
+    background: var(--Background-300);
+    border-radius: 0 16px 16px 0;
+
+    // 自定义滚动条
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--Line-100);
+      border-radius: 2px;
+    }
+  }
+}
+
+.title {
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  margin: 0;
+  margin-bottom: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 0;
+}
+
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  // height: 254px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--Line-100);
+    border-radius: 2px;
+  }
+}
+
+.formActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  background: var(--Background-500);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  // 设置光标颜色为蓝色
+  caret-color: var(--ThemeColor-Main);
+
+  &::placeholder {
+    color: var(--Text-700);
+  }
+
+  &:focus {
+    background: var(--Background-500);
+    // 移除边框和阴影，只保留光标颜色
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  // Figma 1901:334626 错误状态：0.5px 红色边框，无外发光
+  &.error {
+    background: var(--Background-500);
+    border: 0.5px solid var(--Red-300, #f01717);
+    box-shadow: none;
+    caret-color: var(--ThemeColor-Main);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.errorText {
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--Red-400);
+  padding-left: 16px;
+  margin-top: -4px;
+  min-height: 16px;
+}
+
+.clearButton {
+  position: absolute;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Line-100);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--White-100);
+  padding: 0;
+  z-index: 2;
+  flex-shrink: 0;
+  // 密码输入框的清除按钮位置（有眼睛图标时，需要留出空间）
+  margin-right: 32px;
+  transition: all 0.2s ease;
+
+  // 账号输入框的清除按钮位置（没有眼睛图标时，靠右对齐，跟眼睛位置一样）
+  &.clearButtonRight {
+    margin-right: 0;
+  }
+
+  &:hover {
+    background: var(--Line-100);
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--White-100);
+    display: block;
+  }
+}
+
+.eyeButton {
+  position: absolute;
+  right: 16px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--Text-700);
+  padding: 0;
+  z-index: 2;
+  flex-shrink: 0;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  img {
+    width: 15px;
+    height: auto;
+    display: block;
+  }
+}
+
+.inviteCodeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inviteCodeToggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  padding: 0;
+  width: fit-content;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    color: var(--Text-700);
+    transition: transform 0.3s ease;
+  }
+}
+
+.arrowUp {
+  transform: rotate(180deg);
+}
+
+.arrowDown {
+  transform: rotate(0deg);
+}
+
+.inviteCodeInputWrapper {
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+
+  &.show {
+    max-height: 100px;
+    opacity: 1;
+    transform: translateY(0);
+    margin-bottom: 12px;
+  }
+
+  &.hide {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.submitButton {
+  width: 100%;
+  height: 44px;
+  background: var(--ThemeColor-40);
+  border: none;
+  border-radius: 100px;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  color: var(--White-100);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 5px 85px;
+  margin-top: 16px; // 额外增加 16px，加上 form 的 gap 16px = 32px
+
+  &:hover:not(:disabled) {
+    background: var(--ThemeColor-60);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.submitButtonActive {
+  background: var(--ThemeColor-Main);
+
+  &:hover:not(:disabled) {
+    background: var(--ThemeColor-Main);
+    opacity: 0.9;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+// Footer
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  // margin-top: auto;
+  // padding-top: 24px;
+
+  // Pad/Web样式 - 固定在底部
+  .desktop & {
+    padding-bottom: 20px;
+  }
+}
+
+.footerLinks {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Text-800);
+  padding: 0;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--Text-Main-10);
+  }
+}
+
+.footerLinkIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.footerDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--Line-100);
+}
+
+.version {
+  font-family: 'SF Pro Text', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--Text-800);
+  margin: 0;
+  text-align: center;
+}
+
+// Home Indicator
+.homeIndicator {
+  height: 34px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  background: var(--Background-300);
+}
+
+.indicatorBar {
+  width: 134px;
+  height: 5px;
+  background: var(--Text-Main-10);
+  opacity: 0.1;
+  border-radius: 100px;
+}

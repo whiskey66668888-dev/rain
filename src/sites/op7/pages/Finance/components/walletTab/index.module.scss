@@ -1,0 +1,31 @@
+.tabContainer {
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  background: var(--Background-300);
+  padding: 2px;
+
+  &.hideInWeb {
+    @include rwd-min('lg') {
+      display: none;
+    }
+  }
+
+  .tabItem {
+    flex: 1;
+    border-radius: 36px;
+    height: 36px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--Text-Main-10);
+
+    &.active {
+      font-weight: 500;
+      color: var(--White-100);
+      background: var(--ThemeColor-Main);
+    }
+  }
+}

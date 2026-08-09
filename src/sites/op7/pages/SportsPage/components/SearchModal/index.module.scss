@@ -1,0 +1,104 @@
+@use '@/common/styles/rwd' as *;
+
+.searchModal {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: var(--Background-300);
+
+  &.desktop {
+    width: 450px;
+    max-width: calc(100vw - 32px);
+    height: min(714px, 90vh);
+    border-radius: 12px;
+  }
+
+  &.mobile {
+    width: min(375px, 100vw);
+    height: min(714px, calc(100vh - 98px));
+    border-radius: 10px 10px 0 0;
+  }
+
+  header {
+    display: grid;
+    grid-template-columns: minmax(48px, auto) 1fr minmax(48px, auto);
+    align-items: end;
+    gap: 16px;
+    padding: 12px 16px 0;
+    flex: none;
+  }
+
+  .headerAction {
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ThemeColor-Main);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    cursor: pointer;
+    justify-self: start;
+  }
+
+  .headerSearch {
+    justify-self: end;
+  }
+
+  .hiddenAction {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .tabList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    min-width: 0;
+  }
+
+  .tabItem {
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--Text-800);
+    font-size: 17px;
+    line-height: 26px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &.active {
+      color: var(--Text-Main-10);
+    }
+  }
+
+  /** 双 Tab 同时挂载，避免 KeywordFilter 卸载后 renderContent 状态丢失 */
+  .modalBody {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabPanel {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .searchSection {
+    padding: 12px 16px 0;
+  }
+
+  .filterSection {
+    padding: 12px 0 0;
+  }
+}

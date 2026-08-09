@@ -1,0 +1,78 @@
+.content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include rwd-min('lg') {
+    padding: 12px 24px 24px 24px;
+  }
+
+  .addBox {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .list_content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .list_title {
+        font-size: 12px;
+        color: var(--Text-Main-10);
+      }
+
+      .list_chose {
+        height: 48px;
+        border-radius: 12px;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--Background-300);
+
+        .list_label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: 'SF Pro Text';
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        .icon {
+          width: 14px;
+          height: 14px;
+          flex: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--Text-700);
+          border-radius: 14px;
+        }
+      }
+    }
+
+    .input {
+      background: var(--Background-300);
+      border-radius: 22px;
+    }
+
+    .textarea {
+      height: 108px;
+      background: var(--Background-300);
+      border-radius: 12px;
+    }
+  }
+
+  .placeholder {
+    color: var(--Text-700);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

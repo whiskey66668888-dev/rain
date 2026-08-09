@@ -1,0 +1,57 @@
+.dialog {
+  width: 272px;
+  max-width: calc(100vw - 48px);
+  overflow: inherit;
+}
+
+.caidai {
+  position: absolute;
+  left: -28px;
+  top: -61px;
+  width: 328px;
+  height: 145px;
+  max-width: 328px;
+  pointer-events: none;
+}
+
+.caidaiLottie {
+  width: 100%;
+  height: 100%;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+}
+
+.content {
+  position: relative;
+  color: var(--Text-800);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.cash {
+  margin-bottom: 4px;
+  color: var(--Green-300);
+  font-family: DINPro, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.footerButton {
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
+  border: none;
+  background: var(--ThemeColor-Main);
+  border-radius: 20px;
+  color: var(--White-100);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

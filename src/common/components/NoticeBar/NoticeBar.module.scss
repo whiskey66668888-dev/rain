@@ -1,0 +1,40 @@
+.noticeBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  span {
+    color: var(--Text-800);
+  }
+}
+
+.noticeIcon {
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+.noticeWrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.noticeContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  white-space: nowrap;
+  animation: scroll linear infinite;
+  will-change: transform;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

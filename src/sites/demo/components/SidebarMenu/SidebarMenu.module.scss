@@ -1,0 +1,110 @@
+.sidebarBox {
+  position: relative;
+  min-width: 60px;
+  // 窄屏（<768px）：隐藏
+  @include rwd-max('md') {
+    display: none;
+  }
+  &.expanded {
+    .sidebar {
+      width: 250px;
+    }
+
+    .shadow {
+      @include rwd-between('md', 'xl') {
+        background-color: black;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0.5;
+        position: absolute;
+        z-index: 10;
+      }
+    }
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: var(--color-bg-secondary, #f5f5f5);
+    border-right: 1px solid var(--color-border, #e0e0e0);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 60px;
+    transition: width 0.3s ease-in-out;
+    // 宽屏（>1200px）：相对定位，不脱离文档流
+    @include rwd-min('xl') {
+      position: relative;
+    }
+
+    // 中屏（768px-1200px）：固定定位，脱离文档流
+    @include rwd-between('md', 'xl') {
+      position: fixed;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggleButton {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+
+      &:hover {
+        background: var(--color-bg-hover, rgba(0, 0, 0, 0.05));
+      }
+    }
+
+    .menu {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+      overflow-y: auto;
+      .menuItem {
+        width: 100%;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        white-space: nowrap;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          background: var(--color-bg-hover, rgba(0, 0, 0, 0.05));
+        }
+      }
+
+      .icon {
+        font-size: 20px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        padding-left: 10px;
+      }
+
+      .text {
+        font-size: 14px;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-left: 10px;
+      }
+    }
+  }
+}

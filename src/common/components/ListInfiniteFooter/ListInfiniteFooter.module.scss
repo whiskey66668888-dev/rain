@@ -1,0 +1,65 @@
+.loading {
+  display: flex;
+  width: 100%;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  // background: var(--Background-300);
+  color: var(--Text-Main-10);
+  & > div {
+    animation: loadingSpin 1s linear infinite;
+  }
+}
+
+.dividerRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: 100%;
+  gap: 12px;
+  margin-top: 12px;
+
+  display: flex;
+  height: 32px;
+  padding: 10px 12px;
+  border-radius: 100px;
+  background: var(--Background-300, #1e1e21);
+}
+
+.dividerRowInteractive {
+  cursor: pointer;
+  user-select: none;
+}
+
+.dividerLine {
+  flex: 1;
+  min-width: 0;
+  height: 1px;
+  background: var(--Line-500);
+}
+
+.dividerLabel {
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1.4285714286em;
+}
+
+.dividerLabelAccent {
+  color: var(--Text-Main-10);
+}
+
+.dividerLabelMuted {
+  color: var(--Text-700);
+}
+
+@keyframes loadingSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,43 @@
+@use '@/common/styles/mixins' as *;
+
+.section {
+  width: 100%;
+  padding: 0 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--Text-Main-10);
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.list {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  list-style: none;
+}
+
+.item {
+  width: 109px;
+  height: 42px;
+  display: flex;
+  flex: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--Background-300);
+  cursor: default;
+}

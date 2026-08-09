@@ -1,0 +1,87 @@
+.textPanel {
+  display: block;
+  padding: 10px;
+  background: var(--Background-300);
+  border-radius: 6px;
+}
+
+.filterTabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+
+  button {
+    min-width: 0;
+    height: 28px;
+    padding: 0 6px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    background: var(--Line-100);
+    color: var(--Text-800);
+    cursor: pointer;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.filterTabs .activeFilter {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.liveItem {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  font-size: 12px;
+
+  p {
+    margin: 0;
+    color: var(--Text-Main-10);
+    line-height: 1.45;
+  }
+}
+
+.highlightItem {
+  grid-template-columns: 16px minmax(0, 1fr);
+}
+
+.eventIcon {
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+
+  img {
+    display: block;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+}
+
+.highlightText {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 7px 10px;
+  background: var(--Background-500);
+  border-radius: 6px;
+}
+
+.teamLogo {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}

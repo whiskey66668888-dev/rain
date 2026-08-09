@@ -1,0 +1,32 @@
+/* 上半场 + 比分条（足球进行中） */
+.halfTimeRow {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.halfTimeScore {
+  font-weight: 400;
+  font-family: 'DINPro';
+  color: var(--White-100);
+}
+
+.halfTimeGap {
+  width: 8px;
+  flex-shrink: 0;
+}
+
+.scoreFlagRed {
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+}
+
+.scoreFlagYellow {
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+}

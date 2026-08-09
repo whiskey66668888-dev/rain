@@ -1,0 +1,652 @@
+/* 侧边栏卡片：与在线客服 / 主题切换同列，浅蓝灰底 + 左图右文 */
+.desktopEntry {
+  width: 100%;
+  max-width: 196px;
+  border: none;
+  border-radius: 8px;
+  background: var(--Background-500);
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-bottom: 20px;
+  &:hover {
+    opacity: 0.92;
+  }
+}
+
+.entryRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.entryText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.entryTitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+  font-weight: 600;
+}
+
+/* 与侧边栏游戏/娱乐菜单项右箭头一致（arrow_sports.svg + 圆底） */
+.entryArrowWrapper {
+  flex-shrink: 0;
+  background-color: var(--Background-300);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.entryArrow {
+  transform: rotate(90deg);
+}
+
+.entryDesc {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--Text-700);
+}
+
+.entryImage {
+  width: 56px;
+  height: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-right: 12px;
+}
+
+.desktopDialog {
+  position: relative;
+  width: 390px;
+  max-width: calc(100vw - 32px);
+  border-radius: 16px;
+  background: linear-gradient(to bottom, transparent 0 127px, var(--Background-300) 127px);
+  padding-bottom: 17px;
+  overflow: hidden;
+
+  [data-theme='dark'] & {
+    background: linear-gradient(to bottom, transparent 0 127px, var(--Background-400) 127px);
+  }
+}
+
+.windowsInstructionPane {
+  padding: 4px 0 12px;
+
+  .stepHeader + .stepHeader {
+    margin-top: 14px;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  padding: 6px;
+}
+.closeBtnH5 {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border: 1px solid var(--White-100);
+  border-radius: 50%;
+  margin-top: 24px;
+}
+/* 参考稿：顶部蓝渐变 + 中英标题 + 右侧主视觉（可换图） */
+.heroBanner {
+  background: url('/images/common/pwa/topBg.png') no-repeat center center;
+  height: 127px;
+  padding: 0 21px;
+}
+
+.heroBannerInner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+}
+
+.heroTextBlock {
+  flex: 1;
+  min-width: 0;
+  color: var(--White-100);
+}
+
+.heroTitle {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.heroSubtitle {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.88;
+  font-weight: 400;
+}
+
+.heroVisual {
+  width: 182px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.heroVisualImg {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+  position: absolute;
+  bottom: -2px;
+}
+
+.heroVisualPlaceholder {
+  width: 100%;
+  min-height: 72px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+}
+
+.desktopDialogBody {
+  padding: 17px 20px;
+}
+
+.stepGuideImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+/* 分步：序号圆点 + 文案 + 示意图占位 */
+.stepBlock + .stepBlock {
+  margin-top: 16px;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.stepBadge {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
+}
+
+.stepText {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--Text-Main-10);
+}
+
+.stepIllustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepIllustrationImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.stepIllustrationHint {
+  font-size: 12px;
+  color: var(--Text-700);
+  user-select: none;
+}
+
+.mobileGuideFigure {
+  margin: 10px 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mobileGuideImg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.steps {
+  margin: 12px 0;
+  color: var(--Text-700);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.desktopDialogFooter {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.primaryBtn {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 14px;
+
+  @include rwd-min('lg') {
+    margin-bottom: 10px;
+  }
+}
+
+.closeFooterBtn {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--Background-500);
+  color: var(--Text-Main-10);
+  font-size: 14px;
+
+  &:hover {
+    opacity: 0.92;
+  }
+}
+
+.mobileBanner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+  border-radius: 10px;
+  padding: 9px 10px;
+  display: flex;
+  align-items: center;
+  z-index: 11;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  @include rwd-min('lg') {
+    display: none;
+  }
+}
+
+.mobileClose {
+  flex-shrink: 0;
+  align-self: center;
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  margin-left: 6px;
+  margin-right: -4px;
+}
+
+.mobileLogo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.mobileText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mobileTitle {
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.mobileRatingRow {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+}
+
+.mobileStar {
+  font-size: 11px;
+  line-height: 1;
+  color: var(--ThemeColor-Main);
+}
+
+.mobileRatingScore {
+  margin-left: 4px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ThemeColor-Main);
+}
+
+.mobileSub {
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--White-100);
+}
+
+.mobileInstallBtn {
+  flex-shrink: 0;
+  min-width: 72px;
+  width: auto;
+  height: 36px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 46px;
+}
+
+.mobileModalBody {
+  width: min(92vw, 375px);
+  max-height: min(86vh, 680px);
+}
+
+.mobileModalBodyFullscreen {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+.mobileDrawer {
+  width: 100%;
+  padding: 16px;
+  overflow: auto;
+  max-height: min(86vh, 680px);
+}
+
+.mobileDrawer.mobileDrawerExternalGuide {
+  padding: 0;
+  max-height: none;
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.mobileDrawerExternalGuide {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileExternalOpenGuide {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 0 calc(12px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+}
+
+.externalGuideContent {
+  min-height: 0;
+  box-sizing: border-box;
+  padding: calc(6px + env(safe-area-inset-top, 0px)) 16px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.externalGuideUpper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 100%;
+}
+
+.externalGuideArrow {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 12px;
+  margin-bottom: 12px;
+
+  img {
+    display: block;
+    width: 15px;
+    height: auto;
+  }
+}
+
+.externalGuideStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  width: fit-content;
+  max-width: min(318px, calc(100vw - 32px));
+  margin-left: auto;
+  box-sizing: border-box;
+}
+
+.externalGuideStep1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+  padding: 8px 10px 8px 12px;
+  background: var(--Background-300);
+  border-radius: 100px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+}
+
+.externalGuideStep1Main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+}
+
+.externalGuideStep1ShareRow {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.externalGuideStep2 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px;
+  background: var(--Background-300);
+  border-radius: 100px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  width: 100%;
+  max-width: min(318px, calc(100vw - 32px));
+  margin-left: auto;
+  box-sizing: border-box;
+}
+
+.externalGuideBadge {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+
+.externalGuideStep1Text {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--Text-800);
+  white-space: nowrap;
+}
+
+.externalGuideShareWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 1px solid var(--Line-100);
+  border-radius: 8px;
+  background: var(--White-100);
+  box-sizing: border-box;
+
+  img {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.externalGuideStep2Text {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--Text-800);
+}
+
+.externalGuideClose {
+  margin-top: auto;
+  align-self: center;
+  margin-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+}
+
+.iosGuideSegment {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.mobileDrawerAndroidInstall {
+  padding-top: 12px;
+}
+
+.mobileDrawerAndroidTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: -4px -4px 8px 0;
+}
+
+.mobileDrawerAndroidTopSpacer {
+  flex: 1;
+}
+
+.mobileAndroidInstallPane {
+  background: var(--Background-300);
+  border-radius: 12px;
+  padding: 12px;
+}
+.mobileAndroidInstallTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mobileAndroidBanner {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.mobileAndroidBannerImg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mobileAndroidStepRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mobileAndroidStepText {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--Text-700);
+  padding-top: 1px;
+}
+
+.mobileAndroidActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.dialogTitle {
+  font-size: 17px;
+  line-height: 24px;
+  height: 24px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

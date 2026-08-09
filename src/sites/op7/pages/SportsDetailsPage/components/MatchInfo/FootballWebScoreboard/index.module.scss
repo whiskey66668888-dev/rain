@@ -1,0 +1,487 @@
+/* 仅配合父级 @include rwd-min('lg') 在 Web 端展示，不在此文件写 max-width 以免误伤 H5 */
+
+.root {
+  width: 100%;
+  min-width: min-content;
+  // min-height: 208px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+  container-name: football-web-scoreboard;
+  --scoreboard-left-col-width: 230px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.field {
+  position: relative;
+  flex: 1;
+
+  overflow: visible;
+  // min-height: 208px;
+  background: rgba(0, 0, 0, 0.8);
+  background-blend-mode: normal, screen, normal;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 0,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+    pointer-events: none;
+    opacity: 0.35;
+  }
+}
+
+/** 右侧 score 区域可横向滚动时（斯诺克 / 棒球 / 冰球），给球场背景留出左内边距；足球等非滚动布局不加 */
+.fieldHScroll {
+  padding-left: 20px;
+}
+
+/* 与 .teamRow 同宽双栏：左时间与左队名占同一列宽，右侧统计区与下行数字表严格同列对齐 */
+.topBar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, var(--scoreboard-left-col-width)) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  min-height: 44px;
+  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.statusLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--White-100);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.liveClock {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.period {
+  white-space: nowrap;
+}
+
+/* 表头图标与球队数据行共用同一套列宽，并在第二栏内右对齐（与 flex space-between 错位列区分） */
+.statColumns {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(5, 24px);
+  // column-gap: 8px;
+  justify-content: space-around;
+  /** space-between 对 justify-items 非法，易导致子项拉伸，配合 LazyImage 内 img 100% 宽高会变形 */
+  justify-items: center;
+  align-items: center;
+  // width: max-content;
+  max-width: 100%;
+  justify-self: end;
+  box-sizing: border-box;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  font-family: 'DINPro';
+  color: rgba(255, 255, 255, 0.95);
+  font-variant-numeric: tabular-nums;
+
+  > * {
+    min-width: 0;
+    place-self: center;
+  }
+}
+
+.basketballColumns {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  max-width: 100%;
+  justify-self: end;
+  box-sizing: border-box;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  font-family: 'DINPro';
+  color: rgba(255, 255, 255, 0.95);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.basketballHeaderColumns {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.snookerBoard {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, var(--scoreboard-left-col-width)) minmax(0, 1fr);
+  // column-gap: 10px;
+}
+
+.snookerLeftCol {
+  display: grid;
+  grid-template-rows: 44px 50px 50px;
+}
+
+.snookerLeftHead {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.snookerLeftTeam {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 0;
+
+  + .snookerLeftTeam {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}
+
+.scrollColumnsWrap {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /** stretch 铺满右侧栏，避免整块表缩在左侧留大空 */
+  justify-self: stretch;
+  scrollbar-width: thin;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollColumns {
+  display: grid;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.95);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  > * {
+    min-width: 0;
+    place-self: center;
+    height: 100%;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.scrollHeaderRow {
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.scrollDataRow {
+  min-height: 50px;
+
+  + .scrollDataRow {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}
+
+.stickyFirst {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: rgba(21, 27, 42, 0.92);
+}
+
+.stickyLast {
+  position: sticky;
+  right: 0;
+  z-index: 3;
+  background: rgba(21, 27, 42, 0.92);
+}
+
+/** className 挂在 LazyImage 外层 div：须固定正方形区域，并让内层 img contain，避免格子被拉大后变形 */
+.statHeadIconImg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.goalIcon {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  box-sizing: border-box;
+}
+
+.colDivider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.24);
+  justify-self: center;
+}
+
+.phaseIcon {
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  box-sizing: border-box;
+  border-radius: 50%;
+
+  &[data-kind='half'] {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 50%, transparent 50%);
+  }
+
+  &[data-kind='full'] {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.miniBall {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.08)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.teamBlock {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px 14px 14px;
+}
+
+.teamRow {
+  display: grid;
+  grid-template-columns: minmax(0, var(--scoreboard-left-col-width)) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  min-height: 50px;
+
+  + .teamRow {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}
+
+@container football-web-scoreboard (max-width: 480px) {
+  .root {
+    --scoreboard-left-col-width: 150px;
+  }
+}
+
+.teamId {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.teamLogo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.teamName {
+  font-size: 15px;
+  // font-weight: 600;
+  color: var(--White-100);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teamNameBold {
+  font-weight: 600;
+}
+
+.rowDivider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.24);
+  justify-self: center;
+}
+
+.preMatch {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 12px;
+  min-height: 200px;
+}
+
+.preTeam {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.preLogo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.preName {
+  width: 100%;
+  max-width: 100%;
+  font-size: 14px;
+  color: var(--White-100);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.preVs {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--White-100);
+}
+
+.preDate {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* 侧栏等窄容器：压缩间距与列宽，减少横向滚动依赖 */
+@container football-web-scoreboard (max-width: 360px) {
+  .field {
+    padding: 14px 12px;
+  }
+
+  .field.fieldHScroll {
+    padding-left: 20px;
+  }
+
+  .topBar,
+  .teamRow {
+    column-gap: 6px;
+    grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
+  }
+
+  .snookerBoard {
+    // column-gap: 6px;
+    grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
+  }
+
+  .snookerLeftCol {
+    grid-template-rows: 40px 40px 40px;
+  }
+
+  .scrollHeaderRow {
+    min-height: 40px;
+  }
+
+  .scrollDataRow {
+    min-height: 40px;
+  }
+
+  .topBar {
+    padding: 6px 10px;
+    min-height: 40px;
+  }
+
+  .teamBlock {
+    padding: 8px 10px 12px;
+  }
+
+  .teamRow {
+    min-height: 40px;
+  }
+
+  .statColumns {
+    grid-template-columns: repeat(5, 20px);
+    font-size: 13px;
+  }
+
+  .basketballColumns {
+    font-size: 12px;
+  }
+
+  .scrollColumns {
+    font-size: 12px;
+  }
+
+  .statHeadIconImg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .goalIcon,
+  .phaseIcon,
+  .miniBall {
+    width: 12px;
+    height: 12px;
+  }
+
+  .teamLogo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .teamName {
+    font-size: 13px;
+  }
+
+  .statusLeft {
+    font-size: 12px;
+  }
+
+  .liveClock {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,67 @@
+.wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.list {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  padding: 0 10px 8px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: min-content;
+}
+
+.item {
+  padding-bottom: 10px;
+}
+
+.itemGrouped {
+  padding-bottom: 4px;
+}
+
+.pendingBadge {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  border: none;
+  border-radius: 999px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  padding: 6px 14px;
+  box-shadow: 0 2px 4px rgba(26, 129, 255, 0.2);
+  z-index: 2;
+}
+
+.scrollToBottomBtn {
+  position: absolute;
+  right: 10px;
+  bottom: 20px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  line-height: 0;
+  cursor: pointer;
+  z-index: 2;
+  transform: rotate(180deg);
+
+  img {
+    display: block;
+    width: 28px;
+    height: 28px;
+  }
+}

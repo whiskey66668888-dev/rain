@@ -1,0 +1,119 @@
+.simpleTable {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 0.5px solid var(--line-400);
+
+  /* card-shadow-30 */
+  box-shadow: 0 1px 4px 0 var(--shadow-300);
+  // 表头行
+  .headerRow {
+    display: flex;
+    border-radius: 10px 10px 0 0;
+    background: var(--Background-300);
+    font-weight: 500;
+    color: var(--Text-Main-10, #000);
+    height: 32px;
+    .headerCell {
+      text-align: center;
+      font-family: 'PingFang SC';
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      color: var(--Text-Main-10, #000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // flex: 1;
+    }
+  }
+  .tableBody {
+    box-shadow: 0 -3px 3px 0 rgba(164, 176, 192, 0.1);
+    background-color: #eff1f5;
+  }
+  // 数据行
+  .row {
+    display: flex;
+    height: 32px;
+
+    // 单元格
+    .cell {
+      // flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // 斑马纹
+  .stripedRow {
+    background: var(--Background-300);
+  }
+
+  // 空数据行
+  .emptyRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border-top: 1px solid #f0f0f0;
+
+    .emptyContent {
+      color: #999;
+      font-size: 14px;
+    }
+  }
+
+  // 加载行
+  .loadingRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border-top: 1px solid #f0f0f0;
+
+    .loadingContent {
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  .toggleContainer {
+    height: 32px;
+    border-radius: 0 0 10px 10px;
+    background: var(--background-400);
+    border-top: 1px solid var(--line-400);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Text-Main-10-10, #000);
+    text-align: center;
+    font-family: 'PingFang SC';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    position: relative;
+    .toggleButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      cursor: pointer;
+      img {
+        height: 7px;
+        display: block;
+        margin-left: 9px;
+        &.rotated {
+          transform: rotate(180deg);
+          transition: transform 200ms ease-in-out;
+        }
+      }
+    }
+  }
+}

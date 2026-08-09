@@ -1,0 +1,129 @@
+.content {
+  .info_tip {
+    display: flex;
+    gap: 4px;
+    align-items: flex-start;
+    width: 100%;
+    padding: 8px 12px;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    background: var(--Background-300);
+    line-height: 16px;
+    border-top: 1px solid var(--Line-100);
+
+    .icon {
+      flex: none;
+    }
+  }
+
+  .addBox {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 12px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--Background-300);
+    color: var(--Text-Main-10);
+    font-size: 14px;
+
+    .left {
+      width: 30%;
+      flex: none;
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+
+      .logo {
+        flex: none;
+      }
+
+      .text {
+        color: var(--Text-Main-10);
+        font-size: 14px;
+      }
+
+      .placeholder {
+        color: var(--Text-700);
+        text-align: right;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      input {
+        font-size: 14px !important;
+      }
+    }
+  }
+
+  .label {
+    width: 30%;
+    flex: none;
+  }
+
+  .input {
+    width: 100%;
+    text-align: right;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    background: transparent;
+
+    input {
+      text-align: right;
+
+      &::placeholder {
+        color: var(--Text-700);
+        text-align: right;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .placeholder {
+    color: var(--Text-700);
+    text-align: right;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  @include rwd-min('lg') {
+    padding: 12px 24px;
+
+    .info_tip {
+      border-radius: 12px;
+    }
+
+    .addBox {
+      padding: 12px 0;
+    }
+  }
+}
+
+.buttonWrap {
+  padding: 12px 0;
+  margin: 0 12px;
+  .button {
+    width: 100%;
+  }
+}
+
+.pickerRowItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

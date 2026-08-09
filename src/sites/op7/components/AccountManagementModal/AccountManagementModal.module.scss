@@ -1,0 +1,225 @@
+.accountManagementModal {
+  width: 100%;
+  background: var(--Background-700);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--Text-Main-10);
+  @include rwd-min('lg') {
+    background: var(--Background-400);
+  }
+  .segmentedControl {
+    background: var(--Background-300);
+  }
+  // H5 底部抽屉样式
+  &.mobile {
+    border-radius: 0;
+    height: 100vh;
+
+    // 自定义滚动条
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--Line-100);
+      border-radius: 2px;
+    }
+  }
+
+  // Pad/Web 居中弹窗样式
+  &.desktop {
+    width: 450px;
+    max-width: 90vw;
+    border-radius: 16px;
+    max-height: 90vh;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+    overflow: hidden;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--Text-Main-10);
+    position: sticky;
+    top: 0;
+    background: var(--Background-300);
+    flex-shrink: 0;
+
+    .back {
+      position: absolute;
+      left: 12px;
+      top: 15px;
+    }
+
+    .closeButton {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .bankCardWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: auto;
+    max-height: fit-content;
+
+    & > li {
+      width: 100%;
+    }
+    .bankCardEmpty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 112px;
+      color: var(--Text-800);
+      border-radius: 12px;
+      background: var(--Background-300);
+    }
+    .bankCard {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding: 12px;
+      width: 100%;
+      border-radius: 12px;
+      background: url('/images/light/bank/card.png') 0 0/100% 100% no-repeat;
+      [data-theme='dark'] & {
+        background: url('/images/dark/bank/card.png') 0 0/100% 100% no-repeat;
+      }
+    }
+    .cardTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .cardTopLeft {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .bankLogo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--Background-300);
+      border: 0.5px solid var(--Line-100);
+      flex-shrink: 0;
+    }
+    .bankNameBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .bankName {
+      font-weight: 500;
+      color: var(--Text-Main-10);
+    }
+    .cardType {
+      color: var(--Text-800);
+    }
+    .cardCloseBtn {
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      background: var(--Line-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: none;
+      cursor: pointer;
+      color: var(--Text-Main-10);
+      position: relative;
+      top: -10px;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    .cardBottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--Text-Main-10);
+    }
+  }
+}
+
+.checkPayPasswordModal {
+  background: var(--Background-300);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--Text-Main-10);
+  padding: 12px;
+  width: 450px;
+  max-width: 90vw;
+  border-radius: 16px;
+  max-height: 90vh;
+  box-shadow: 0 8px 32px var(--Shadow-400);
+  overflow: hidden;
+
+  .verifyTitle {
+    margin: 0 0 24px;
+    font-weight: 500;
+    color: var(--Text-Main-10);
+    text-align: center;
+  }
+
+  .stepContent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .inputSection {
+    margin: 0;
+  }
+
+  .forgotLink {
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--ThemeColor-Main);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  .submitBtn {
+    width: 100%;
+    height: 44px;
+    border-radius: 100px;
+    font-weight: 500;
+
+    &.submitBtnActive {
+      opacity: 1;
+    }
+
+    &.submitBtnInactive {
+      opacity: 0.6;
+    }
+  }
+}

@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>OP7</title>
+    <link rel="icon" type="image/png" href="/images/common/favicon.png" vite-ignore />
+    <link rel="apple-touch-icon" href="/icons/icon-192_0.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/images/splash/1125x2436.png"
+    />
+    <!-- iPhone X / 11 Pro / 13 mini 等 -->
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/images/splash/1242x2688.png"
+    />
+    <!-- iPhone XS Max / 11 Pro Max 等 -->
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+      href="/images/splash/828x1792.png"
+    />
+    <!-- iPhone XR / 11 等 -->
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/images/splash/1179x2556.png"
+    />
+    <!-- iPhone 14 / 15 / 16 等常见尺寸 -->
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/images/splash/1290x2796.png"
+    />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="referrer" content="no-referrer" />
+    <script src="https://static.geetest.com/v4/gt4.js"></script>
+    <!--ssr-head-->
+    <script>
+      (function () {
+        var pathname = window.location.pathname;
+        var m = pathname.match(/^\/(?:([a-z]{2}(?:-[a-z]{2})?)\/)?(g|t)\/([^/?#]+)\/?$/i);
+        if (!m || !m[3]) return;
+        var locale = m[1] || '';
+        var code = decodeURIComponent(m[3]);
+        if (!code) return;
+        var params = new URLSearchParams(window.location.search);
+        params.set('sysAgentName', code);
+        var qs = params.toString();
+        var base = locale ? '/' + locale + '/' : '/';
+        window.location.replace(base + (qs ? '?' + qs : ''));
+      })();
+    </script>
+    <script>
+      const hour = new Date().getHours();
+      // 06:00-17:59 为白天；18:00-05:59 为黑夜
+      let themeMode = hour >= 6 && hour < 18 ? 'light' : 'dark';
+
+      const html = document.documentElement;
+      // 保证ssr的html在第一时间内加载正确样式相关配置，并同时支持ssg的静态页面
+      const systemConfig = localStorage.getItem('SYSTEM_CONFIG');
+      const pathname = window.location.pathname;
+      const pathnameParts = pathname.split('/');
+      const pathnameLanguage = pathnameParts[1];
+      if (systemConfig) {
+        const { fontScaleType, themeMode: _themeMode, language } = JSON.parse(systemConfig);
+        // RICO_TODO: 极端情况的临时方案，后期可以优化到nginx判断后重定向返回正确的cache html
+        // 临时关闭语言跳转（后续接入语言前缀接口后再恢复）
+        // // if (language !== pathnameLanguage) {
+        //   if (language === 'zh' && pathnameLanguage === '') {
+        //     // 如果语言是中文且路径为空，则替静默替换路径为中文，方便ssr下次正确加载
+        //     window.history.replaceState(null, '', `/zh`);
+        //   } else {
+        //     window.location.href = `/${language}`;
+        //   }
+        // }
+        html.style.setProperty('--text-scale', fontScaleType.toString());
+        html.setAttribute('data-text-scale', fontScaleType.toString());
+        themeMode = _themeMode === 'system' ? themeMode : _themeMode;
+      } else if (pathnameLanguage === '') {
+        // window.history.replaceState(null, '', `/zh`);
+      }
+
+      html.setAttribute('data-theme', themeMode);
+      html.setAttribute('data-prefers-color-scheme', themeMode);
+
+      var bootLoadingHref =
+        themeMode === 'dark' ? '/images/dark/loading.webp' : '/images/light/loading.webp';
+      var bootLoadingPreload = document.createElement('link');
+      bootLoadingPreload.rel = 'preload';
+      bootLoadingPreload.as = 'image';
+      bootLoadingPreload.href = bootLoadingHref;
+      bootLoadingPreload.type = 'image/webp';
+      bootLoadingPreload.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(bootLoadingPreload);
+
+      (function applyBootNotchColor() {
+        var path = pathname.replace(/^\/[a-z]{2}(?:-[a-z]{2})?(?=\/|$)/, '') || '/';
+        var isSports =
+          path.indexOf('/sports') === 0 ||
+          path.indexOf('/champion') === 0 ||
+          path.indexOf('/bet_history_h5') === 0;
+        var isEntertainment =
+          path === '/' || path === '' || path.indexOf('/entertainment') === 0;
+        var isDarkTheme = themeMode === 'dark';
+        var notchColor;
+        if (isSports) {
+          notchColor = isDarkTheme ? '#18181B' : '#CBD8ED';
+        } else if (isEntertainment) {
+          notchColor = isDarkTheme ? 'rgb(1, 1, 1)' : 'rgb(236, 242, 255)';
+        } else {
+          notchColor = isDarkTheme ? 'rgb(30, 30, 33)' : 'rgb(255, 255, 255)';
+        }
+        html.style.setProperty('--h5-safe-area-top-color', notchColor);
+        var themeMeta = document.querySelector('meta[name="theme-color"]');
+        if (!themeMeta) {
+          themeMeta = document.createElement('meta');
+          themeMeta.setAttribute('name', 'theme-color');
+          document.head.appendChild(themeMeta);
+        }
+        themeMeta.setAttribute('content', notchColor);
+      })();
+    </script>
+    <!-- 与 theme.scss 同步；刘海区用 --h5-safe-area-top-color，内容区 #root 用 Background-700 -->
+    <style id="boot-critical-style">
+      :root {
+        --Background-300: rgba(255, 255, 255, 1);
+        --Background-700: rgba(236, 242, 255, 1);
+        --h5-safe-area-top-color: rgb(236, 242, 255);
+      }
+      [data-theme='dark'] {
+        --Background-300: rgba(30, 30, 33, 1);
+        --Background-700: rgba(1, 1, 1, 1);
+        --h5-safe-area-top-color: rgb(1, 1, 1);
+      }
+      html,
+      body {
+        background: var(--h5-safe-area-top-color, var(--Background-700));
+      }
+      #root {
+        background: var(--Background-700);
+      }
+      html:not(.app-ready) body {
+        overflow: hidden;
+      }
+    </style>
+    <style id="boot-shield-style">
+      #boot-shield {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483646;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--Background-700);
+        touch-action: none;
+        cursor: wait;
+        opacity: 1;
+        transition: opacity 0.28s ease;
+      }
+      #boot-shield.boot-shield--leaving {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .boot-shield__loading {
+        width: 120px;
+        height: 122px;
+        display: block;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="boot-shield" role="status" aria-live="polite" aria-label="加载中">
+      <img
+        id="boot-shield-loading"
+        class="boot-shield__loading"
+        alt=""
+        width="120"
+        height="122"
+        decoding="sync"
+        fetchpriority="high"
+      />
+      <script>
+        (function () {
+          window.__op7BootStart = performance.now();
+          var theme = document.documentElement.getAttribute('data-theme') || 'dark';
+          var src =
+            theme === 'dark' ? '/images/dark/loading.webp' : '/images/light/loading.webp';
+          var img = document.getElementById('boot-shield-loading');
+          if (img) img.src = src;
+        })();
+      </script>
+    </div>
+    <div id="root"><!--ssr-html--></div>
+    <script type="module" src="/entry-client.tsx"></script>
+  </body>
+</html>

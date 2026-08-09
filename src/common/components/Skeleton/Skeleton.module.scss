@@ -1,0 +1,405 @@
+// 通用的骨架屏流光动画
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// 通用的骨架屏基础样式类
+.skeletonBase {
+  position: relative;
+  overflow: hidden;
+  background: var(--Background-300);
+  border-radius: 4px;
+
+  // 流光效果
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, var(--Background-700) 50%, transparent 100%);
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  }
+
+  // 动画延迟变体
+  &.delay1::after {
+    animation-delay: 0.1s;
+  }
+
+  &.delay2::after {
+    animation-delay: 0.2s;
+  }
+
+  &.delay3::after {
+    animation-delay: 0.3s;
+  }
+
+  &.delay4::after {
+    animation-delay: 0.4s;
+  }
+
+  &.delay5::after {
+    animation-delay: 0.5s;
+  }
+}
+
+/* H5 我的页顶部纹理（与 MinePageH5.module.scss .hero 一致） */
+.mineH5Hero {
+  background-color: var(--Background-700);
+  background-size: 12px 12px;
+}
+
+.discoverSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 12px;
+  color: var(--Text-Main-10);
+}
+
+.discoverCard,
+.discoverScoreCard,
+.discoverChartCard,
+.discoverTitleCard,
+.discoverInfoCard {
+  overflow: hidden;
+  background: var(--Background-300);
+  border-radius: 8px;
+}
+
+.discoverScoreCard {
+  padding: 0 10px;
+}
+
+.discoverScoreHeader,
+.discoverScoreRow {
+  display: grid;
+  grid-template-columns: minmax(72px, 1.3fr) repeat(6, minmax(34px, 1fr));
+  align-items: center;
+  min-height: 44px;
+  border-top: 0.5px solid var(--Line-100);
+}
+
+.discoverScoreHeader {
+  min-height: 30px;
+  border-top: 0;
+}
+
+.discoverScoreTeam,
+.discoverScoreCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.discoverScoreTeam {
+  justify-content: flex-start;
+}
+
+.discoverScoreTeamLabel {
+  width: 36px;
+  height: 12px;
+}
+
+.discoverScoreCell,
+.discoverScoreValue {
+  width: 18px;
+  height: 12px;
+  margin: 0 auto;
+}
+
+.discoverSegment {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px 10px 0;
+}
+
+.discoverSegmentItem {
+  height: 28px;
+  border-radius: 999px;
+}
+
+.discoverPills {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+.discoverPill {
+  width: 72px;
+  height: 28px;
+  border-radius: 999px;
+}
+
+.discoverRoundPill {
+  width: 32px;
+  height: 28px;
+  border-radius: 999px;
+}
+
+.discoverTimeline {
+  padding: 0 10px 14px;
+}
+
+.discoverTimelineRow {
+  display: grid;
+  grid-template-columns: 26px 34px 5px minmax(0, 1fr);
+  gap: 4px 6px;
+  align-items: center;
+  min-height: 42px;
+}
+
+.discoverAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.discoverTime {
+  width: 28px;
+  height: 12px;
+}
+
+.discoverDot {
+  position: relative;
+  width: 5px;
+  height: 42px;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2px;
+    width: 1px;
+    background: var(--Line-100);
+    content: '';
+  }
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: -2px;
+    border-radius: 50%;
+    background: var(--ThemeColor-Main);
+    content: '';
+  }
+}
+
+.discoverEvent {
+  width: 100%;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.discoverChartCard {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 8px;
+  min-height: 132px;
+  padding: 10px 12px;
+}
+
+.discoverChartTeams {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+}
+
+.discoverChartArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-width: 0;
+}
+
+.discoverChartLine {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.discoverTeamRow,
+.discoverInfoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+}
+
+.discoverTeamName {
+  width: 86px;
+  height: 14px;
+}
+
+.discoverSituationStats {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  padding: 4px 10px 14px;
+}
+
+.discoverSituationItem {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.discoverShortText {
+  width: 34px;
+  height: 12px;
+}
+
+.discoverRing {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.discoverBars {
+  display: grid;
+  gap: 10px;
+  padding: 0 10px 14px;
+}
+
+.discoverBarRow {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 54px minmax(0, 1fr) 36px;
+  gap: 10px;
+  align-items: center;
+}
+
+.discoverBarValue,
+.discoverBarLabel {
+  height: 12px;
+}
+
+.discoverBarTrack {
+  height: 4px;
+}
+
+.discoverTextRow {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 10px 10px;
+}
+
+.discoverWideText {
+  width: 100%;
+  height: 14px;
+}
+
+.discoverTitleCard {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 0;
+}
+
+.discoverTitle {
+  width: 72px;
+  height: 16px;
+}
+
+.discoverButton {
+  width: 84px;
+  height: 24px;
+  border-radius: 999px;
+}
+
+.discoverInfoCard {
+  border-radius: 0;
+}
+
+.discoverPitch {
+  overflow: hidden;
+  border-radius: 0 0 6px 6px;
+  background: var(--Background-300);
+}
+
+.discoverPitchHeader {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  background: var(--Green-70);
+}
+
+.discoverPitchBody {
+  position: relative;
+  display: flex;
+  aspect-ratio: 1 / 1.81;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 15px 8px;
+  background: linear-gradient(180deg, rgb(47 110 68 / 72%), rgb(31 85 55 / 72%));
+
+  &::before {
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgb(255 255 255 / 26%);
+    border-radius: 50%;
+    content: '';
+  }
+}
+
+.discoverPitchRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-evenly;
+  min-height: 56px;
+}
+
+.discoverPlayer {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 54px;
+}
+
+.discoverPlayerAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.discoverPlayerName {
+  width: 46px;
+  height: 10px;
+}
+
+.discoverPanelTitle {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.discoverLineUpRow {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  gap: 10px;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 10px 10px;
+}

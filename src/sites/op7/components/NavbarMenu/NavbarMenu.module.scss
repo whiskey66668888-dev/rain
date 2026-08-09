@@ -1,0 +1,52 @@
+.navBarMenu {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px;
+  .navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 36px;
+    min-width: 80px;
+    padding: 10px 9px;
+    border-radius: 10px;
+    background: var(--Background-300);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--Text-800);
+    white-space: nowrap;
+    flex-shrink: 0;
+    flex: 1;
+    @include can-hover {
+      &:hover {
+        background-color: var(--ThemeColor-300);
+        color: var(--White-100);
+        .navItemIconActive {
+          background-color: var(--White-100) !important;
+        }
+      }
+    }
+
+    &.navItemActive {
+      background-color: var(--ThemeColor-Main);
+      color: var(--White-100);
+    }
+    .navItemContent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      .navLabel {
+        line-height: 1em;
+        text-align: center;
+        white-space: nowrap;
+        font-weight: 600;
+        empty-cells: hide;
+      }
+    }
+  }
+}

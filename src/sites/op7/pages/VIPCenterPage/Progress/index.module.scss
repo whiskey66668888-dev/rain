@@ -1,0 +1,50 @@
+.progress_content_box {
+  position: relative;
+  width: 70%;
+
+  .tipBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5px;
+    margin-left: 8px;
+  }
+
+  .tips {
+    position: absolute;
+    top: -12px;
+    left: 0px;
+    color: var(--Text-800);
+    text-align: center;
+    font-family: 'DIN Alternate', sans-serif;
+    font-size: calc(10px * var(--text-scale, 1));
+    font-weight: 500;
+    text-align: center;
+    transition:
+      left 0.3s ease,
+      transform 0.3s ease;
+    div {
+      font-family: 'DIN Alternate', sans-serif;
+    }
+    .downTip {
+      width: 11px;
+      height: auto;
+    }
+
+    .downTprogressico {
+      width: 30px;
+      height: auto;
+    }
+  }
+
+  :global {
+    .adm-progress-bar-trail {
+      --track-width: 4px;
+    }
+  }
+}
+
+.progress_content_baoji {
+  width: 100%;
+}

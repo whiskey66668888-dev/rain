@@ -1,0 +1,90 @@
+.customMask {
+  background: rgba(0, 0, 0, 1) !important;
+}
+
+.customBody {
+  width: 100% !important;
+  height: 100vh; /* 降级方案 */
+  height: 100dvh; /* 现代浏览器 */
+  // 隐藏默认的顶部导航
+  :global(.adm-image-viewer-indicator) {
+    display: none !important;
+  }
+  :global {
+    .adm-image-viewer-image-wrapper {
+      img {
+        max-height: 80% !important;
+        user-select: auto !important;
+        -webkit-touch-callout: default !important;
+      }
+    }
+  }
+
+  &.fullScreen {
+    padding-top: var(--image-viewer-body-padding, 0px);
+  }
+}
+
+.customContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  //  &.fullScreen{
+  //   top: calc(constant(safe-area-inset-top));
+  //   top: calc(env(safe-area-inset-top));
+  //  }
+}
+
+.customHeader,
+.defaultHeader {
+  position: relative;
+  height: 44px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: auto;
+
+  .headerLeft,
+  .headerRight {
+    width: 60px;
+    display: flex;
+    align-items: center;
+  }
+
+  .headerRight {
+    justify-content: flex-end;
+  }
+
+  .headerCenter {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    .pageInfo {
+      color: white;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+      font-family: 'SF Pro Text';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+    }
+  }
+}
+
+// .customFooter {
+//   position: relative;
+//   pointer-events: auto;
+//   padding: 20px;
+//   background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+// }

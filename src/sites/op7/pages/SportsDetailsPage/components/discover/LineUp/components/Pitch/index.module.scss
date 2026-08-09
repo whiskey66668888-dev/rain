@@ -1,0 +1,382 @@
+.pitchBlock {
+  overflow: hidden;
+  border-radius: 0 0 6px 6px;
+}
+
+.emptyLineUp {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--Background-300);
+  color: var(--Text-700);
+  font-size: 14px;
+  line-height: 20px;
+  height: 200px !important;
+  border-radius: 0 0 6px 6px;
+}
+
+.pitch {
+  position: relative;
+  aspect-ratio: 375 / 657;
+  overflow: hidden;
+  background-image: url('/images/common/discover/lineup/football_bg.jpg');
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+.playersLayer {
+  position: absolute;
+  inset: 10px 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.pitchHalf {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 0;
+  padding: 0 4px;
+}
+
+.pitchRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  gap: 0;
+}
+
+.awayPitchHalf {
+  position: relative;
+  justify-content: initial;
+  transform: translateY(15px);
+}
+
+.awayOutfieldRows {
+  position: absolute;
+  inset: 0 0 65px;
+  display: flex;
+  flex-direction: column;
+
+  .pitchRow {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+.awayKeeperRow {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  left: 0;
+  height: 64px;
+  min-height: 0;
+}
+
+.pitchHeader {
+  position: relative;
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: var(--Green-70);
+  color: var(--White-100);
+}
+
+.teamFormation {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+
+  img {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    object-fit: cover;
+  }
+
+  b {
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'SF Pro Text';
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.centerText {
+  overflow: hidden;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nationalStats {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  .nationalList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+.nationalStat {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+  color: var(--White-100);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+
+  img {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  b {
+    font: inherit;
+  }
+}
+
+.nationalArrow {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.pitchHeader > strong {
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rightCoach {
+  text-align: right;
+}
+
+.segment {
+  position: absolute;
+  z-index: 2;
+  top: 7px;
+  right: 8px;
+  display: flex;
+  width: 105px;
+  height: 26px;
+  padding: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 40%);
+
+  button {
+    flex: 1;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--White-100);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
+
+.countryModal {
+  border-radius: 20px;
+}
+
+.countryModalContent {
+  margin-bottom: 0;
+}
+
+.countryGroups {
+  max-height: 468px;
+  overflow-y: auto;
+  padding-bottom: 6px;
+}
+
+.countryGroup {
+  padding: 0;
+
+  & + & {
+    margin-top: 4px;
+  }
+
+  &::after {
+    display: block;
+    height: 1px;
+    margin: 6px 0;
+    background: var(--White-40);
+    content: '';
+  }
+
+  &:last-child::after {
+    display: none;
+  }
+}
+
+.countryGroupHeader {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  gap: 10px;
+
+  strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--Text-Main-10);
+    font-size: 16px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    flex: 0 0 auto;
+    color: var(--Text-700);
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
+.countryLogo {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.countryPlayers {
+  padding-left: 32px;
+}
+
+.countryPlayer {
+  display: flex;
+  height: 40px;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+
+  b {
+    flex: 0 0 auto;
+    color: var(--ThemeColor-Main);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  em {
+    flex: 0 0 auto;
+    color: var(--Text-700);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+  }
+}
+
+.countryPlayerAvatar {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--Line-100);
+}
+
+.activeSegment {
+  background: rgb(0 0 0 / 40%) !important;
+}
+
+.envTable {
+  overflow: hidden;
+  border-radius: 0 0 6px 6px;
+  color: var(--White-100);
+}
+
+.envRow {
+  display: grid;
+  height: 40px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: center;
+  background: var(--Green-70);
+
+  font-size: 12px;
+  text-align: center;
+
+  &:nth-child(odd) {
+    background: var(--Green-80);
+  }
+
+  &:last-child {
+    border-bottom: 0.5px solid var(--Line-100);
+  }
+
+  span,
+  strong {
+    display: flex;
+    min-width: 0;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    justify-content: flex-start;
+    padding-left: 16px;
+  }
+
+  strong {
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 768px) {
+  .pitchHeader {
+    grid-template-columns: 96px minmax(0, 1fr) 96px;
+  }
+}

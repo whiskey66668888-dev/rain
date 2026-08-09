@@ -1,0 +1,303 @@
+.helpCenter {
+  // padding: 12px;
+  // background: url('/images/light/support-background.png') no-repeat;
+  // @include theme-night {
+  //   background: url('/images/dark/support-background.png') no-repeat;
+  //   background-size: contain;
+  // }
+  // background-size: contain;
+  background: linear-gradient(183deg, #d3ecff 1.8%, rgba(236, 245, 255, 0) 96.47%) no-repeat;
+  background-size: 100% 325px;
+  @include theme-night() {
+    background: linear-gradient(183deg, #061a32 1.8%, rgba(1, 1, 1, 0) 96.47%) no-repeat;
+    background-size: 100% 325px;
+  }
+  .HeaderRight {
+    cursor: pointer;
+  }
+  .helpCenterBanner {
+    flex-direction: column;
+    border-radius: 12px;
+    flex-shrink: 0;
+    .helpCenterBannerContent {
+      padding: 0 64px;
+      width: 100%;
+      .helpCenterBannerText {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        .helpCenterBannerTitle {
+          color: var(--White-100);
+          font-family: 'PingFang SC';
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 28px; /* 140% */
+        }
+        .helpCenterBannerSubtitle {
+          color: var(--White-60);
+          font-family: 'PingFang SC';
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 20px; /* 142.857% */
+          margin-top: 4px;
+        }
+      }
+      .helpCenterBannerImage {
+        position: relative;
+        top: 16px;
+      }
+    }
+    .toolsWrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 0px 13px 0 14px;
+      @include rwd-min('lg') {
+        padding: 16px 13px 0 14px;
+      }
+
+      .kfInfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 44px 0 32px;
+        @include rwd-min('lg') {
+          padding: 0 100px 0 100px;
+        }
+        .kfText {
+          .kfName {
+            color: var(--Text-Main-10, #000);
+            font-family: 'PingFang SC';
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 32px; /* 177.778% */
+          }
+          .kfDesc {
+            color: var(--Text-800, #596980);
+            font-family: 'PingFang SC';
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px; /* 133.333% */
+          }
+        }
+        .kfAvatar {
+          width: 102px;
+          height: 104px;
+          background: url('/images/common/helpCenter/kf.png') no-repeat;
+          background-size: 102px auto;
+        }
+      }
+    }
+
+    .heroSearchWrap {
+      position: relative;
+      z-index: 2;
+      // margin-bottom: -22px;
+    }
+
+    .heroSearchBar {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 8px;
+      height: 32px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 999px;
+      background: var(--Background-300, #fff);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      @include rwd-min('lg') {
+        height: 44px;
+      }
+      &:active {
+        opacity: 0.92;
+      }
+    }
+
+    .heroSearchPlaceholder {
+      flex: 1;
+      text-align: left;
+      font-family: 'PingFang SC', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: var(--Text-700);
+    }
+  }
+
+  .contentItem {
+    border-radius: 12px;
+    background: var(--Background-300, #fff);
+    padding: 12px;
+    margin: 12px 13px;
+
+    .contentHeader {
+      //   padding-left: 16px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+
+      //   .blueLine {
+      //     background-color: #1a81ff;
+      //     width: 3px;
+      //     height: 16px;
+      //     border-radius: 16px;
+      //   }
+
+      .contentHeaderTitle {
+        color: var(--Text-Main-10, #000);
+        font-family: 'PingFang SC';
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 150% */
+      }
+    }
+    .contentTabWrap {
+      position: relative;
+      width: 100%;
+      padding-top: 14px;
+      //   .shadowLeft {
+      //     position: absolute;
+      //     width: 16px;
+      //     height: 24px;
+      //     left: 0;
+      //     bottom: 0;
+      //     z-index: 1;
+      //     background: linear-gradient(
+      //       270deg,
+      //       rgba(255, 255, 255, 0) 0%,
+      //       var(--Background-300, #fff) 50%
+      //     );
+      //   }
+      //   .shadowRight {
+      //     position: absolute;
+      //     width: 16px;
+      //     height: 24px;
+      //     right: 0;
+      //     bottom: 0;
+      //     z-index: 1;
+      //     background: linear-gradient(
+      //       270deg,
+      //       rgba(255, 255, 255, 0) 0%,
+      //       var(--Background-300, #fff) 50%
+      //     );
+      //     transform: rotate(180deg);
+      //   }
+    }
+    .contentTab {
+      padding-left: 4px;
+      padding-right: 4px;
+
+      width: auto;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      overflow-y: visible;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch; // 提升 iOS 上的滚动体验
+      scrollbar-width: none; // 隐藏 Firefox 滚动条
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar {
+        display: none; // 隐藏 Chrome/Safari 滚动条
+      }
+      .tabItem {
+        color: var(--Text-800, #596980);
+        font-family: 'PingFang SC';
+        font-size: 14px;
+        font-style: normal;
+        line-height: 14px; /* 100% */
+        cursor: pointer;
+        background: var(--Line-100, #edf2ff);
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        padding: 0 16px;
+        &.active {
+          color: var(--White-100, #fff);
+          background: var(--ThemeColor-Main, #1a81ff);
+          font-weight: 500;
+          position: relative;
+        }
+      }
+    }
+
+    .questionList {
+      margin-top: 7px;
+
+      .listItem {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 48px;
+        padding: 4px 0;
+        font-family: PingFang SC;
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 14px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: var(--Text-Main-10, #000);
+        font-family: 'PingFang SC';
+        font-size: 14px;
+        cursor: pointer;
+        // border-bottom: 1px solid #eeeeee;
+        @include rwd-min('lg') {
+          padding-left: 12px;
+        }
+        .forwardIcon {
+          position: absolute;
+          right: 0;
+          width: 14px;
+          height: 14px;
+          background-image: url('/images/light/help/forward.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          @include theme-night {
+            background-image: url('/images/dark/help/forward.png');
+          }
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+    .empty {
+      height: 150px;
+      display: flex;
+      align-items: center;
+    }
+    // .empty {
+    //   min-height: calc(100vh - $header-height - 368px);
+    //   margin: auto;
+    //   display: flex;
+    //   flex-direction: column;
+    //   justify-content: center;
+    //   align-items: center;
+
+    //   .emptyImage {
+    //     width: 170px;
+    //     height: 104px;
+    //     background: url('./images/empty.png') no-repeat center;
+    //     background-size: 100% 100%;
+    //   }
+
+    //   .emptyText {
+    //     text-align: center;
+    //     font-family: PingFang HK;
+    //     font-weight: 500;
+    //     font-size: 14px;
+    //     line-height: 100%;
+    //     letter-spacing: 0px;
+    //     color: #667180;
+    //   }
+    // }
+  }
+}

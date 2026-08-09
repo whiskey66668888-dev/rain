@@ -1,0 +1,325 @@
+.resultSearchCondition {
+  margin: 0 -10px;
+  background: var(--Background-300, #fff);
+}
+
+.filterBar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) 1px minmax(0, 0.9fr) 1px minmax(0, 1.18fr) 1px 28px;
+  align-items: center;
+  height: 34px;
+}
+
+.cell {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--Text-800, #596980);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.cellActive {
+  color: var(--ThemeColor-Main, #1a81ff);
+}
+
+.cellActive .cellText {
+  font-weight: 500;
+}
+
+.cellActive .arrowIcon {
+  color: var(--ThemeColor-Main, #1a81ff);
+}
+
+.cellText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrowIcon {
+  width: 10px;
+  height: 10px;
+  color: var(--Text-700, #7c8aa1);
+  transition: transform 0.2s ease;
+}
+
+.arrowIconOpen {
+  transform: rotate(180deg);
+}
+
+.divider {
+  width: 1px;
+  height: 14px;
+  background: var(--Line-200, #d8e2f0);
+}
+
+.foldButton {
+  width: 28px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-700, #7c8aa1);
+  cursor: pointer;
+}
+
+.foldIcon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.foldCollapsed .foldIcon {
+  transform: rotate(180deg);
+}
+
+.dateShortcutList {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 1px 27px 8px 10px;
+  scrollbar-width: none;
+}
+
+.dateShortcutList::-webkit-scrollbar {
+  display: none;
+}
+
+.dateShortcut {
+  flex: 0 0 78px;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: var(--Background-500, #f0f5fd);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--Text-800, #596980);
+  cursor: pointer;
+}
+
+.dateShortcut span {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.dateShortcut strong {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.dateShortcutActive {
+  background: var(--ThemeColor-Main, #1a81ff);
+  color: var(--White-100, #fff);
+}
+
+.sportFilterPanel {
+  width: 100%;
+  padding: 8px;
+  background: var(--Background-300, #fff);
+  box-shadow: 0 1px 4px 0 rgba(102, 113, 128, 0.2);
+
+  :global(.adm-capsule-tabs-header) {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  :global(.adm-scroll-mask) {
+    display: none;
+  }
+
+  :global(.adm-capsule-tabs-tab-list) {
+    gap: 4px;
+    overscroll-behavior-x: contain;
+  }
+
+  // :global(.adm-capsule-tabs-tab-list)::before,
+  // :global(.adm-capsule-tabs-tab-list)::after {
+  //   content: '';
+  //   flex: 0 0 calc(50% - 34px);
+  // }
+
+  :global(.adm-capsule-tabs-tab-wrapper) {
+    flex: 0 0 auto;
+    padding: 0;
+  }
+
+  :global(.adm-capsule-tabs-tab) {
+    min-width: 68px;
+    height: 28px;
+    margin: 0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--Button-200, #ecf2ff);
+    color: var(--Text-800, #596980);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+
+  :global(.adm-capsule-tabs-tab-active) {
+    border-radius: 40px;
+    background: var(--ThemeColor-Main, #1a81ff);
+    color: var(--White-100, #fff);
+    font-weight: 600;
+  }
+}
+
+.leagueFilterModal {
+  width: 100vw;
+  height: 540px;
+  max-height: 80vh;
+  overflow: hidden;
+  border-radius: 14px 14px 0 0;
+  background: var(--Background-300, #fff);
+  display: flex;
+  flex-direction: column;
+}
+
+.leagueFilterModal header {
+  height: 44px;
+  padding: 0 16px;
+  border-bottom: 0.5px solid var(--Line-100, #edf2ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-Main-10, #1f2634);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.leagueFilterModal section {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.bottomModal {
+  background-color: var(--Background-700, #f4f7fc) !important;
+}
+
+.optionList {
+  padding: 0 8px;
+}
+
+.optionItem {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: var(--Background-300, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--Text-Main-10, #1f2634);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+}
+
+.optionItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.5px;
+  background: var(--Line-100, #edf2ff);
+}
+
+.optionItem:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+.optionItem:last-child {
+  border-radius: 0 0 12px 12px;
+}
+
+.optionActive {
+  color: var(--ThemeColor-Main, #1a81ff);
+  font-weight: 500;
+}
+
+.radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid #c5d2ea;
+  background: var(--Background-300, #fff);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.radioActive {
+  border-color: var(--ThemeColor-Main, #1a81ff);
+  background: var(--ThemeColor-Main, #1a81ff);
+}
+
+.radioActive::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 5px;
+  height: 8px;
+  border-right: 1.5px solid var(--White-100, #fff);
+  border-bottom: 1.5px solid var(--White-100, #fff);
+  transform: rotate(45deg);
+}
+
+.leagueName {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leagueName img {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.leagueName span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  height: 88px;
+  border-radius: 12px;
+  background: var(--Background-300, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-700, #7c8aa1);
+  font-size: 13px;
+}

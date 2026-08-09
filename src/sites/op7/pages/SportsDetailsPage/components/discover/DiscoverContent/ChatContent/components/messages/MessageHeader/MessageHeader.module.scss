@@ -1,0 +1,51 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+}
+
+.mine {
+  justify-content: flex-end;
+}
+
+.vipBadge {
+  flex-shrink: 0;
+  width: 52px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.nickname {
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.time {
+  color: var(--Text-700);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
+.betTag {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--ThemeColor-Main);
+  color: var(--white-100);
+  font-size: 8px;
+  line-height: 1.2;
+  font-weight: 500;
+  flex-shrink: 0;
+}

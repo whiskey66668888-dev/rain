@@ -1,0 +1,85 @@
+@use '@/common/styles/rwd' as *;
+
+.passwordModal {
+  background: var(--Background-300);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  padding-bottom: 40px;
+
+  // Pad/Web 居中弹窗样式
+  &.desktop {
+    width: 320px;
+    border-radius: 16px;
+  }
+
+  header {
+    height: 48px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--Text-Main-10);
+
+    .bnClose {
+      position: absolute;
+      right: 20px;
+      top: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  section {
+    padding: 0 10px;
+
+    .title {
+      text-align: center;
+      font-size: 12px;
+      color: var(--Text-800);
+      margin-bottom: 12px;
+    }
+
+    .tip {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+
+      .unit {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 32px;
+      }
+
+      .amount {
+        font-size: 32px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .button {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  // H5 底部抽屉样式
+  &.mobile {
+    border-radius: 16px 16px 0 0;
+  }
+}

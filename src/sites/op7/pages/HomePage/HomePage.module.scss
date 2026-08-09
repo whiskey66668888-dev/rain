@@ -1,0 +1,534 @@
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  60% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+  99% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.homePage {
+  height: 100%;
+  margin-bottom: 16px;
+  .topArea {
+    display: flex;
+    // padding-top: 16px;
+    margin-top: 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    @include rwd-min('lg') {
+      height: 180px;
+    }
+    .carouselBanner {
+      aspect-ratio: 350/163 !important;
+      & > div {
+        padding: 0 12px;
+      }
+    }
+  }
+  .mainArea {
+    flex: 1;
+    padding-top: 0;
+    background: var(--Background-700);
+    border-radius: 10px 10px 0 0;
+    min-height: 600px;
+    .mainAreaTop {
+      border-radius: 10px;
+      // background: var(--Background-300);
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+    }
+    .cardWrapper {
+      margin-top: 16px;
+      .cardTitle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        color: var(--Text-Main-10);
+        margin-bottom: 16px;
+        & > p:nth-of-type(2) {
+          color: var(--Text-800);
+          font-weight: 400;
+        }
+        .viewPromotion {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+          color: var(--ThemeColor-Main);
+          font-weight: 600;
+          margin-left: auto;
+        }
+      }
+      .cardContent {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        // overflow-x: auto;
+        // overflow-y: hidden;
+        width: 100%;
+
+        .cardItemWrapper {
+          min-width: 108px;
+          flex: 1;
+          height: 145px;
+          box-sizing: content-box;
+          @include rwd-max('lg') {
+            max-width: 108px;
+          }
+
+          .cardItem {
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 10px;
+            justify-content: space-around;
+            transition: all 0.3s ease;
+            position: relative;
+            // &:hover {
+            //   transform: translateY(-5px);
+            // }
+            .maintenance {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 8;
+              display: flex;
+              align-items: flex-end;
+              justify-content: center;
+              cursor: not-allowed;
+              background: rgba(0, 0, 0, 0.5);
+              padding-bottom: 10px;
+            }
+            .maintenanceNotice {
+              position: absolute;
+              left: 5px;
+              right: 5px;
+              bottom: 10px;
+              z-index: 10;
+              pointer-events: none;
+              display: flex;
+              justify-content: center;
+              & > div {
+                pointer-events: auto;
+                cursor: pointer;
+                border-radius: 50px;
+                background: var(--Background-300);
+                color: var(--Text-Main-10);
+                font-weight: 400;
+                padding: 4px 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                max-width: 100%;
+                overflow: hidden;
+
+                & > span {
+                  min-width: 0;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+              }
+            }
+            .cardImage {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: absolute;
+              img {
+                position: absolute;
+                width: 108px;
+                height: 145px;
+              }
+            }
+            @include can-hover {
+              .hover {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+              }
+            }
+            .hover {
+              display: flex;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 6;
+              background: rgba(0, 0, 0, 0.6);
+              align-items: center;
+              justify-content: center;
+              opacity: 0;
+              visibility: hidden;
+              pointer-events: none;
+              transition:
+                opacity 0.4s ease,
+                visibility 0.4s ease;
+              & > div {
+                width: 50px;
+                height: 50px;
+              }
+            }
+            // .cardItemTitle {
+            //   position: absolute;
+
+            //   display: flex;
+            //   flex-direction: column;
+            //   gap: 4px;
+            //   white-space: nowrap;
+            //   &.name-3 {
+            //     height: 60px;
+            //     bottom: 0;
+            //     justify-content: end;
+            //     padding-bottom: 10px;
+            //     background: url('/images/common/bg_casino.png') no-repeat center center;
+            //     background-size: 100% 100%;
+            //   }
+            //   &.name-4 {
+            //     height: 60px;
+            //     bottom: 0;
+            //     justify-content: end;
+            //     padding-bottom: 10px;
+            //     background: url('/images/common/ba_slot.png') no-repeat center center;
+            //     background-size: 100% 100%;
+            //   }
+            //   // top: 38px;
+            //   left: 16px;
+            //   & > p {
+            //     font-weight: 600;
+            //     color: #fff;
+            //     font-size: 16px;
+            //   }
+            //   & > span {
+            //     color: #fff;
+            //     opacity: 0.5;
+            //     font-size: 12px;
+            //     font-weight: 400;
+            //   }
+            // }
+          }
+        }
+
+        // @include rwd-max('lg') {
+        //   .cardItem {
+        //     width: 114px;
+        //     height: 148px;
+        //     flex-direction: column-reverse;
+        //     .cardImage {
+        //       position: relative;
+        //       top: -16px;
+        //       img {
+        //         position: relative;
+        //         width: 100px;
+        //         height: 129px;
+        //       }
+        //     }
+        //     .cardItemTitle {
+        //       // top: 95px;
+        //       width: 100%;
+        //       left: 0;
+        //       align-items: center;
+        //       z-index: 3;
+        //       bottom: 10px;
+        //     }
+        //   }
+        // }
+        .partnersCard {
+          cursor: pointer;
+          height: 77px;
+          background: var(--Background-300);
+          flex: 1;
+          color: var(--Text-800);
+          border-radius: 10px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          text-align: center;
+          flex-shrink: 0;
+          gap: 12px;
+          justify-content: center;
+          & > img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+          }
+          & > p {
+            font-size: 12px;
+          }
+        }
+        .communityCard,
+        .gameProviderCard {
+          height: 50px;
+          object-fit: contain;
+          display: flex;
+          flex: 1;
+          height: 50px;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        @include can-hover {
+          .communityCard {
+            transition: all 0.3s ease;
+            &:hover {
+              scale: 1.1;
+            }
+          }
+        }
+        .gameProviderCard {
+          height: 42px;
+          width: 109px;
+          flex: none;
+          background: var(--Background-300);
+          flex-shrink: 0;
+          cursor: default;
+        }
+      }
+      .cardContent2 {
+        background: var(--Background-300);
+        border-radius: 10px;
+        height: 72px;
+        align-items: center;
+      }
+      &.menuCards {
+        // @include rwd-max('lg') {
+        display: none;
+        // }
+        .cardContent {
+          > * > * {
+            animation: bounceIn 0.5s ease;
+          }
+        }
+        .gameId-89 {
+          // OP体育
+          background: radial-gradient(82.74% 60.76% at 50% 5.21%, #ffbf00 0%, #c70d0f 100%);
+        }
+        .gameId-30 {
+          // CME体育
+          background: radial-gradient(77.09% 77.12% at 47.69% 3.13%, #0fb3ff 0%, #0041ae 100%);
+        }
+        .gameId-79 {
+          // EB体育
+          background: radial-gradient(78.47% 78.47% at 50% 1.74%, #ff545c 0%, #b2181b 100%);
+        }
+        .gameId-78 {
+          // IM体育
+          background: radial-gradient(77.09% 77.12% at 47.69% 3.13%, #7dff71 0%, #419838 100%);
+        }
+        .gameId-60 {
+          // AI体育
+          background: radial-gradient(77.09% 77.12% at 47.69% 3.13%, #64e5ff 0%, #0076d3 100%);
+        }
+        .gameId-81 {
+          // DP电竞
+          background: radial-gradient(74.29% 74.29% at 50% 5.36%, #dd8eff 0%, #670ccd 100%);
+        }
+        .gameId-84 {
+          // CME电竞
+          background: radial-gradient(74.29% 74.29% at 50% 5.36%, #9db2ff 0%, #3c41d0 100%);
+        }
+        .gameId-88 {
+          // SK电竞
+          background: radial-gradient(64.29% 64.29% at 50% 5.36%, #9de6ff 0%, #1c71f1 100%);
+        }
+        .gameId-43 {
+          // EB真人
+          background: radial-gradient(64.99% 64.99% at 50% 5.36%, #ffb84f 0%, #aa4700 100%);
+        }
+        .gameId-31 {
+          // EVO真人
+          background: radial-gradient(74.29% 74.29% at 50% 5.36%, #ff9704 0%, #89070c 100%);
+        }
+        .gameId-5 {
+          // Choice真人
+          background: radial-gradient(74.29% 74.29% at 50% 5.36%, #ff706c 0%, #820608 100%);
+        }
+        .gameId-20 {
+          // BG真人
+          background: radial-gradient(66.02% 66.02% at 50% 5.36%, #2fdcff 0%, #0341a8 100%);
+        }
+        .gameId-91 {
+          // PP真人
+          background: radial-gradient(84.38% 79.64% at 50% 0%, #70ea67 0%, #096834 100%);
+        }
+        .gameId-68 {
+          // PG游戏
+          background: radial-gradient(76.52% 76.52% at 50% 3.13%, #86ff7e 0%, #007535 100%);
+        }
+        .gameId-70 {
+          // DY游戏
+          background: radial-gradient(76.52% 76.52% at 50% 3.13%, #ff78fd 0%, #8104a1 100%);
+        }
+        .gameId-72 {
+          // PP游戏
+          background: radial-gradient(97.58% 97.6% at 47.69% 2.43%, #cde0ff 0%, #2a5980 100%);
+        }
+        .gameId-77 {
+          // Vector游戏
+          background: radial-gradient(65.97% 65.97% at 50% 3.13%, #83f5ff 0%, #1d79ff 100%);
+        }
+        .gameId-9 {
+          // PA游戏
+          background: radial-gradient(85.76% 85.77% at 47.69% 2.43%, #6986ff 0%, #3c41d0 100%);
+        }
+        .gameId-113 {
+          // EB游戏
+          background: radial-gradient(77.08% 77.08% at 50% 0%, #ffb514 0%, #a40019 100%);
+        }
+        .gameId-117 {
+          // MG游戏
+          background: radial-gradient(77.08% 77.08% at 50% 0%, #ffd814 0%, #c46200 100%);
+        }
+        .gameId-116 {
+          // JDB游戏
+          background: radial-gradient(77.08% 77.08% at 50% 0%, #e358ff 0%, #82029c 100%);
+        }
+        .gameId-120 {
+          background: radial-gradient(77.08% 77.08% at 50% 0%, #df9d6a 0%, #7c5128 100%);
+        }
+        .gameId-38 {
+          // OP棋牌
+          background: radial-gradient(74.29% 74.29% at 50% 5.36%, #ff706c 0%, #b50003 100%);
+        }
+        .gameId-55 {
+          // DY棋牌
+          background: radial-gradient(77.08% 77.08% at 50% 0%, #fff240 0%, #e07305 100%);
+        }
+        .gameId-18 {
+          // KY棋牌
+          background: radial-gradient(87.5% 77.43% at 50% 2.78%, #86ff7f 0%, #10780e 100%);
+        }
+        .gameId-74 {
+          // BY棋牌
+          background: radial-gradient(87.5% 77.43% at 50% 2.78%, #d58eff 0%, #2200c3 100%);
+        }
+        .gameId-118 {
+          // YY棋牌
+          background: radial-gradient(62.16% 62.17% at 47.69% 4.17%, #5bdeff 0%, #136ad9 100%);
+        }
+        .gameId-83 {
+          // OP彩票
+          background: radial-gradient(74.29% 74.29% at 50% 5.36%, #9db2ff 0%, #3c41d0 100%);
+        }
+        .gameId-110 {
+          // BTC彩票
+          background: radial-gradient(112.98% 97.22% at 50% 2.78%, #ffcf5e 0%, #d00000 100%);
+        }
+        .gameId-71 {
+          // SY彩票
+          background: radial-gradient(69.79% 69.79% at 50% 0%, #ff7476 0%, #b80003 100%);
+        }
+        .gameId-16 {
+          // VR彩票
+          background: radial-gradient(90.78% 70.71% at 50% 0%, #83f5ff 0%, #1d79ff 100%);
+        }
+        .gameId-63 {
+          // TC彩票
+          background: radial-gradient(90.78% 70.71% at 50% 0%, #83f5ff 0%, #1d79ff 100%);
+        }
+      }
+      &.showMenuCards {
+        // @include rwd-max('lg') {
+        display: block;
+        // }
+      }
+      &.resetAnimation {
+        @include rwd-max('lg') {
+          .cardContent {
+            > * {
+              animation: none;
+            }
+          }
+        }
+      }
+      &.currentItemActive {
+        // padding: 0 12px;
+        .cardItemWrapper {
+          @include rwd-max('lg') {
+            max-width: none;
+          }
+        }
+        & > ul.cardContent {
+          padding: 0 10px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 5px;
+          > li {
+            padding: 0;
+            // 最多 3 列，最后一行不足 3 个时按剩余项平分整行宽度
+            flex: 1 1 calc((100% - 10px) / 3);
+
+            .cardItemWrapper {
+              min-width: 0;
+              max-width: none;
+            }
+          }
+
+          // 总数为 3n+2（如 5/8/11）时：首行 2 个，后续每行 3 个（保持原顺序）
+          > li:first-child:nth-last-child(3n + 2),
+          > li:first-child:nth-last-child(3n + 2) + li {
+            flex-basis: calc((100% - 5px) / 2);
+          }
+
+          // 总数为 3n+1（如 7/10/13）时：首行 1 个，后续每行 3 个（保持原顺序）
+          > li:first-child:nth-last-child(3n + 1) {
+            flex-basis: 100%;
+          }
+
+          // 只有 4 个时，改为 2x2
+          > li:first-child:nth-last-child(4),
+          > li:first-child:nth-last-child(4) ~ li {
+            flex-basis: calc((100% - 5px) / 2);
+          }
+        }
+      }
+      &.partnersCardWrapper {
+        & > ul > li {
+          width: 100%;
+          .cardContent {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+          }
+        }
+      }
+      .smallCardContent {
+        height: 78px;
+        width: 78px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+    }
+  }
+  .testButtons {
+    display: flex;
+    gap: 10px;
+  }
+}

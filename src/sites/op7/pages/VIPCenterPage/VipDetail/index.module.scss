@@ -1,0 +1,233 @@
+.vipDetail {
+  height: 100dvh;
+  background: var(--Background-700);
+  display: flex;
+  flex-direction: column;
+  /** 标题区固定顶栏：滚动只在 .scrollBody，避免 Overlay body 上 overflow:hidden 导致 sticky 失效 */
+  overflow: hidden;
+
+  @include rwd-min(lg) {
+    border-radius: 16px;
+    height: 80dvh;
+    max-height: 800px;
+    width: 450px;
+    background-color: var(--Background-400);
+  }
+
+  .detailHeader {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    background: var(--Background-700);
+
+    @include rwd-min(lg) {
+      background: var(--Background-300);
+    }
+  }
+  .closeButton {
+    margin-right: 24px;
+  }
+  .scrollBody {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .userContent {
+    padding: 0 24px;
+    @include rwd-min(lg) {
+      padding: 10px 24px 0;
+    }
+    .quotaBox {
+      padding: 12px 10px;
+      margin: 0 auto;
+      background: var(--Background-300);
+      border-radius: 12px;
+      //   background-color: #fff;
+      .quotaBoxTop1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .quotaBoxTop1Right {
+          display: flex;
+          align-items: center;
+          font-size: calc(12px * var(--text-scale, 1));
+          font-style: normal;
+          font-weight: 500;
+          color: var(--ThemeColor-Main);
+          cursor: pointer;
+          .hasDateView {
+            background: var(--Red-400);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 4px;
+          }
+          img {
+            margin-right: 2px;
+            width: 14px;
+            height: 14px;
+          }
+        }
+      }
+      .title {
+        display: flex;
+        align-items: center;
+
+        .text {
+          margin-left: 8px;
+          color: var(--Text-Main-10);
+          font-family: 'PingFang SC';
+          font-size: calc(16px * var(--text-scale, 1));
+          font-weight: 500;
+        }
+      }
+
+      .quoContetn {
+        .queItem {
+          width: 100%;
+          margin-top: 12px;
+
+          .itemTitle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            color: var(--Text-Main-10-10);
+            font-family: 'PingFang SC';
+            font-size: calc(14px * var(--text-scale, 1));
+            font-weight: 500;
+            span {
+              display: inline-block;
+              width: 20px;
+              height: 20px;
+              margin-right: 8px;
+              line-height: 20px;
+              text-align: center;
+              background: var(--ThemeColor-Main);
+              border-radius: 50%;
+              color: #fff;
+              font-family: 'PingFang SC';
+              font-size: calc(12px * var(--text-scale, 1));
+              font-weight: 500;
+            }
+          }
+          .itemContentBox {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            .itemContent {
+              width: calc(100% - 28px);
+              color: var(--Text-700);
+              font-family: 'PingFang SC';
+              font-size: calc(12px * var(--text-scale, 1));
+              font-weight: 400;
+            }
+          }
+        }
+      }
+
+      .vipProportion {
+        margin-top: 12px;
+
+        .list_item {
+          display: grid;
+          grid-template-columns: 55px repeat(6, 1fr);
+          background: var(--Background-500);
+          div {
+            height: 36px;
+            line-height: 36px;
+            color: var(--Text-800);
+            text-align: center;
+            font-family: 'PingFang SC';
+            font-size: calc(11px * var(--text-scale, 1));
+            font-weight: 500;
+            &:first-child {
+              color: var(--ThemeColor-Main);
+              font-size: calc(12px * var(--text-scale, 1));
+            }
+          }
+          &:first-child {
+            div {
+              height: 32px;
+              line-height: 32px;
+              color: var(--White-100);
+              font-family: 'PingFang SC';
+              font-size: calc(12px * var(--text-scale, 1));
+              font-weight: 500;
+              background: var(--ThemeColor-Main);
+            }
+          }
+
+          &:nth-child(2n) {
+            div {
+              background: var(--Background-300);
+              &:first-child {
+                color: var(--ThemeColor-Main);
+              }
+            }
+          }
+        }
+        .noFooterBall {
+          grid-template-columns: 55px repeat(5, 1fr);
+        }
+      }
+
+      .withdrawVip {
+        .list_item {
+          grid-template-columns: repeat(3, 1fr);
+
+          div {
+            font-size: calc(12px * var(--text-scale, 1));
+            font-weight: 500;
+            &:first-child {
+              font-size: calc(12px * var(--text-scale, 1));
+            }
+          }
+          &:first-child {
+            div {
+              font-size: calc(12px * var(--text-scale, 1));
+              font-weight: 500;
+              background: var(--ThemeColor-Main);
+            }
+          }
+        }
+      }
+    }
+    .quotaBo2 {
+      margin-top: 10px;
+    }
+  }
+
+  .goTopVip {
+    width: 144px;
+    height: 36px;
+    margin: 24px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 50px;
+    background: var(--Background-300);
+    .goTopIconBox {
+      width: 18px;
+      height: 18px;
+      div {
+        width: 100%;
+      }
+    }
+    .goTopText {
+      color: var(--Text-700);
+      font-family: 'PingFang SC';
+      font-size: calc(14px * var(--text-scale, 1));
+      font-weight: 400;
+      margin-left: 6px;
+    }
+  }
+}

@@ -1,0 +1,116 @@
+.landingPage {
+  height: 100%;
+
+  .topArea {
+    display: flex;
+    height: 200px;
+    padding: 16px 0 8px 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    @include rwd-min('lg') {
+      height: 176px;
+    }
+  }
+
+  .mainArea {
+    flex: 1;
+    padding: 12px 0;
+    background: var(--Background-700);
+    border-radius: 10px 10px 0 0;
+    min-height: 600px;
+    position: relative;
+    top: -8px;
+
+    @include rwd-min('lg') {
+      border-radius: 0;
+      top: 0;
+    }
+  }
+
+  .cardWrapper {
+    width: 100%;
+  }
+
+  .cardContent {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 12px;
+  }
+
+  .partnersCardWrapper {
+    .cardContent {
+      align-items: center;
+    }
+  }
+
+  .partnersCard {
+    cursor: pointer;
+    min-width: 0;
+    height: 120px;
+    background: var(--Background-300);
+    flex: 1;
+    color: var(--Text-800);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0;
+    gap: 10px;
+    justify-content: center;
+    padding: 0 8px;
+
+    & > div:first-child {
+      width: 28px;
+      height: 28px;
+    }
+
+    & > div:last-child {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    p:first-child {
+      color: var(--Text-Main-10);
+      font-weight: 600;
+    }
+  }
+
+  .communityCard {
+    width: 185px;
+    height: 50px;
+    object-fit: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    background: var(--Background-300);
+  }
+
+  .gameProviderCard {
+    width: 109px;
+    height: 42px;
+    display: flex;
+    flex: none;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--Background-300);
+    cursor: default;
+  }
+}

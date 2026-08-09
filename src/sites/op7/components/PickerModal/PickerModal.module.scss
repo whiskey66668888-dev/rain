@@ -1,0 +1,232 @@
+.pickerModal:global(.adm-picker-popup) :global(.adm-popup-body) {
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  background: #f5f7fa;
+}
+
+:global([data-theme='dark']) .pickerModal:global(.adm-picker-popup) :global(.adm-popup-body) {
+  background: var(--Background-400);
+}
+
+.pickerModal :global(.adm-picker) {
+  padding: 0 10px 10px 10px;
+  box-sizing: border-box;
+}
+
+.pickerModal :global(.adm-picker-header) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  background: #f5f7fa;
+  border: none;
+  border-bottom: none;
+
+  :global(.adm-picker-header-button) {
+    font-size: 14px;
+    line-height: 20px;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:first-child {
+      color: var(--Text-800);
+    }
+
+    &:last-child {
+      color: var(--ThemeColor-Main);
+    }
+  }
+
+  :global(.adm-picker-header-title) {
+    color: var(--Text-Main-10, #1f2634);
+    text-align: center;
+    font-family: 'PingFang SC', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+}
+
+:global([data-theme='dark']) .pickerModal :global(.adm-picker-header) {
+  background: var(--Background-400);
+}
+
+.pickerModal :global(.adm-picker-body) {
+  position: relative;
+  isolation: isolate;
+  margin-top: 0;
+  background: var(--Background-300, #fff) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+
+  :global(.adm-picker-view) {
+    background: var(--Background-300, #fff);
+    padding: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 44px;
+    background: var(--ThemeColor-Main);
+    mix-blend-mode: color;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 10;
+  }
+}
+
+.pickerModal :global(.adm-picker-view-mask) {
+  padding: 0;
+}
+
+:global([data-theme='dark']) .pickerModal :global(.adm-picker-view-mask-top),
+:global([data-theme='dark']) .pickerModal :global(.adm-picker-view-mask-bottom) {
+  background: var(--Background-300);
+}
+
+.pickerModal :global(.adm-picker-view-mask-middle) {
+  height: 44px;
+  padding: 5px 0;
+  box-sizing: border-box;
+  width: 100%;
+  border-top: solid 1px var(--Line-100, rgba(0, 0, 0, 0.06));
+  border-bottom: solid 1px var(--Line-100, rgba(0, 0, 0, 0.06));
+}
+
+.pickerModal :global(.adm-picker-view-column-item) {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  padding: 0 20px;
+  color: var(--Text-700);
+}
+
+.pickerModal :global(.adm-picker-view-column-item-label) {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+}
+
+.pickerItemRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+}
+
+.pickerItemValue {
+  color: var(--Text-700);
+}
+
+.pickerItemCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.pickerModalDesktop {
+  width: 450px;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--Background-400);
+  border-radius: 12px;
+  padding: 12px 24px 24px;
+  box-sizing: border-box;
+}
+
+.pickerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 4px 20px 0;
+  background: var(--Background-400);
+  flex-shrink: 0;
+}
+
+.pickerHeaderButton {
+  font-size: 14px;
+  line-height: 20px;
+  padding: 0 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--Text-800);
+
+  &:last-child {
+    color: var(--ThemeColor-Main);
+  }
+}
+
+.pickerHeaderTitle {
+  color: var(--Text-Main-10, #1f2634);
+  text-align: center;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.pickerBody {
+  padding: 0 10px 10px 10px;
+  background: var(--Background-300, #fff);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  min-height: 0;
+
+  :global(.adm-picker-view) {
+    background: var(--Background-300, #fff);
+  }
+
+  :global(.adm-picker-view-mask) {
+    padding: 0;
+  }
+
+  :global(.adm-picker-view-mask-middle) {
+    height: 44px;
+    padding: 5px 0;
+    box-sizing: border-box;
+    border-top: solid 1px var(--Line-100, rgba(0, 0, 0, 0.06));
+    border-bottom: solid 1px var(--Line-100, rgba(0, 0, 0, 0.06));
+  }
+
+  :global(.adm-picker-view-column-item) {
+    padding: 0 20px;
+    color: var(--Text-700);
+  }
+
+  :global(.adm-picker-view-column-item-label) {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 44px;
+    background: var(--ThemeColor-Main);
+    mix-blend-mode: color;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 10;
+  }
+}

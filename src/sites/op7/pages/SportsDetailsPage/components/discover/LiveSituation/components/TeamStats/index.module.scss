@@ -1,0 +1,218 @@
+.teamStats {
+  overflow: hidden;
+  background: var(--Background-300);
+  border-radius: 6px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 16px;
+  gap: 10px;
+
+  h4 {
+    margin: 0;
+    color: var(--Text-Main-10);
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+
+.innerTabs {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 2px;
+  background: var(--Line-100);
+  border-radius: 40px;
+
+  button {
+    height: 22px;
+    min-width: 48px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 30px;
+    background: transparent;
+    color: var(--Text-800);
+    cursor: pointer;
+    font-size: 12px;
+  }
+}
+
+.innerTabs .activeInnerTab {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+}
+
+.ballControl {
+  display: grid;
+  padding: 0 0 8px;
+
+  h5 {
+    margin: 0;
+    color: var(--Text-Main-10);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.ballTrack {
+  display: flex;
+  gap: 4px;
+  padding: 8px 10px 16px 16px;
+
+  i,
+  em {
+    display: block;
+    min-width: 42px;
+    height: 26px;
+    padding: 0 10px;
+    overflow: hidden;
+    border-radius: 6px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  i {
+    background: rgba(51, 143, 255, 0.25);
+    color: rgba(51, 143, 255, 0.8);
+    text-align: left;
+  }
+
+  em {
+    background: rgba(51, 143, 255, 0.8);
+    color: var(--White-100);
+    text-align: right;
+  }
+}
+
+.sectionDivider {
+  display: block;
+  height: 1px;
+  margin: 0 10px;
+  background: var(--Line-100);
+}
+
+.statList {
+  display: flex;
+  flex-direction: column;
+}
+
+.statRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(86px, 1fr) minmax(0, 1fr);
+  align-items: center;
+  padding: 8px 16px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  b {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.divider {
+  display: block;
+  height: 1px;
+  margin: 8px 16px;
+  background: var(--Line-100);
+}
+
+.shotSummary {
+  display: flex;
+  height: 132px;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 8px 16px 10px;
+  padding: 10px 12px 0;
+  overflow: hidden;
+  background-image: var(--shot-bg-light);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 4px;
+
+  :global([data-theme='dark']) & {
+    background-image: var(--shot-bg-dark);
+  }
+}
+
+.shotOffTarget {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-weight: 600;
+
+  > span:last-child {
+    justify-self: end;
+  }
+}
+
+.shotOnTarget {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 84px;
+  margin-top: 21px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-weight: 600;
+
+  b {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    left: 0;
+    text-align: center;
+  }
+}
+
+.shotTagHome,
+.shotTagAway {
+  display: inline-grid;
+  min-width: 22px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.shotTagHome {
+  justify-self: start;
+  background: rgba(51, 143, 255, 0.25);
+  color: rgba(51, 143, 255, 0.8);
+}
+
+.shotTagAway {
+  justify-self: end;
+  background: rgba(51, 143, 255, 0.8);
+  color: var(--White-100);
+}

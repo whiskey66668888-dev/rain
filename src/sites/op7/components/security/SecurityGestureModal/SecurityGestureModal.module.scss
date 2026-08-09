@@ -1,0 +1,141 @@
+.gestureGuide {
+  background: var(--Background-300);
+  overflow: hidden;
+  padding: 0 20px 20px;
+
+  &.mobile {
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+  }
+
+  &.desktop {
+    border-radius: 16px;
+    width: 450px;
+    max-width: 90vw;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+  }
+
+  .gestureGuideTitle {
+    width: 100%;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Text-Main-10);
+    text-align: center;
+    font-family: 'PingFang SC', 'PingFang HK', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .gestureGuideContent {
+    width: 100%;
+    padding: 20px 22px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    margin: 15px 0 0;
+    background: url('/images/light/gesture_bg.png') no-repeat center / 100% 100%;
+    [data-theme='dark'] & {
+      background: url('/images/dark/gesture_bg.png') no-repeat center / 100% 100%;
+    }
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    .gestureGuideItem {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .GuideItemTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        color: var(--Text-Main-10);
+        font-family: 'PingFang SC', 'PingFang HK', sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+
+        img {
+          width: 12px;
+          height: 12px;
+          margin-right: 4px;
+          flex-shrink: 0;
+        }
+      }
+
+      .GuideText {
+        color: var(--Text-Main-10);
+        font-family: 'PingFang SC', 'PingFang HK', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+        margin-bottom: 2px;
+        text-align: left;
+      }
+
+      &:last-child .GuideText {
+        margin-left: 20%;
+      }
+    }
+  }
+
+  .gestureGuideBtn {
+    display: flex;
+    width: calc(100% - 0px);
+    // max-width: 345px;
+    height: 48px;
+    margin: 30px auto 0;
+    padding: 15px 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    background: var(--ThemeColor-Main);
+    color: #fff;
+    text-align: center;
+    font-family: 'PingFang SC', 'PingFang HK', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+
+  .gestureGuideCancel {
+    display: flex;
+    width: calc(100% - 32px);
+    max-width: 345px;
+    height: 48px;
+    margin: 12px auto 0;
+    padding: 15px 0;
+    justify-content: center;
+    align-items: center;
+    color: var(--Text-Main-10);
+    text-align: center;
+    font-family: 'PingFang SC', 'PingFang HK', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: opacity 0.2s;
+
+    &:active {
+      opacity: 0.7;
+    }
+  }
+}

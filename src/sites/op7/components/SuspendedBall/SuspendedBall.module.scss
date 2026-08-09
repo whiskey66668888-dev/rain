@@ -1,0 +1,159 @@
+.suspendedBall {
+  position: fixed;
+  z-index: 1200;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: auto;
+  user-select: none;
+  touch-action: none;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  overflow: visible;
+  transition:
+    left 0.24s ease-out,
+    top 0.24s ease-out;
+
+  .actionBtn,
+  .ballBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .moneyBox {
+    border-radius: 100px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .actions {
+    position: absolute;
+    top: 50%;
+    z-index: 0;
+    display: flex;
+    width: max-content;
+    gap: 10px;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.96);
+    transition:
+      opacity 0.2s ease,
+      transform 0.22s ease;
+    justify-content: space-between;
+    pointer-events: none;
+    .actionBtns {
+      display: flex;
+      gap: 10px;
+    }
+  }
+}
+
+.dragging {
+  transition: none;
+}
+
+.leftSide {
+  flex-direction: row;
+
+  .actions {
+    left: calc(100% + 10px);
+    transform: translateY(-50%) scale(0.96);
+    transform-origin: left center;
+  }
+}
+
+.rightSide {
+  flex-direction: row-reverse;
+
+  .actions {
+    right: calc(100% + 10px);
+    transform: translateY(-50%) scale(0.96);
+    transform-origin: right center;
+  }
+}
+
+.ballBtn {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.ballInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 26, 38, 0.72);
+  border-radius: 999px;
+}
+
+.closeBtn {
+  background: rgba(20, 26, 38, 0.72);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.actionBtn {
+  --i: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 95, 136, 0.88);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateX(8px) scale(0.92);
+  pointer-events: none;
+  transition:
+    transform 0.28s ease,
+    opacity 0.22s ease;
+  transition-delay: calc(var(--i) * 0.03s);
+}
+
+.expanded {
+  .actions {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    pointer-events: auto;
+  }
+
+  .actionBtn {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+  }
+
+  &.leftSide .actionBtn {
+    transform: translateX(0) scale(1);
+  }
+
+  &.rightSide .actionBtn {
+    transform: translateX(0) scale(1);
+  }
+}
+
+.leftSide:not(.expanded) .actionBtn {
+  transform: translateX(-8px) scale(0.92);
+}
+
+.rightSide:not(.expanded) .actionBtn {
+  transform: translateX(8px) scale(0.92);
+}

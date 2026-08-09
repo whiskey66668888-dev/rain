@@ -1,0 +1,60 @@
+.card {
+  // height: 176px;
+  // width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  background: var(--Background-300);
+}
+
+/* 图片区域 */
+.imageWrapper {
+  // width: 351px;
+  // width: 100%;
+  background: var(--Background-300);
+}
+
+.image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* 底部信息区 */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--Background-300);
+
+  height: 35px;
+  padding: 8px 20px;
+  gap: 10px;
+}
+
+/* 时间 */
+.time {
+  color: var(--Text-800, #7a8499);
+  text-align: center;
+
+  font-family: 'PingFang SC';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* 右侧按钮 */
+.action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: var(--ThemeColor-Main, #1a81ff);
+
+  /* 最小文字 */
+  font-family: 'PingFang SC';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+}

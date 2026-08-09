@@ -1,0 +1,178 @@
+.matchItem {
+  display: flex;
+  width: 100%;
+  padding: 0 12px;
+  background: var(--Background-300);
+  min-height: 152px;
+  border-bottom: 0.5px solid var(--Line-100);
+  &.noBorder {
+    border-bottom: none;
+  }
+
+  .leftInfo {
+    flex: 0 0 180px;
+    max-width: 180px;
+    .leftTitle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+
+      .titleLeftBox {
+        // background: linear-gradient(
+        //   90deg,
+        //   var(--Background-500, rgba(31, 38, 52, 0)) 0%,
+        //   var(--Background-700, #151b26) 100%
+        // );
+        // clip-path: polygon(0 0, 100% 0, 100% calc(100% - 31px), calc(100% - 14px) 100%, 0 100%);
+        background: var(--Button-200);
+        display: flex;
+        padding: 0 10px 0 12px;
+        height: 20px;
+        line-height: 20px;
+        align-items: center;
+        gap: 5px;
+        color: var(--Text-800);
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        margin-left: -12px;
+        position: relative;
+
+        &.withVideo {
+          @include rwd-max('lg') {
+            .videoIcon {
+              display: none;
+            }
+          }
+          @include rwd-min('lg') {
+            padding-right: 30px; // 给绝对定位的视频图标预留空间
+            .timingBox {
+              white-space: nowrap;
+              font-variant-numeric: tabular-nums;
+              font-feature-settings: 'tnum';
+            }
+            .videoIcon {
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+        }
+      }
+      .matchNumBox {
+        display: flex;
+        align-items: center;
+        color: var(--Text-800);
+        cursor: pointer;
+        align-items: end;
+        .matchNum {
+          margin-right: -1px;
+          font-family: 'DINPro';
+          line-height: 1;
+        }
+      }
+    }
+  }
+  .rightInfo {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    margin-left: 16px;
+  }
+}
+
+.teams {
+  min-height: 88px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  // gap: 4px;
+  cursor: pointer;
+  .teamInfo {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--Text-Main-10);
+    gap: 10px;
+    @include rwd-max('lg') {
+      pointer-events: none;
+    }
+    .team {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      & > div {
+        flex-shrink: 0;
+      }
+    }
+    .score {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+      font-family: 'DINPro';
+      .redCard,
+      .yellowCard {
+        min-height: 14px;
+        padding: 0 2px;
+        border-radius: 2px;
+        background: var(--Red-300);
+        color: var(--White-100);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 9px;
+        position: relative;
+        top: -1px;
+        padding-top: 2px;
+        line-height: 1;
+      }
+      .yellowCard {
+        background: yellow;
+        color: #000;
+      }
+      .teamScore {
+        color: var(--Text-Main-10);
+        min-width: 15px;
+        font-family: 'DINPro';
+        text-align: center;
+      }
+    }
+  }
+}
+.scoreList {
+  margin: 2px 0 6px;
+  display: flex;
+  gap: 10px;
+  color: var(--Text-800);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'DINPro';
+  font-weight: 500;
+  & > div {
+    gap: 2px;
+    display: flex;
+    align-items: center;
+  }
+  &.specialScoreList {
+    position: relative;
+    left: 0;
+    overflow: auto;
+    font-family: 'DINPro';
+    .scoreItemHighlight {
+      color: var(--ThemeColor-Main);
+    }
+  }
+  .scoreItemHighlight {
+    color: var(--ThemeColor-Main);
+  }
+  .scoreIcon {
+    position: relative;
+    top: -1px;
+  }
+}

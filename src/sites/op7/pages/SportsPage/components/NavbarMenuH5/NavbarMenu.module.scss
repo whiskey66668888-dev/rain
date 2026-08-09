@@ -1,0 +1,47 @@
+.navBarMenuWrapper {
+  padding: 8px 0;
+  background: var(--Background-300);
+  border-bottom: 0.5px solid var(--Line-100);
+  .navBarMenu {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 12px;
+
+    flex-shrink: 0;
+
+    & > button {
+      display: flex;
+      height: 28px;
+      min-width: 66px;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      border-radius: 100px;
+      background: var(--Background-500);
+      color: var(--Text-800);
+      font-weight: 400;
+      flex-direction: row;
+      flex: 0 0 auto;
+      padding: 0 12px;
+      &.menuItemActive {
+        background: var(--ThemeColor-Main);
+        color: var(--White-100);
+      }
+      .menuItemIcon {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+        transition: scale 0.2s ease;
+        &:hover {
+          scale: 1.2;
+        }
+      }
+      & > p {
+        font-family: 'DINPro';
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
+}

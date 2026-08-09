@@ -1,0 +1,93 @@
+// ✅ 移动端 Popup 样式
+.popup {
+  :global {
+    .adm-popup-body {
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      background: var(--Background-300, #fff);
+      overflow: hidden;
+    }
+
+    .adm-center-popup-body {
+      border-radius: 16px;
+      background: var(--Background-300, #fff);
+      overflow: hidden;
+    }
+  }
+}
+
+// ✅ 大屏幕 Modal 样式
+.modal {
+  :global {
+    .adm-center-popup-wrap,
+    .adm-center-popup-body {
+      border-radius: 16px;
+      background: var(--Background-300);
+      margin: 0 auto;
+      .adm-modal-content {
+        padding: 0;
+      }
+    }
+
+    .adm-modal-body {
+      padding: 0;
+    }
+  }
+}
+
+// ✅ 对话框内容样式
+.dialogContent {
+  // 头部（标题 + 关闭按钮）
+  display: flex;
+  flex-direction: column;
+  .header {
+    color: var(--Text-Main-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    position: relative;
+    /* 二级文字 */
+    font-family: 'PingFang SC';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%; /* 24px */
+
+    .title {
+      flex: 1;
+      color: var(--Text-Main-10);
+      text-align: center;
+
+      /* 二级文字 */
+      font-family: 'PingFang SC';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 150%; /* 24px */
+    }
+
+    .closeButton {
+      cursor: pointer;
+      position: absolute;
+      right: 24px;
+      flex-shrink: 0;
+      .closeIcon {
+        position: static;
+        transform: none;
+      }
+    }
+  }
+
+  // 内容区域
+  .body {
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    // padding: 12px 24px 24px;
+    // 自定义滚动条样式
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+  }
+}

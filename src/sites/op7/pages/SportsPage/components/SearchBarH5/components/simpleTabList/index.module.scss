@@ -1,0 +1,98 @@
+.simpleList {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .simpleItem {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    min-width: 42px;
+    background: var(--Background-300);
+    color: var(--Text-800);
+    cursor: pointer;
+    font-weight: 400;
+    white-space: nowrap;
+
+    &.active {
+      color: var(--ThemeColor-Main);
+      font-weight: 600;
+
+      .simpleItemLabel::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc((34px - 100%) / -2);
+        height: 2px;
+        background: var(--ThemeColor-Main);
+      }
+    }
+  }
+
+  .simpleItemLabel {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+}
+
+.betting {
+  gap: 0px;
+  // padding: 0 6px;
+  justify-content: center;
+  .simpleItem {
+    height: 32px;
+    line-height: 32px;
+    flex: 1;
+    // padding: 0 30px;
+    min-width: auto;
+    border-bottom: none;
+    border-radius: 100px;
+    background-color: var(--Background-300);
+    color: var(--Text-800);
+    // font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.2s;
+
+    &.active {
+      color: var(--White-100);
+      font-weight: 800;
+      background: var(--ThemeColor-Main);
+    }
+  }
+}
+
+/** 右侧栏等：betting 胶囊玩法 tab 固定 24px 高（设计稿） */
+.bettingCompact.betting .simpleItem {
+  height: 24px;
+  line-height: 24px;
+  border-bottom: none;
+}
+
+.bettingPopup {
+  justify-content: space-between;
+  flex: 1;
+  padding: 0;
+  gap: 0;
+  .simpleItem {
+    padding: 0;
+    flex: 1;
+    &.active {
+      border-bottom: none;
+    }
+    // padding: 0 34px;
+  }
+}

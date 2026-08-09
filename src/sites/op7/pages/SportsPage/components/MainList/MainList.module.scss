@@ -1,0 +1,86 @@
+.mainList {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  overflow: scroll;
+  .wrapper {
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .title,
+  .leagueTitle {
+    background: linear-gradient(var(--Background-gradient-40), var(--Background-gradient-50));
+    width: 100%;
+    padding: 6px 12px;
+    color: var(--Text-Main-10);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+    cursor: pointer;
+    // border-bottom: 0.5px solid var(--Line-100);
+    &.collapsed {
+      border-bottom: none;
+    }
+    .collapsedIcon {
+      transition: transform 0.3s ease-in-out;
+      &.collapsed {
+        transform: rotate(180deg);
+      }
+    }
+
+    .titleIcon {
+      margin-right: 4px;
+    }
+  }
+  .sportTitle {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  .leagueWrapper {
+    border-radius: 6px;
+    margin-bottom: 4px;
+    overflow: hidden;
+
+    .leagueTitle {
+      background: var(--Background-300);
+      border-bottom: 0.5px solid var(--Line-100);
+      &.collapsed {
+        border-bottom: none;
+      }
+    }
+
+    &.leagueNoBorderFirst {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  /* 热门赛种：紧接赛种标题的第一个联赛块与上方区域衔接，顶角不圆 */
+  .title + .leagueWrapper.leagueNoBorder {
+    border-radius: 0 0 6px 6px;
+  }
+}
+.loading {
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: var(--Background-300);
+  margin-bottom: 4px;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+  & > div {
+    animation: loading 1s linear infinite;
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

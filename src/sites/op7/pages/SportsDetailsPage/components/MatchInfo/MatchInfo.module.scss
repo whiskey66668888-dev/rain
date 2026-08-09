@@ -1,0 +1,546 @@
+.matchInfo {
+  // padding: 4px 12px 0 12px;
+  background: transparent;
+  width: 100%;
+  position: relative;
+  // height: 210px;
+  flex: none;
+
+  &.video {
+    height: 208px;
+  }
+  &.dataBoardCollapsed {
+    height: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+
+  @include rwd-min('lg') {
+    display: flex;
+    gap: 12px;
+    // min-height: 228px;
+    height: auto;
+    position: sticky;
+    margin-top: 0;
+
+    &.dataBoardCollapsed {
+      position: relative;
+      top: auto;
+    }
+  }
+
+  .matchCard {
+    // border-radius: 12px;
+    // height: 106px;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    .customPagination_d {
+      width: 8px;
+      height: 2px !important;
+      border-radius: 1px !important;
+      background-color: var(--Shadow-200);
+      opacity: 1;
+      transition:
+        background-color 0.2s ease,
+        width 0.2s ease,
+        height 0.2s ease;
+      flex-shrink: 0;
+      margin: 0 !important;
+    }
+  }
+}
+
+.infoBannerSwiper {
+  width: 100%;
+  height: 100%;
+  @include rwd-min('lg') {
+    border-radius: 0 0 4px 4px;
+  }
+  :global(.swiper-slide) {
+    flex-shrink: 0;
+  }
+
+  :global(.swiper-pagination) {
+    bottom: 0px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 0;
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    opacity: 1;
+    background: var(--ThemeColor-Main) !important;
+    width: 16px !important;
+    height: 2px;
+    border-radius: 1px !important;
+  }
+}
+
+.bannerSlide {
+  backface-visibility: hidden;
+  display: flex !important;
+  flex-direction: column;
+  height: 110px !important;
+  /* Web：赛事卡片区入场 + 球场氛围光（仅 lg，不影响 H5） */
+  @include rwd-min('lg') {
+    position: relative;
+    overflow: hidden;
+    animation: sportDetailBannerEnter 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+    height: auto !important;
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -20% -10% 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        ellipse 90% 70% at 50% 0%,
+        rgba(72, 110, 82, 0.35) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+      z-index: 0;
+      animation: sportDetailBannerGlow 7s ease-in-out infinite alternate;
+    }
+
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @include rwd-min('lg') {
+      animation: none;
+
+      &::before {
+        animation: none;
+      }
+    }
+  }
+}
+
+.slideContent {
+  padding: 0 4px;
+}
+
+.teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // margin-bottom: 16px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+}
+
+.teamLogo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--Background-300, #3a4555);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include rwd-min('lg') {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.teamName {
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  font-weight: 500;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @include rwd-min('lg') {
+    font-size: 16px;
+    max-width: 150px;
+  }
+}
+
+.score {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.matchTime {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 100px;
+}
+
+.time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.liveClock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.liveBadge {
+  background: #ff4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.clock {
+  font-size: 12px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.scores {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* 上半场 + 比分条（足球进行中） */
+.halfTimeRow {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  // margin-top: 8px;
+  padding: 0 8px 8px;
+}
+
+.halfTimeScore {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--White-100);
+}
+
+.halfTimeGap {
+  width: 8px;
+  flex-shrink: 0;
+}
+
+.scoreFlagRed {
+  font-size: 10px;
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+}
+
+.scoreFlagYellow {
+  font-size: 10px;
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+}
+
+.mediaOptions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mediaButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.recommendInfo {
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+
+.recommendText {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.5;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.quickBet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.quickBetButton {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--Background-300, #3a4555);
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--Background-300, #4a5565);
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  .odds {
+    color: #4ade80;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+}
+
+/* 轮播指示点 */
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0 4px;
+}
+
+.dot,
+.dotActive {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.dotActive {
+  background: #fff;
+}
+
+.recommendCardFooterWrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  // flex: 1;
+  width: 100%;
+  border-top: 0.5px solid var(--White-20, rgba(255, 255, 255, 0.1));
+}
+.recommendCardFooter {
+  display: flex;
+  flex: 1;
+  height: 36px;
+  padding: 12px;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.recommendCardFooterContent {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 自动轮播 / 免责声明 图标按钮（对应 Flutter buildSwiperAutoIcon、buildTipContent） */
+.footerIconButton {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    opacity: 0.85;
+  }
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+/* 免责声明 popover（对应 Flutter buildTipContent richMessage，改为向下展开避免被顶部导航遮挡） */
+.disclaimerPopover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 100;
+  width: 274px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 8px;
+  background: var(--Background-300);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  &::before {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: -6px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--Background-300);
+  }
+}
+
+/* Portal 内免责声明：遮罩 + fixed 弹层，避免被页面内任何元素裁剪 */
+.disclaimerBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: transparent;
+  cursor: default;
+}
+
+.disclaimerPopoverFixed {
+  position: fixed;
+  z-index: 9999;
+  width: 274px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 8px;
+  background: var(--Background-300);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  &::before {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: -6px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--Background-300);
+  }
+}
+
+.mediaButtonActive {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--White-100);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  font-size: 12px;
+  font-weight: 400;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.6;
+  }
+}
+
+.mediaButtonInactive {
+  color: var(--Text-800);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.line {
+  height: 12px;
+  width: 0.5px;
+  margin: 0 16px;
+  background: var(--White-20, rgba(255, 255, 255, 0.2));
+}
+
+@keyframes sportDetailBannerEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sportDetailBannerGlow {
+  from {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 2px, 0) scale(1.03);
+  }
+}

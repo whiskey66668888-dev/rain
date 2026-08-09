@@ -1,0 +1,22 @@
+.switchNavItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--Text-Main-10);
+
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.tooltipPopover {
+  :global(.adm-popover-inner) {
+    box-shadow: 0 2px 8px 0 var(--Shadow-400, rgba(17, 17, 19, 0.7));
+  }
+}

@@ -1,0 +1,42 @@
+.simpleBox {
+  width: 100%;
+  margin-top: 16px;
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    .left {
+      flex: 1;
+      min-width: 0;
+    }
+    .center {
+      flex-shrink: 0;
+      min-width: 0;
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--Text-Main-10-10, #000);
+      font-family: 'PingFang SC';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+    }
+    .extra {
+      flex-shrink: 0;
+      color: var(--Text-800);
+      text-align: right;
+      font-family: 'PingFang SC';
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+  .body {
+    position: relative;
+    margin-top: 16px;
+  }
+}

@@ -1,0 +1,27 @@
+/* ============================================= */
+/*  DINPro 字体：按 font-weight 匹配不同字重文件  */
+/*  字体文件位置：public/fonts/DINPro/             */
+/* ============================================= */
+
+// @font-face {
+//   font-family: 'DINPro';
+//   font-style: normal;
+//   font-weight: 300;
+//   font-display: swap;
+//   src: url('/fonts/DINPro/DINPro-Light.otf') format('opentype');
+// }
+
+// @font-face {
+//   font-family: 'DINPro';
+//   font-style: normal;
+//   font-weight: 400;
+//   font-display: swap;
+//   src: url('/fonts/DINPro/DINPro-Medium.ttf') format('opentype');
+// }
+
+@font-face {
+  font-family: 'DINPro';
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/DINPro/DINPro-Medium.ttf') format('truetype');
+}

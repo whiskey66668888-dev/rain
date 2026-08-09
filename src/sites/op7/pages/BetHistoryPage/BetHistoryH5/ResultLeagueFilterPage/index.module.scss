@@ -1,0 +1,312 @@
+.resultLeagueFilterPage {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--Background-700, #ecf2ff);
+  display: flex;
+  flex-direction: column;
+  color: var(--Text-Main-10, #000);
+}
+
+.header {
+  height: 48px;
+  padding: 0 12px;
+  background: var(--Background-300, #fff);
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  color: var(--Text-Main-10, #000);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+}
+
+.backButton {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--Text-Main-10, #000);
+  cursor: pointer;
+}
+
+.backIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.headerPlaceholder {
+  width: 32px;
+  height: 32px;
+}
+
+.searchSection {
+  height: 52px;
+  padding: 6px 15px 10px 10px;
+  background: var(--Background-300, #fff);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.sportTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 42px;
+}
+
+.titleMark {
+  width: 2px;
+  height: 16px;
+  border-radius: 0 2px 2px 0;
+  background: var(--ThemeColor-Main, #1a81ff);
+}
+
+.sportTitle strong {
+  color: var(--Text-Main-10, #000);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.searchBox {
+  height: 36px;
+  min-width: 0;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: var(--Background-500, #e9f0fc);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchBox input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--Text-Main-10, #000);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.searchBox input::placeholder {
+  color: var(--Text-700, #7c8aa1);
+}
+
+.content {
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 12px 18px 0 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.listHeader {
+  padding-left: 10px;
+  color: var(--Text-Main-10, #000);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.scrollArea {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px 0 calc(100px + env(safe-area-inset-bottom)) 0;
+  scrollbar-width: none;
+}
+
+.scrollArea::-webkit-scrollbar {
+  display: none;
+}
+
+.letterGroup {
+  scroll-margin-top: 8px;
+  padding-bottom: 4px;
+}
+.letterGroup:not(:first-child) {
+  margin-top: 24px;
+}
+
+.letterGroup h2 {
+  height: 24px;
+  margin: 0;
+  padding: 0 10px;
+  color: var(--Text-Main-10, #000);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.leagueList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.leagueItem {
+  width: 100%;
+  height: 32px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--Text-Main-10, #000);
+  cursor: pointer;
+  text-align: left;
+}
+
+.checkbox,
+.checkboxChecked {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex: 0 0 16px;
+  position: relative;
+}
+
+.checkbox {
+  border: 1.5px solid var(--Line-300, #d8e2f0);
+  background: var(--Background-300, #fff);
+}
+
+.checkboxChecked {
+  background: var(--ThemeColor-Main, #1a81ff);
+}
+
+.checkboxChecked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 7px;
+  border-right: 1.5px solid var(--White-100, #fff);
+  border-bottom: 1.5px solid var(--White-100, #fff);
+  transform: translate(-50%, -58%) rotate(45deg);
+}
+
+.leagueName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--Text-Main-10, #000);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.letterIndex {
+  position: absolute;
+  top: 42px;
+  right: 2px;
+  width: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.letterIndex button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--Text-Main-10, #000);
+  font-family: 'SF Pro', 'SF Pro Text', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.letterIndexActive {
+  border-radius: 50%;
+  background: var(--ThemeColor-Main, #1a81ff) !important;
+  color: var(--White-100, #fff) !important;
+  font-weight: 400;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 48px;
+  padding: 8px 16px;
+  background: var(--Background-300, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+}
+
+.allButton {
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--Text-Main-10, #000);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.confirmButton {
+  min-width: 80px;
+  height: 32px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 40px;
+  background: var(--ThemeColor-Main, #1a81ff);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--White-100, #fff);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.confirmButton span {
+  font-family: DINPro, 'SF Pro Text', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 19px;
+}
+
+.confirmButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

@@ -1,0 +1,68 @@
+.searchModal {
+  background: var(--Background-700);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  // Pad/Web 居中弹窗样式
+  &.desktop {
+    width: 450px;
+    height: 90vh;
+    border-radius: 16px;
+  }
+
+  header {
+    height: 48px;
+    flex: none;
+    position: relative;
+
+    .tabList {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      padding: 0 15px;
+
+      .tabItem {
+        color: var(--ThemeColor-Main);
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .bnClose {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+    }
+  }
+
+  section {
+    flex: 1;
+    overflow: hidden;
+    padding: 8px 24px 0 24px;
+  }
+
+  .button {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  // H5 底部抽屉样式
+  &.mobile {
+    border-radius: 16px 16px 0 0;
+    height: 80vh;
+
+    section {
+      padding: 8px 12px 0 12px;
+    }
+  }
+}

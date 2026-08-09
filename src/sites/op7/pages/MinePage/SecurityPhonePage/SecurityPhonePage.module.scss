@@ -1,0 +1,333 @@
+@use '@/common/styles/rwd' as *;
+
+.page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--Background-700, #f5f7fa);
+}
+
+.header {
+  flex-shrink: 0;
+  height: 44px;
+}
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background-color: var(--Background-300, #fff);
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 120px;
+  background-color: var(--Line-100, rgba(122, 133, 153, 0.12));
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.backIcon {
+  width: 10px;
+  height: 10px;
+  color: var(--Text-Main-10);
+}
+
+.titleWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.title {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--Text-Main-10);
+  text-align: center;
+}
+
+.subtitle {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+  color: var(--Text-800);
+  text-align: center;
+}
+
+.placeholder {
+  width: 24px;
+}
+
+.content {
+  flex: 1;
+  padding: 56px 12px 20px;
+
+  @include rwd-min('lg') {
+    padding: 12px 24px 24px;
+    max-width: 450px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@mixin input-row-focus-ring($radius: 44px) {
+  &:focus-within:not(.inputRowError)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid var(--ThemeColor-Main, #1a81ff);
+    border-radius: $radius;
+    transform: scale(0.5);
+    transform-origin: left top;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+
+  &.inputRowError::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid var(--Red-300, #f01717);
+    border-radius: $radius;
+    transform: scale(0.5);
+    transform-origin: left top;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+}
+
+.phoneRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 100px;
+  box-sizing: border-box;
+  @include input-row-focus-ring(44px);
+}
+
+.countryCode {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-right: 12px;
+  margin-right: 12px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+}
+
+.chevronIcon {
+  color: inherit;
+}
+
+.phoneInput {
+  position: relative;
+  z-index: 0;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+  outline: none;
+  caret-color: var(--ThemeColor-Main);
+
+  &::placeholder {
+    color: var(--Text-700);
+  }
+}
+
+.verifyRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 4px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  box-sizing: border-box;
+  @include input-row-focus-ring(44px);
+}
+
+.verifyInput {
+  position: relative;
+  z-index: 0;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  outline: none;
+  caret-color: var(--ThemeColor-Main);
+
+  &::placeholder {
+    color: var(--Text-700);
+  }
+}
+
+.getCodeBtn {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  width: 80px;
+  height: 36px;
+  padding: 0 10px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--White-100);
+  background: var(--ThemeColor-Main);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.getCodeBtn.disabled {
+  color: var(--White-60, rgba(255, 255, 255, 0.6));
+  background: var(--ThemeColor-Main);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 44px;
+  border-radius: 100px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.submitBtnActive {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+}
+
+.errorText {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Red-400);
+  padding-left: 16px;
+}
+
+.pickerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pickerPanel {
+  width: 100%;
+  max-height: 60vh;
+  background: var(--Background-300);
+  border-radius: 16px 16px 0 0;
+  padding: 12px 0 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pickerTitle {
+  padding: 0 16px 12px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--Text-800);
+  text-align: center;
+}
+
+.pickerList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 12px;
+}
+
+.pickerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.pickerItemValue {
+  color: var(--Text-700);
+}

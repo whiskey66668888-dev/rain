@@ -1,0 +1,25 @@
+.activityPage {
+  padding: 0 12px;
+  @include rwd-min(lg) {
+    padding: 0;
+  }
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sectionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(47, 128, 237, 0.12);
+}
+.sectionBody {
+  margin-top: 16px;
+}

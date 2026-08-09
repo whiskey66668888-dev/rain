@@ -1,0 +1,54 @@
+.mediaView {
+  width: 320px;
+  height: calc(100% - 12px);
+  border-radius: 12px;
+  background: rgba(44, 54, 74, 1);
+  flex-direction: column;
+  overflow: hidden;
+  // h5 pad 端不显示
+  display: none;
+
+  @include rwd-min('lg') {
+    display: flex;
+  }
+
+  .videoContainer {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .control {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    gap: 24px;
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 6px;
+      font-size: 12px;
+      color: var(--White-100);
+      cursor: pointer;
+
+      &.active {
+        color: var(--ThemeColor-Main);
+      }
+
+      &.disabled {
+        cursor: default;
+        opacity: 0.5;
+      }
+    }
+
+    .line {
+      width: 0.5px;
+      height: 12px;
+      background: var(--White-40);
+    }
+  }
+}

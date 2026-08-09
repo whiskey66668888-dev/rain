@@ -1,0 +1,194 @@
+.floatButton {
+  position: fixed;
+  right: 12px;
+  bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  color: var(--White-100);
+  background: var(--ThemeColor-Main);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+  &:active {
+    transform: scale(0.94);
+  }
+
+  @include rwd-min('lg') {
+    right: 24px;
+    bottom: 24px;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgb(0 0 0 / 24%);
+    }
+  }
+}
+
+.floatButtonDragging {
+  cursor: grabbing;
+  transition: none;
+
+  &:active {
+    transform: none;
+  }
+
+  @include rwd-min('lg') {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.floatIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  background: rgb(0 0 0 / 45%);
+}
+
+.panel {
+  width: min(316px, calc(100vw - 32px));
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--Text-Main-10);
+  background: var(--Background-200);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 24%);
+  border-radius: 12px;
+}
+
+.panelPc {
+  width: 360px;
+  border-radius: 12px;
+}
+
+.header {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  flex-shrink: 0;
+  background: var(--Background-300);
+
+  h2 {
+    margin: 0;
+    font-size: calc(16px * var(--text-scale, 1));
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--Text-Main-10);
+  }
+}
+
+.closeButton,
+.headerSpacer {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  color: var(--Text-Main-10);
+  background: transparent;
+  cursor: pointer;
+}
+
+.closeIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 0 14px;
+}
+
+.btnBox {
+  margin: 0 12px 10px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--Background-300);
+  list-style: none;
+
+  & > li {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-bottom: 0.5px solid var(--Line-100);
+    font-size: calc(14px * var(--text-scale, 1));
+    font-weight: 400;
+    color: var(--Text-Main-10);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.userName {
+  max-width: 160px;
+  overflow: hidden;
+  color: var(--Text-700);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logoutButton {
+  width: calc(100% - 24px);
+  height: 44px;
+  margin: 10px 12px 12px;
+  font-size: calc(16px * var(--text-scale, 1));
+}
+
+.hidden {
+  display: none;
+}
+
+.customerButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  font-size: calc(12px * var(--text-scale, 1));
+  color: var(--ThemeColor-Main);
+  background: transparent;
+  cursor: pointer;
+
+  span {
+    color: var(--ThemeColor-Main);
+  }
+}

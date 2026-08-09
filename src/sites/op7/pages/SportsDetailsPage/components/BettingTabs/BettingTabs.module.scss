@@ -1,0 +1,190 @@
+/** 与 App DetailStickyTab 外层 + StickyTabBarDelegate bottomPadding */
+$tabs-bar-height: 44px;
+$tab-item-height: 32px;
+
+.tabsOuter {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  z-index: 9 !important;
+  flex-shrink: 0;
+  background: var(--Background-700);
+
+  &:not(.discoverActive) {
+    padding-bottom: 4px;
+  }
+
+  &.video {
+    top: 44px;
+  }
+
+  &.dataBoardCollapsed {
+    background: var(--Background-700);
+  }
+
+  @include rwd-min('lg') {
+    top: var(--pc-sticky-tabs-top, 120px);
+    z-index: 8 !important;
+
+    &.video {
+      top: calc(108px + 208px);
+    }
+  }
+
+  &.embeddedInSidebar {
+    @include rwd-min('lg') {
+      position: relative;
+      top: auto !important;
+      z-index: 1;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.tabsContainer {
+  display: flex;
+  align-items: center;
+  height: $tabs-bar-height;
+  box-sizing: border-box;
+  padding: 6px 0 6px 10px;
+  background: var(--Background-300);
+  margin: 0;
+  width: 100%;
+}
+
+.tabsWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  height: $tab-item-height;
+
+  &.equalWidth {
+    overflow: hidden;
+
+    .tab {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &.scrollable {
+    overflow-x: auto;
+    padding-right: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.tab {
+  flex-shrink: 0;
+  height: $tab-item-height;
+  min-height: $tab-item-height;
+  padding: 0 16px;
+  border: none;
+  border-radius: 30px;
+  background: transparent;
+  color: var(--Text-800);
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.equalWidthTab {
+    padding: 0 12px;
+  }
+
+  &.active {
+    color: var(--White-100);
+    font-weight: 600;
+    background: var(--ThemeColor-Main);
+  }
+}
+
+.tabLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/** 发现 tab：文案 + 引导红点，红点贴文字右上角（对齐 App CrossAxisAlignment.start） */
+.discoverTabInner {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.discoverBadge {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff5151;
+}
+
+.collapseAction {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: $tabs-bar-height;
+  padding-left: 3px;
+}
+
+.collapseDivider {
+  width: 0.5px;
+  height: 16px;
+  background: var(--Line-200);
+}
+
+.expandButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $tabs-bar-height;
+  padding: 0 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.expandIcon {
+  transition: transform 0.3s ease-in-out;
+
+  &.collapsed {
+    transform: rotate(180deg);
+  }
+}
+
+.tabsOuter.embeddedInSidebar {
+  @include rwd-min('lg') {
+    .tabsContainer {
+      margin-right: 8px;
+      border-radius: 4px;
+    }
+
+    .tabsWrapper {
+      height: 24px;
+    }
+
+    .tab {
+      height: 24px;
+      min-height: 24px;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+
+    .collapseAction,
+    .expandButton {
+      height: 24px;
+    }
+  }
+}

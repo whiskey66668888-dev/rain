@@ -1,0 +1,215 @@
+.eventsPanel {
+  padding: 0 10px 10px;
+  background: var(--Background-300);
+  border-radius: 6px;
+}
+
+.panelHeader {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+
+  h4 {
+    margin: 0;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.goalSwitch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--Text-800);
+  cursor: pointer;
+  font-size: 12px;
+
+  input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  i {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    background: var(--Background-700);
+    border-radius: 18px;
+    transition: background 0.2s ease;
+
+    &::after {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: var(--White-100);
+      border-radius: 50%;
+      content: '';
+      transition: transform 0.2s ease;
+    }
+  }
+
+  input:checked + i {
+    background: var(--ThemeColor-Main);
+
+    &::after {
+      transform: translateX(14px);
+    }
+  }
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.whistle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+
+  i {
+    height: 1px;
+    background: var(--Line-100);
+  }
+
+  img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+  }
+}
+
+.neutralEvent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  color: var(--Text-Main-10);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'SF Pro Text';
+
+  i {
+    height: 1px;
+    background: var(--Line-100);
+  }
+}
+
+.eventRow {
+  display: grid;
+  min-height: 34px;
+  align-items: center;
+  gap: 8px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+
+  time {
+    color: var(--Text-Main-10);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+.homeEvent {
+  grid-template-columns: 45px auto minmax(0, 1fr);
+}
+
+.awayEvent {
+  grid-template-columns: minmax(0, 1fr) auto 45px;
+
+  time {
+    text-align: right;
+  }
+}
+
+.eventMedia {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.iconSlot {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+
+  img {
+    display: block;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+}
+
+.eventPill {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.playMark {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid var(--White-100);
+}
+
+.eventText {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: 1.35;
+
+  span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.eventTextAway {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.tipText,
+.assistText {
+  color: var(--Text-700);
+}
+
+.inText {
+  color: var(--Green-300);
+}
+
+.outText {
+  color: var(--Red-900);
+}

@@ -1,0 +1,73 @@
+.moments {
+  overflow: hidden;
+  background: var(--Background-300);
+  border-radius: 8px;
+}
+
+.momentScroller {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.moment {
+  position: relative;
+  width: 104px;
+  height: 58px;
+  flex: 0 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 5px;
+  background: var(--Button-200);
+  color: var(--White-100);
+  cursor: pointer;
+  text-decoration: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.momentMeta {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-width: 0;
+  height: 21px;
+  padding: 3px 4px;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 60%) 100%);
+  color: #fff;
+  font-family: DINPro, 'DIN Pro', Avenir, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.momentTime {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 2px;
+  line-height: 1.2;
+
+  img {
+    width: 10px;
+    height: 10px;
+    flex: 0 0 auto;
+    object-fit: contain;
+  }
+}
+
+.momentScore {
+  flex: 0 0 auto;
+  margin-left: 4px;
+  line-height: 1;
+}

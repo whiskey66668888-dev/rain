@@ -1,0 +1,532 @@
+/* 微软安全令牌绑定/解绑 - 适配主题 */
+.page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: var(--Background-700);
+}
+
+.header {
+  flex-shrink: 0;
+  padding-top: 44px; /* 为 fixed 的 .bar 留出高度，避免提示条被遮挡 */
+}
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background-color: var(--Background-300);
+  border-bottom: none;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 120px;
+  // background-color: var(--Line-100);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.backIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--Text-Main-10);
+}
+
+.titleWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--Text-Main-10);
+  text-align: center;
+}
+
+.subtitle {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  color: var(--Text-800);
+  text-align: center;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--Text-Main-10);
+}
+
+.pcHeaderCustomerBtn {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transform: translateY(-50%);
+}
+
+.pcHeaderCustomerBtn:hover {
+  opacity: 0.85;
+}
+
+.headerRight:hover {
+  opacity: 0.85;
+}
+
+/* 提示条 */
+.tipStrip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--Background-300);
+  @include rwd-min('lg') {
+    background: var(--Background-400);
+    padding: 8px 24px;
+  }
+}
+
+.tipIconWrap {
+  width: 16px;
+  height: 16px;
+}
+
+.tipStripText {
+  flex: 1;
+  min-width: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+}
+
+.placeholder {
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.verifyPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+  background-color: var(--Background-700);
+  @include rwd-min('lg') {
+    background: var(--Background-400);
+  }
+}
+
+.verifyPanelContent {
+  flex: 1;
+  padding: 12px 12px 20px;
+}
+
+.verifyModal {
+  padding: 0 !important;
+  background: var(--Background-300);
+
+  > :first-child {
+    height: 48px;
+    padding: 0 24px;
+    margin-bottom: 0;
+    background: var(--Background-300);
+  }
+
+  > :first-child > button {
+    top: 14px;
+    right: 24px;
+  }
+
+  > :last-child {
+    display: none;
+  }
+
+  .verifyPanelContent {
+    padding: 12px 24px 24px;
+  }
+}
+
+.verifyModalContent {
+  padding: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+  background-color: var(--Background-400);
+}
+
+.verifySubStepModal {
+  background: var(--Background-300);
+
+  .verifyModalContent,
+  .verifyPanel {
+    background: var(--Background-300);
+  }
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 温馨提示 */
+.warmTip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--Text-800);
+  text-align: justify;
+}
+
+.warmTipTitle {
+  margin: 0;
+  color: var(--Text-800);
+}
+
+.warmTipText {
+  margin: 0;
+  color: var(--Red-300);
+  line-height: 16px;
+}
+
+.tip {
+  margin: 0;
+  text-align: center;
+  color: var(--Text-700);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 卡片式列表项 */
+.itemBtn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--Background-300);
+  color: var(--Text-Main-10);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.itemBtn:hover {
+  opacity: 0.92;
+}
+
+.itemBtn:active {
+  opacity: 0.88;
+}
+
+.itemLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.itemIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.itemText {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+}
+
+/* 右侧箭头框 */
+.arrow {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  // background-color: var(--Background-500);
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.empty {
+  padding: 12px;
+  border-radius: 12px;
+  background-color: var(--Background-300);
+  color: var(--Text-800);
+  text-align: center;
+  font-size: 13px;
+}
+
+.serviceBtn {
+  width: 100%;
+}
+
+/* 微软安全令牌验证步骤 */
+.microsoftStep {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.microsoftStepWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.codeCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  background-color: var(--Background-300);
+  font-size: 14px;
+  @include rwd-min('lg') {
+    background: var(--Background-700);
+  }
+}
+
+.codeInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.codeInput::placeholder {
+  color: var(--Text-700);
+}
+
+.pasteBtn {
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ThemeColor-Main);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  width: 100%;
+  height: 44px;
+}
+
+.phoneStepForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.phoneStepFormRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phoneStepPhoneRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 100px;
+  box-sizing: border-box;
+  @include rwd-min('lg') {
+    background: var(--Background-700);
+  }
+}
+.errorText {
+  color: var(--Red-400);
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  padding-left: 16px;
+}
+.phoneStepCountryCode {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-right: 12px;
+  margin-right: 12px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+}
+
+.phoneStepPhoneDisplay {
+  flex: 1;
+  min-width: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+}
+
+.phoneStepVerifyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 4px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  box-sizing: border-box;
+  @include rwd-min('lg') {
+    background: var(--Background-700);
+  }
+}
+
+.phoneStepVerifyInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  outline: none;
+
+  &::placeholder {
+    color: var(--Text-700);
+  }
+}
+
+.phoneStepGetCodeBtn {
+  flex-shrink: 0;
+  width: 80px;
+  height: 36px;
+  padding: 0 10px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--White-100);
+  background: var(--ThemeColor-Main);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phoneStepGetCodeBtnDisabled {
+  color: var(--White-60, rgba(255, 255, 255, 0.6));
+  background: var(--ThemeColor-Main);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.phoneStepSubmitBtn {
+  width: 100%;
+  height: 44px;
+  border-radius: 100px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.phoneStepSubmitBtnInactive {
+  background: var(--ThemeColor-60);
+  color: var(--White-60);
+  cursor: not-allowed;
+}
+
+.phoneStepSubmitBtnActive {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+}

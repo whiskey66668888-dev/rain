@@ -1,0 +1,92 @@
+.wrap {
+  padding: 8px 24px 24px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.wrapH5 {
+  padding: 8px 12px 24px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--Text-Main-10);
+  margin-bottom: 8px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--Background-300);
+  width: 100%;
+  height: 60px;
+
+  img:first-child {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.rowTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+}
+
+.rowSub {
+  font-size: 12px;
+  color: var(--Text-800);
+}
+
+.tag {
+  width: auto;
+  height: 14px;
+  margin-left: auto;
+}
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.primary {
+  position: relative;
+  height: 40px;
+  border: none;
+  padding: 0;
+  color: var(--White-100);
+  background: var(--ThemeColor-Main);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.primaryImg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  height: 100%;
+  display: block;
+}
+
+.secondary {
+  height: 40px;
+  border-radius: 20px;
+  background: var(--Background-300);
+  color: var(--Text-Main-10);
+  cursor: pointer;
+  font-size: 14px;
+}

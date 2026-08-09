@@ -1,0 +1,186 @@
+.situationView {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 12px 10px;
+  overflow: hidden;
+  color: var(--Text-Main-10);
+  background: var(--Background-300);
+  border-radius: 8px;
+  gap: 16px;
+}
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.teamInfo {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  line-height: 1.2;
+
+  &:last-child {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  img {
+    display: block;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+  }
+}
+
+.pieRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 12px;
+}
+
+.pieItem {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.pieTitle {
+  max-width: 86px;
+  overflow: hidden;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pieBody {
+  display: grid;
+  grid-template-columns: 28px 38px 28px;
+  align-items: center;
+  gap: 8px;
+
+  span {
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.ring {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  padding: 6px;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.ringInner {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  background: var(--Background-300);
+  border-radius: 50%;
+
+  img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+}
+
+.scoreRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 8px;
+}
+
+.scoreItem {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+
+  img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+}
+
+.scoreBars {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.scoreBar {
+  display: grid;
+  min-width: 0;
+}
+
+.scoreBarTitle {
+  font-size: 12px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.scoreBarBody {
+  display: grid;
+  grid-template-columns: 24px minmax(88px, 168px) 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+
+  span {
+    text-align: center;
+  }
+}
+
+.scoreTrack {
+  display: flex;
+  height: 4px;
+  overflow: hidden;
+  background: var(--Button-200);
+
+  i,
+  em {
+    display: block;
+    height: 4px;
+  }
+
+  i {
+    background: rgba(51, 143, 255, 0.8);
+  }
+
+  em {
+    background: rgba(51, 143, 255, 0.25);
+  }
+}

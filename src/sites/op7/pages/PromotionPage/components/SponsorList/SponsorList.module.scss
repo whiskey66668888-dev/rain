@@ -1,0 +1,52 @@
+.SponsorBox {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 12px;
+  @include rwd-min('lg') {
+    padding: 0;
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr; /* 小屏幕：一列 */
+  gap: 10px;
+  padding: 10px 0 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  /* 大屏幕（≥768px）：两列 */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 16px 12px 24px;
+  }
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--Background-300);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.05);
+  @include can-hover {
+    transform: translateY(-2px);
+  }
+}
+
+.image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 351 / 179; /* 保持宽高比 */
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 40px 0;
+  grid-column: 1 / -1; /* 占满整行 */
+}

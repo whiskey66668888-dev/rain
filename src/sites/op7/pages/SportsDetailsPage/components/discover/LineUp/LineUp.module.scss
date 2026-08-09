@@ -1,0 +1,316 @@
+.lineUp {
+  height: 100%;
+  overflow-y: auto;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 0 10px;
+    color: var(--Text-Main-10);
+  }
+}
+
+.loading,
+.empty {
+  display: grid;
+  min-height: 160px;
+  place-items: center;
+  color: var(--Text-700);
+  font-size: 13px;
+}
+
+.titleBar {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--Background-300);
+
+  h3 {
+    margin: 0;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+}
+
+.posterButton {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 40px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  cursor: pointer;
+  font-size: 12px;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+  }
+}
+
+.optionBar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
+  overflow-x: auto;
+  background: var(--Background-300);
+
+  button {
+    display: inline-flex;
+    height: 28px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 32px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--Line-100);
+    color: var(--Text-800);
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 180ms ease;
+
+    img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+  }
+}
+
+.optionBar .activeOption {
+  padding: 0 12px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.lastHint {
+  padding: 9px 12px;
+  background: var(--Background-300);
+  border-radius: 6px;
+  color: var(--Text-700);
+  font-size: 12px;
+}
+
+.posterOverlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgb(0 0 0 / 72%);
+}
+
+.posterScroll {
+  flex: 1;
+  min-height: 0;
+  padding: 56px 15px 12px;
+  overflow-y: auto;
+}
+
+.posterCard {
+  overflow: hidden;
+  max-width: 420px;
+  margin: 0 auto;
+  border-radius: 6px;
+  background: #1f242b;
+  color: var(--White-100);
+}
+
+.posterHero {
+  min-height: 202px;
+  padding: 30px 14px 18px;
+  background-image: url('/images/common/discover/lineup/line_up_banner.png.webp');
+  background-position: center;
+  background-size: cover;
+}
+
+.posterLeague {
+  overflow: hidden;
+  color: var(--White-100);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.posterTime {
+  margin-top: 4px;
+  color: var(--White-100);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
+}
+
+.posterTeams {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.posterTeam {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 2px;
+  color: var(--White-100);
+  text-align: center;
+
+  img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+
+  strong,
+  span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  strong {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+
+  span {
+    font-size: 9px;
+    line-height: 12px;
+  }
+}
+
+.posterScore {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+
+  span,
+  em {
+    color: rgb(255 255 255 / 72%);
+    font-size: 11px;
+    font-style: normal;
+    line-height: 14px;
+  }
+
+  b {
+    color: var(--White-100);
+    font-size: 31px;
+    font-weight: 500;
+    line-height: 32px;
+  }
+}
+
+.posterPitchWrap {
+  padding: 9px 6px 0;
+}
+
+.posterQrBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+}
+
+.posterQr {
+  display: grid;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--ThemeColor-Main);
+  border-radius: 4px;
+  background: var(--White-100);
+}
+
+.posterBrandText {
+  display: grid;
+  gap: 2px;
+
+  strong {
+    color: var(--White-100);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+  }
+
+  span {
+    color: var(--White-60);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+}
+
+.posterLogo {
+  height: 20px;
+  margin-left: auto;
+  object-fit: contain;
+}
+
+.posterActions {
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+  background: var(--Background-300);
+}
+
+.posterSaveButton,
+.posterCancelButton {
+  display: flex;
+  width: 100%;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.posterSaveButton {
+  gap: 4px;
+  font-weight: 500;
+  color: var(--ThemeColor-Main);
+
+  img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.posterCancelButton {
+  border-top: 4px solid var(--Background-400);
+  color: var(--Text-Main-10);
+}

@@ -1,0 +1,38 @@
+.footer {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px 6px;
+  padding: 8px 10px;
+}
+
+.item {
+  display: flex;
+  min-width: 0;
+  height: 17px;
+  align-items: center;
+  gap: 2px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.text {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--Text-800);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .text {
+    font-size: 11px;
+  }
+}

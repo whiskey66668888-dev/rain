@@ -1,0 +1,376 @@
+@use './invite-friends-numeric.scss' as ifn;
+
+.inviteFriendsContent {
+  position: relative;
+  width: 100%;
+  padding-bottom: 20px;
+}
+.follow {
+  svg {
+    width: 20px;
+    height: 20px;
+    color: var(--Text-Main-10);
+  }
+}
+.followed {
+  svg {
+    color: var(--Warning-200);
+    path {
+      fill: var(--Warning-200);
+    }
+  }
+}
+
+.topBannerWrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+.topBanner {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.main {
+  width: 100%;
+}
+.mainH5 {
+  padding: 0 12px;
+}
+
+.titlePc {
+  justify-content: flex-start;
+  gap: 4px;
+  > div {
+    flex: none;
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+}
+.commendationRight {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin-right: 2px;
+
+  .receiveIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    color: var(--Text-800);
+  }
+
+  .ruleIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--Text-800);
+    margin-right: 4px;
+  }
+
+  span {
+    color: var(--Text-800);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  &.dot::after {
+    position: absolute;
+    right: -2px;
+    top: -1px;
+    width: 5px;
+    height: 5px;
+    background: var(--Red-400);
+    border-radius: 50%;
+    content: '';
+  }
+  &.dotPc {
+    margin-right: 2px;
+  }
+}
+
+.rulesBox {
+  padding: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--Background-300);
+}
+
+.cell11,
+.cell21,
+.cell31,
+.cell41 {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-Main-10);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cell12,
+.cell22 {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-Main-10);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cell32,
+.cell33 {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-800);
+  text-align: center;
+  //font-size: 10px;
+  font-weight: 500;
+}
+
+.cell42,
+.cell43 {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-Main-10);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mainTop {
+  padding: 12px;
+  background-color: var(--Background-300);
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.navBox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navList {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border-radius: 18px;
+  background: var(--Button-200);
+  height: 36px;
+  font-size: 14px;
+  color: var(--Text-800);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.navActiving {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.navBottomBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 22px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  &:hover {
+    background: var(--ThemeColor-300);
+  }
+  &:active {
+    background: var(--ThemeColor-800);
+  }
+}
+
+.navBottomIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--White-100);
+}
+
+.tips {
+  @include ifn.inviteFriendsDinPro;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--Red-400);
+}
+
+.tableListBox {
+  margin-top: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--Background-300);
+  height: 124px;
+  pointer-events: none;
+}
+
+.prizeResultsScroll {
+  height: 100%;
+  overflow: hidden;
+  :global {
+    .swiper-vertical {
+      height: 102px;
+    }
+
+    .swiper-slide {
+      height: 20%;
+      font-size: 10px;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      opacity: 0.2;
+    }
+
+    .swiper-slide-active {
+      font-size: 14px;
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    .swiper-slide-prev,
+    .swiper-slide-next {
+      font-size: 12px;
+      opacity: 0.5;
+    }
+  }
+}
+
+// 与 emc-h5 newFriend「最新领奖记录」一致：整行居中、由 Swiper slide 控制行高与字号渐变
+.scrollList {
+  @include ifn.inviteFriendsDinPro;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--Text-Main-10);
+  font-size: inherit;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.scrollListSide {
+  flex: 0 0 auto;
+  span {
+    margin: 0 5px;
+  }
+}
+
+.bounsType {
+  flex: 0 0 auto;
+  margin: 0 6px;
+  text-align: center;
+  color: var(--Text-800);
+}
+
+.bonusCash {
+  @include ifn.inviteFriendsDinPro;
+  flex: 0 0 auto;
+  text-align: center;
+  color: var(--Warning-300);
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.latestAwardPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  span {
+    font-size: 16px;
+  }
+}
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: var(--Background-700);
+  border-radius: 12px;
+  color: var(--Text-Main-10);
+  font-size: 0;
+}
+
+.saved {
+  color: var(--ThemeColor-Main);
+}
+
+.unsaved {
+}
+
+.rulesPopTitle {
+  padding: 12px 16px 0;
+}
+
+.ruleTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleLeftLine {
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--ThemeColor-Main);
+}
+
+.titleFonts {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--Line-100);
+  cursor: pointer;
+}
+
+.rulesContent {
+  padding: 12px 16px 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.popTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+  margin-bottom: 8px;
+}
+
+.popContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.popItem {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--Text-800);
+}

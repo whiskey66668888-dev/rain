@@ -1,0 +1,204 @@
+.gamePage {
+  // border-radius: 12px;
+  // background: var(--Background-400);
+  // margin-top: 14px;
+  padding: 12px 0;
+  .topArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    .tabWarp {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-left: 12px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      & > div {
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        // height: 76px;
+        min-width: 62px;
+        align-items: center;
+        border-radius: 10px;
+        // border: 1px solid var(--Line-200);
+        background: var(--Background-300);
+        padding: 6px 8px;
+        flex-shrink: 0;
+
+        &.tabItemActive {
+          background: var(--ThemeColor-Main);
+          color: var(--White-100);
+        }
+        @include rwd-min('lg') {
+          width: 110px;
+        }
+      }
+    }
+    .optionsWrapper {
+      width: 100%;
+      height: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 12px;
+      .filterWrapper {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 143px;
+        height: 100%;
+        border-radius: 8px;
+        background: var(--Background-300);
+        color: var(--Text-900);
+        gap: 1px;
+        padding: 0 4px;
+        & > span {
+          border-radius: 6px;
+          height: 24px;
+          flex: 1;
+          text-align: center;
+          line-height: 24px;
+          font-size: 12px;
+          font-weight: 400;
+          color: var(--Text-900);
+          cursor: pointer;
+          white-space: nowrap;
+          &.active {
+            background: var(--ThemeColor-Main);
+            color: var(--White-100);
+          }
+        }
+      }
+      .optionsRight {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .searchWrapper {
+          min-width: 120px;
+          cursor: pointer;
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          border-radius: 8px;
+          height: 32px;
+          border: 1px solid var(--Line-200);
+          background: var(--Background-300);
+          padding: 0 7px;
+
+          gap: 5px;
+        }
+        .line {
+          width: 1px;
+          height: 16px;
+          background: var(--Line-200);
+        }
+      }
+    }
+
+    .sortWrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      & > div {
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 11px;
+        height: 32px;
+        min-width: 142px;
+        padding: 0 12px;
+        color: var(--Text-800);
+        border-radius: 10px;
+        background: var(--Background-300);
+        .sortIcon {
+          transition: transform 0.3s ease;
+          transform: rotate(180deg);
+          &.active {
+            transform: rotate(0deg);
+          }
+        }
+        .dropdown {
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 0;
+          z-index: 20;
+          width: 142px;
+          margin: 0;
+          padding: 6px 0;
+          list-style: none;
+          border: 1px solid var(--Line-200);
+          border-radius: 10px;
+          background: var(--Background-300);
+          box-shadow: 0 8px 20px var(--Shadow-500);
+
+          li {
+            display: flex;
+            align-items: center;
+            height: 34px;
+            padding: 0 12px;
+            color: var(--Text-800);
+            font-size: 13px;
+            line-height: 20px;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+              background: var(--Background-500);
+            }
+
+            &.activeSortItem {
+              color: var(--ThemeColor-Main);
+              background: var(--ThemeColor-15);
+            }
+          }
+        }
+      }
+    }
+  }
+  .mainArea {
+    flex: 1;
+    border-radius: 10px 10px 0 0;
+    min-height: 600px;
+    position: relative;
+    color: var(--Text-Main-10);
+    padding: 0 12px;
+    @include rwd-min('lg') {
+      border-radius: 0;
+      top: 0;
+    }
+  }
+  .tabItem {
+    display: flex;
+    flex-direction: column;
+    height: 52px;
+    color: var(--Text-800);
+    & > div {
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+      word-break: keep-all;
+      font-size: 12px;
+    }
+  }
+
+  .tabItemDisabled {
+    background: var(--Background-200) !important;
+    border-color: var(--Line-200) !important;
+    color: var(--Text-700) !important;
+    cursor: not-allowed !important;
+  }
+}

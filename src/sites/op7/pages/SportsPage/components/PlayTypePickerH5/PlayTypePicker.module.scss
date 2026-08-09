@@ -1,0 +1,33 @@
+.playTypePicker {
+  display: flex;
+  overflow: hidden;
+  justify-content: space-between;
+  gap: 0;
+  background: var(--Background-60);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    background: none;
+    color: var(--Text-900);
+    flex: 1 0 0;
+    padding: 4px 0;
+    width: 75px;
+    min-height: 40px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    & > span:first-of-type {
+      font-family: 'DINPro';
+    }
+    &.active {
+      background: var(--Background-300);
+      color: var(--ThemeColor-Main);
+    }
+  }
+  .playTypeName {
+    font-family: 'PingFang SC';
+  }
+}

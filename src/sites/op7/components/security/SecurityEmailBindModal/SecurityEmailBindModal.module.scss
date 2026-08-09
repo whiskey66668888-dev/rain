@@ -1,0 +1,366 @@
+@use '@/common/styles/rwd' as *;
+
+.modal {
+  width: 100%;
+  background: var(--Background-700);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &.mobile {
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-radius: 0;
+  }
+
+  &.desktop {
+    width: 450px;
+    max-width: 90vw;
+    border-radius: 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+    background: var(--Background-300);
+  }
+}
+
+.header {
+  position: relative;
+  flex-shrink: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--Background-300);
+
+  .mobile & {
+    padding: 0 12px;
+  }
+
+  .desktop & {
+    padding: 0 16px;
+    height: 52px;
+  }
+}
+
+.emailBindHeader {
+  --security-modal-header-title-gap: 2px;
+  --security-modal-header-title-font-size: 16px;
+  --security-modal-header-title-line-height: 16px;
+  --security-modal-header-title-font-size-desktop: 16px;
+  --security-modal-header-title-line-height-desktop: 16px;
+  --security-modal-header-subtitle-font-size: 10px;
+  --security-modal-header-subtitle-line-height: 14px;
+}
+
+.backBtn {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  .desktop & {
+    left: 16px;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+}
+
+.titleWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--Text-Main-10);
+  text-align: center;
+
+  .desktop & {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.subtitle {
+  margin: 0;
+  font-family: 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--Text-700);
+  text-align: center;
+}
+
+.headerCloseBtn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  .desktop & {
+    right: 16px;
+  }
+}
+
+.customerBtn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+
+  .desktop & {
+    right: 16px;
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+
+  .mobile & {
+    padding: 10px 12px 0;
+  }
+
+  .desktop & {
+    padding: 10px 24px 24px;
+  }
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.inputSection {
+  margin-top: 0;
+}
+
+.forgotLink {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--ThemeColor-Main);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 44px;
+  border-radius: 100px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.submitBtnInactive {
+  // background: var(--ThemeColor-60) !important;
+}
+
+.submitBtnActive {
+  background: var(--ThemeColor-Main) !important;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &:first-child {
+    margin-top: 2px;
+  }
+
+  & + .formRow {
+    margin-top: -12px;
+  }
+}
+
+@mixin input-row-focus-ring($radius: 44px) {
+  &:focus-within:not(.inputRowError)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid var(--ThemeColor-Main, #1a81ff);
+    border-radius: $radius;
+    transform: scale(0.5);
+    transform-origin: left top;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+
+  &.inputRowError::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid var(--Red-300, #f01717);
+    border-radius: $radius;
+    transform: scale(0.5);
+    transform-origin: left top;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+}
+
+.emailRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 100px;
+  box-sizing: border-box;
+  @include rwd-min(lg) {
+    background: var(--Background-700);
+  }
+  @include input-row-focus-ring(44px);
+}
+
+.emailInput {
+  position: relative;
+  z-index: 0;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+  outline: none;
+  caret-color: var(--ThemeColor-Main);
+
+  &::placeholder {
+    color: var(--Text-700);
+  }
+}
+
+.verifyRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 4px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  box-sizing: border-box;
+  @include rwd-min(lg) {
+    background: var(--Background-700);
+  }
+  @include input-row-focus-ring(44px);
+}
+
+.verifyInput {
+  position: relative;
+  z-index: 0;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--Text-Main-10);
+  outline: none;
+  caret-color: var(--ThemeColor-Main);
+
+  &::placeholder {
+    color: var(--Text-700);
+  }
+}
+
+.getCodeBtn {
+  flex-shrink: 0;
+  width: 80px;
+  height: 36px;
+  padding: 0 10px;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--White-100);
+  background: var(--ThemeColor-Main);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.getCodeBtn.disabled {
+  color: var(--White-60, rgba(255, 255, 255, 0.6));
+  background: var(--ThemeColor-Main);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorText {
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Red-400);
+  padding-left: 16px;
+}

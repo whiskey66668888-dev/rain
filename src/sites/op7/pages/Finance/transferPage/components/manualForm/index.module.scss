@@ -1,0 +1,130 @@
+.transFormContent {
+  padding: 12px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  @include rwd-min('lg') {
+    padding-top: 0;
+    gap: 24px;
+  }
+
+  .list_bg {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .list_title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--Text-Main-10);
+    }
+
+    .input_box {
+      border-radius: 12px;
+      background: var(--Background-300);
+
+      .max {
+        font-size: 14px;
+        color: var(--ThemeColor-Main);
+        cursor: pointer;
+      }
+    }
+
+    .maxMoney {
+      display: inline-block;
+      width: 70px;
+      height: 25px;
+      padding-left: 10px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 25px;
+      color: var(--themecolor-main);
+      text-align: center;
+      border-left: 1px solid var(--Line-100);
+    }
+  }
+
+  .bnDiv {
+    .button {
+      width: 100%;
+      height: 44px;
+    }
+  }
+
+  .submitBtn {
+    width: 70%;
+    margin: 10px auto;
+  }
+
+  .transferChosing {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0 5px;
+    text-align: center;
+    background: #fff;
+    border-radius: 4px;
+
+    .transferIcon {
+      width: 40px;
+      height: 40px;
+      background: url('../../images/isMore/hyzz.png') no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .transferOut {
+      p:first-child {
+        font-size: 10px;
+        color: #757f8b;
+      }
+    }
+
+    .transferIn {
+      p:first-child {
+        font-size: 10px;
+        color: #757f8b;
+      }
+    }
+  }
+
+  .remind {
+    width: 100%;
+    padding: 0 10px;
+    font-size: 11.5px;
+    text-align: left;
+
+    .blue {
+      font-size: 11.5px;
+      color: #1a81ff;
+    }
+
+    img {
+      display: inline-block;
+      height: 15px;
+      margin: -2px 0 0 -3px;
+    }
+  }
+
+  @include rwd-min('lg') {
+    .list_bg {
+      .input_box {
+        border-radius: 12px;
+        background: var(--Background-500);
+      }
+    }
+  }
+}
+
+.loadingMask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

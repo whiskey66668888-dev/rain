@@ -1,0 +1,173 @@
+.heroSection {
+  // margin-top: 6px;
+  padding: 0 12px;
+}
+
+.heroBanner {
+  width: 100%;
+  height: 220px;
+  border: none;
+  border-radius: 12px;
+  padding: 26px 18px 0;
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(26, 129, 255, 0.92) 0%,
+      rgba(26, 129, 255, 0.74) 45%,
+      rgba(26, 129, 255, 0.44) 100%
+    ),
+    url('../../../../images/common/home-header.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 10px 30px rgba(26, 129, 255, 0.18);
+  transition: transform 0.2s ease;
+
+  @include rwd-min('lg') {
+    height: 220px;
+    padding: 30px 24px 0;
+    border-radius: 20px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 32% 50%, rgba(255, 255, 255, 0.14) 0, rgba(255, 255, 255, 0) 34%),
+      radial-gradient(circle at 68% 20%, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0) 28%);
+    pointer-events: none;
+  }
+}
+
+.heroBannerContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 45px;
+
+  @include rwd-min('lg') {
+    gap: 12px;
+    // padding-bottom: 24px;
+  }
+}
+
+.heroBrandRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+}
+
+.heroBrand {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0;
+
+  @include rwd-min('lg') {
+    font-size: 22px;
+  }
+}
+
+.heroDivider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.heroOffer {
+  max-width: 96px;
+  font-size: 8px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.72);
+
+  @include rwd-min('lg') {
+    max-width: 96px;
+    font-size: 9px;
+  }
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.18;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+
+  @include rwd-min('lg') {
+    font-size: 24px;
+  }
+}
+
+.heroSubtitle {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 400;
+
+  @include rwd-min('lg') {
+    font-size: 10px;
+  }
+}
+
+.heroButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 124px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(5px);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+  @include rwd-min('lg') {
+    width: 146px;
+    height: 46px;
+    font-size: 18px;
+  }
+}
+
+.heroLogos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 20px;
+}
+
+.heroFigure {
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  z-index: 1;
+  width: 149px;
+  height: 220px;
+  background: url('/images/common/landing/cluo2.png') center bottom / contain no-repeat;
+
+  @include rwd-min('lg') {
+    right: 18px;
+    width: 170px;
+    height: 198px;
+  }
+}

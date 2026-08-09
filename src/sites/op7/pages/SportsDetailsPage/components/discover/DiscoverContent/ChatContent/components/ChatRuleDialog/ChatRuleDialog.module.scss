@@ -1,0 +1,21 @@
+.ruleModalContent {
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+}
+
+.ruleContent {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--Text-400);
+  word-break: break-word;
+
+  p + p {
+    margin-top: 6px;
+  }
+}
+
+.emptyText {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--Text-700);
+}

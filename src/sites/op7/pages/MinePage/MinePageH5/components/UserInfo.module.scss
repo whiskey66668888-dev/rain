@@ -1,0 +1,79 @@
+.vipBadgeWrap {
+  position: relative;
+  display: inline-flex;
+  width: 57px;
+  height: 26px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 999px;
+}
+/* 头像框背景在容器上；内层 LazyImage 略小，避免盖住底图（img 内容会盖住同元素 background） */
+.userInfoButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  box-sizing: border-box;
+}
+
+.userInfoButtonWorldCup {
+  padding: 3px;
+  background: url('/images/common/worldCup/avatar_bg.webp') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.userInfoAvatarInner {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 50%;
+  overflow: hidden;
+
+  :global(img) {
+    object-fit: cover;
+  }
+}
+.sweepEffect {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 20px;
+  height: 16px;
+  pointer-events: none;
+  border-radius: 0 50% 50% 0;
+  overflow: hidden;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.85) 40%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  animation: sweep-move 2.5s linear infinite;
+  animation-delay: 0s;
+  will-change: transform, opacity;
+}
+
+@keyframes sweep-move {
+  0% {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.8;
+  }
+  80% {
+    transform: translateX(36px);
+    opacity: 0.8;
+  }
+  95% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(36px);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,128 @@
+.record {
+  padding: 10px;
+}
+
+.stats {
+  align-self: stretch;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+  gap: 16px;
+}
+
+.statsFilter {
+  padding: 6px 0;
+  // background: var(--Background-300);
+  border-radius: 32px;
+  display: flex;
+  gap: 4px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.statsFilterText {
+  text-align: right;
+  color: var(--Text-Main-10);
+  font-family: 'PingFang SC';
+  font-weight: 500;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.statsFilterIcon {
+  width: 12px;
+  height: 12px;
+  position: relative;
+  margin-left: 2px;
+}
+
+.statsFilterIconShape {
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-Main-10);
+  transition: transform 0.2s ease;
+}
+
+.statsFilterIconOpen {
+  transform: rotate(180deg);
+}
+
+.statsFilterTabs {
+  width: auto;
+  background: var(--Background-300);
+}
+
+.statsFilterTab {
+  align-self: stretch;
+  padding: 9px 22px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.statsFilterTabText {
+  text-align: center;
+  color: var(--Text-800);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 14px;
+  word-wrap: break-word;
+}
+
+.statsFilterTabActive {
+  background: var(--ThemeColor-Main);
+}
+
+.statsFilterTabActiveText {
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.statsRight {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.statsGroup {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.statsItem {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
+
+.statsLabel {
+  text-align: right;
+  color: var(--Text-800);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.statsValue {
+  text-align: right;
+  color: var(--Text-Main-10);
+  font-family: 'DINPro';
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+}

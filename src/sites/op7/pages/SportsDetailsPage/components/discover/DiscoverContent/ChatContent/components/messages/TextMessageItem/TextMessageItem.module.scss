@@ -1,0 +1,34 @@
+.messageItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+.bubble {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Text-Main-10);
+  background: var(--Background-300);
+  border-radius: 8px;
+  padding: 8px;
+  word-break: break-word;
+}
+
+.mine .bubble {
+  color: white;
+  background: var(--ThemeColor-Main);
+}
+
+.admin {
+  color: var(--Text-Main-10);
+}
+
+.quoteBlock {
+  margin-bottom: 6px;
+}

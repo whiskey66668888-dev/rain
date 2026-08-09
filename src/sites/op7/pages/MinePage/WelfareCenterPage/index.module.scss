@@ -1,0 +1,64 @@
+.popover {
+  width: 100px;
+  :global {
+    .adm-popover-arrow {
+      display: none;
+    }
+    .adm-popover-menu-list {
+      min-width: 100px;
+    }
+    .adm-popover-menu-item {
+      padding: 0;
+    }
+    .adm-popover-menu-item-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 0;
+      width: 100px;
+      height: 44px;
+    }
+  }
+}
+
+.statusGroup {
+  align-self: stretch;
+  padding: 2px;
+  background: var(--Background-300);
+  border-radius: 100px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.statusItem {
+  flex: 1 1 0;
+  padding: 8px 16px;
+  border-radius: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.statusItemText {
+  color: var(--Text-800);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.statusItemActive {
+  background: var(--ThemeColor-Main);
+}
+
+.statusItemActiveText {
+  color: var(--White-100);
+  font-weight: 500;
+}

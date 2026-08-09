@@ -1,0 +1,116 @@
+.oddBtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Background-500);
+  color: var(--Text-800);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+
+  @include can-hover {
+    &:not(.active) {
+      &:hover {
+        background-color: var(--ThemeColor-15);
+      }
+    }
+  }
+
+  &.active {
+    background-color: var(--ThemeColor-Main);
+    border-radius: 4px !important;
+    &::after {
+      width: 0 !important;
+    }
+    .oddTitle {
+      color: var(--White-100);
+    }
+    .oddsValue {
+      color: var(--White-100);
+      &.oddup {
+        color: var(--Red-400);
+        &::after {
+          background-color: var(--Red-400);
+        }
+      }
+      &.odddown {
+        color: var(--Green-100);
+        &::after {
+          background-color: var(--Green-100);
+        }
+      }
+    }
+  }
+  .oddTitle {
+    color: var(--Text-800);
+    font-family: 'DINPro';
+    font-size: 12px;
+    [data-text-scale='1'] & {
+      font-size: 13px;
+    }
+    [data-text-scale='1.15'] & {
+      font-size: 14px;
+    }
+  }
+
+  .oddsValue {
+    color: var(--Text-Main-10);
+    font-weight: 500;
+    position: relative;
+    font-family: 'DINPro';
+    font-size: 14px;
+    [data-text-scale='1'] & {
+      font-size: 15px;
+    }
+    [data-text-scale='1.15'] & {
+      font-size: 16px;
+    }
+    &.oddup {
+      color: var(--Red-300);
+      &::after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 3px;
+        width: 6px;
+        height: 6px;
+        background-color: var(--Red-300);
+        clip-path: polygon(50% 0%, 100% 100%, 50% 75%, 0% 100%);
+      }
+    }
+    &.odddown {
+      color: var(--Green-300);
+      &::after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 3px;
+        width: 6px;
+        height: 6px;
+        background-color: var(--Green-300);
+        clip-path: polygon(0% 0%, 50% 25%, 100% 0%, 50% 100%);
+      }
+    }
+  }
+  &.threeLine {
+    @include rwd-min('lg') {
+      justify-content: space-between;
+      padding: 0 15px;
+      align-items: center;
+    }
+  }
+  &.proMode {
+    flex-direction: row;
+    gap: 3px;
+  }
+
+  &.threeLineColumn {
+    flex-direction: column;
+    justify-content: center;
+  }
+}

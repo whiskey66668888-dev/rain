@@ -1,0 +1,287 @@
+$header-height: 44px;
+.template3 {
+  flex: auto;
+  .tabWrapper {
+    width: 100%;
+    height: 56px;
+
+    .tabArea {
+      position: fixed;
+      height: 56px;
+      padding-top: 8px;
+      width: 100%;
+      background: var(--Background-500);
+      z-index: 99;
+      @include rwd-min('lg') {
+        position: static;
+      }
+      .tabs {
+        height: 36px;
+        display: flex;
+        width: calc(100% - 24px);
+        margin: 0px 12px 8px;
+        overflow: scroll;
+        border-radius: 50px;
+        padding: 2px;
+        background-color: var(--Background-700);
+        &.justifyCenter {
+          justify-content: center;
+        }
+        .tabItem {
+          height: 32px;
+          width: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          white-space: nowrap;
+          border-radius: 50px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 14px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: var(--Text-800);
+          cursor: pointer;
+          &.active {
+            color: #fff;
+            background: #1a81ff;
+          }
+        }
+      }
+    }
+  }
+
+  .subtabWrapper {
+    height: 40px;
+
+    .subTabs {
+      position: fixed;
+      height: 40px;
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      z-index: 99;
+      background: var(--Background-500);
+      @include rwd-min('lg') {
+        position: static;
+      }
+      // 隐藏滚动条（可选）
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      .subTabItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 80px;
+
+        .subTabItemContent {
+          display: flex;
+          width: 56px;
+          height: 20px;
+          margin: 10px 12px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 100%;
+          text-align: center;
+          color: var(--Text-800, #ccc);
+          white-space: nowrap;
+          &.subactive {
+            color: #1a81ff;
+            position: relative;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -2px;
+              width: 56px;
+              height: 2px;
+              border-radius: 10px;
+              background-color: #1a81ff;
+            }
+          }
+        }
+      }
+    }
+  }
+  .detailContent {
+    padding: 16px 11px 20px 13px;
+
+    .contentHeader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 25px;
+      width: 100%;
+
+      .img {
+        width: 16px;
+        height: 16px;
+        margin: 7px;
+      }
+
+      .subtitle {
+        color: var(--Text-Main-10);
+        font-weight: 600;
+        font-style: Semibold;
+        font-size: 16px;
+        line-height: 100%;
+        letter-spacing: 0px;
+        text-align: center;
+      }
+    }
+
+    .contentItem {
+      margin: 16px 0;
+      width: 100%;
+      padding: 16px 17px 16px 15px;
+      background: var(--Background-300);
+      border-radius: 10px;
+
+      .itemTitle {
+        min-height: 22px;
+        display: flex;
+        align-items: center;
+
+        .number {
+          width: 18px;
+          height: 18px;
+          color: white;
+          background-color: #1a81ff;
+          border-radius: 50%;
+          margin-right: 9px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 14px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          justify-content: center;
+        }
+
+        .text {
+          color: var(--Text-Main-10, #fff);
+          font-family: 'PingFang SC';
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 24px; /* 150% */
+        }
+      }
+
+      .itemContent {
+        width: 100%;
+        background: #f3f9ff;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0 8px;
+
+        .text {
+          font-family: PingFang HK;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          letter-spacing: 0.35px;
+          vertical-align: middle;
+          color: #303030;
+        }
+      }
+
+      .coinItemContent {
+        padding-top: 16px;
+
+        .text {
+          font-family: PingFang SC;
+          font-weight: 400;
+          font-style: Regular;
+          font-size: 12px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          text-align: justify;
+          color: var(--Text-Main-10);
+          *:not(a):not(a *) {
+            color: inherit !important;
+          }
+          a {
+            color: #1a81ff;
+            * {
+              color: inherit !important;
+            }
+          }
+        }
+      }
+
+      .videoPlayer {
+        width: 100%;
+        height: 180px;
+        border-radius: 10px;
+        margin-top: 16px;
+      }
+
+      .downloadBtnWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 40px;
+        margin-top: 16px;
+        border-radius: 5px;
+        background: #1a81ff;
+
+        .text {
+          padding: 0 10px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 14px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          text-align: center;
+          color: white;
+        }
+      }
+
+      .imageContent {
+        margin-top: 16px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.empty {
+  min-height: calc(100vh - $header-height - 368px);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .emptyImage {
+    width: 170px;
+    height: 104px;
+    background: url('../../images/empty.png') no-repeat center;
+    background-size: 100% 100%;
+  }
+
+  .emptyText {
+    text-align: center;
+    font-family: PingFang HK;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0px;
+    color: #667180;
+  }
+}

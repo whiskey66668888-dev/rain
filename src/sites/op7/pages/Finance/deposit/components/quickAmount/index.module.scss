@@ -1,0 +1,198 @@
+.quickAmount {
+  border-radius: 12px;
+  background: var(--Background-300);
+  position: relative;
+
+  .title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0 12px;
+    color: var(--Text-Main-10);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      background: var(--Line-100);
+      transform: scaleY(0.5);
+      transform-origin: bottom center;
+    }
+
+    .usdtRate {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ThemeColor-Main);
+      display: flex;
+      align-items: center;
+
+      .icon {
+        margin-left: 2px;
+      }
+    }
+  }
+
+  .quickAmountList {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 12px;
+    column-gap: 8px;
+
+    .quickAmountItem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--Background-500);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--Text-Main-10);
+      cursor: pointer;
+      gap: 1px;
+
+      .quickAmountCurrency {
+        font-family: 'SF Pro Text', system-ui, sans-serif;
+      }
+
+      .quickAmountNum {
+        font-family: DINPro, 'SF Pro Text', sans-serif;
+        font-weight: 500;
+      }
+
+      &.active {
+        background: var(--ThemeColor-Main);
+        color: var(--White-100);
+      }
+    }
+  }
+
+  .expendBox {
+    height: 24px;
+    margin-top: -4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ThemeColor-Main);
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    .expendIcon {
+      transition: all 0.3s ease-in-out;
+      transform: rotate(180deg);
+
+      &.active {
+        transform: rotate(0deg);
+      }
+    }
+  }
+
+  .inputWrapper {
+    padding: 12px;
+  }
+
+  .clearInputBtn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    color: var(--Text-700);
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  .error {
+    padding: 0 12px 12px 12px;
+    color: var(--Red-400);
+    font-size: 12px;
+  }
+
+  .submitBox {
+    padding: 0 12px 12px;
+  }
+
+  .submitButton {
+    width: 100%;
+    height: 44px;
+    color: var(--White-100);
+
+    .bnContent {
+      gap: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: DINPro, 'SF Pro Text', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .usdtText {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .usdtAmountWithUnit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28em;
+    }
+
+    .usdtAmountNum {
+      font-family: DINPro, 'SF Pro Text', sans-serif;
+      font-weight: 500;
+    }
+
+    .usdtUnitSuffix {
+      font-family: DINPro, 'SF Pro Text', sans-serif;
+      font-weight: 500;
+    }
+  }
+
+  &.autoPC {
+    @include rwd-min('lg') {
+      .quickAmountList {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      }
+    }
+  }
+}
+
+.disclaimerPopoverInner {
+  font-size: 12px;
+  color: var(--Text-Main-10);
+}
+
+.ratePopover {
+  :global(.adm-popover-arrow) {
+    bottom: calc(var(--arrow-size) * -1 + 2px) !important;
+  }
+}

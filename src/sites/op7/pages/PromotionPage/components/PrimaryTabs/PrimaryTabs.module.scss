@@ -1,0 +1,61 @@
+.primaryTabs {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // padding: 18px 0 0;
+  height: 88px;
+}
+
+.redDot {
+  position: absolute;
+  top: -1px;
+  right: -6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--Warning-Main, #ff4d4f);
+  pointer-events: none;
+}
+
+.tabItem {
+  // flex: 1;
+  text-align: center;
+
+  color: var(--Text-800, #7a8499);
+  text-align: center;
+  font-family: 'PingFang SC';
+  // font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+
+  position: relative;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tabItem:hover {
+  color: var(--ThemeColor-Main, #1a81ff);
+}
+.active {
+  color: var(--ThemeColor-Main, #1a81ff);
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 500;
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px; // 和 padding 对齐
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ThemeColor-Main, #1a81ff);
+}

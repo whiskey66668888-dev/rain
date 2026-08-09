@@ -1,0 +1,114 @@
+@use '@/common/styles/rwd' as *;
+
+.header {
+  height: 44px;
+  min-width: 1px;
+
+  @include rwd-min('lg') {
+    display: none;
+  }
+}
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: var(--Background-700);
+  // background-color: color-mix(
+  //   in srgb,
+  //   var(--background-gradient-30) 81.5%,
+  //   var(--background-gradient-40) 18.5%
+  // );
+}
+
+.subPageHeader {
+  background: var(--Background-300);
+}
+
+.subPageBar {
+  background: var(--Background-300);
+  box-shadow: none;
+  color: var(--Text-Main-10);
+}
+
+.left {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.headerCloseBtn {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  width: 24px;
+  height: 24px;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 120px;
+  // background-color: rgba(255, 255, 255, 0.15);
+  // background-color: rgba(255, 255, 255, 0.15);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.backIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'PingFang HK', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--Text-Main-10);
+  text-align: center;
+}
+
+.subPageTitle {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0;
+  color: var(--Text-Main-10);
+}
+
+.subPageBar .backIcon {
+  color: var(--Text-Main-10);
+}
+
+.right {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}

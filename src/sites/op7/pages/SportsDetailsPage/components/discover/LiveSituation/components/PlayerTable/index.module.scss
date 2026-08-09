@@ -1,0 +1,198 @@
+.playerTable {
+  overflow: hidden;
+  background: var(--Background-300);
+  border-radius: 6px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+}
+
+.teamInfo {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+
+  img {
+    flex: 0 0 auto;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  h4 {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.innerTabs {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 2px;
+  background: var(--Line-100);
+  border-radius: 40px;
+
+  button {
+    height: 22px;
+    min-width: 42px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 30px;
+    background: transparent;
+    color: var(--Text-800);
+    cursor: pointer;
+    font-size: 12px;
+  }
+}
+
+.innerTabs .activeInnerTab {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+}
+
+.tableWrap {
+  margin: 0 10px 10px;
+  overflow: hidden;
+}
+
+.playerHead,
+.playerRow {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+
+  > span {
+    display: grid;
+    min-height: 32px;
+    align-items: center;
+    justify-items: center;
+    min-width: 0;
+    padding: 0 3px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.columns3 {
+  grid-template-columns: 132px repeat(3, minmax(0, 1fr));
+}
+
+.columns4 {
+  grid-template-columns: 132px minmax(46px, 1.2fr) repeat(3, minmax(0, 1fr));
+}
+
+.columns5 {
+  grid-template-columns: 132px repeat(5, minmax(0, 1fr));
+}
+
+.playerHead {
+  background: var(--Background-400);
+
+  > span:first-child {
+    display: flex;
+    justify-content: space-between;
+    border-right: 1px solid var(--Line-100);
+  }
+
+  b {
+    font-weight: 400;
+  }
+}
+
+.playerRow {
+  &:nth-child(odd) {
+    background: var(--Background-400);
+  }
+}
+
+.playerCell {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  gap: 2px;
+  justify-items: stretch !important;
+  justify-self: stretch;
+  border-right: 1px solid var(--Line-100);
+  text-align: left !important;
+}
+
+.shirt {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+
+  img {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+  }
+
+  b {
+    position: absolute;
+    width: 18px;
+    color: var(--Background-300);
+    font-size: 8px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.shirt em {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-style: normal;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playerCell strong {
+  min-width: 0;
+  font-weight: 400;
+  text-align: right;
+}
+
+@media (max-width: 375px) {
+  .playerHead,
+  .playerRow {
+    font-size: 11px;
+
+    > span {
+      padding: 0 2px;
+    }
+  }
+
+  .columns3 {
+    grid-template-columns: 120px repeat(3, minmax(0, 1fr));
+  }
+
+  .columns4 {
+    grid-template-columns: 120px minmax(42px, 1.2fr) repeat(3, minmax(0, 1fr));
+  }
+
+  .columns5 {
+    grid-template-columns: 120px repeat(5, minmax(0, 1fr));
+  }
+
+  .playerCell {
+    grid-template-columns: minmax(0, 1fr) 24px;
+  }
+}

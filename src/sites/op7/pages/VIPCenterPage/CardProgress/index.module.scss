@@ -1,0 +1,109 @@
+.progress_content_box {
+  position: relative;
+  width: calc(100% - 64px);
+
+  .tipBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5px;
+  }
+
+  .tips {
+    position: absolute;
+    top: -22px;
+    left: -24px;
+    // div {
+    //     font-family: "DIN Alternate", sans-serif;
+    // }
+    // .downTip {
+    //   width: 11px;
+    //   height: auto;
+    // }
+    .tipBox {
+      text-align: center;
+      font-size: calc(10px * var(--text-scale, 1));
+      font-weight: 500;
+      width: 38px;
+      height: 16px;
+      border-radius: 8px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      div {
+        color: #f3c98b;
+        font-family: 'PingFang SC';
+        font-size: calc(10px * var(--text-scale, 1));
+        font-weight: 600;
+        letter-spacing: -0.1px;
+      }
+    }
+    .tipBox_2 {
+      div {
+        color: #222830;
+      }
+    }
+    .downTprogressico {
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
+      aspect-ratio: 1/1;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      margin: 0 auto;
+      //   width: 29px;
+      //   height: auto;
+    }
+    .gift {
+      flex-shrink: 0;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background: #fff;
+      padding: 1px;
+      margin: 0 auto;
+      height: 14px !important;
+      width: 14px;
+      margin-top: 17px;
+      img {
+        height: 13px !important;
+      }
+    }
+  }
+
+  :global {
+    .adm-progress-bar-trail {
+      --track-width: 4px;
+    }
+  }
+}
+
+.progress_content_baoji {
+  width: calc(100% - 64px);
+  //   width: 100%;
+}
+
+.tipsContent {
+  font-size: calc(10px * var(--text-scale, 1));
+  color: var(--warning-300);
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 2px 4px;
+  background: #fff;
+}
+
+.tipsContentBox {
+  :global {
+    .adm-popover {
+      padding: 0px !important;
+    }
+    .adm-popover-inner-content {
+      padding: 0px !important;
+    }
+  }
+}

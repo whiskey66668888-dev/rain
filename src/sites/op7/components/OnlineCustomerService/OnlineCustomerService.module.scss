@@ -1,0 +1,379 @@
+@use '@/common/styles/rwd' as *;
+
+/**
+ * 在线客服弹窗 
+ */
+.modal {
+  width: 100%;
+  background: var(--Background-400);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &.mobile {
+    border-radius: 16px 16px 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--Line-100);
+      border-radius: 2px;
+    }
+  }
+
+  &.desktop {
+    width: 450px;
+    max-width: 90vw;
+    border-radius: 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+  }
+}
+
+.header {
+  position: relative;
+  flex-shrink: 0;
+  padding: 16px 48px 12px 48px;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .mobile & {
+    padding: 14px 48px 14px 48px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--Text-Main-10);
+  text-align: center;
+
+  .mobile & {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+/* 两个客服线路卡片横向并排 */
+.content {
+  padding: 0 16px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+
+  .mobile & {
+    padding: 0 16px 20px;
+    gap: 12px;
+  }
+
+  .desktop & {
+    padding: 0 16px 20px;
+    gap: 12px;
+  }
+}
+
+.card {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &.cardClickable {
+    cursor: pointer;
+  }
+}
+
+/* 从「客服线路一」文案到图片整块区域用同一背景色，无 border；浅色用浅灰，深色用 #161b25 */
+.cardBody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--Line-100);
+  border-radius: 8px;
+  padding: 12px 8px 0;
+}
+
+.cardLabel {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+  margin-bottom: 4px;
+}
+
+.cardServiceTime {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+/* 包裹层固定比例，底边与 cardBody 底边重合；图片绝对定位在内部 */
+.imgWrap {
+  position: relative;
+  width: 100%;
+  max-width: 105px;
+  flex-shrink: 0;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+
+  /* 固定 105:160 比例 */
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: calc(160 / 105 * 100%);
+  }
+}
+
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.footer {
+  padding: 0 16px 24px;
+  flex-shrink: 0;
+
+  .mobile & {
+    padding: 0 16px 24px;
+  }
+}
+
+/* 与登录/注册主按钮一致：44px 高 + 22px 圆角 = 半圆胶囊 */
+.callBtn {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 22px;
+  background: var(--ThemeColor-Main);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.callIcon {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+
+.noticeModal {
+  width: 450px;
+  max-width: 90vw;
+  border-radius: 16px;
+  background: var(--Background-300);
+  box-shadow: 0 8px 32px var(--Shadow-400);
+  overflow: hidden;
+}
+
+.noticeHeader {
+  position: relative;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 48px 12px;
+}
+
+.noticeTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--Text-Main-10);
+  text-align: center;
+}
+
+.closeBtn {
+  right: 20px !important;
+}
+
+.windowModalContentTip {
+  padding: 0 20px;
+  margin-top: -4px;
+  overflow: hidden;
+
+  .time {
+    margin-top: 5px;
+    font-size: 12x;
+    color: var(--Text-700);
+    text-align: center;
+  }
+}
+
+.noticeContentTitle {
+  width: 100%;
+  padding: 0 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  color: var(--ThemeColor-Main);
+  text-align: center;
+}
+
+.noticeContent {
+  max-height: 350px;
+  margin-top: 10px;
+  overflow: auto;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-Main-10);
+}
+
+.noticeFooter {
+  padding: 16px 20px 20px;
+}
+.closeBtn {
+  right: 12px !important;
+}
+.noticeBtn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 22px;
+  background: var(--ThemeColor-Main);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+/* 新客服：纵向线路列表 */
+.newContent {
+  padding: 0 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.channelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 70px;
+  padding: 10px 12px 0;
+  border-radius: 10px;
+  background: linear-gradient(104deg, #e5edff 0.06%, #d9e5ff 50.06%, #b2d2ff 100.06%);
+  overflow: hidden;
+
+  &.channelRowClickable {
+    cursor: pointer;
+  }
+}
+
+.channelMain {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  min-width: 0;
+  flex: 1;
+}
+
+.channelLogoWrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 54px;
+  height: 70px;
+  overflow: hidden;
+}
+
+.channelLogo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.channelText {
+  min-width: 0;
+  align-self: center;
+}
+
+.channelName {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--Black-100);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.channelTime {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--Black-40);
+}
+
+.channelAction {
+  flex-shrink: 0;
+  align-self: center;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--ThemeColor-Main);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.hotlineRow {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 22px;
+  background: var(--ThemeColor-Main);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}

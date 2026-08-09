@@ -1,0 +1,77 @@
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.noticTitle {
+  margin: 0 0 12px;
+  color: var(--Text-Main-10);
+  font-weight: 500;
+  font-size: tf(14);
+  line-height: calc(20px * var(--text-scale, 1));
+  text-align: center;
+}
+
+.rowDown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(40px * var(--text-scale, 1));
+  height: auto;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  background: var(--Background-500, #eff1f5);
+  border-radius: calc(20px * var(--text-scale, 1));
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.icoRightWrap {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.icoRightLight,
+.icoRightDark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.icoRightDark {
+  display: none;
+
+  [data-theme='dark'] & {
+    display: block;
+  }
+}
+
+.icoRightLight {
+  [data-theme='dark'] & {
+    display: none;
+  }
+}
+
+.urlText {
+  max-width: 200px;
+  text-align: left;
+  font-weight: 500;
+  font-size: tf(14);
+  line-height: calc(20px * var(--text-scale, 1));
+  color: var(--Text-Main-10);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

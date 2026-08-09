@@ -1,0 +1,521 @@
+.wrapper {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--Background-700);
+}
+
+.topSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.pills {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  flex: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pills::-webkit-scrollbar {
+  display: none;
+}
+
+.pill {
+  flex: none;
+  height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 30px;
+  background: var(--Background-300);
+  color: var(--Text-800);
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pillActive {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.segmented {
+  flex: none;
+  margin-right: 10px;
+  background: var(--Background-gradient-110) !important;
+  --un-selected-color: var(--Text-800);
+}
+
+.liveSelectBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: var(--Background-300);
+}
+
+.selectItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.selectIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.card {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--Background-300);
+}
+
+.loadingWrap {
+  padding: 24px 10px;
+}
+
+.entryCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.entryHeader {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px 0;
+  background: var(--Line-100);
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.companyCol {
+  width: 88px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entryHeaderCell {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerLineSpacer {
+  width: 2px;
+  flex-shrink: 0;
+}
+
+.settingBtn {
+  width: 28px;
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.companyGroup {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 0.5px solid var(--Line-100);
+}
+
+.companyBadge {
+  width: 68px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  span {
+    color: var(--White-100);
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+.companyOdds {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.oddsRow {
+  display: flex;
+  align-items: stretch;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  border-bottom: 0.5px solid var(--Line-100);
+  background: transparent;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.rowLine {
+  width: 2px;
+  flex-shrink: 0;
+}
+
+.oddCell {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.enterBtn {
+  width: 28px;
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+.legend_initial {
+  background: var(--ThemeColor-Main);
+}
+
+.legend_preMatch {
+  background: var(--Warning-200, #f5a623);
+}
+
+.legend_live {
+  background: var(--Green-300);
+}
+
+.valueMain {
+  color: var(--Text-Main-10);
+}
+
+.valueRed {
+  color: var(--Red-900);
+}
+
+.valueGreen {
+  color: var(--Green-300);
+}
+
+.lockIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.changeArrow {
+  width: 6px;
+  height: 6px;
+}
+
+.editorSheet {
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 0 0;
+  background: var(--Background-300);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  overflow: hidden;
+}
+
+.historySheet {
+  width: 100%;
+  height: calc(100dvh - 192px);
+  max-height: calc(100dvh - 192px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 0 0;
+  background: var(--Background-300);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  overflow: hidden;
+}
+
+.historyHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  flex-shrink: 0;
+  padding: 0 40px;
+}
+
+.editorHeader {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.editorTitle {
+  text-align: center;
+  color: var(--Text-Main-10);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.historyClose {
+  position: absolute !important;
+  top: 50% !important;
+  right: 10px !important;
+  left: auto !important;
+  // 必须与 active:scale-95 合并，否则按压时 scale 会覆盖 translateY，按钮下移
+  transform: translateY(-50%) !important;
+  width: 22px !important;
+  height: 22px !important;
+  margin: 0 !important;
+
+  &:active {
+    transform: translateY(-50%) scale(0.95) !important;
+  }
+}
+
+.editorAction,
+.editorActionConfirm {
+  border: 0;
+  background: transparent;
+  color: var(--Text-800);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.editorActionConfirm {
+  color: var(--ThemeColor-Main);
+  font-weight: 600;
+}
+
+.editorActionPlaceholder {
+  display: block;
+}
+
+.editorBody {
+  margin: 0 12px 12px;
+  padding: 16px 12px;
+  border-radius: 8px;
+  background: var(--Background-300);
+}
+
+.editorHint {
+  margin-bottom: 12px;
+  color: var(--Text-700);
+  font-size: 12px;
+}
+
+.editorGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 8px;
+}
+
+.editorItem {
+  height: 32px;
+  border: 0;
+  border-radius: 54px;
+  background: var(--Background-500);
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.editorItemActive {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-weight: 600;
+}
+
+.historyTableHeader {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  min-height: 40px;
+  flex-shrink: 0;
+  padding: 8px 0;
+  border-bottom: 0.5px solid var(--Line-100);
+  background: var(--Background-300);
+  color: var(--Text-800);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.timeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.headerIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.timeSwitchIcon {
+  width: 10px;
+  height: auto;
+  object-fit: contain;
+}
+
+.historyHeaderCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.historyList {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--Background-300);
+}
+
+.historyRow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  min-height: 40px;
+  border-bottom: 0.5px solid var(--Line-100);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.historyFixedRow {
+  background: var(--Line-100);
+}
+
+.historyTime {
+  white-space: pre-line;
+  color: var(--Text-Main-10);
+  line-height: 1.2;
+  text-align: center;
+  font-family: 'DINPro', 'SF Pro', sans-serif;
+}
+
+.timeLive {
+  color: var(--Red-900);
+}
+
+.timeMeta {
+  color: var(--Text-800);
+  font-weight: 400;
+}
+
+.historyScore,
+.historyOdd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DINPro', 'SF Pro', sans-serif;
+}
+
+.historyScore {
+  color: var(--Text-Main-10);
+}
+
+/* 必须写在 .historyOdd 之后，否则会被默认色覆盖 */
+.historyOdd.valueMain {
+  color: var(--Text-Main-10);
+}
+
+.historyOdd.valueRed {
+  color: var(--Red-900);
+}
+
+.historyOdd.valueGreen {
+  color: var(--Green-300);
+}
+
+.historyMore {
+  padding: 12px 0;
+  text-align: center;
+  color: var(--Text-700);
+  font-size: 12px;
+}

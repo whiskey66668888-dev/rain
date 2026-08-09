@@ -1,0 +1,119 @@
+.titleBox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titleText {
+  font-weight: 500;
+  font-size: tf(16);
+  line-height: calc(24px * var(--text-scale, 1));
+  color: var(--Text-Main-10);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(18px * var(--text-scale, 1));
+  height: calc(18px * var(--text-scale, 1));
+  padding: 0 5px;
+  border-radius: calc(9px * var(--text-scale, 1));
+  background: var(--Red-300);
+  color: #fff;
+  font-size: tf(12);
+  font-weight: 500;
+  line-height: 1;
+  font-family: DINPro, sans-serif;
+}
+
+.body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.msgTitle {
+  margin: 0 0 12px;
+  color: var(--Text-Main-10);
+  font-weight: 500;
+  font-size: tf(14);
+  line-height: calc(20px * var(--text-scale, 1));
+  text-align: center;
+}
+
+.msgContent {
+  color: var(--Text-800);
+  font-size: tf(14);
+  line-height: calc(22px * var(--text-scale, 1));
+  word-break: break-word;
+
+  p {
+    margin: 0 0 8px;
+    font-size: inherit;
+    line-height: inherit;
+    color: var(--Text-Main-10);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  :global {
+    a {
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    ol,
+    ul {
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    li {
+      font-size: inherit;
+      line-height: inherit;
+    }
+  }
+}
+
+.msgTime {
+  margin-top: 12px;
+  color: var(--Text-800);
+  font-size: tf(12);
+  line-height: calc(16px * var(--text-scale, 1));
+  text-align: right;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.btnClose,
+.btnNeverRemind {
+  flex: 1;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 18px;
+  font-size: tf(12);
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+}
+
+.btnClose {
+  background: var(--Line-100);
+  color: var(--Text-Main-10);
+}
+
+.btnNeverRemind {
+  background: var(--ThemeColor-Main);
+  color: #fff;
+}
+
+.btnMore {
+  max-width: none;
+}

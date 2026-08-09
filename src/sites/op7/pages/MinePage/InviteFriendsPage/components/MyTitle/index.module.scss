@@ -1,0 +1,31 @@
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.leftContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+}
+
+.centerContent {
+  flex: 1.2;
+  text-align: center;
+  font-size: 10px;
+  color: var(--Text-800);
+}
+
+.rightContent {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}

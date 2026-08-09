@@ -1,0 +1,56 @@
+// 下拉状态
+.statusWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-700, #8f9eb2);
+  text-align: center;
+  font-family: 'PingFang SC';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  &.success {
+    // color: var(--green-300);
+    font-family: 'PingFang SC';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 133.333% */
+  }
+  .downImage {
+    width: 16px;
+    height: 16px;
+    background: url('./image/down.png') no-repeat;
+    background-size: 100% 100%;
+    margin-right: 4px;
+    @include theme-night {
+      background: url('./image/down_dark.png') no-repeat;
+    }
+  }
+
+  .loadingImg {
+    width: 16px;
+    height: 16px;
+    background: url('./image/loading.png') no-repeat;
+    background-size: 100% 100%;
+    margin-right: 4px;
+    animation: spin 1s linear infinite;
+    @include theme-night {
+      background: url('./image/loading_dark.png') no-repeat;
+    }
+  }
+}
+.text {
+  color: var(--Text-700);
+  font-family: 'PingFang SC';
+  font-size: 12px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

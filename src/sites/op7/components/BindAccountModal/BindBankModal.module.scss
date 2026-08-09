@@ -1,0 +1,22 @@
+.bindBankModal {
+  background: var(--Background-700);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--Text-Main-10);
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+
+  // Pad/Web 居中弹窗样式
+  &.desktop {
+    width: 450px;
+    max-width: 90vw;
+    border-radius: 12px;
+    max-height: 90vh;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+    background: var(--Background-400);
+    overflow: hidden;
+    height: auto;
+  }
+}

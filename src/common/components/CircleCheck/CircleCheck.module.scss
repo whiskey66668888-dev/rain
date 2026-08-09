@@ -1,0 +1,56 @@
+/* 圆框打勾组件：14px 圆，选中时显示 check 图标 */
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.circleWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.circle,
+.circleChecked {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.circle {
+  border: 1px solid var(--Text-700);
+}
+
+.circleChecked {
+  background: var(--ThemeColor-Main);
+}
+
+.checkIcon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 6px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.label {
+  margin-left: 4px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--Text-800);
+}

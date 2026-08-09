@@ -1,0 +1,128 @@
+.swiperFooter {
+  min-height: 36px;
+  height: auto;
+  // display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  // border-top: 0.5px solid rgba(255, 255, 255, 0.16);
+  flex: none;
+  padding-top: 4px;
+  .pcMatchScore {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    @include rwd-min('lg') {
+      display: flex;
+    }
+  }
+
+  /* Web 专用：底部统计条子项错峰入场（H5 不挂载 .webScoreRow） */
+  .webScoreRow {
+    @include rwd-min('lg') {
+      > * {
+        animation: sportDetailWebScoreChip 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      @for $i from 1 through 16 {
+        > *:nth-child(#{$i}) {
+          animation-delay: #{0.1 + $i * 0.038}s;
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      @include rwd-min('lg') {
+        > * {
+          animation: none;
+        }
+      }
+    }
+  }
+
+  .h5MediaControl {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include rwd-min('lg') {
+      display: none;
+    }
+  }
+
+  .rightButton {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    :global(.svg-icon) {
+      opacity: 0.88;
+    }
+  }
+}
+
+.disclaimerPopoverInner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .disclaimerTitle {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--Text-Main-10-10);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .disclaimerText {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--Text-800);
+    line-height: 1.4;
+    margin: 0;
+    word-wrap: break-word;
+  }
+}
+
+.h5MediaControlContent {
+  padding: 13px 12px 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .scoreScrollArea {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .sportScore {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sportScoreRow {
+    width: max-content;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+}
+
+@keyframes sportDetailWebScoreChip {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

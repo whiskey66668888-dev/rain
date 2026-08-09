@@ -1,0 +1,261 @@
+@use '@/common/styles/rwd' as *;
+
+.wrap {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  position: relative;
+  z-index: 0;
+  background: url('@/sites/op7/images/common/realtimeRebate/bg.webp') no-repeat center / cover;
+  width: 100%;
+  height: 407px;
+}
+
+@include rwd-max('lg') {
+  .hero {
+    height: 348px;
+    overflow: hidden;
+  }
+
+  .centerArea {
+    top: calc(50% + 14px);
+  }
+
+  .ring {
+    width: min(300px, 100vw - 32px);
+    height: 258px;
+    overflow: hidden;
+    background-size: 100% auto;
+    background-position: center top;
+  }
+}
+
+[data-theme='dark'] {
+  .hero {
+    background-image: url('@/sites/op7/images/common/realtimeRebate/bg_dark.webp');
+  }
+}
+
+.rightActions {
+  right: 0;
+  top: 56px;
+  position: absolute;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  z-index: 9;
+}
+
+.actionPill {
+  display: inline-flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+  align-items: center;
+  width: 82px;
+  height: 28px;
+  border-radius: 100px 0 0 100px;
+  background: var(--Background-300);
+  cursor: pointer;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--Text-Main-10);
+}
+
+.actionText {
+  color: var(--Text-800);
+  font-family: PingFang SC;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.centerArea {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 44px);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: url('@/sites/op7/images/common/realtimeRebate/circle_bg.webp') no-repeat center /
+    cover;
+  width: 324px;
+  height: 321px;
+  position: relative;
+}
+[data-theme='dark'] {
+  .ring {
+    background-image: url('@/sites/op7/images/common/realtimeRebate/circle_bg_dark.webp');
+  }
+}
+
+.ringText {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  color: var(--Text-900);
+  font-family: 'PingFang SC';
+  font-weight: 500;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.amount {
+  color: var(--ThemeColor-Main);
+  font-family: 'DINPro';
+  font-weight: 700;
+  line-height: 28px;
+  word-wrap: break-word;
+}
+
+.subTitle {
+  color: var(--Text-800);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+}
+
+.cta {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  width: 100%;
+  height: 44px;
+  padding: 5px 85px;
+  background: var(--ThemeColor-Main);
+  border-radius: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.ctaMobile {
+  width: calc(100% - 20px);
+  margin: 24px auto;
+}
+
+.ctaText {
+  align-self: stretch;
+  text-align: center;
+  color: var(--White-100);
+  font-family: 'PingFang SC';
+  font-weight: 500;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.ruleModal {
+  width: 320px;
+  border-radius: 12px;
+  background: var(--Background-300) url('@/sites/op7/images/light/mine/modal_bg.png') no-repeat top
+    center / 100% auto;
+  padding: 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-theme='dark'] {
+  .ruleModal {
+    background-image: url('@/sites/op7/images/dark/mine/modal_bg.png');
+  }
+}
+
+.ruleModalPc {
+  width: 450px;
+  padding: 12px 24px 24px;
+}
+
+.ruleHeader {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ruleTitle {
+  color: var(--Text-Main-10);
+  font-family: 'PingFang SC';
+  font-weight: 600;
+  line-height: 24px;
+  margin-bottom: 12px;
+}
+
+.ruleClose {
+  position: absolute;
+  right: 0;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: var(--Line-100);
+  border-radius: 50%;
+  color: var(--Text-800);
+  cursor: pointer;
+}
+
+.ruleBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ruleLine {
+  margin: 0;
+  color: var(--Text-Main-10);
+  font-family: 'PingFang SC';
+  font-weight: 400;
+  line-height: 18px;
+  span {
+    color: var(--ThemeColor-Main);
+  }
+}
+
+.ruleConfirm {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 100px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 12px;
+}

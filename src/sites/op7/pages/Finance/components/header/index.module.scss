@@ -1,0 +1,72 @@
+.header {
+  height: 44px;
+  width: 100%;
+  background: var(--Background-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  flex: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: var(--Text-Main-10);
+
+  .bnBack {
+    position: absolute;
+    left: 12px;
+    // width: 24px;
+    // height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .actions {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .button {
+      // width: 32px;
+      // height: 32px;
+      border-radius: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .closeButton {
+      position: static;
+      // transform: none;
+      // width: 32px;
+      // height: 32px;
+      border-radius: 32px;
+      background: transparent;
+
+      // svg {
+      //   width: calc(20px * var(--text-scale, 1));
+      //   height: calc(20px * var(--text-scale, 1));
+      // }
+    }
+  }
+
+  @include rwd-min('lg') {
+    background: transparent;
+  }
+
+  &.desktopHide {
+    @include rwd-min('lg') {
+      display: none;
+    }
+  }
+}

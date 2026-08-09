@@ -1,0 +1,20 @@
+.notice {
+  width: 100%;
+  text-align: center;
+  color: var(--Text-700);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+.link {
+  margin-left: 4px;
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: var(--ThemeColor-Main);
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}

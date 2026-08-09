@@ -1,0 +1,28 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  margin: 0;
+  padding: 0 8px;
+  background: linear-gradient(90deg, #1a81ff 0%, #a000ff 100%);
+}
+
+.badge {
+  flex-shrink: 0;
+  width: 52px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

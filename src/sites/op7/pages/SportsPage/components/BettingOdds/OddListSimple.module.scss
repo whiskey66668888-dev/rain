@@ -1,0 +1,92 @@
+.wrap {
+  width: 100%;
+  min-width: 0;
+  .pageBlock {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 8px;
+    flex: 1;
+    height: 96px;
+    padding-bottom: 8px;
+    flex-direction: row;
+    gap: 4px;
+    .row {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 6px;
+      [data-text-scale='1'] & {
+        margin-top: 4px;
+      }
+      [data-text-scale='1.15'] & {
+        margin-top: 2px;
+      }
+      .title {
+        color: var(--Text-800);
+        text-align: center;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        .matchNum {
+          color: var(--Text-800);
+          cursor: pointer;
+          font-family: 'DINPro';
+          margin-bottom: -2px;
+          // &:after {
+          //   content: '';
+          //   display: inline-block;
+          //   width: 0;
+          //   height: 0;
+          //   margin-left: 4px;
+          //   vertical-align: middle;
+          //   border-left: 5px solid #b8becc;
+          //   border-top: 4px solid transparent;
+          //   border-bottom: 4px solid transparent;
+          //   position: relative;
+          //   top: -1px;
+          // }
+        }
+        .titleIcon {
+          // 填充svg为 黄色
+          background-color: #ffd700;
+          -webkit-mask-composite: source-in;
+          mask-composite: source-in;
+        }
+      }
+      .oddBtns {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        max-height: 50px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: var(--Background-500);
+        .oddBtn {
+          background-color: none;
+          border-radius: 0;
+          position: relative;
+          &::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: 0.5px;
+            height: 30px;
+            background-color: var(--Line-300);
+            opacity: 0.2;
+            [data-theme='dark'] & {
+              opacity: 0.8;
+            }
+          }
+          &:last-child::after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

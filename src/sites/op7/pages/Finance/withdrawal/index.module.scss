@@ -1,0 +1,278 @@
+.withdrawal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 68px;
+  overflow: hidden;
+
+  .withdrawTypeList {
+    display: grid;
+    grid-template-columns: repeat(var(--withdraw-type-count, 1), minmax(0, 1fr));
+    gap: 8px;
+
+    .withdrawTypeItem {
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      background: var(--Background-300);
+      border: 0.5px solid transparent;
+      font-size: 12px;
+      color: var(--Text-800);
+      border-radius: 12px;
+      cursor: pointer;
+
+      &.active {
+        // border: 0.5px solid var(--ThemeColor-Main);
+        background-color: var(--ThemeColor-Main);
+        color: var(--White-100);
+      }
+
+      .withdrawTypeIcon {
+        flex-shrink: 0;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .main {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  &.walletFullPage {
+    flex: 0 1 auto;
+    overflow: visible;
+    padding-bottom: 0;
+
+    .main {
+      flex: 0 1 auto;
+      overflow: visible;
+    }
+  }
+
+  &.autoPC {
+    @include rwd-min('lg') {
+      padding: 0;
+
+      .withdrawTypeList {
+        border-radius: 20px;
+        background: var(--Background-300);
+        padding: 2px;
+        grid-template-columns: repeat(var(--withdraw-type-count, 1), minmax(0, 1fr));
+
+        .withdrawTypeItem {
+          height: 40px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: 0;
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--Text-800);
+
+          &.active {
+            border: 0;
+            border-radius: 20px;
+            color: var(--White-100);
+            background: var(--ThemeColor-Main);
+          }
+        }
+      }
+    }
+  }
+}
+
+.bnBox {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px calc(16px + env(safe-area-inset-bottom, 0px)) 12px;
+  background: var(--Background-700);
+
+  .button {
+    width: 100%;
+    height: 44px;
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .usdtText {
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+
+  &.auto {
+    @include rwd-min('lg') {
+      background: transparent;
+      position: relative;
+      padding: 0;
+    }
+  }
+}
+
+.whiteListContent {
+  color: var(--Text-800);
+  text-align: center;
+
+  font-size: 12px;
+
+  span {
+    color: var(--ThemeColor-Main);
+    font-size: 12px;
+  }
+  .lastContent {
+    margin-top: 20px;
+  }
+}
+
+.tipsTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 500;
+
+  img {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+}
+
+.realNameSafetyModal {
+  padding: 16px 24px 24px !important;
+
+  :global([class*='Modal_header']) {
+    margin-bottom: 20px;
+  }
+
+  :global([class*='Modal_closeButton']) {
+    right: 0;
+  }
+}
+
+.realNameSafetyTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--Text-Main-10, #1f2634);
+  text-align: center;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+
+  img {
+    width: 16px;
+    height: 16px;
+    display: block;
+    flex-shrink: 0;
+  }
+}
+
+.realNameSafetyContent {
+  margin-bottom: 24px;
+}
+
+.realNameSafetyText {
+  margin: 0;
+  color: var(--Text-800);
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.virtual_tips {
+  font-size: 14px;
+  color: var(--Text-800);
+  .red_fonts {
+    color: var(--Red-400);
+    font-size: 14px;
+  }
+}
+
+.systemMessage {
+  margin-top: 12px;
+  color: var(--Text-800);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.highlightText {
+  color: var(--ThemeColor-Main);
+}
+
+.feeConfirmContent {
+  margin-top: 12px;
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1.6;
+
+  p {
+    margin: 0 0 10px;
+  }
+}
+
+.modalButtonRow {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.flowCheckContent {
+  margin-top: 12px;
+}
+
+.flowCheckMessage {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.flowCheckTipTitle {
+  margin-top: 12px;
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.flowCheckTipList {
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.pickerRowItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}

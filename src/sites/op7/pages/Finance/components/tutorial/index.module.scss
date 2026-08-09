@@ -1,0 +1,21 @@
+.tutorial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--Background-300);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ThemeColor-Main);
+  gap: 10px;
+  cursor: pointer;
+  flex: none;
+
+  img,
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}

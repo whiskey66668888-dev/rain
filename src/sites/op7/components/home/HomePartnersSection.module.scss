@@ -1,0 +1,88 @@
+@use '@/common/styles/mixins' as *;
+
+.section {
+  width: 100%;
+  padding: 0 12px;
+  // margin-top: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--Text-Main-10);
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.list {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+  list-style: none;
+}
+
+.item {
+  min-width: 0;
+  flex: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 8px;
+  border-radius: 10px;
+  background: var(--Background-300);
+  color: var(--Text-800);
+  text-align: center;
+  cursor: pointer;
+
+  @include rwd-min('lg') {
+    height: 77px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 16px;
+    text-align: left;
+  }
+  @include can-hover {
+    &:hover {
+      background: var(--Background-400);
+    }
+  }
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.textBlock {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: 14px;
+}
+.desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.name {
+  color: var(--Text-Main-10);
+  font-weight: 600;
+}

@@ -1,0 +1,62 @@
+.scoreCard {
+  background: var(--Background-300);
+  border-radius: 8px;
+}
+
+.scoreCard {
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.scoreRow {
+  display: grid;
+  grid-template-columns: minmax(72px, 1.3fr) repeat(var(--score-cols, 6), minmax(34px, 1fr));
+  min-height: 44px;
+  align-items: center;
+  border-top: 0.5px solid var(--Line-100);
+
+  &:first-child {
+    border-top: none;
+  }
+}
+
+.scoreHeader {
+  min-height: 30px;
+  color: var(--Text-800);
+  font-weight: 400;
+}
+
+.teamCell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  font-size: 12px;
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.teamLogo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.scoreCell {
+  min-width: 0;
+  text-align: center;
+  font-size: 12px;
+  font-family: 'SF Pro Text';
+  color: var(--Text-800);
+}
+
+.scoreHighlight {
+  color: var(--Text-Main-10);
+  font-weight: 500;
+}

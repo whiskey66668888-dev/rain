@@ -1,0 +1,82 @@
+@use '../../invite-friends-numeric.scss' as ifn;
+
+.listTable {
+  padding: 12px;
+  background: var(--Background-300);
+  border-radius: 12px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.timeRange {
+  @include ifn.inviteFriendsDinPro;
+  padding: 8px 0;
+  font-size: 12px;
+  color: var(--Text-800);
+}
+
+.timeRangeContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeRangePopover {
+  display: inline-flex;
+}
+
+.tableHeader {
+  display: flex;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  background: var(--Line-100);
+}
+
+.th {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: var(--Text-800);
+  height: 44px;
+}
+
+.tableBody {
+  border: 1px solid var(--Line-100);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.tr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  &:nth-of-type(even) {
+    background: var(--Line-100);
+  }
+}
+
+.td {
+  @include ifn.inviteFriendsDinPro;
+  flex: 1;
+  padding: 10px 6px;
+  font-size: 12px;
+  text-align: center;
+  word-break: break-all;
+  color: var(--Text-Main-10);
+}
+
+.summaryRow {
+  @include ifn.inviteFriendsDinPro;
+  background: transparent;
+  font-weight: 600;
+}
+
+.noDataWrap {
+  padding: 24px 0;
+}

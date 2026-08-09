@@ -1,0 +1,129 @@
+.championDetails {
+  @include rwd-min('lg') {
+    max-width: 1200px;
+  }
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  .mainArea {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0;
+    background: var(--Background-700);
+    position: relative;
+    height: calc(100vh - 55px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mainList {
+    position: relative;
+    min-height: 0;
+
+    .wrapper {
+      background-color: var(--Background-300);
+      margin-bottom: 4px;
+
+      &:first-child {
+        // border-top-left-radius: 16px;
+        // border-top-right-radius: 16px;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+        // border-bottom-left-radius: 16px;
+        // border-bottom-right-radius: 16px;
+      }
+
+      .wrapperTitle {
+        height: 40px;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 0.5px solid var(--Line-100);
+
+        .title {
+          font-weight: 500;
+          color: var(--Text-Main-10);
+        }
+
+        .iconExpand {
+          transition: all 0.3s ease-in-out;
+        }
+
+        &.hide {
+          border-bottom: none;
+
+          .iconExpand {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      .subList {
+        transition: all 0.3s ease-in-out;
+
+        &.hide {
+          height: 0;
+          overflow: hidden;
+        }
+      }
+
+      .betItem {
+        height: 40px;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 0.5px solid var(--Line-100);
+        cursor: pointer;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .left {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .icon {
+            width: 16px;
+            height: 16px;
+          }
+
+          .betTitle {
+            color: var(--Text-Main-10);
+          }
+        }
+
+        .right {
+          color: var(--Text-Main-10);
+          font-family: 'DINPro', sans-serif;
+        }
+      }
+    }
+  }
+}
+
+.button {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+  display: block;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}

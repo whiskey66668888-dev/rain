@@ -1,0 +1,26 @@
+.segmented {
+  display: flex;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.segmentButton {
+  height: 28px;
+  border: none;
+  border-radius: 30px;
+  background: var(--Background-300);
+  color: var(--Text-800);
+  font-size: 12px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.segmentButtonSubtle {
+  background: var(--Line-100);
+}
+
+.segmentActive {
+  background: var(--ThemeColor-Main) !important;
+  color: var(--White-100);
+  font-weight: 600;
+}

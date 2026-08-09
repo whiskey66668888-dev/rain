@@ -1,0 +1,21 @@
+.container {
+  padding: 10px;
+  .title {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: var(--color-text-primary, #111827);
+  }
+
+  // 虚拟列表包装器
+  .listWrapper {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    // 列表项样式
+    .item {
+      width: auto;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

@@ -1,0 +1,259 @@
+@use './invite-friends-numeric.scss' as ifn;
+
+.reportPage {
+  min-height: 100%;
+  padding: 12px 12px 24px;
+}
+
+.reportPageH5 {
+  padding: 0 12px;
+}
+
+.red {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Red-300);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.fail {
+  color: var(--Red-300);
+  text-align: center;
+  font-size: 12px;
+}
+
+.orange {
+  color: var(--Warning-300);
+  text-align: center;
+  font-size: 12px;
+}
+
+.black {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-Main-10);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusCol {
+  text-align: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.disabledBtn {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.statusSuccess {
+  color: var(--Green-300);
+  font-size: 12px;
+}
+
+.tips {
+  color: var(--Warning-300);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 8px auto 0;
+  padding: 0 12px 12px;
+  border-bottom: 1px solid var(--Line-100);
+
+  .tips2 span {
+    visibility: hidden;
+  }
+}
+
+.done {
+  color: var(--Green-300);
+  font-size: 12px;
+}
+
+.search {
+  width: calc(100% - 24px);
+  height: 40px;
+  border-radius: 20px;
+  background: var(--Background-700);
+  margin: 8px auto 17px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  input {
+    flex: 1;
+    min-width: 0;
+    color: var(--Text-800);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+}
+
+.searchSpecInput {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+  margin-top: 12px;
+  transition: border 0.3s;
+  &:focus-within {
+    border-color: var(--ThemeColor-Main);
+  }
+}
+
+.searchSpecContent {
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.searchSpecIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+  color: var(--Text-700);
+  font-size: 0;
+}
+
+.searchSpecPlaceholder {
+  color: var(--Text-Main-10);
+  font-weight: 400;
+  line-height: 19.6px;
+  word-wrap: break-word;
+  width: 100%;
+  height: 100%;
+  caret-color: var(--ThemeColor-Main);
+  &::placeholder {
+    color: var(--Text-700);
+  }
+}
+
+.searchBtn {
+  border: none;
+  background: transparent;
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.clearSearch {
+  border: none;
+  background: transparent;
+  color: var(--ThemeColor-Main);
+  font-size: 12px;
+}
+
+.invitePopover {
+  :global {
+    .adm-popover-arrow {
+      display: none !important;
+    }
+    .adm-popover-inner-content {
+      padding: 0 !important;
+    }
+  }
+}
+
+.timeRangeHelp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--Line-300);
+  color: var(--Text-800);
+  font-size: 10px;
+}
+
+.popOverContent {
+  border-radius: 5px;
+  width: 220px;
+  background: var(--Background-300);
+  box-shadow: 0 0 5px 0 var(--Shadow-500);
+}
+
+.popOverTitle {
+  background: linear-gradient(90deg, var(--Warning-90) 0%, var(--Warning-70) 100%);
+  height: 22px;
+  line-height: 22px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-weight: 400;
+  padding-left: 8px;
+}
+
+.popOverDesc {
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 8px;
+}
+
+.timeCol,
+.timeHeaderCol {
+  @include ifn.inviteFriendsDinPro;
+  flex: 1.5;
+}
+
+.nameCol,
+.nameHeaderCol {
+  @include ifn.inviteFriendsDinPro;
+  flex: 1.2;
+}
+
+.statusPending {
+  color: var(--Warning-300);
+  font-size: 12px;
+}
+
+.statusApproved {
+  color: var(--Green-300);
+  font-size: 12px;
+}
+
+.statusRejected {
+  color: var(--Red-300);
+  font-size: 12px;
+}
+
+.statusCompleted {
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.green {
+  color: var(--Green-300);
+  font-size: 12px;
+}

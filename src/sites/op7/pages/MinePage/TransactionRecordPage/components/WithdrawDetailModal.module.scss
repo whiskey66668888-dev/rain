@@ -1,0 +1,233 @@
+/* WithdrawDetailModal */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--Background-700);
+  border-radius: 12px 12px 0 0;
+  height: 100%; /* 移动端全屏 */
+
+  @media (min-width: 1024px) {
+    width: 450px;
+    max-width: 90vw;
+    height: auto;
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+
+  /* ── 可滚动内容区 ── */
+  .scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 42px 10px 30px;
+  }
+
+  /* ── 金额 + 状态 ── */
+  .amountBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+
+    .amountRow {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+
+      .amountNum {
+        font-family: 'DINPro', sans-serif;
+        font-size: tf(32);
+        font-weight: 500;
+        line-height: 1;
+        color: var(--Text-Main-10);
+      }
+
+      .amountUnit {
+        font-size: tf(14);
+        font-weight: 500;
+        color: var(--Text-Main-10);
+        padding-bottom: 3px;
+      }
+    }
+
+    .statusRow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: tf(14);
+      font-weight: 500;
+
+      &.processing {
+        color: var(--ThemeColor-Main);
+      }
+      &.completed {
+        color: var(--Green-300, #13bf30);
+      }
+      &.cancelled {
+        color: var(--Text-800);
+      }
+      &.rejected {
+        color: var(--Red-300, #f23d3d);
+      }
+
+      .statusIcon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  /* ── 超时提示横幅 ── */
+  .longWaitBanner {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--Warning-Bg, rgba(255, 168, 0, 0.1));
+    border-radius: 8px;
+    font-size: tf(12);
+    line-height: 1.5;
+    color: var(--Warning-200, #ffa800);
+
+    .longWaitIcon {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
+    }
+  }
+
+  /* ── 进度时间线 ── */
+  .timeline {
+    padding: 0 10px;
+    position: relative; /* 竖线图片绝对定位的参照 */
+
+    .timelineList {
+      display: flex;
+      flex-direction: column;
+      gap: 20px; /* Figma: items gap 20px */
+      position: relative;
+      z-index: 1;
+    }
+
+    .timelineItem {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 34px; /* Figma: 每行固定 34px，保证竖线连通 */
+      position: relative;
+      z-index: 1;
+
+      .timelineContent {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow: hidden;
+
+        .timelineTitle {
+          font-size: tf(14px);
+          line-height: 14px;
+          font-weight: 400;
+          color: var(--Text-Main-10);
+          white-space: nowrap;
+        }
+
+        .timelineTime {
+          font-family: 'DIN Pro';
+          font-size: tf(12px);
+          line-height: 1.33;
+          color: var(--Text-800);
+        }
+
+        .timelineHint {
+          font-size: tf(12px);
+          line-height: 1.5;
+          color: var(--Text-800);
+          :global(.highlight) {
+            color: var(--ThemeColor-Main);
+          }
+        }
+      }
+    }
+
+    .lineImg {
+      width: 1px;
+      height: calc(100% - 40px);
+      position: absolute;
+      left: 16.5px;
+      top: 20px;
+      background: url('/images/common/transactionRecord/line.png') center top repeat-y;
+      z-index: 0;
+    }
+  }
+
+  /* ── 卡片（订单信息 / 收款信息） ── */
+  .card {
+    background: var(--Background-300);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .rowLabel {
+        font-size: tf(12);
+        color: var(--Text-800);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .rowValue {
+        font-size: tf(12);
+        color: var(--Text-Main-10);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        &.rowValueMono {
+          font-family: 'SF Pro Text', sans-serif;
+        }
+
+        .methodImg {
+          width: 16px;
+          height: 16px;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+
+  /* ── 失败原因卡片 ── */
+  .failCard {
+    background: var(--Red-Bg, rgba(242, 61, 61, 0.08));
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .failLabel {
+      font-size: tf(12);
+      color: var(--Red-300, #f23d3d);
+      white-space: nowrap;
+    }
+
+    .failValue {
+      font-size: tf(12);
+      color: var(--Text-Main-10);
+    }
+  }
+}

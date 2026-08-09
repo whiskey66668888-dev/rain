@@ -1,0 +1,22 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 10px;
+
+  button {
+    height: 28px;
+    flex: 1;
+    border: 0;
+    border-radius: 30px;
+    background: var(--Background-300);
+    color: var(--Text-800);
+    cursor: pointer;
+    font-size: 12px;
+  }
+}
+
+.tabs .activeTab {
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-weight: 600;
+}

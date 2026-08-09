@@ -1,0 +1,36 @@
+.mediaControl {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: rgba(3, 10, 24, 0.66);
+  border-radius: 20px;
+  padding: 0 6px;
+  height: 24px;
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 10px;
+    color: var(--ThemeColor-Main);
+    cursor: pointer;
+    line-height: 1;
+
+    &.active {
+      color: var(--ThemeColor-Main);
+    }
+
+    &.disabled {
+      cursor: default;
+      color: var(--White-60);
+    }
+  }
+
+  .line {
+    width: 0.5px;
+    height: 14px;
+    background: var(--White-20);
+  }
+}

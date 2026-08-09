@@ -1,0 +1,281 @@
+.statsView {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.statsNote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 10px;
+  color: var(--Text-Main-10);
+
+  span {
+    color: var(--Text-700);
+    font-size: 12px;
+  }
+}
+
+.playerTableSlot {
+  min-height: 0;
+  margin-bottom: 20px;
+}
+
+.playerTeamTitle {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 4px;
+  padding: 0 10px;
+  color: var(--Text-Main-10);
+  font-size: 12px;
+
+  .playerTeamLogo {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.statsTableWrap {
+  position: relative;
+  background: var(--Background-300);
+}
+
+.statsTable {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: 110px repeat(4, 40px) repeat(3, 50px) repeat(6, 40px) 50px;
+  box-sizing: border-box;
+  width: 720px;
+  padding-right: 10px;
+  background: var(--Background-300);
+  color: var(--Text-Main-10);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 4px;
+  }
+}
+
+.statsHeader {
+  color: var(--Text-800);
+
+  > div {
+    height: 30px;
+  }
+}
+
+.alternateStatsRow {
+  background: var(--Background-700);
+}
+
+.starterBoundary {
+  > div {
+    border-bottom: 0.5px solid var(--ThemeColor-Main);
+  }
+}
+
+.playerNameCell {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  justify-content: flex-start !important;
+  background: inherit;
+  text-align: left;
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.statsRow > .playerNameCell {
+  padding-left: 10px;
+}
+
+.statsHeader .playerNameCell {
+  z-index: 2;
+}
+
+.emcRedName {
+  color: var(--Red-300);
+}
+
+.statsScrollHint {
+  position: absolute;
+  top: calc(50% + 15px);
+  right: 15px;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.teamStatsList,
+.maxStatsList {
+  padding-bottom: 14px;
+}
+
+.statsSectionHeader {
+  padding: 10px;
+
+  h4 {
+    margin: 0 0 10px;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.statsTeamRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.teamStatsRow {
+  display: grid;
+  grid-template-columns: 55px minmax(0, 1fr) 70px minmax(0, 1fr) 55px;
+  gap: 10px;
+  align-items: center;
+  padding: 7px 10px;
+
+  strong {
+    text-align: center;
+    color: var(--Text-Main-10);
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
+
+.teamStatsValue {
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+
+  &:first-child {
+    text-align: right;
+  }
+}
+
+.teamStatsTrack {
+  height: 3px;
+  background: var(--Line-100);
+
+  i {
+    display: block;
+    height: 100%;
+  }
+}
+
+.teamStatsHomeBar {
+  margin-left: auto;
+  background: rgba(51, 143, 255, 0.25);
+}
+
+.teamStatsAwayBar {
+  background: rgba(51, 143, 255, 0.8);
+}
+
+.maxStatsRow {
+  padding: 0 10px 10px;
+}
+
+.maxStatsPlayers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr);
+  align-items: end;
+  gap: 6px;
+
+  > strong {
+    text-align: center;
+    color: var(--Text-Main-10);
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
+.maxStatPlayer {
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  gap: 4px;
+  font-size: 12px;
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.maxStatPlayerReverse {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.maxStatAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.maxStatsBars {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.maxStatsBar {
+  display: grid;
+  min-width: 26px;
+  height: 16px;
+  place-items: center;
+  border-radius: 1px;
+  background: rgba(51, 143, 255, 0.25);
+  color: rgba(51, 143, 255, 0.8);
+  font-size: 12px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.maxStatsAwayBar {
+  background: rgba(51, 143, 255, 0.8);
+  color: var(--White-100);
+}
+
+.maxStatsBarEmpty {
+  background: var(--Line-100);
+  color: var(--Text-800);
+}

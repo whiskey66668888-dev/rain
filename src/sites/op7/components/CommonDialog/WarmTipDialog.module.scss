@@ -1,0 +1,16 @@
+.content {
+  margin: 0;
+  padding: 0 4px;
+  color: var(--Text-800);
+  font-size: tf(14);
+  font-weight: 400;
+  line-height: calc(20px * var(--text-scale, 1));
+  text-align: center;
+}
+
+.footerButton {
+  height: 40px;
+  border-radius: 20px;
+  font-size: tf(14);
+  line-height: 40px;
+}

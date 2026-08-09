@@ -1,0 +1,84 @@
+.noticeBar {
+  flex-shrink: 0;
+  height: 32px;
+  margin-bottom: 4px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ThemeColor-90, rgba(82, 158, 250, 0.1));
+}
+
+:global([data-theme='dark']) .noticeBar {
+  background: rgba(82, 158, 250, 0.1);
+}
+
+.iconWrap {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ThemeColor-Main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textWrap {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  width: max-content;
+  transform: translateX(0);
+}
+
+.scrolling {
+  will-change: transform;
+  animation: notice-marquee var(--notice-marquee-duration, 3s) linear infinite;
+}
+
+.item {
+  flex-shrink: 0;
+  color: var(--ThemeColor-Main);
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.separator {
+  flex-shrink: 0;
+  display: inline-block;
+  height: 1px;
+}
+
+.closeBtn {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 0 4px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@keyframes notice-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    /* 两轮内容等长，-50% 刚好滚完一轮并无缝接上 */
+    transform: translateX(-50%);
+  }
+}

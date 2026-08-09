@@ -1,0 +1,165 @@
+.gameList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(113px, calc((100% - 24px) / 3)), 1fr));
+  gap: 12px;
+  .gameItem {
+    display: flex;
+    flex-direction: column;
+    background: var(--Background-300);
+    gap: 10px;
+    aspect-ratio: 108 / 145;
+    height: auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 145px;
+    justify-self: start;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    .gameItemImage {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      position: relative;
+      .gameItemImageLazyImageError {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 60%;
+          height: auto;
+        }
+      }
+    }
+    @include can-hover {
+      .hover {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+    .hover {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      // height: calc(100% - 32px);
+      height: 100%;
+      z-index: 6;
+      background: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.4s ease,
+        visibility 0.4s ease;
+      & > div {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .gameItemLable {
+      display: flex;
+      flex-direction: row;
+      height: 32px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+      flex-shrink: 0;
+      & > p {
+        margin: 0 4px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .gameItemFavoriteIcon {
+      display: flex;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 6;
+      background: var(--Background-700);
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      transition:
+        opacity 0.4s ease,
+        visibility 0.4s ease;
+    }
+  }
+}
+
+.maintenanceMask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 2;
+}
+
+.maintenanceMaskBlocked {
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.maintenanceMaskNotice {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+
+  :global(> div) {
+    pointer-events: auto;
+    cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  :global(.maintenance-notice-pill) {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  :global(.maintenance-notice-pill > span) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.gameListWithoutLabel {
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 12px 4px;
+  .gameItem {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    min-width: 100px;
+    max-width: 145px;
+  }
+}
+.gameListSimpleView {
+  gap: 8px;
+  .gameItem {
+    height: 32px;
+    border-radius: 8px;
+    .gameItemImage {
+      .gameItemLable {
+        padding: 0 4px;
+      }
+    }
+  }
+}

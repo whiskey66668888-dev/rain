@@ -1,0 +1,22 @@
+.liveStreaming {
+  height: 100%;
+  overflow-y: auto;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0 12px;
+    color: var(--Text-Main-10);
+  }
+}
+
+.mainTabs {
+  margin: 0;
+}
+
+.panel {
+  padding: 12px 0 0;
+  background: var(--Background-300);
+  border-radius: 8px;
+}

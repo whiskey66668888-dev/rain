@@ -1,0 +1,11 @@
+.rightSidebarContainer {
+  @include rwd-between('lg', 'xl') {
+    position: fixed;
+    inset: 0;
+    background-color: var(--Black-60);
+    z-index: var(--z-right-sidebar);
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+}

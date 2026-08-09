@@ -1,0 +1,271 @@
+{
+  "v": "5.12.1",
+  "fr": 30,
+  "ip": 0,
+  "op": 21,
+  "w": 24,
+  "h": 24,
+  "nm": "输出1",
+  "ddd": 0,
+  "assets": [
+    {
+      "id": "image_0",
+      "w": 4,
+      "h": 10,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAKCAYAAACT+/8OAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAAJklEQVQImWNgQAOM////z2dgYBCA8j8w/P////5/BLjPhK6FPgIAY28ULHmkcdMAAAAASUVORK5CYII=",
+      "e": 1
+    },
+    {
+      "id": "image_1",
+      "w": 34,
+      "h": 38,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAmCAYAAACh1knUAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAB50lEQVRYhe2Xz3XTQBCHv5HhPThhLkGxL0oHLsGpgFBBQgWkA8+mAdIB6SBQgdNB0gG6QHyLboGLflxinhGxtLKUPwd/151dfW9mZ3cFzwTrMnnoGr6EbACTEooEioXbxaOJjF2TEg7NOBIMKwsWiK8lhIVb/mAiuyc6RnyOXDz8nJn3LjIOOi3hU5s5sTJJ7IKjIG8rASCYvXMdN8VFZSR1ZWZ8byuxQnEr9gq3Yl1AVEaShFkHCYDhK6vPZpSIxLSjCAZHDeP1ZK7hb+OmqwjArXi7rjyNGflVOSe68PoFb9aNRXfNQ7MVqRJ1joyCbqp3yiZcz2zt9+La17jqKiFxUTceJ1ISuopgnNUPR7J7ojmbH2z59cz26gKiN6tKPgL5JhIS+01B0SILt+WCbWTyRHyIeSC1at+FWy7qa72K4OyHW9RGbyWSuqZNl9cqBkepa9qryDjo1Iw5kMXOATIz5qMgbwps7JrUlVnClw4ds+RKNfulNiOpa5oYlz1IAEzMmO+4DlqJLEvRx9G+QjYwzu8r1X+luXufngOTHgXuI5fYX5bqn4zsuA4S4/IRJOBuI6dBh7CSkVGQi86P5I0wCAa9/C50JgEw4/1TSvwV6bkzNhd5DmxFqmxFqiQAA/HtKSUMij9qRZ5UW5UqOwAAAABJRU5ErkJggg==",
+      "e": 1
+    },
+    {
+      "id": "image_2",
+      "w": 48,
+      "h": 48,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAADgElEQVRoge1ZQXbbOAwFhO7HNxjlBJOeYJxF1pOeoM4JEkZUtrG3IfnoniDuCZpZZxH3BMkNqrmBZp1Q6CLKKyU7NiXKr699/iuLBAl8AgRIGmCPPfb4pYG7mNRaO3p6ekqJ6JCZS2Yu8zxf7kLXoASur68PiegjM08AYNTqLgHglohmQohiKJ2DEVBKnSOiDZFl5lme59Mh9NIQk2it54h4FSqPiOPj42O8u7tbxuqO9oBSarrG+BIRF8z8CACAiIfMfAIAqS/EzCLP83mM/igC1trUOfetMSHiPEmSmRCibMsbYywzn3tNJREdrJMNRdJ3IACAc6698ossy8RbBmVZJhDRX/FRVVVnMTZEEQCAsfe7JKLZVoVJMoOXjAQAAHXG6o3eBKy1I2jG9DIkPdbeufWa0nquXojxQEMpIj6GDkTEwv92zv3R14jYEPrp2BPw0CWOe8d8G70J1BvWzyaHoWOZeex/Syn/62tHrAf8jTtWSo23DTDGTADAJ7uMMSCKADM38j4i3lhr07fkrbUpM68UvxgbogjUZ/yl15Q65x601h/bssaYiXPuAZq1o5BSfo6xIXoTE9EpABRe0wgAFlrrP18b6pW/gebmLYjoKFZ/NAEhxKshRYdhRVVVH4a42AySRoUQBSIuQuURcXF5eRlcuTdhEAJKqXGXQxkzT0IyVgiiCdS3sXtoXVa2IEXEe6XUNFZ/7wtNfZm5geaRGuCluJ23s4sxZsLMFlar8CMR9d4PvQgopcaI+KWrMTXpdd4qAEBIKW9XBm1BZwJa6zkArNyiEHGeZZnw5M4QcQQAwMyllPLTa58x5oqZp+05+rxWBBOoV+8LNI8BAC8hc9pePa31N/ix0oWU8sDvr0PqCtZ4g4iOQkMqaBNrrU/qKto2fklE7/u4PsuyxRv1I3XO3a+r5uuwlUCdKVbiHRHnUsrglVoHIUQhpTxAxGmrKwWARUiW2kjAWpuue/NJkmTsx3sssiybAcAHaHkDEa+21YuNBJxz/7SalkT0/uLi4msPOzdCSnlbh9TSb0fEvzaN20jgNYt4mAz5MNtGfa463WJDA+92ZQw0w6F4QyYaOyMgpYw+KoegK4ETY8z/O7GkxvPz8wgxvL52JTBn5o5DuqGL8QC/+7tQVVWDp8uOKJMk2Xhn3uqv+gz093A2hYOI/o3572CPPfb4BfAdwdxrwDO6lEMAAAAASUVORK5CYII=",
+      "e": 1
+    },
+    {
+      "id": "comp_0",
+      "nm": "wode",
+      "fr": 30,
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 3,
+          "nm": "NULL 7",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 0, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [24, 23.5, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [50, 50, 0], "ix": 1, "l": 2 },
+            "s": {
+              "a": 1,
+              "k": [
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 0,
+                  "s": [100, 100, 100]
+                },
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 3,
+                  "s": [110, 110, 100]
+                },
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 6,
+                  "s": [20, 20, 100]
+                },
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 9,
+                  "s": [110, 110, 100]
+                },
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 15,
+                  "s": [91.52, 91.52, 100]
+                },
+                { "t": 20, "s": [100, 100, 100] }
+              ],
+              "ix": 6,
+              "l": 2
+            }
+          },
+          "ao": 0,
+          "ip": 0,
+          "op": 21,
+          "st": -6,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 2,
+          "ty": 2,
+          "nm": "我的选中1.png",
+          "cl": "png",
+          "parent": 1,
+          "refId": "image_0",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [50, 65.329, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [2, 10.19, 0], "ix": 1, "l": 2 },
+            "s": {
+              "a": 1,
+              "k": [
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 9,
+                  "s": [100, 10, 100]
+                },
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 15,
+                  "s": [100, 145, 100]
+                },
+                { "t": 20, "s": [100, 100, 100] }
+              ],
+              "ix": 6,
+              "l": 2
+            }
+          },
+          "ao": 0,
+          "ip": 6,
+          "op": 21,
+          "st": -234,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 3,
+          "ty": 2,
+          "nm": "我的选中.png",
+          "cl": "png",
+          "parent": 1,
+          "refId": "image_1",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [49.125, 49.75, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [17, 19, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ip": 6,
+          "op": 21,
+          "st": -234,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 4,
+          "ty": 2,
+          "nm": "wd.png",
+          "cl": "png",
+          "parent": 1,
+          "refId": "image_2",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [50, 50.5, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [24, 24, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ef": [
+            {
+              "ty": 21,
+              "nm": "Fill",
+              "np": 9,
+              "mn": "ADBE Fill",
+              "ix": 1,
+              "en": 1,
+              "ef": [
+                {
+                  "ty": 10,
+                  "nm": "Fill Mask",
+                  "mn": "ADBE Fill-0001",
+                  "ix": 1,
+                  "v": { "a": 0, "k": 0, "ix": 1 }
+                },
+                {
+                  "ty": 7,
+                  "nm": "All Masks",
+                  "mn": "ADBE Fill-0007",
+                  "ix": 2,
+                  "v": { "a": 0, "k": 0, "ix": 2 }
+                },
+                {
+                  "ty": 2,
+                  "nm": "Color",
+                  "mn": "ADBE Fill-0002",
+                  "ix": 3,
+                  "v": { "a": 0, "k": [0.549019634724, 0.549019634724, 0.549019634724, 1], "ix": 3 }
+                },
+                {
+                  "ty": 7,
+                  "nm": "Invert",
+                  "mn": "ADBE Fill-0006",
+                  "ix": 4,
+                  "v": { "a": 0, "k": 0, "ix": 4 }
+                },
+                {
+                  "ty": 0,
+                  "nm": "Horizontal Feather",
+                  "mn": "ADBE Fill-0003",
+                  "ix": 5,
+                  "v": { "a": 0, "k": 0, "ix": 5 }
+                },
+                {
+                  "ty": 0,
+                  "nm": "Vertical Feather",
+                  "mn": "ADBE Fill-0004",
+                  "ix": 6,
+                  "v": { "a": 0, "k": 0, "ix": 6 }
+                },
+                {
+                  "ty": 0,
+                  "nm": "Opacity",
+                  "mn": "ADBE Fill-0005",
+                  "ix": 7,
+                  "v": { "a": 0, "k": 1, "ix": 7 }
+                }
+              ]
+            }
+          ],
+          "ip": 0,
+          "op": 6,
+          "st": -234,
+          "bm": 0
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "ddd": 0,
+      "ind": 2,
+      "ty": 0,
+      "nm": "wode",
+      "refId": "comp_0",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [12, 12, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [24, 24, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [50, 50, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "w": 48,
+      "h": 48,
+      "ip": 0,
+      "op": 21,
+      "st": 0,
+      "bm": 0
+    }
+  ],
+  "markers": [],
+  "props": {}
+}

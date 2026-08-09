@@ -1,0 +1,91 @@
+// 主题切换按钮样式
+.eventTabs {
+  display: flex;
+  gap: 12px;
+  padding: 0px 12px 2px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  // position: fixed;
+  // top: 8px;
+  // left: 0;
+  // right: 0;
+  // width: 100%;
+  z-index: 9;
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // 只有两个时居中显示
+  &.center {
+    justify-content: center;
+  }
+}
+
+.eventTab {
+  display: flex;
+  width: 156px;
+  height: 54px;
+  padding: 7px 0 0 12px;
+  border-radius: 8px;
+  background-size: 100% 100%;
+  border: 0.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: 0 1px 4px rgba(41, 96, 204, 0.1);
+  // background-color: var(--Background-300);
+  background-color: #fff;
+}
+
+.eventTabActive {
+  border-color: #1a81ff;
+}
+
+// .tabImg {
+//   width: 40px;
+//   height: 40px;
+//   flex-shrink: 0;
+// }
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabName {
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  // color: var(--Text-Main-10);
+  color: #000;
+  font-family: 'PingFang SC';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 166.667% */
+}
+
+.tabTime {
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-family: 'SF Pro Text';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 133.333% */
+  margin-top: 2px;
+}
+
+.clockIcon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+}

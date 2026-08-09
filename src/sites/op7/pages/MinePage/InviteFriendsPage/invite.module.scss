@@ -1,0 +1,483 @@
+@use './invite-friends-numeric.scss' as ifn;
+
+.invitePage {
+  padding-bottom: 24px;
+}
+
+.main {
+  padding: 0 12px;
+}
+
+.commonBlock {
+}
+
+.commendationLeft {
+  display: flex;
+  align-items: center;
+  span {
+    color: var(--ThemeColor-Main);
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+}
+
+.commendationRight {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+
+  .receiveIcon,
+  .coinIcon,
+  .timeIcon {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    color: var(--Text-800);
+  }
+
+  span {
+    color: var(--Text-800);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  &.dot::after {
+    position: absolute;
+    right: -3px;
+    top: 0;
+    width: 5px;
+    height: 5px;
+    background: var(--Red-400);
+    border-radius: 50%;
+    content: '';
+  }
+}
+
+.inviteInfo {
+  .inviteInfoItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 0 12px;
+    min-height: 40px;
+    border-radius: 8px;
+    background: var(--Background-300);
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .label {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--Text-Main-10);
+
+    svg {
+      width: 14px;
+      height: 14px;
+      color: var(--Text-700);
+    }
+  }
+
+  .value {
+    @include ifn.inviteFriendsDinPro;
+    flex: 1;
+    text-align: right;
+    font-size: 13px;
+    color: var(--Text-Main-10);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .disValue {
+    font-size: 13px;
+    color: var(--Text-800);
+  }
+
+  .copy {
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      color: var(--ThemeColor-Main);
+    }
+  }
+
+  .activeBtn {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: none;
+    background: var(--ThemeColor-Main);
+    color: var(--White-100);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+.inviteWay {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  border: none;
+  border-radius: 22px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.inviteWayItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 16px;
+  background: var(--White-100);
+}
+
+.linkIcon {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.myInvite {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: var(--Background-300);
+  border-radius: 12px;
+}
+
+.myInviteTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topLeft {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.people {
+  @include ifn.inviteFriendsDinPro;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--Text-Main-10);
+}
+
+.peopleText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--Text-800);
+
+  img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.topRight {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.reward {
+  @include ifn.inviteFriendsDinPro;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--Text-Main-10);
+}
+
+.rewardText {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--Text-800);
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.tableBox {
+  margin-top: 12px;
+  border: 1px solid var(--Line-100);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tableTitle {
+  display: flex;
+  align-items: center;
+  background-color: var(--Line-100);
+  width: 100%;
+  height: 44px;
+}
+
+.tableTitleItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--Text-800);
+  text-align: center;
+}
+
+.tableContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableContentItem {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  width: 100%;
+  height: 44px;
+  &:nth-of-type(even) {
+    background-color: var(--Line-100);
+  }
+}
+
+.itemLabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--Text-Main-10);
+
+  svg {
+    width: 14px;
+    height: 14px;
+    color: var(--Text-700);
+  }
+}
+
+.itemValue {
+  @include ifn.inviteFriendsDinPro;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.popOverContent {
+  padding: 8px;
+  max-width: 260px;
+  font-size: 12px;
+  color: var(--Text-Main-10);
+}
+
+.popOverTitle {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.popOverTips {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-800);
+  margin-bottom: 6px;
+}
+
+.popOverList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.popOverItem {
+  @include ifn.inviteFriendsDinPro;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.popOverDesc {
+  color: var(--Text-800);
+  line-height: 1.4;
+}
+
+.cell1 {
+  color: var(--Text-800);
+  font-size: 12px;
+}
+
+.cell2 {
+  @include ifn.inviteFriendsDinPro;
+  color: var(--Text-Main-10);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.friendUpgrade {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  background: var(--Background-300);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  width: 100%;
+  height: 44px;
+  margin-top: 12px;
+  transition: border 0.3s;
+  &:focus-within {
+    border-color: var(--ThemeColor-Main);
+  }
+}
+
+.upgradeLabel {
+  font-size: 12px;
+  color: var(--Text-Main-10);
+}
+
+.friendUpgrade input {
+  flex: 1;
+  padding-right: 12px;
+  font-size: 12px;
+  color: var(--Text-Main-10);
+  caret-color: var(--ThemeColor-Main);
+  background: transparent;
+  &::placeholder {
+    color: var(--Text-800);
+  }
+}
+
+.upgradeBtn {
+  width: 74px;
+  height: 24px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ThemeColor-Main);
+  color: var(--White-100);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  &:hover {
+    background: var(--ThemeColor-300);
+  }
+  &:active {
+    background: var(--ThemeColor-800);
+  }
+}
+
+.loadingBtn {
+  opacity: 0.8;
+}
+
+.myCollapse {
+  margin-top: 12px;
+  font-size: 14px;
+  background: var(--Background-300);
+  border-radius: 12px;
+  overflow: hidden;
+  :global {
+    .adm-list-body {
+      border: 0;
+    }
+    .adm-list-item {
+      background: var(--Background-300);
+    }
+    .adm-list-item-content {
+      border: 0;
+    }
+    .adm-list-item-content-main {
+      font-size: 14px;
+    }
+  }
+}
+.arrowdown {
+  color: var(--Text-700);
+  transition: transform 0.2s;
+}
+
+.faqBody {
+  color: var(--Text-800);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.registerImg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 12px;
+}
+
+.wclose {
+  margin-top: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.popOverMain {
+  --arrow-size: 14px;
+  :global {
+    .adm-popover-arrow {
+      //width: 14px;
+      //height: 7px;
+      color: var(--Background-300);
+      .adm-popover-arrow-icon {
+        top: 70%;
+      }
+    }
+    .adm-popover-inner {
+      box-shadow: 0 4px 16px 0 var(--Shadow-400, rgba(17, 17, 19, 0.7));
+    }
+  }
+}

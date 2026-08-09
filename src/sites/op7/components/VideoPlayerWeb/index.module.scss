@@ -1,0 +1,261 @@
+.mediaView {
+  width: 100%;
+  // height: 228px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.webMediaHeader {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 12px;
+  background: var(--Background-300);
+}
+
+.matchTitleWrapper {
+  position: relative;
+  min-width: 0;
+  flex: 1;
+}
+
+.matchTitleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: var(--Text-Main-10);
+  cursor: pointer;
+  text-align: left;
+}
+
+.arrowIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.leagueDropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -5px;
+  width: 365px;
+  max-height: 344px;
+  overflow-y: auto;
+  background: var(--Background-300);
+  border: 1px solid var(--Line-100);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px var(--Shadow-200);
+  z-index: 100;
+}
+
+.leagueDropdownHeader {
+  padding: 10px 12px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--Text-900);
+  text-align: center;
+  border-bottom: 1px solid var(--Line-100);
+}
+
+.leagueDropdownEmpty {
+  padding: 20px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--Text-500);
+}
+
+.leagueDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--Line-100);
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--Background-700);
+  }
+}
+
+.leagueDropdownItemActive {
+  background: var(--ThemeColor-Main);
+
+  &:hover {
+    background: var(--ThemeColor-Main);
+  }
+
+  .leagueDropdownTeamName,
+  .leagueDropdownScoreText,
+  .leagueDropdownDate,
+  .leagueDropdownTime,
+  .leagueDropdownPeriod,
+  .leagueDropdownTiming {
+    color: #fff;
+  }
+}
+
+.leagueDropdownDate {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--Text-Main-10);
+  white-space: nowrap;
+}
+
+.leagueDropdownTime {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--Text-Main-10);
+  white-space: nowrap;
+}
+
+.leagueDropdownTeam {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.leagueDropdownLogo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.leagueDropdownTeamName {
+  font-size: 12px;
+  color: var(--Text-Main-10);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.leagueDropdownTeamNameBold {
+  font-weight: 600;
+}
+
+.leagueDropdownScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.leagueDropdownPeriod {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--Text-500);
+  white-space: nowrap;
+}
+
+.leagueDropdownTiming {
+  font-size: 11px;
+  color: var(--Text-500);
+}
+
+.leagueDropdownScoreText {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--Text-Main-10);
+}
+
+.matchTitleText {
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modeButtons {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.modeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--Line-100);
+  border-radius: 8px;
+  background: var(--background-200);
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  &:not(:disabled):hover {
+    border-color: var(--ThemeColor-40);
+  }
+}
+
+.modeBtnActive {
+  border-color: var(--ThemeColor-Main);
+  background: var(--ThemeColor-Main);
+}
+
+.videoContainer {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.videoContainerScrollable {
+  /* 数据板统计列最宽约 200px+，侧栏较窄时需横向滚动；高度固定时纵向也需可滚以显示双行球队 */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scoreboardWrapper {
+  min-width: min-content;
+  min-height: min-content;
+  margin: 4px 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* 视频 / 动画均依赖父级高度；侧栏无固定高度时用比例 + min-height 撑开 */
+.mediaAspectWrapper {
+  width: 100%;
+  flex-shrink: 0;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  padding: 4px 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  isolation: isolate;
+
+  // min-height: 300px;
+}

@@ -1,0 +1,108 @@
+.swich_level {
+  margin: 20px auto 10px;
+  overflow-x: auto; // ✅ 允许横向滚动
+  overflow-y: hidden;
+  width: 94%;
+  position: relative;
+  z-index: 3;
+
+  // ✅ 隐藏滚动条但保留滚动功能
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/Edge
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari
+  }
+
+  // ✅ 平滑滚动
+  scroll-behavior: smooth;
+
+  // ✅ 移动端触摸滚动优化
+  -webkit-overflow-scrolling: touch;
+  @include rwd-min('lg') {
+    width: 100%;
+  }
+  .swicth_box {
+    display: flex;
+    align-items: center;
+    min-width: 100%; // ✅ 最小宽度 100%
+    padding-right: 12px; // 最后一项可点区域
+    font-size: calc(14px * var(--text-scale, 1));
+    font-weight: 700;
+    // transition: all 0.5s; // ✅ 移除 transition，改用 scroll-behavior
+
+    .switch_level_item {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0; // ✅ 防止收缩
+      cursor: pointer;
+      @include rwd-min('lg') {
+        flex: 1;
+      }
+      .switch_list {
+        display: flex;
+        width: 52px;
+        height: 22px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 24px;
+        color: var(--Text-Main-10, #000);
+        font-family: 'DIN Alternate', sans-serif;
+        font-size: calc(12px * var(--text-scale, 1));
+        font-weight: 500;
+        border: 0.5px solid var(--Line-100, #edf2ff);
+        background: var(--Background-300, #fff);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        @include rwd-min('lg') {
+          flex: 1;
+          // &:hover {
+          //   transform: scale(1.05);
+          // }
+        }
+      }
+
+      .nowIndex {
+        border-radius: 24px;
+        border: 0.5px solid var(--Line-100);
+        background: var(--Line-100);
+        color: var(--Text-Main-10);
+      }
+
+      .active {
+        border-radius: 24px;
+        border: 0.5px solid var(--ThemeColor-Main);
+        background: var(--ThemeColor-Main, #1a81ff);
+        color: var(--White-100);
+      }
+
+      .middle_line {
+        width: 12px;
+        height: 4px;
+        flex-shrink: 0;
+
+        @include rwd-min('lg') {
+          width: 20px;
+          background: var(--Background-300, #fff);
+        }
+      }
+
+      &:last-child {
+        .middle_line {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // ✅ PC 端内容居中（当不需要滚动时）
+  //   @include rwd-min('lg') {
+  //     display: flex;
+  //     justify-content: center;
+
+  //     .swicth_box {
+  //       justify-content: center;
+  //     }
+  //   }
+}

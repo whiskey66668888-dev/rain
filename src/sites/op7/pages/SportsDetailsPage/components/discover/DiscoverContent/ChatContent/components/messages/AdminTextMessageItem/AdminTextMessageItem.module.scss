@@ -1,0 +1,25 @@
+.admin {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--ThemeColor-90, rgba(63, 140, 255, 0.12));
+  box-sizing: border-box;
+}
+
+.prefix {
+  flex-shrink: 0;
+  color: var(--ThemeColor-Main);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.body {
+  color: var(--Text-Main-10, var(--Text-500));
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  word-break: break-word;
+}

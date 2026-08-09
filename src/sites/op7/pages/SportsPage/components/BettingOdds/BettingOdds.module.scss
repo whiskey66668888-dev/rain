@@ -1,0 +1,16 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+
+.playNamesRow {
+  flex-shrink: 0;
+}
+
+.oddsArea {
+  flex: 1;
+  min-width: 0;
+}

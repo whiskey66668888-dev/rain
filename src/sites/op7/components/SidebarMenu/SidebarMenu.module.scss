@@ -1,0 +1,328 @@
+// .sidebarMenuContainer {
+//   @include rwd-between('lg', 'xl') {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     background-color: #00000099;
+//     z-index: 100;
+//   }
+// }
+
+.sidebarMenuAnimate {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-300px);
+  pointer-events: none;
+  width: 220px;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s,
+    max-width 0.4s,
+    width 0.4s,
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 0;
+  padding: 0;
+
+  @include rwd-min('lg') {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+    max-width: 300px;
+  }
+}
+.sidebarMenuClose {
+  width: 72px;
+  overflow: hidden;
+  .menuButton {
+    width: 48px;
+  }
+  .arrowIconWrapper {
+    .arrowIcon {
+      transform: rotate(90deg);
+      position: absolute;
+      left: 34px;
+    }
+  }
+}
+
+.tabSwitchBtn {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 196px;
+  height: 48px;
+  padding: 15px 16px;
+  border-radius: 8px;
+  background-color: var(--Background-500);
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+  color: var(--Text-Main-10);
+  font-size: 14px;
+  overflow: hidden;
+  position: relative;
+  &:hover {
+    background-color: var(--ThemeColor-20);
+    .arrowIconWrapper {
+      transform: scale(1.2);
+    }
+  }
+  &.sportsMenuButton {
+    border-radius: 0px;
+  }
+  &.subMenuItem {
+    &:hover {
+      background-color: var(--Background-500);
+      cursor: default;
+    }
+    & > div {
+      cursor: pointer;
+      width: 100%;
+      height: 28px;
+      padding: 2px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-radius: 100px;
+      background: var(--Background-300);
+      & > span {
+        transition: all 0.3s ease;
+        flex: 1;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        &.subMenuItemActive {
+          color: var(--White-100);
+          border-radius: 999px;
+          background: var(--ThemeColor-Main);
+        }
+      }
+    }
+  }
+}
+
+// 与 Icon size="16px" 一致（含 --text-scale），热门渐变图与单色 Icon 同尺寸
+.sportsMenuIcon {
+  flex-shrink: 0;
+  width: calc(16px * var(--text-scale, 1));
+  height: calc(16px * var(--text-scale, 1));
+  object-fit: contain;
+}
+
+// 菜单项激活状态
+.menuItemActive {
+  background: var(--ThemeColor-20);
+  color: var(--ThemeColor-Main, #1a81ff);
+  font-weight: 600;
+}
+.expandedMenuItemActive {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: var(--ThemeColor-Main, #1a81ff);
+}
+
+.arrowIconWrapper {
+  background-color: var(--Background-300);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  // 箭头图标旋转动画
+  .arrowIcon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotate(180deg);
+    will-change: transform;
+  }
+  .arrowIconExpanded {
+    transform: rotate(0deg);
+  }
+  .arrowIconDirect {
+    transform: rotate(90deg);
+  }
+}
+
+// 二级菜单容器
+.subMenu {
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  opacity: 0;
+  transition:
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease,
+    margin-top 0.3s ease;
+}
+
+// 展开状态
+.subMenuExpanded {
+  max-height: 1000px; // 足够大的值以容纳所有子菜单
+  opacity: 1;
+  transition:
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease 0.1s,
+    margin-top 0.3s ease;
+
+  // 子菜单项依次出现动画
+  .subMenuItem {
+    animation: slideIn 0.3s ease forwards;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
+    }
+  }
+}
+
+// 收起状态
+.subMenuCollapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  transition:
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease,
+    margin-top 0.3s ease;
+
+  // 子菜单项依次消失动画
+  .subMenuItem {
+    animation: slideOut 0.3s ease forwards;
+    opacity: 1;
+    transform: translateX(0);
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{(10 - $i) * 0.05}s; // 反向延迟，最后一个先消失
+      }
+    }
+  }
+}
+
+// 子菜单项基础样式
+.subMenuItem {
+  opacity: 0;
+  transform: translateX(-10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 48px;
+  padding: 15px 14px;
+  background-color: var(--Background-500);
+  gap: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-size: 14px;
+  color: var(--Text-Main-10);
+  &:hover {
+    background-color: var(--ThemeColor-20);
+  }
+  &.menuItemActive {
+    background-color: var(--ThemeColor-20);
+    color: var(--ThemeColor-Main);
+  }
+}
+
+// 展开动画
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// 收起动画
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+.themeButtonContainer {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background-color: var(--Background-500);
+  border-radius: 8px;
+  width: 196px;
+  [data-theme='dark'] & {
+    & > button:last-child {
+      background-color: var(--Background-300);
+      color: var(--ThemeColor-Main);
+      & > span:first-child {
+        background-color: var(--ThemeColor-Main) !important;
+      }
+    }
+  }
+  [data-theme='light'] & {
+    & > button:first-child {
+      background-color: var(--Background-300);
+      color: var(--ThemeColor-Main);
+      & > span:first-child {
+        background-color: var(--ThemeColor-Main) !important;
+      }
+    }
+  }
+  & > button {
+    border-radius: 6px;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    padding: 7px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--Text-Main-10);
+
+    &:hover {
+      background-color: var(--Background-300);
+    }
+    &:active {
+      background-color: var(--Line-100);
+    }
+  }
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background: var(--Line-100);
+  margin: 6px 0;
+}

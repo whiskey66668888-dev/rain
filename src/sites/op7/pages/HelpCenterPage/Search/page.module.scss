@@ -1,0 +1,101 @@
+.supportPage {
+  height: 100%;
+  background: var(--Background-100);
+  position: relative;
+
+  .supportHeader {
+    position: relative;
+    height: 44px;
+    padding: 10px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    .back {
+      width: 16px;
+      height: 16px;
+      background-image: url('/images/light/help/back.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      @include theme-night() {
+        background-image: url('/images/dark/help/back.png');
+      }
+    }
+
+    .center {
+      flex: 1;
+      border-radius: 99px;
+      height: 40px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--Background-700, #ecf2ff);
+      .searchIcon {
+        width: 20px;
+        height: 20px;
+        background-image: url('/images/light/help/search.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        @include theme-night() {
+          background-image: url('/images/dark/help/search.png');
+        }
+      }
+      .searchInput {
+        flex: 1;
+        color: var(--text-main);
+        ::placeholder {
+          color: var(--text-700);
+        }
+      }
+    }
+
+    .cancel {
+      color: var(--text-main);
+      text-align: center;
+      font-family: 'PingFang SC';
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      cursor: pointer;
+    }
+  }
+
+  .supportBody {
+    padding: 16px 20px;
+    .list {
+      display: flex;
+      flex-direction: column;
+      .item {
+        display: flex;
+        align-items: center;
+        border-bottom: 0.5px solid var(--Line-100);
+        padding: 12px 0;
+        cursor: pointer;
+        .title {
+          color: var(--text-main);
+          flex: 1;
+        }
+        .arrowRight {
+          width: 16px;
+          height: 16px;
+          background-image: url('/images/light/help/forward.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          @include theme-night() {
+            background-image: url('/images/dark/help/forward.png');
+          }
+        }
+      }
+    }
+  }
+
+  .noData {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  //全屏模式
+}

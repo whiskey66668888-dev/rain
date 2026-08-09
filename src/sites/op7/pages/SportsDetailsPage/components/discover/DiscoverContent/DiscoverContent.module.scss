@@ -1,0 +1,14 @@
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  /** 聊天：按 spacer 撑高，让外层能滚走 MatchInfo */
+  &.chatLayout {
+    flex: 0 0 auto;
+    overflow: visible;
+    min-height: auto;
+  }
+}

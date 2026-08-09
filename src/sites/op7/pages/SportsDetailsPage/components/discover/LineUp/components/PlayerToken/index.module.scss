@@ -1,0 +1,165 @@
+.playerToken {
+  display: flex;
+  width: 49px;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  color: var(--White-100);
+  text-align: center;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--White-100);
+}
+
+.avatar {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.playerName {
+  width: 49px;
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--White-100);
+  font-size: 10px;
+  font-weight: 500;
+  font-family: 'DIN Pro';
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 24%);
+  white-space: nowrap;
+}
+
+.playerMeta {
+  max-width: 64px;
+  height: 14px;
+  margin-top: -4px;
+  padding: 2px 4px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #f57f25;
+  color: var(--White-100);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.flag {
+  width: 14px;
+  height: 14px;
+  margin-top: -4px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.cardBadges,
+.subBadge,
+.assistBadge,
+.goalBadge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  min-width: 12px;
+  min-height: 12px;
+
+  img {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+  }
+}
+
+.cardBadges {
+  top: -4px;
+  left: -8px;
+  flex-direction: row-reverse;
+}
+
+.subBadge {
+  top: 14px;
+  left: -8px;
+
+  img {
+    background: var(--White-100);
+    border-radius: 100%;
+  }
+}
+
+.assistBadge {
+  top: -5px;
+  left: 24px;
+  width: max-content;
+}
+
+.goalBadge {
+  top: 14px;
+  left: 24px;
+  width: max-content;
+}
+
+.countBadge {
+  display: inline-flex;
+  width: max-content;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+  padding-right: 4px;
+  border-radius: 40px;
+  background-color: var(--White-100);
+  color: var(--Black-100);
+  white-space: nowrap;
+
+  span {
+    flex: 0 0 auto;
+    font-size: 9px;
+    line-height: 12px;
+  }
+
+  img {
+    flex: 0 0 12px;
+  }
+}
+
+.rating-default,
+.rating-low {
+  background: var(--Warning-300);
+}
+
+.rating-elite {
+  background: var(--ThemeColor-Main);
+}
+
+.rating-great {
+  background: var(--ThemeColor-300);
+}
+
+.rating-good {
+  background: var(--Green-300);
+}
+
+.rating-warning {
+  background: var(--Warning-200);
+}
+
+.rating-bad {
+  background: var(--Red-900);
+}
+
+@media (max-width: 768px) {
+  .playerToken {
+    width: 49px;
+  }
+}

@@ -1,0 +1,243 @@
+.leagueFilter {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  gap: 12px;
+  padding-bottom: 56px;
+
+  .searchInput {
+    width: calc(100% - 32px);
+    height: 40px;
+    margin: 0 16px;
+    border-radius: 8px;
+    background: var(--Background-500);
+    padding: 0 12px 0 10px;
+    gap: 8px;
+    box-sizing: border-box;
+
+    input {
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    button {
+      right: 10px;
+    }
+  }
+
+  .leagueGroupList {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .emptyWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .indexBar {
+    height: 100%;
+    background: transparent;
+
+    :global(.adm-index-bar-body) {
+      background: transparent;
+    }
+
+    :global(.adm-index-bar-anchor-title) {
+      display: none;
+    }
+
+    :global(.adm-index-bar-sidebar) {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transform: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-right: 2px;
+      color: var(--Text-Main-10);
+    }
+
+    :global(.adm-index-bar-sidebar-row) {
+      padding: 0;
+      text-align: center;
+    }
+
+    :global(.adm-index-bar-sidebar-item) {
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    :global(.adm-index-bar-sidebar-item-active) {
+      background: var(--ThemeColor-Main);
+      color: var(--White-100);
+    }
+
+    :global(.adm-index-bar-sidebar-interacting) {
+      width: auto;
+      right: 0;
+    }
+
+    :global(.adm-index-bar-sidebar-bubble) {
+      right: 28px;
+    }
+  }
+
+  .indexPanel {
+    width: 100%;
+  }
+
+  .leagueGroup {
+    width: 100%;
+    background: transparent;
+
+    .leagueGroupTitle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-height: 40px;
+      padding: 10px 28px 10px 16px;
+      background: var(--Button-200);
+      box-sizing: border-box;
+
+      .left {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--Text-Main-10);
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+        cursor: pointer;
+
+        .icArrow {
+          transition: transform 0.2s ease-in-out;
+
+          &.collapsed {
+            transform: rotate(-180deg);
+          }
+        }
+      }
+    }
+
+    .leagueList {
+      padding-left: 34px;
+      transition: all 0.2s ease-in-out;
+
+      &.hide {
+        height: 0;
+        overflow: hidden;
+      }
+    }
+
+    .leagueItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 40px;
+      padding: 10px 28px 10px 0;
+      border-bottom: 0.5px solid var(--Line-100);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .leagueName {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--Text-Main-10);
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .right {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .leagueCount {
+        min-width: 26px;
+        color: var(--Text-700);
+        font-family: 'SF Pro Text', sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+      }
+    }
+  }
+
+  .selectionIcon {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    flex: none;
+    border: 1px solid var(--Icon-Secondary-gray);
+    border-radius: 50%;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &.active {
+      border-color: var(--ThemeColor-Main);
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 3px;
+        border-radius: 50%;
+        background: var(--ThemeColor-Main);
+      }
+    }
+  }
+
+  .footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 16px;
+    background: var(--Background-300);
+    border-top: 0.5px solid var(--Line-100);
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--Text-Main-10);
+      font-size: 14px;
+      line-height: 20px;
+      cursor: pointer;
+    }
+
+    .bnConfirm {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 0 16px;
+      border-radius: 100px;
+      background: var(--ThemeColor-Main);
+      color: var(--White-100);
+      font-family: 'SF Pro Text';
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+.lazyImage {
+  position: relative;
+  overflow: hidden;
+}
+
+// 占位符容器
+.placeholderWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.placeholderImage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px);
+  transform: scale(1.1); // 稍微放大以覆盖模糊边缘
+  // 老浏览器不支持 filter 时，使用半透明背景
+  @supports not (filter: blur(20px)) {
+    filter: none;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+// 图片加载完成后显示（参考 Next.js Image 组件）
+.imageLoaded {
+  opacity: 1;
+}

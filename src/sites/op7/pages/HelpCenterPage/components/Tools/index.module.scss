@@ -1,0 +1,141 @@
+.contentItem {
+  width: 100%;
+  border-radius: 12px;
+  background: var(--Background-300, #fff);
+  backdrop-filter: blur(10px);
+  padding: 12px 12px 20px;
+
+  &.contentItemOverlapSearch {
+    // padding-top: 28px;
+    margin-top: 12px;
+  }
+  .contentHeader {
+    //   padding-left: 16px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+
+    //   .blueLine {
+    //     background-color: #1a81ff;
+    //     width: 3px;
+    //     height: 16px;
+    //     border-radius: 16px;
+    //   }
+
+    .contentHeaderTitle {
+      color: var(--Text-Main-10, #000);
+      font-family: 'PingFang SC';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px; /* 150% */
+    }
+  }
+  //   .empty {
+  //     min-height: calc(100vh - $header-height - 368px);
+  //     margin: auto;
+  //     display: flex;
+  //     flex-direction: column;
+  //     justify-content: center;
+  //     align-items: center;
+
+  //     .emptyImage {
+  //       width: 170px;
+  //       height: 104px;
+  //       background: url('./images/empty.png') no-repeat center;
+  //       background-size: 100% 100%;
+  //     }
+
+  //     .emptyText {
+  //       text-align: center;
+  //       font-family: PingFang HK;
+  //       font-weight: 500;
+  //       font-size: 14px;
+  //       line-height: 100%;
+  //       letter-spacing: 0px;
+  //       color: #667180;
+  //     }
+  //   }
+
+  .toolsList {
+    margin-top: 12px;
+    .toolsGroup {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 12px 16px;
+
+      .toolItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        .toolIcon {
+          margin-bottom: 8px;
+        }
+
+        .toolsName {
+          color: var(--Text-Main-10, #000);
+          font-family: 'PingFang SC';
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 16px; /* 133.333% */
+        }
+      }
+      &.lessThanFive {
+        grid-template-rows: repeat(1, 1fr);
+      }
+    }
+
+    // 如果需要指示器样式
+    // .customIndicator {
+    //   display: flex;
+    //   justify-content: center;
+    //   gap: 8px;
+    //   padding: 16px 0 0;
+
+    //   .dot {
+    //     width: 6px;
+    //     height: 6px;
+    //     border-radius: 50%;
+    //     background-color: #ccc;
+    //     transition: background-color 0.3s ease;
+
+    //     &.active {
+    //       background-color: #1a81ff;
+    //     }
+    //   }
+    // }
+  }
+}
+.modal_ttitle_text {
+  display: flex;
+  color: var(--ThemeColor-Main);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  align-items: center;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+  }
+}
+.modalFooter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+
+  .button {
+    height: 40px;
+    flex: 1;
+  }
+
+  .cancel {
+    background: var(--Background-500);
+  }
+}

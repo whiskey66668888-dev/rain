@@ -1,0 +1,86 @@
+.fastSettingsModal {
+  width: 100%;
+  background: var(--Background-300);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--Text-Main-10);
+  padding-bottom: 10px;
+  // H5 底部抽屉样式
+  &.mobile {
+    border-radius: 16px 16px 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    // 保存到桌面（PWA / 主屏幕）时避开底部安全区
+    &.standaloneSafeArea {
+      padding-bottom: calc(10px + constant(safe-area-inset-bottom));
+      padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    }
+
+    // 自定义滚动条
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--Line-100);
+      border-radius: 2px;
+    }
+  }
+
+  // Pad/Web 居中弹窗样式
+  &.desktop {
+    width: 450px;
+    max-width: 90vw;
+    border-radius: 12px;
+    max-height: 90vh;
+    box-shadow: 0 8px 32px var(--Shadow-400);
+    overflow: hidden;
+  }
+  .btnBox {
+    color: var(--Text-Main-10);
+    padding: 0 12px;
+    & > li {
+      display: flex;
+      height: 44px;
+      padding: 14px 0;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      // border-bottom: 0.5px solid var(--Line-100);
+      &:last-child {
+        border-bottom: none;
+      }
+      section {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    }
+  }
+  .collapsedIcon {
+    transition: transform 0.3s ease;
+    transform: rotate(180deg);
+    cursor: pointer;
+    &.collapsed {
+      transform: rotate(0deg);
+    }
+  }
+  .bettingSettings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    background: var(--Background-500);
+    border-radius: 12px;
+    padding: 10px;
+  }
+}
+:global(.adm-popover-arrow) {
+  bottom: calc(var(--arrow-size) * -1 + 3px) !important;
+}

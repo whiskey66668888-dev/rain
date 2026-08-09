@@ -1,0 +1,55 @@
+@use 'sass:map';
+
+$breakpoints: (
+  'md': 375px,
+  'lg': 768px,
+  'xl': 1440px,
+  '2xl': 1920px,
+);
+
+/**
+ * 向上查询（min-width）
+ * @param $name - 断点名称或具体数值
+ */
+@mixin rwd-min($name) {
+  $value: $name;
+  @if map.has-key($breakpoints, $name) {
+    $value: map.get($breakpoints, $name);
+  }
+  @media (min-width: $value) {
+    @content;
+  }
+}
+
+/**
+ * 向下查询（max-width）
+ * @param $name - 断点名称或具体数值
+ */
+@mixin rwd-max($name) {
+  $value: $name;
+  @if map.has-key($breakpoints, $name) {
+    $value: map.get($breakpoints, $name);
+  }
+  @media (max-width: $value) {
+    @content;
+  }
+}
+
+/**
+ * 范围查询（min-width and max-width）
+ * @param $min - 最小断点名称或具体数值
+ * @param $max - 最大断点名称或具体数值
+ */
+@mixin rwd-between($min, $max) {
+  $minValue: $min;
+  $maxValue: $max;
+  @if map.has-key($breakpoints, $min) {
+    $minValue: map.get($breakpoints, $min);
+  }
+  @if map.has-key($breakpoints, $max) {
+    $maxValue: map.get($breakpoints, $max);
+  }
+  @media (min-width: $minValue) and (max-width: $maxValue) {
+    @content;
+  }
+}
