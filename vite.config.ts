@@ -5,6 +5,7 @@ import type { IncomingMessage, NextFunction, ServerResponse } from 'http';
 
 import react from '@vitejs/plugin-react-swc';
 import copy from 'rollup-plugin-copy';
+import { visualizer } from 'rollup-plugin-visualizer';
 import * as sassEmbedded from 'sass-embedded';
 import UnoCSS from '@unocss/vite';
 import { ConfigEnv, defineConfig, loadEnv, PluginOption, UserConfig, ViteDevServer } from 'vite';
@@ -22,6 +23,84 @@ import ssrCssTransformPlugin from './vitePlugins/ssrCssTransformPlugin';
 import swPlugin from './vitePlugins/swPlugin';
 import { createProxyConfig } from './src/server/proxy.config';
 
+/** 从模块路径解析 npm 包名（支持 scoped package） */
+function getNpmPackageName(id: string): string | undefined {
+  const segments = id.split('node_modules/');
+  const rest = segments[segments.length - 1];
+  if (!rest) return undefined;
+  if (rest.startsWith('@')) {
+    const [scope, name] = rest.split('/');
+    return name ? `${scope}/${name}` : undefined;
+  }
+  return rest.split('/')[0];
+}
+
+/** React 核心：独立拆包，长期缓存命中率高 */
+const REACT_CORE_PKGS = new Set(['react', 'react-dom', 'scheduler']);
+
+/**
+ * UI 类依赖：合并为 vendor-ui，减少首屏并发请求。
+ * 含 UI 组件库及其常见 peer/transitive 依赖。
+ * ahooks / intersection-observer 必须与 antd-mobile 同包，否则会形成 ui↔utils 循环。
+ */
+const UI_PKGS = new Set([
+  'antd-mobile',
+  'antd-mobile-icons',
+  'swiper',
+  'framer-motion',
+  'motion-dom',
+  'motion-utils',
+  'lottie-react',
+  'lottie-web',
+  'react-window',
+  'react-qr-code',
+  'qr.js',
+  'qrcode-generator',
+  'react-intersection-observer',
+  'intersection-observer',
+  'ahooks',
+  '@floating-ui/core',
+  '@floating-ui/dom',
+  '@floating-ui/react-dom',
+  '@floating-ui/utils',
+  'rc-field-form',
+  'rc-motion',
+  'rc-segmented',
+  'rc-util',
+  '@rc-component/mini-decimal',
+  'async-validator',
+  'staged-components',
+  '@react-spring/animated',
+  '@react-spring/core',
+  '@react-spring/shared',
+  '@react-spring/web',
+  '@react-spring/rafz',
+  '@react-spring/types',
+  '@use-gesture/core',
+  '@use-gesture/react',
+  'classnames',
+  'nano-memoize',
+  'runes2',
+  'resize-observer-polyfill',
+  'screenfull',
+]);
+
+/**
+ * 大体量 / 低频使用库：单独拆包，避免污染首屏 vendor-utils/ui，
+ * 便于路由级懒加载时按需拉取。
+ */
+const LARGE_ASYNC_PKGS = new Map<string, string>([
+  ['echarts', 'vendor-echarts'],
+  ['echarts-for-react', 'vendor-echarts'],
+  ['zrender', 'vendor-echarts'],
+  ['size-sensor', 'vendor-echarts'],
+  ['@front-openim/wasm-client-sdk', 'vendor-openim'],
+  ['html2canvas', 'vendor-html2canvas'],
+  ['@fingerprintjs/fingerprintjs-pro', 'vendor-fingerprint'],
+  ['@emoji-mart/data', 'vendor-emoji'],
+  ['emoji-mart', 'vendor-emoji'],
+]);
+
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd(), '');
   const version = Date.now().toString();
@@ -32,6 +111,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const devPublicHost = env.DEV_PUBLIC_HOST || 'localhost';
 
   const siteRoot = path.resolve(__dirname, `src/sites/${SITE}`);
+  const analyze = process.env.ANALYZE === 'true';
 
   const siteConfig: SiteConfig = require(`./src/sites/${SITE}/site.config.ts`).default;
 
@@ -107,6 +187,18 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       // 控制台警告插件，只在客户端开发环境使用
       ...(isServerBuild || !isDev ? [] : [consoleWarningPlugin()]),
       localeServerPlugin(SITE),
+      // 打包体积分析：ANALYZE=true 时生成 stats.html
+      ...(analyze && !isServerBuild
+        ? [
+            visualizer({
+              filename: path.resolve(__dirname, 'dist/stats.html'),
+              open: true,
+              gzipSize: true,
+              brotliSize: true,
+              template: 'treemap',
+            }) as PluginOption,
+          ]
+        : []),
     ],
     root: siteRoot,
     resolve: {
@@ -304,17 +396,32 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
               main: path.resolve(siteRoot, 'index.html'),
             },
             output: {
-              // 手动代码分割配置
+              // 手动代码分割：避免按包细拆导致首屏并发请求过多
               manualChunks: (id) => {
-                // node_modules 中的第三方库
                 if (id.includes('node_modules')) {
-                  // Sentry 单独拆包会导致内部循环依赖，出现 "Cannot access 'R' before initialization"
+                  // Sentry / APM 单独拆包会导致内部循环依赖（Cannot access before initialization）
                   if (id.includes('sentry') || id.includes('@umengfe/apm')) {
                     return undefined;
                   }
-                  const pkgName = id?.split('node_modules/')[1]?.split('/')[0]?.replace('@', '');
 
-                  return `vendor-${pkgName}`;
+                  const pkgName = getNpmPackageName(id);
+                  if (!pkgName) return 'vendor-utils';
+
+                  if (REACT_CORE_PKGS.has(pkgName)) {
+                    return 'vendor-react';
+                  }
+
+                  const largeChunk = LARGE_ASYNC_PKGS.get(pkgName);
+                  if (largeChunk) {
+                    return largeChunk;
+                  }
+
+                  if (UI_PKGS.has(pkgName)) {
+                    return 'vendor-ui';
+                  }
+
+                  // 其余低频小依赖合并，降低 HTTP 并发
+                  return 'vendor-utils';
                 }
 
                 // SDK 层单独分割
@@ -322,12 +429,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
                   return 'sdk';
                 }
 
-                // 公共组件单独分割（可选）
+                // 公共重型组件单独分割
                 if (
                   id.includes('/common/components/') &&
                   !id.includes('/common/components/odds/')
                 ) {
-                  // 大型组件可以单独分割
                   if (id.includes('VirtualList') || id.includes('InfiniteScroll')) {
                     return 'components-heavy';
                   }
