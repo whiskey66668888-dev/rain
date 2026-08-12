@@ -1,7 +1,6 @@
 // /api/game/total/list
 import { useQueryHook } from '@/core/query';
 import request from '@/core/sdk/request';
-import { isSSR } from '@/utils/env';
 
 interface TTotalListParams {
   type: 'all';
@@ -58,9 +57,6 @@ export const useGetTotalList = (params: TTotalListParams, config: { enabled?: bo
     queryKey: ['origin', 'allBettingRecord', 'totalList', params],
     enabled: config?.enabled,
     queryFn: async (): Promise<TTotalListRes> => {
-      if (isSSR()) {
-        return defaultTotalListRes;
-      }
       const res = await getTotalListReq(params);
       return res.data ?? defaultTotalListRes;
     },

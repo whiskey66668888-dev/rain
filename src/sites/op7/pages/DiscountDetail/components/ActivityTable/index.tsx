@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import styles from './index.module.scss';
 import { handleContent } from '@/utils/format/handleContent';
 import LazyImage from '@/common/components/LazyImage';
+import downIcon from './image/down.png';
 
 const getCellContent = (value: unknown): ReactNode => {
   if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
@@ -251,11 +252,7 @@ const ActivityTable = <T extends TableRow>({
       <div className={styles.toggleContainer}>
         <div className={styles.toggleButton} onClick={toggleExpand}>
           {expanded ? collapseText : expandText}
-          <LazyImage
-            src={require('./image/down.png')}
-            alt=""
-            className={expanded ? styles.rotated : ''}
-          />
+          <LazyImage src={downIcon} alt="" className={expanded ? styles.rotated : ''} />
         </div>
       </div>
     );

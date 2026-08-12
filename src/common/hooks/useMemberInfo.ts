@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { getMemberInfoThunk } from '@/core/store/thunks/userThunks';
 import { useQueryHook } from '@/core/query';
 import { hasAppAuthToken, persistAppAuthFromUrl } from '@/utils/appEmbed';
-import { isSSR } from '@/utils/env';
 import { TMemberInfoResp } from '@/apis/origin/member/membetInfo';
 
 interface TParams {
@@ -47,9 +46,6 @@ export const useLoopMemberInfo = () => {
   useQueryHook<Partial<TMemberInfoResp>, Error>({
     queryKey: ['user', 'memberInfo'],
     queryFn: async () => {
-      if (isSSR()) {
-        return {};
-      }
       return getMemberInfo({ isLoading: false });
     },
     enabled: canFetchMemberInfo,

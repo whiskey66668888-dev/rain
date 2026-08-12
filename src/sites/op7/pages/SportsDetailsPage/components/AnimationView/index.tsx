@@ -19,7 +19,7 @@ const AnimationView: React.FC<AnimationViewProps> = ({ url, rounded = false }) =
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleLoad = (): void => {
     if (timeoutRef.current) {

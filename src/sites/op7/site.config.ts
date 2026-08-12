@@ -37,13 +37,7 @@ const config: SiteConfig = {
     mode: 'light',
     template: 'sports',
   },
-  api: apiConfig[
-    (typeof __BUILD_ENV__ !== 'undefined'
-      ? __BUILD_ENV__
-      : typeof process !== 'undefined' && process.env
-        ? process.env.BUILD_ENV
-        : 'main') as 'dev' | 'sit' | 'release' | 'main'
-  ],
+  api: apiConfig[typeof __BUILD_ENV__ !== 'undefined' ? __BUILD_ENV__ : 'main'],
   captcha: {
     type: '1', // 1=极验验证码, 2=自有验证码 // todo 走接口配置
     geetest: {

@@ -147,11 +147,6 @@ export function isBase64(str: string | undefined | null): boolean {
  * ```
  */
 export function checkCanHover(): boolean {
-  // SSR 环境下返回 false
-  if (typeof window === 'undefined') {
-    return false;
-  }
-
   // 检测媒体查询：设备是否支持 hover 和精确指针（鼠标/触摸板）
   // (hover: hover) - 设备支持 hover
   // (pointer: fine) - 设备有精确指针（如鼠标），而不是粗糙指针（如触摸）
@@ -186,9 +181,6 @@ export function sleep(ms: number): Promise<void> {
  */
 export async function copyToClipboard(text: string): Promise<boolean> {
   if (!text) return false;
-
-  // SSR 环境直接失败
-  if (typeof window === 'undefined') return false;
 
   // 优先使用现代 API
   if (navigator.clipboard && window.isSecureContext) {

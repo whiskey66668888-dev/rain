@@ -29,7 +29,7 @@ const config: SiteConfig = {
     mode: 'light',
     template: 'sports',
   },
-  api: apiConfig[process.env.NODE_ENV as 'dev' | 'sit' | 'release' | 'main'],
+  api: apiConfig[typeof __BUILD_ENV__ !== 'undefined' ? __BUILD_ENV__ : 'main'],
 };
 
 export default config;

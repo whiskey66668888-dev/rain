@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 import { appendPathSearch } from '@/utils/appendPathSearch';
 import { isEmbeddedInNativeApp } from '@/utils/appEmbed';
 import { COOKIE_EXPIRES, TOKEN_KEY } from '@/utils/constants/cacheKey';
-import { isSSR } from '@/utils/env';
 
 /** 呼朋唤友静态资源（public/images/op7/inviteFriends） */
 export function inviteFriendsImg(name: string): string {
@@ -22,8 +21,6 @@ export const INVITE_FRIENDS_APP_TOKEN_KEY = 'op7:inviteFriendsAppToken';
  * 例：/newFriend?isApp=1&token=xxx
  */
 export function persistInviteFriendsAppQuery(searchParams: URLSearchParams): void {
-  if (isSSR()) return;
-
   const token = searchParams.get('token')?.trim();
   if (!token) return;
 
@@ -41,8 +38,6 @@ export function buildInviteFriendsSearch(base?: URLSearchParams | string): URLSe
     typeof base === 'string'
       ? new URLSearchParams(base.replace(/^\?/, ''))
       : new URLSearchParams(base?.toString() ?? '');
-
-  if (isSSR()) return params;
 
   if (!params.get('token')) {
     try {
@@ -62,8 +57,6 @@ export function buildInviteFriendsSearch(base?: URLSearchParams | string): URLSe
 
 /** 子路由跳转时保留 query（含 App token、isApp） */
 export function withInviteFriendsSearch(path: string, search?: URLSearchParams | string): string {
-  const merged = buildInviteFriendsSearch(
-    search ?? (typeof window !== 'undefined' ? window.location.search : undefined),
-  );
+  const merged = buildInviteFriendsSearch(search ?? window.location.search);
   return appendPathSearch(path, merged);
 }

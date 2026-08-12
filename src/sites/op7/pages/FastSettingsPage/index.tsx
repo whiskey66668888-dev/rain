@@ -5,7 +5,6 @@ import Overlay from '@/common/components/Overlay';
 import type { OverlayPosition } from '@/common/components/Overlay';
 
 import { useAppSelector } from '@/core/store/hooks';
-import { isSSR } from '@/utils/env';
 
 import { ModalCloseButton } from '../../components/themeIcon';
 // import siteConfig from '../../site.config';
@@ -119,8 +118,6 @@ const FastSettingsModal: React.FC<FastSettingsModalProps> = ({ show, handleClose
   const [isStandaloneApp, setIsStandaloneApp] = useState(false);
 
   useEffect(() => {
-    if (isSSR()) return;
-
     const checkStandalone = (): void => {
       const byDisplayMode = window.matchMedia?.('(display-mode: standalone)').matches ?? false;
       const byIOS = Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone);

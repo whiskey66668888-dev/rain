@@ -27,7 +27,7 @@ const SponsorDetailPage: React.FC = () => {
     // 已经是完整 URL（http/https 开头），直接使用
     if (/^https?:\/\//.test(address)) return address;
     // 相对路径，本地开发时拼接 baseUrl
-    const isDev = process.env.NODE_ENV === 'development';
+    const isDev = __NODE_ENV__ === 'development';
     const baseUrl = isDev ? siteConfig.api.baseUrl : '';
     return `${baseUrl}${address}`;
   }, [discountInfo?.webTargetAddress]);

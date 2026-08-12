@@ -139,7 +139,7 @@ const emptySlotListResponse: TGameSlotListResponse = {
 
 export const useGameSlotListQuery = (
   params: TGameSlotListParams,
-  config: { enabled: boolean; suspense: boolean | null } = { enabled: true, suspense: null },
+  config: { enabled: boolean; suspense?: boolean } = { enabled: true },
 ) => {
   return useQueryHook({
     queryKey: ['origin', 'game', 'slot', 'list', params],

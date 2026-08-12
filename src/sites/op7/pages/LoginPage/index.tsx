@@ -13,7 +13,6 @@ import { clearAuthRedirectPath } from '@/common/router/authRedirect';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { closeAuthModal, openRegisterModal } from '@/core/store/slices/authUISlice';
 import { encryption } from '@/core/sdk/request/util';
-import { isSSR } from '@/utils/env';
 import { clearRememberedLoginPassword } from '@/utils/rememberLoginStorage';
 import { getSecurityCenterReq, type SecurityCenterResponse } from '@/apis/origin/login';
 import {
@@ -175,9 +174,7 @@ const LoginPage: React.FC = () => {
   const handleRememberPasswordChange = (checked: boolean): void => {
     setRememberPassword(checked);
     // 实时保存用户的偏好设置
-    if (!isSSR()) {
-      localStorage.setItem('isKeepLogin', checked ? '1' : '0');
-    }
+    localStorage.setItem('isKeepLogin', checked ? '1' : '0');
   };
 
   const handleSubmit = (e: React.FormEvent): void => {
@@ -350,7 +347,7 @@ const LoginPage: React.FC = () => {
 
   // 读取缓存的账号密码
   useEffect(() => {
-    if (isSSR() || !show) {
+    if (!show) {
       return;
     }
 

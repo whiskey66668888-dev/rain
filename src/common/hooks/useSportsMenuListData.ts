@@ -11,7 +11,6 @@ import { useSportListByTypeQuery } from '@/apis/origin/sportListByType';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { FBCompetitionMap, FBSportId, FBSportIdValue } from '@/apis/fbSports/common/constants';
 import { setMenus } from '@/core/store/slices/sportSlice';
-import { isSSR } from '@/utils/env';
 
 /** 赛种 ID 在 FBCompetitionMap 中的顺序，模块级只算一次，排序时 O(1) 查找 */
 const SPORT_ID_ORDER_MAP = (() => {
@@ -147,8 +146,4 @@ export const useSportsMenuListData = (): void => {
   useEffect(() => {
     dispatch(setMenus(menuInfo));
   }, [menuInfo, dispatch]);
-  if (isSSR()) {
-    // 服务端渲染时，将体育首页需要的数据提前注入
-    dispatch(setMenus(menuInfo));
-  }
 };

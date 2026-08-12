@@ -1,7 +1,6 @@
 import { useQueryHook } from '@/core/query/hooks';
 import request from '@/core/sdk/request';
 import { ResponseData } from '@/core/sdk/request/model';
-import { isSSR } from '@/utils/env';
 import { HomeListId } from '@/utils/constants/entertainment';
 
 export enum HomeListSwitch {
@@ -64,20 +63,7 @@ export const useHomeListQuery = (
     queryKey: ['origin', 'home', 'list'],
     queryFn: () =>
       getHomeListReq()
-        .then((res) => {
-          const data = res.data ?? [];
-          if (isSSR()) {
-            // 场馆维护的真实状态需要登陆后才能获取，服务端默认强行把场馆维护状态设置为正常，等到客户端接手后根据登陆状态再次请求
-            return data.map((item) => ({
-              ...item,
-              childList: (item.childList ?? []).map((child) => ({
-                ...child,
-                switch: HomeListSwitch.NORMAL,
-              })),
-            }));
-          }
-          return data;
-        })
+        .then((res) => res.data ?? [])
         .catch(() => {
           return [];
         }),

@@ -3,7 +3,6 @@
 import { querystringStringify } from '@/utils';
 import { getImPlatform, isImOriginSuccessCode } from '@/utils/constants/apiCodeIm';
 import { VERSION } from '@/utils/constants/system';
-import { isSSR } from '@/utils/env';
 
 import type { RequestConf } from './request/config';
 import { createRequest, RequestMethod } from './request/index';
@@ -25,7 +24,7 @@ function isSerializableObject(data: unknown): data is RequestData {
  */
 const imOriginConfig: RequestConf = {
   host: __SITE_CONFIG__?.api?.baseUrl ?? '',
-  timeout: isSSR() ? 5000 : 10000,
+  timeout: 10000,
   sharedHeaders: () => ({
     'Content-Type': 'application/x-www-form-urlencoded',
     version: VERSION,

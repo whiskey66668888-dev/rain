@@ -8,8 +8,6 @@ import {
   API_CODE_FB_SUCCESS,
 } from '@/utils/constants/apiCodeFB';
 import { FB_LANGUAGE_TYPE, Locale } from '@/utils/constants/local';
-import { isSSR } from '@/utils/env';
-
 import { navigateTo } from '@/common/hooks/useGlobalNavigate';
 
 import { i18n } from '../i18n';
@@ -50,12 +48,12 @@ const fbConfig: RequestConf = {
     error: ResponseError<TCode, TResponse>,
     isErrorToast: boolean,
   ) => {
-    if (!isSSR() && getGlobalStoreForApiRequest().getState().thirdApiConfig.fb.isMaintenance) {
+    if (getGlobalStoreForApiRequest().getState().thirdApiConfig.fb.isMaintenance) {
       // 场馆维护中，或者接口获取三方api失败了，回到首页
       navigateTo('/');
       return;
     }
-    if (!isSSR() && isErrorToast) {
+    if (isErrorToast) {
       switch (error.code) {
         case API_CODE_FB_LOGIN_TIMEOUT_PLEASE_LOGIN_AGAIN:
           // FB的部分接口只允许在登陆后访问，在请求包装方法中进行处理

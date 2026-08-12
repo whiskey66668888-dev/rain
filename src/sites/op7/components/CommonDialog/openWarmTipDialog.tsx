@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import { getGlobalStoreForApiRequest } from '@/core/store/util';
-import { isSSR } from '@/utils/env';
 
 import CommonDialog from './index';
 import styles from './WarmTipDialog.module.scss';
@@ -69,10 +68,6 @@ export function openWarmTipDialog({
   onConfirm,
   maskClickClose = true,
 }: OpenWarmTipDialogOptions): WarmTipDialogInstance {
-  if (isSSR()) {
-    return { close: () => {} };
-  }
-
   const store = getGlobalStoreForApiRequest();
   if (!store) {
     console.error('Redux store is not available. Please ensure the app is properly initialized.');

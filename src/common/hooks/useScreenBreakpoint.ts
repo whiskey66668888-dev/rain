@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@/core/store/hooks';
 import { setScreenBreakpoint } from '@/core/store/slices/configSlice';
 import { BREAKPOINT_MEDIA_QUERIES } from '@/utils/constants/breakpoints';
-import { isSSR } from '@/utils/env';
 
 /**
  * 监听屏幕断点（媒体查询），与 uno.config breakpoints 一致
@@ -13,8 +12,6 @@ export function useScreenBreakpoint(): void {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isSSR()) return;
-
     const mediaQueryLists = BREAKPOINT_MEDIA_QUERIES.map(({ query }) => window.matchMedia(query));
 
     const updateBreakpoint = () => {

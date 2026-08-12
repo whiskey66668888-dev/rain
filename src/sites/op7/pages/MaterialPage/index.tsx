@@ -9,7 +9,6 @@ import { ClientOnly } from '@/common/components/ClientOnly';
 import siteConfig from '@/sites/op7/site.config';
 import { navigateTo } from '@/common/hooks/useGlobalNavigate';
 import { PATHS } from '../../routes/paths';
-// import { isSSR } from '@/utils/env';
 const MaterialPage: React.FC = () => {
   // const ActivityComponent = getDiscountActivityComponent(discountId);
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
@@ -22,7 +21,7 @@ const MaterialPage: React.FC = () => {
   const [gameInitLoading, setGameInitLoading] = useState<boolean>(true);
   const iframeUrl = useMemo(() => {
     // 相对路径，本地开发时拼接 baseUrl
-    const isDev = process.env.NODE_ENV === 'development';
+    const isDev = __NODE_ENV__ === 'development';
     const baseUrl = isDev ? siteConfig.api.baseUrl : '';
     return `${baseUrl}${'/h5/material'}?theme=${theme}`;
   }, [theme]);
@@ -49,7 +48,6 @@ const MaterialPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // if (isSSR()) return;
     window.addEventListener('message', onPostMessage);
     return () => window.removeEventListener('message', onPostMessage);
   }, [onPostMessage]);

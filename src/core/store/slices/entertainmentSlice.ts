@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ENTERTAINMENT_MENU_ID, HomeListId } from '@/utils/constants/entertainment';
 import { TGameList } from '@/apis/origin/gamePlay';
 // import { CURRENT_GAME_INFO_KEY } from '@/utils/constants/cacheKey';
-// import { isSSR } from '@/utils/env';
 
 /**
  * 娱乐大厅State
@@ -30,11 +29,9 @@ export const initialState: EntertainmentState = {
   activeGameHomeId: null, // 选中的游戏场馆id
   // 当前打开的游戏信息
   currentGameInfo: null,
-  // currentGameInfo: isSSR()
-  //   ? null
-  //   : (JSON.parse(
-  //       localStorage.getItem(CURRENT_GAME_INFO_KEY) ?? 'null',
-  //     ) as ICurrentGameInfo | null),
+  // currentGameInfo: (JSON.parse(
+  //   localStorage.getItem(CURRENT_GAME_INFO_KEY) ?? 'null',
+  // ) as ICurrentGameInfo | null),
   isGamePlaying: false,
   isFullscreen: false,
 };

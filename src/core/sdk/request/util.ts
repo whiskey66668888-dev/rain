@@ -1,7 +1,5 @@
 import pako from 'pako';
 
-import { isSSR } from '@/utils/env';
-
 import type { RequestConf } from './config';
 import { basicConfig } from './config';
 import { ResponseData } from './model';
@@ -12,21 +10,9 @@ interface PakoType {
   gzip: (data: Uint8Array | ArrayBuffer | string) => Uint8Array;
 }
 
-export function getBaseUrl(url: string, config: RequestConf = basicConfig): string {
-  if (url?.startsWith('http')) {
-    return url;
-  }
-  if (!isSSR()) {
-    return url;
-  }
-
-  // 生产环境会注入当前服务器的域名来作为api的请求地址
-  const ssrRequestOrigin = globalThis.__getSsrRequestOrigin?.() || global?.HOST_FOR_SSR_API_URL;
-  if (ssrRequestOrigin) {
-    return [ssrRequestOrigin, url].join('');
-  }
-
-  return [config.host, url].join('');
+export function getBaseUrl(url: string, _config: RequestConf = basicConfig): string {
+  // SPA：相对路径走当前站点 / Vite 代理
+  return url;
 }
 
 // 头部

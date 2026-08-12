@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { FBTokenResponse, OBTokenResponse } from '@/apis/origin/system';
 import { OB_API_CONFIG_KEY } from '@/utils/constants/cacheKey';
 import { FB_API_CONFIG_KEY } from '@/utils/constants/cacheKey';
-import { isSSR } from '@/utils/env';
 
 export interface ThirdApiConfigState {
   ob: {
@@ -21,15 +20,11 @@ const initialState: ThirdApiConfigState = {
     // 是否维护中
     isMaintenance: false,
     // 配置
-    config: isSSR()
-      ? null
-      : (JSON.parse(localStorage.getItem(OB_API_CONFIG_KEY) ?? 'null') as OBTokenResponse | null),
+    config: JSON.parse(localStorage.getItem(OB_API_CONFIG_KEY) ?? 'null') as OBTokenResponse | null,
   },
   fb: {
     isMaintenance: false,
-    config: isSSR()
-      ? null
-      : (JSON.parse(localStorage.getItem(FB_API_CONFIG_KEY) ?? 'null') as FBTokenResponse | null),
+    config: JSON.parse(localStorage.getItem(FB_API_CONFIG_KEY) ?? 'null') as FBTokenResponse | null,
   },
 };
 
@@ -44,12 +39,10 @@ const thirdApiConfigSlice = createSlice({
         config: ThirdApiConfigState[keyof ThirdApiConfigState];
       }>,
     ) => {
-      if (!isSSR()) {
-        localStorage.setItem(
-          `${action.payload.apiType.toUpperCase()}_API_CONFIG`,
-          JSON.stringify(action.payload.config.config),
-        );
-      }
+      localStorage.setItem(
+        `${action.payload.apiType.toUpperCase()}_API_CONFIG`,
+        JSON.stringify(action.payload.config.config),
+      );
       return {
         ...state,
         [action.payload.apiType]: {

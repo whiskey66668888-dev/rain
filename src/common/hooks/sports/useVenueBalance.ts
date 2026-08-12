@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { venueBalanceThunk } from '@/core/store/thunks/userThunks';
 import { EVenue } from '@/apis/commonSports/constants';
 import { useQueryHook } from '@/core/query';
-import { isSSR } from '@/utils/env';
 
 export const useVenueBalance = () => {
   const balance = useAppSelector((state) => state.user[state.sport.venue].balance);
@@ -40,9 +39,6 @@ export const useLoopVenueBalance = ({ enabled }: { enabled: boolean }) => {
   useQueryHook<string, Error>({
     queryKey: ['user', venue, 'venueBalance'],
     queryFn: async () => {
-      if (isSSR()) {
-        return '';
-      }
       return getVenueBalance({ venue, isLoading: false });
     },
     enabled,

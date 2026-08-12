@@ -9,7 +9,6 @@ import {
   TbetData,
   TFbPreBetLimitMap,
 } from '@/apis/commonSports/types';
-import { isSSR } from '@/utils/env';
 import { BET_DATA_KEY } from '@/utils/constants/cacheKey';
 
 // 创建单关投注项 EntityAdapter
@@ -124,7 +123,6 @@ const defaultStorageBetStore: TStorageBetStore = {
 
 /** 从 localStorage 读取已持久化的投注状态，SSR 或解析失败时返回默认值 */
 const getStorageBetStore = (): TStorageBetStore => {
-  if (isSSR()) return defaultStorageBetStore;
   try {
     const raw = localStorage.getItem(BET_DATA_KEY);
     return raw ? (JSON.parse(raw) as TStorageBetStore) : defaultStorageBetStore;
@@ -141,7 +139,7 @@ const initialState: TBetStore = {
 };
 
 export const persistBetState = _.debounce((state: TBetStore) => {
-  if (isSSR() || typeof localStorage === 'undefined') return;
+  if (typeof localStorage === 'undefined') return;
   const saveData: TStorageBetStore = _.mapValues(state, (venueState) => {
     return _.pick(venueState, VENUE_PERSIST_KEYS);
   });

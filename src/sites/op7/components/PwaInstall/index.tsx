@@ -6,7 +6,7 @@ import { toast } from '@/common/components/Toast';
 import { useAppSelector } from '@/core/store/hooks';
 import { getSystemTheme } from '@/utils';
 import { shouldShowPwaInstallEntry } from '@/utils/appEmbed';
-import { isAndroid, isIos, isSSR } from '@/utils/env';
+import { isAndroid, isIos } from '@/utils/env';
 
 import styles from './PwaInstall.module.scss';
 import Icon from '@/common/components/Icon';
@@ -37,20 +37,18 @@ const HIDE_72H = 3 * DAY_MS;
 const HIDE_7D = 7 * DAY_MS;
 
 const isStandalone = (): boolean => {
-  if (isSSR()) return false;
   const byDisplayMode = window.matchMedia?.('(display-mode: standalone)').matches ?? false;
   const byIOS = Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone);
   return byDisplayMode || byIOS;
 };
 
 const getDeviceEnv = () => {
-  const ua = isSSR() ? '' : navigator.userAgent.toLowerCase();
+  const ua = navigator.userAgent.toLowerCase();
   const isIPad = /ipad/.test(ua) || (ua.includes('macintosh') && navigator.maxTouchPoints > 1);
   const isIPhone = isIos();
   const isAndroidPhone = isAndroid();
   /** 与手机区分：侧栏/教程走平板简化条，不走 H5 安卓大图面板 */
   const isAndroidTablet =
-    !isSSR() &&
     /android/i.test(ua) &&
     (/tablet|;\s*sm-t|gt-\d|nexus 7|nexus 10|kindle|silk|playbook|kfapwi|tb-|mediapad|mipad/i.test(
       ua,
@@ -73,7 +71,7 @@ const getDeviceEnv = () => {
 };
 
 const getBrowserEnv = () => {
-  const ua = isSSR() ? '' : navigator.userAgent.toLowerCase();
+  const ua = navigator.userAgent.toLowerCase();
   const isEdge = ua.includes('edg/');
   const isChrome = ua.includes('chrome') && !isEdge;
   const isSafari = ua.includes('safari') && !ua.includes('chrome') && !isEdge;
@@ -82,7 +80,6 @@ const getBrowserEnv = () => {
 
 /** 微信/QQ 等内嵌 WebView：无法按正常流程安装 PWA，需引导用系统浏览器打开 */
 const isLikelyEmbeddedInAppBrowser = (): boolean => {
-  if (isSSR()) return false;
   const ua = navigator.userAgent.toLowerCase();
   return /micromessenger|wechat| qq\/|mqqbrowser|instagram|fban|fbav|fb_iab|line\/|; wv\)|\bwv\b/.test(
     ua,
@@ -94,7 +91,6 @@ const isLikelyEmbeddedInAppBrowser = (): boolean => {
  * 注意：仅用 UA 含 safari 不可靠（iOS Chrome UA 也带 Safari 字样），需结合 CriOS 等排除。
  */
 const isIosNativeSafariForPwa = (): boolean => {
-  if (isSSR()) return false;
   const raw = navigator.userAgent;
   const ua = raw.toLowerCase();
   if (!/iphone|ipad|ipod/.test(ua)) return false;
@@ -104,7 +100,6 @@ const isIosNativeSafariForPwa = (): boolean => {
 };
 
 const getIOSMajorVersion = (): number | null => {
-  if (isSSR()) return null;
   const ua = navigator.userAgent;
   const match = ua.match(/OS (\d+)_/i);
   return match ? Number(match[1]) : null;
@@ -115,7 +110,6 @@ const getIOSMajorVersion = (): number | null => {
  * 「已安装」= 从主屏幕/程序坞以 standalone 打开；普通 Safari 标签在卸载图标后仍会有 beforeinstallprompt 以外的空窗，只靠 standalone 对齐体验。
  */
 const usesSafariPwaStandaloneModel = (): boolean => {
-  if (isSSR()) return false;
   const raw = navigator.userAgent;
   const ua = raw.toLowerCase();
   /** iOS 上 Chrome/Firefox/Edge 等为 WebKit 壳，不得走 Safari standalone 判定 */
@@ -125,19 +119,16 @@ const usesSafariPwaStandaloneModel = (): boolean => {
 };
 
 const shouldShowByFrequency = (): boolean => {
-  if (isSSR()) return false;
   const suppressUntil = Number(localStorage.getItem(SUPPRESS_UNTIL_KEY) || 0);
   return Date.now() >= suppressUntil;
 };
 
 const markInstalled = (): void => {
-  if (isSSR()) return;
   singletonInstalled = true;
   localStorage.setItem(INSTALLED_KEY, '1');
 };
 
 const markCloseForH5 = (): void => {
-  if (isSSR()) return;
   const now = Date.now();
   const lastCloseAt = Number(localStorage.getItem(CLOSE_AT_KEY) || 0);
   const prevCount = Number(localStorage.getItem(CLOSE_COUNT_KEY) || 0);
@@ -184,7 +175,7 @@ const threeIllustratedSteps = (texts: [string, string, string]): DesktopInstallS
 
 /** 安装教程整页示意图：明暗各一份；iPad 固定使用 light Safari H5 添加主屏幕示意 */
 const getPwaDesktopStepGuideSrc = (theme: 'light' | 'dark'): string => {
-  if (!isSSR() && getDeviceEnv().isIPad) {
+  if (getDeviceEnv().isIPad) {
     return '/images/light/pwa/safarih5.webp';
   }
   return `/images/${theme}/pwa/step.webp`;
@@ -451,7 +442,6 @@ const pwaSubscribers = new Set<PwaSubscriber>();
  * Safari：仅以 standalone（及 appinstalled 时 markInstalled 立刻写的内存态）表征已安装，避免卸载后 LOCALSTORAGE 仍挡提示。
  */
 const syncSingletonInstalledFromStorage = (): void => {
-  if (isSSR()) return;
   if (usesSafariPwaStandaloneModel()) {
     singletonInstalled = isStandalone();
     return;
@@ -476,7 +466,6 @@ const showPwaInstallSuccessToast = (): void => {
 
 /** 供 MainLayout 调用：独立窗口首次进入时提示（覆盖 Safari 添加到程序坞无 appinstalled 的情况） */
 export const runStandaloneWelcomeToastOnce = (): void => {
-  if (isSSR()) return;
   if (!isStandalone()) return;
   if (localStorage.getItem(STANDALONE_WELCOME_KEY) === '1') return;
   localStorage.setItem(STANDALONE_WELCOME_KEY, '1');
@@ -493,7 +482,6 @@ export const runStandaloneWelcomeToastOnce = (): void => {
 };
 
 const attachPwaWindowListenersOnce = (): void => {
-  if (typeof window === 'undefined' || isSSR()) return;
   const win = window as Window & { __op7PwaListeners?: boolean };
   if (win.__op7PwaListeners) return;
   win.__op7PwaListeners = true;
@@ -529,13 +517,11 @@ const usePwaInstallState = () => {
     () => singletonDeferredPrompt,
   );
   const [installed, setInstalled] = useState<boolean>(() => {
-    if (isSSR()) return false;
     syncSingletonInstalledFromStorage();
     return singletonInstalled;
   });
 
   useEffect(() => {
-    if (isSSR()) return;
     attachPwaWindowListenersOnce();
     syncSingletonInstalledFromStorage();
     setPromptEvent(singletonDeferredPrompt);
@@ -593,7 +579,7 @@ export const PwaInstallDesktopEntry: React.FC = () => {
     (env.isDesktop || env.isIPad || env.isAndroidTablet) &&
     !installed &&
     shouldShowByFrequency();
-  const secureContext = typeof window !== 'undefined' ? window.isSecureContext : false;
+  const secureContext = window.isSecureContext;
   const tutorial = useMemo(
     () =>
       getDesktopTutorial({
@@ -725,7 +711,7 @@ export const PwaInstallMobileBanner: React.FC = () => {
   const [openGuide, setOpenGuide] = useState(false);
   const [iosGuideVersion, setIosGuideVersion] = useState<IOSGuideVersion>('legacy');
   const canDirectInstall = hasPrompt;
-  const secureContext = typeof window !== 'undefined' ? window.isSecureContext : false;
+  const secureContext = window.isSecureContext;
 
   const mobileTutorialThemeSkin: MobileTutorialThemeSkin = useMemo(() => {
     const mode = themeMode ?? 'system';

@@ -1,9 +1,7 @@
 import { BREAKPOINTS } from '@/utils/constants/breakpoints';
-import { isSSR } from '@/utils/env';
 
 /** 与项目 isMobile（screenBreakpoint === 'md'）对齐，lg 及以上视为 PC */
 export const isPC = (): boolean => {
-  if (isSSR()) return false;
   return window.matchMedia(`(min-width: ${BREAKPOINTS.lg}px)`).matches;
 };
 
@@ -77,7 +75,7 @@ const handleWheel = (): void => {
 
 /** 页面加载后开始采集鼠标行为 */
 export const initMouseActionTracking = (): void => {
-  if (isSSR() || started) return;
+  if (started) return;
 
   started = true;
   startTime = Date.now();

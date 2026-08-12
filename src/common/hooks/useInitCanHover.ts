@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@/core/store/hooks';
 import { setCanHover } from '@/core/store/slices/configSlice';
 import { checkCanHover } from '@/utils';
-import { isSSR } from '@/utils/env';
 
 /**
  * 初始化 canHover 检测
@@ -24,11 +23,6 @@ export function useInitCanHover(): void {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // SSR 环境下不需要检测
-    if (isSSR()) {
-      return;
-    }
-
     // 更新 canHover 状态和 HTML 属性的辅助函数
     const updateCanHover = (canHover: boolean) => {
       dispatch(setCanHover(canHover));

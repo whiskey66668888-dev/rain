@@ -18,8 +18,6 @@ import { AppPath, PATHS } from '@/sites/op7/routes/paths';
 import { useSystem } from '@/common/hooks/useSystem';
 
 import styles from './SidebarMenu.module.scss';
-import { isSSR } from '@/utils/env';
-import { useSportsInit } from '@/common/hooks/useSportsInit';
 import clsx from 'clsx';
 import SportsMenu from './SportsMenu';
 import { useRoute } from '@/sites/op7/hooks/useRoute';
@@ -111,12 +109,6 @@ const SidebarMenu: React.FC = () => {
   useEffect(() => {
     dispatch(setActiveGameHomeId(null));
   }, [sportsActive, dispatch]);
-  if (isSSR()) {
-    // 服务端渲染时，将体育首页需要的数据提前注入，客户端接手后由体育页面再次初始化
-    // RICO_TODO: 这里因为布局原因，外层需要内层懒加载的数据，为了ssr不闪动，暂时只在服务端进行数据请求渲染，之后整体优化
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useSportsInit();
-  }
   useEffect(() => {
     if (!sportsActive) {
       switchSportsLeftPanelType(ESportsLeftPanelType.MENU);

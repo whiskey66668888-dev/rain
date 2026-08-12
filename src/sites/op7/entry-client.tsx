@@ -1,4 +1,3 @@
-import { HydrationBoundary } from '@tanstack/react-query';
 import ReactDOM from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
@@ -11,8 +10,7 @@ import { i18n, initI18nClientInit } from '@/core/i18n';
 import { registerServiceWorker } from '@/core/pwa/sw-register';
 import { createClientQueryClient } from '@/core/query/client';
 import { QueryProvider } from '@/core/query/provider';
-import { getSSRQueryState } from '@/core/query/ssr';
-import { getSSRPreloadedState, makeStore } from '@/core/store';
+import { makeStore } from '@/core/store';
 import { initUmengApm } from '@/core/apm/umeng.client';
 import { initBootSplashDismiss } from '@/core/boot/dismissBootShield';
 import { setGlobalStoreForApiRequest } from '@/core/store/util';
@@ -36,8 +34,9 @@ if (__NODE_ENV__ === 'production') {
     sendDefaultPii: true,
   });
 }
+
 /**
- * 客户端入口
+ * 客户端入口（纯 SPA，无 SSR hydration）
  */
 (() => {
   initAntiDebug();
@@ -48,11 +47,9 @@ if (__NODE_ENV__ === 'production') {
 
   initI18nClientInit();
   const rootElement = document.getElementById('root') as HTMLElement;
-  const preloadedState = getSSRPreloadedState();
-  const store = makeStore(preloadedState);
+  const store = makeStore();
   setGlobalStoreForApiRequest(store);
   const queryClient = createClientQueryClient();
-  const dehydratedState = getSSRQueryState();
 
   const router = createBrowserRouter(appRouteObjects, {
     future: { v7_relativeSplatPath: true },
@@ -61,24 +58,16 @@ if (__NODE_ENV__ === 'production') {
   const app = (
     // <React.StrictMode>
     <QueryProvider client={queryClient}>
-      <HydrationBoundary state={dehydratedState}>
-        <Provider store={store}>
-          <I18nextProvider i18n={i18n}>
-            <RouterProvider router={router} />
-          </I18nextProvider>
-        </Provider>
-      </HydrationBoundary>
+      <Provider store={store}>
+        <I18nextProvider i18n={i18n}>
+          <RouterProvider router={router} />
+        </I18nextProvider>
+      </Provider>
     </QueryProvider>
     // </React.StrictMode>
   );
 
-  if (dehydratedState) {
-    // SSR hydration：如果已经有服务端渲染的内容, 进行 hydration
-    ReactDOM.hydrateRoot(rootElement, app);
-  } else {
-    // 降级到客户端渲染
-    ReactDOM.createRoot(rootElement).render(app);
-  }
+  ReactDOM.createRoot(rootElement).render(app);
 
   registerServiceWorker();
   // initPwaNotificationTest();

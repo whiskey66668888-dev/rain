@@ -1,7 +1,6 @@
 'use client';
 
 import { API_CODE_OPENIM_SUCCESS } from '@/utils/constants/apiCodeOpenIm';
-// import { isSSR } from '@/utils/env';
 
 import { getOpenImConfig } from '@/apis/origin/discover/imConfig';
 import type { RequestConf } from './request/config';
@@ -30,7 +29,7 @@ const openImConfig: RequestConf = {
     const cfg = getOpenImConfig();
     const path = url.startsWith('/') ? url : `/${url}`;
 
-    // if (!isSSR() && import.meta.env.DEV) {
+    // if (import.meta.env.DEV) {
     //   return `${OPEN_IM_DEV_PREFIX}${path}`;
     // }
 

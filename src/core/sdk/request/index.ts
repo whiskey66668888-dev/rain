@@ -1,8 +1,6 @@
 // model
 import { toast } from '@/common/components/Toast';
 
-import { isSSR } from '@/utils/env';
-
 import { RequestConf, RequestMethod } from './config';
 import { RequestOptions, ResponseData, ResponseError } from './model';
 import { encryption, getBaseUrl, getHeaders } from './util';
@@ -78,7 +76,7 @@ export function createRequest(config: RequestConf): RequestInstance {
           url,
         );
         config.handleResponseFail(error, isErrorToast);
-        if (!isSSR() && isErrorToast) {
+        if (isErrorToast) {
           toast({
             title: '网络异常',
             description: '网络异常，请稍后重试！',
@@ -91,14 +89,13 @@ export function createRequest(config: RequestConf): RequestInstance {
 
       if (contentType?.includes('application/json') || isEncrypted) {
         let data: string | ResponseData<TTransformResponse> = (await response.json()) as
-          | string
-          | ResponseData<TTransformResponse>;
+          string | ResponseData<TTransformResponse>;
         if (isEncrypted && typeof data === 'string') {
           // 如果数据被加密，首先解密
           const unzippedData = encryption.unzip_data<TTransformResponse>(data);
           if (typeof unzippedData !== 'string') {
             data = unzippedData;
-            if (process.env.NODE_ENV !== 'production') {
+            if (__NODE_ENV__ !== 'production') {
               console.log('[request] 接口响应 解密后数据', url, data);
             }
           }

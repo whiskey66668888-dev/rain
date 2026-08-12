@@ -13,7 +13,6 @@ import {
   AUTO_FOLLOW_MATCH_KEY,
   LOGIN_INFO_KEY,
 } from '@/utils/constants/cacheKey';
-import { isSSR } from '@/utils/env';
 import { EAcceptOddsPrefer, EVenue } from '@/apis/commonSports/constants';
 import {
   getMemberInfoThunk,
@@ -66,16 +65,7 @@ type TStorageUserState = Pick<
   'acceptOddsPrefer' | 'userAvatar' | 'autoFollowMatch' | 'loginInfo'
 >;
 
-const initialStateSSR: TStorageUserState = {
-  acceptOddsPrefer: EAcceptOddsPrefer.Better,
-  userAvatar: '',
-  autoFollowMatch: false,
-};
-
 const getInitialState = (): TStorageUserState => {
-  if (isSSR()) {
-    return initialStateSSR;
-  }
   const acceptOddsPreferStr = localStorage.getItem(ACCEPT_ODDS_PREFER_KEY);
   const userAvatar = localStorage.getItem(USER_AVATAR_KEY);
   const autoFollowMatch = localStorage.getItem(AUTO_FOLLOW_MATCH_KEY);
@@ -150,7 +140,7 @@ const initialMemberInfo: TMemberInfoResp = {
 
 const initialState: UserState = {
   userInfo: {
-    isLogin: isSSR() ? false : !!(Cookies.get('isLogin') === '1'),
+    isLogin: !!(Cookies.get('isLogin') === '1'),
     loginName: Cookies.get(LOGIN_NAME_KEY) || '',
     keepLogin: Cookies.get(KEEP_LOGIN_KEY) === '1',
   },

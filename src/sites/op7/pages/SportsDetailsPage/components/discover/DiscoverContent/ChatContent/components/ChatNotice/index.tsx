@@ -54,7 +54,7 @@ const clearHiddenUntil = () => {
  */
 const ChatNoticeBar: React.FC<ChatNoticeProps> = ({ notices }) => {
   const [hidden, setHidden] = useState(true);
-  const [hydrated, setHydrated] = useState(false);
+  const [ready, setReady] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [durationSec, setDurationSec] = useState(MIN_DURATION_SEC);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -70,7 +70,7 @@ const ChatNoticeBar: React.FC<ChatNoticeProps> = ({ notices }) => {
       if (until != null && until <= now) clearHiddenUntil();
       setHidden(false);
     }
-    setHydrated(true);
+    setReady(true);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -80,7 +80,7 @@ const ChatNoticeBar: React.FC<ChatNoticeProps> = ({ notices }) => {
 
   // 测量单轮宽度 → 时长 = max(3s, width / 50)
   useEffect(() => {
-    if (!hydrated || hidden || contents.length === 0) return;
+    if (!ready || hidden || contents.length === 0) return;
 
     const measure = () => {
       const el = trackRef.current;
@@ -93,20 +93,20 @@ const ChatNoticeBar: React.FC<ChatNoticeProps> = ({ notices }) => {
     measure();
     const raf = requestAnimationFrame(measure);
     return () => cancelAnimationFrame(raf);
-  }, [contents, hidden, hydrated]);
+  }, [contents, hidden, ready]);
 
   // 首次静止 2s 后再开滚
   useEffect(() => {
-    if (!hydrated || hidden || contents.length === 0) {
+    if (!ready || hidden || contents.length === 0) {
       setScrolling(false);
       return;
     }
     setScrolling(false);
     const timer = window.setTimeout(() => setScrolling(true), INITIAL_PAUSE_SEC * 1000);
     return () => window.clearTimeout(timer);
-  }, [contents, hidden, hydrated]);
+  }, [contents, hidden, ready]);
 
-  if (!hydrated || hidden || contents.length === 0) return null;
+  if (!ready || hidden || contents.length === 0) return null;
 
   // 两轮内容：滚完一轮（-50%）时第二轮刚好接上，视觉无缝
   const renderRound = (keyPrefix: string) =>

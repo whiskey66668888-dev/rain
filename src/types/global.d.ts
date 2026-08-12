@@ -1,13 +1,6 @@
-import { FBTokenResponse, OBTokenResponse } from '@/apis/origin/system';
-import type { RootState } from '@/core/store';
-
 declare global {
   const _: typeof import('lodash');
-  /** SSR 请求时注入的当前站点 origin，用作服务端 API 请求地址 */
-  var HOST_FOR_SSR_API_URL: string | undefined;
-  var __getSsrRequestOrigin: (() => string | undefined) | undefined;
   interface Window {
-    __REDUX_STATE__?: Partial<RootState>;
     /** 原生壳（任意平台）注入：H5 在 App / 马甲包内，勿展示 PWA 安装 */
     __OP7_IN_APP__?: boolean;
     __OP7_HIDE_PWA__?: boolean;
@@ -62,18 +55,6 @@ declare global {
         rules: Array<string | RegExp | ((url: string) => boolean)>;
       };
     };
-  }
-  namespace NodeJS {
-    interface Global {
-      /** SSR 请求时注入的当前站点 origin，用作服务端 API 请求地址 */
-      HOST_FOR_SSR_API_URL?: string;
-      cachedServerState: {
-        thirdApiConfig: {
-          ob: { isMaintenance: boolean; config: OBTokenResponse | null };
-          fb: { isMaintenance: boolean; config: FBTokenResponse | null };
-        };
-      };
-    }
   }
 }
 

@@ -11,7 +11,6 @@ import {
   IS_OPEN_GOAL_SOUND_KEY,
   HIDE_BET_DRAWER_APP_DOWNLOAD_KEY,
 } from '@/utils/constants/cacheKey';
-import { isSSR } from '@/utils/env';
 import { toMillis } from '@/utils/dateHelper';
 import { MenuInfo } from '@/apis/commonSports/types';
 import { FBCompetitionMap, FBSportIdValue, MatchPlayType } from '@/apis/fbSports/common/constants';
@@ -162,16 +161,7 @@ type TStorageSportState = Pick<
   'syncSingleParlay' | 'isOpenGoalSound' | 'hideBetDrawerDownloadApp'
 >;
 
-const initialStateSSR: TStorageSportState = {
-  syncSingleParlay: true,
-  isOpenGoalSound: false,
-  hideBetDrawerDownloadApp: false,
-};
-
 const getInitialState = (): TStorageSportState => {
-  if (isSSR()) {
-    return initialStateSSR;
-  }
   return {
     syncSingleParlay:
       localStorage.getItem(SYNC_SINGLE_PARLAY_KEY) === 'true' ||
@@ -195,20 +185,16 @@ export const initialState: SportState = {
       filterLeaguePickerSynced: true,
       filterSearchText: '',
       collapsedAll: false,
-      followMatch: isSSR() ? [] : readFollowMatchFromStorage(),
+      followMatch: readFollowMatchFromStorage(),
       simpleActiveItem: null,
       orderBy: 1, // 排序 0 按开赛时间排序，1 按联赛排序，传：0或1 默认 1 按联赛
       filterTime: [], // 早盘 时间筛选 空数组为全部 否则传13位时间戳
-      isSimpleOdds: isSSR() ? false : localStorage.getItem(IS_SIMPLE_ODDS_KEY) === 'true',
+      isSimpleOdds: localStorage.getItem(IS_SIMPLE_ODDS_KEY) === 'true',
       hasHotList: false,
     },
     datas: {
-      pinnedSportIds: isSSR()
-        ? []
-        : (JSON.parse(localStorage.getItem(PINNED_SPORT_IDS_KEY) ?? '[]') as number[]),
-      pinnedMatchs: isSSR()
-        ? []
-        : (JSON.parse(localStorage.getItem(PINNED_MATCH_IDS_KEY) ?? '[]') as PinnedMatch[]),
+      pinnedSportIds: JSON.parse(localStorage.getItem(PINNED_SPORT_IDS_KEY) ?? '[]') as number[],
+      pinnedMatchs: JSON.parse(localStorage.getItem(PINNED_MATCH_IDS_KEY) ?? '[]') as PinnedMatch[],
       menuInfo: {
         hotSportMatchIds: [],
         menus: {
@@ -410,7 +396,7 @@ const sportSlice = createSlice({
     // 清空本地关注列表与 FOLLOW_MATCH_IDS，避免下一个游客/账号看到上一账号的关注数据。
     builder.addCase(clearUserInfo, (state) => {
       state.mainList.settings.followMatch = [];
-      if (!isSSR()) localStorage.removeItem(FOLLOW_MATCH_IDS_KEY);
+      localStorage.removeItem(FOLLOW_MATCH_IDS_KEY);
       // 若正停在关注 tab，关注列表已空，把选中赛种归零，避免按 sportId 过滤后空列表卡住
       if (state.mainList.settings.playType === PlayType.Follow) {
         state.mainList.settings.sportId = 0;

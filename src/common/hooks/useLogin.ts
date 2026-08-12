@@ -16,7 +16,6 @@ import {
 } from '@/core/store/slices/userSlice';
 import { resetOpenImSession } from '@/core/sdk/IMManager';
 import { API_CODE_ORIGIN_FIRST_LOGIN_NEED_SET_PASSWORD } from '@/utils/constants/apiCodeOrigin';
-import { isSSR } from '@/utils/env';
 import { consumeAuthRedirectPath } from '@/common/router/authRedirect';
 import { getMouseAction } from '@/utils/mouseAction';
 
@@ -114,27 +113,25 @@ export const useLogin = (): {
           });
 
         // 保存记住密码功能 (localStorage)
-        if (!isSSR()) {
-          // 1. 无论是否记住密码，都保存用户的"开关状态偏好"
-          localStorage.setItem('isKeepLogin', keepLogin === '1' ? '1' : '0');
+        // 1. 无论是否记住密码，都保存用户的"开关状态偏好"
+        localStorage.setItem('isKeepLogin', keepLogin === '1' ? '1' : '0');
 
-          if (keepLogin === '1') {
-            // 2. 如果勾选了记住密码，保存账号和加密后的密码
-            localStorage.setItem('userName', loginName);
-            try {
-              const encryptedPwd = encryption.zip_data({ password });
-              if (encryptedPwd) {
-                localStorage.setItem('userPwd', encryptedPwd);
-              }
-            } catch (error) {
-              console.error('密码加密失败', error);
-              localStorage.removeItem('userPwd');
+        if (keepLogin === '1') {
+          // 2. 如果勾选了记住密码，保存账号和加密后的密码
+          localStorage.setItem('userName', loginName);
+          try {
+            const encryptedPwd = encryption.zip_data({ password });
+            if (encryptedPwd) {
+              localStorage.setItem('userPwd', encryptedPwd);
             }
-          } else {
-            // 3. 用户未勾选记住密码，清除账号密码数据，但保留 isKeepLogin=0 的状态
-            localStorage.removeItem('userName');
+          } catch (error) {
+            console.error('密码加密失败', error);
             localStorage.removeItem('userPwd');
           }
+        } else {
+          // 3. 用户未勾选记住密码，清除账号密码数据，但保留 isKeepLogin=0 的状态
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userPwd');
         }
 
         const authRedirectPath = consumeAuthRedirectPath();

@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import clsx from 'clsx';
 import './overlay.scss';
-import { isSSR } from '@/utils/env';
 import { zIndexMap } from '@/utils/constants/zIndex';
 
 export type OverlayPosition = 'bottom' | 'top' | 'left' | 'right' | 'center';
@@ -189,7 +188,7 @@ const Overlay = ({
   const isVisible = show || active;
   const renderContent = active || !destroyOnClose;
 
-  if (isSSR() || !renderContent) {
+  if (!renderContent) {
     return null;
   }
 

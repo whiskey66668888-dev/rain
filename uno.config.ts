@@ -15,7 +15,6 @@ import { getZIndexCssVarsRootDeclarations } from './src/utils/constants/zIndex';
  * UnoCSS 配置
  */
 export default defineConfig({
-  // 支持 SSR
   content: {
     filesystem: ['src/**/*.{ts,tsx,js,jsx}'],
   },
@@ -165,7 +164,7 @@ ${getZIndexCssVarsRootDeclarations()}
     'safe-r': 'pr-[env(safe-area-inset-right,0px)]',
     'pb-bottom-menu': 'pb-[calc(52px+env(safe-area-inset-bottom,0px))]',
   },
-  // SSR 安全列表（确保关键样式在 SSR 时可用）
+  // 安全列表（动态类名需手动添加，确保样式可用）
   // `bg-[${xxxx}]`,这种uno扫描不到，需要手动添加，保证类名存在
   safelist: [
     // 可以添加需要强制包含的类名

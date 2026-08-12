@@ -1,12 +1,6 @@
-// utils
-import { isSSR } from '@/utils/env';
-
 import { ResponseData, ResponseError } from './model';
 
 export interface RequestConf {
-  /**
-   * 如果是node环境必传
-   */
   host?: string;
   timeout?: number;
   sharedHeaders: () => Record<string, string>;
@@ -44,7 +38,7 @@ export enum RequestMethod {
 // 默认配置
 export const basicConfig: RequestConf = {
   host: __SITE_CONFIG__.api.baseUrl,
-  timeout: isSSR() ? 5000 : 10000,
+  timeout: 10000,
   sharedHeaders: () => ({}),
   sharedUrl: (method, url) => {
     // 如果 URL 已经是绝对路径，则直接返回

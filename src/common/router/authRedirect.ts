@@ -1,4 +1,3 @@
-import { isSSR } from '@/utils/env';
 import { locales } from '@/utils/constants/local';
 import { AUTH_REDIRECT_PATH_KEY } from '@/utils/constants/cacheKey';
 
@@ -33,26 +32,14 @@ export const buildAuthRedirectPath = (pathname: string, search = '', hash = ''):
   `${stripLocalePrefix(pathname)}${search}${hash}`;
 
 export const setAuthRedirectPath = (path: string): void => {
-  if (isSSR()) {
-    return;
-  }
-
   sessionStorage.setItem(AUTH_REDIRECT_PATH_KEY, normalizeAuthRedirectPath(path));
 };
 
 export const getAuthRedirectPath = (): string | null => {
-  if (isSSR()) {
-    return null;
-  }
-
   return sessionStorage.getItem(AUTH_REDIRECT_PATH_KEY);
 };
 
 export const clearAuthRedirectPath = (): void => {
-  if (isSSR()) {
-    return;
-  }
-
   sessionStorage.removeItem(AUTH_REDIRECT_PATH_KEY);
 };
 

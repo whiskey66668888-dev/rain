@@ -15,13 +15,11 @@ import AutoImport from 'unplugin-auto-import/vite';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
 import consoleWarningPlugin from './vitePlugins/consoleWarningPlugin';
-import copyServerFilesPlugin from './vitePlugins/copyServerFilesPlugin';
 import localeServerPlugin from './vitePlugins/localeServerPlugin';
 import mergeLocalePlugin from './vitePlugins/mergeLocalePlugin';
 import removeEmptyChunksPlugin from './vitePlugins/removeEmptyChunksPlugin';
-import ssrCssTransformPlugin from './vitePlugins/ssrCssTransformPlugin';
 import swPlugin from './vitePlugins/swPlugin';
-import { createProxyConfig } from './src/server/proxy.config';
+import { createProxyConfig } from './vitePlugins/proxyConfig';
 
 /** 从模块路径解析 npm 包名（支持 scoped package） */
 function getNpmPackageName(id: string): string | undefined {
@@ -105,7 +103,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd(), '');
   const version = Date.now().toString();
   const SITE = env.SITE_ID;
-  const isServerBuild = env.BUILD_TARGET === 'server';
   const isDev = mode === 'development';
   const devHost = env.DEV_HOST || '0.0.0.0';
   const devPublicHost = env.DEV_PUBLIC_HOST || 'localhost';
@@ -127,24 +124,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       __SITE_ID__: JSON.stringify(SITE),
       __BUILD_ENV__: JSON.stringify(env.BUILD_ENV),
       __NODE_ENV__: JSON.stringify(env.NODE_ENV),
-      __BUILD_TARGET__: JSON.stringify(env.BUILD_TARGET),
       __SITE_CONFIG__: JSON.stringify(siteConfig),
     },
     plugins: [
       react(),
-      // SSR CSS 转换插件，用于把第三方库的 CSS 转为空模块
-      ssrCssTransformPlugin(),
-      ...(isServerBuild
-        ? [
-            // 拷贝 server-prod.js 和 ecosystem.config.js 到 dist 根目录
-            copyServerFilesPlugin(SITE),
-          ]
-        : []),
-      UnoCSS({
-        // 注意：UnoCSS 在开发模式下会通过 HMR 注入内联样式
-        // SSR 会收集样式到 HTML 头部，客户端的内联样式用于 HMR
-        // 如果出现重复，确保 maxWidth 等配置正确，让两套样式一致
-      }),
+      UnoCSS(),
       AutoImport({
         imports: [
           {
@@ -154,9 +138,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         dts: false,
       }),
       // Chrome DevTools 工作区支持（仅开发环境）
-      ...(isDev && !isServerBuild ? [devtoolsJson()] : []),
+      ...(isDev ? [devtoolsJson()] : []),
       // ESLint 插件（开发环境显示错误）
-      ...(isDev && !isServerBuild
+      ...(isDev
         ? [
             eslint({
               failOnError: false,
@@ -167,28 +151,23 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             }),
           ]
         : []),
-      // 合并语言文件插件,PWA插件,复制图片资源插件,服务端不需要
-      ...(isServerBuild
-        ? []
-        : [
-            mergeLocalePlugin(SITE),
-            swPlugin(version),
-            removeEmptyChunksPlugin(),
-            copy({
-              targets: [
-                {
-                  src: `src/sites/${SITE}/images`,
-                  dest: `dist/client`,
-                },
-              ],
-              hook: 'writeBundle', // ← 确保 build 以后执行
-            }) as PluginOption,
-          ]),
+      mergeLocalePlugin(SITE),
+      swPlugin(version),
+      removeEmptyChunksPlugin(),
+      copy({
+        targets: [
+          {
+            src: `src/sites/${SITE}/images`,
+            dest: `dist/client`,
+          },
+        ],
+        hook: 'writeBundle', // ← 确保 build 以后执行
+      }) as PluginOption,
       // 控制台警告插件，只在客户端开发环境使用
-      ...(isServerBuild || !isDev ? [] : [consoleWarningPlugin()]),
+      ...(isDev ? [consoleWarningPlugin()] : []),
       localeServerPlugin(SITE),
       // 打包体积分析：ANALYZE=true 时生成 stats.html
-      ...(analyze && !isServerBuild
+      ...(analyze
         ? [
             visualizer({
               filename: path.resolve(__dirname, 'dist/stats.html'),
@@ -269,184 +248,76 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       },
       proxy: createProxyConfig(siteConfig),
     },
-    // 让 Vite 处理 swiper，包括其 CSS 文件
-    // 这样 CSS 会被正确转换为空模块（SSR 不需要执行 CSS），但样式会被收集
-    ssr:
-      isServerBuild || isDev
-        ? {
-            noExternal: ['swiper', 'antd-mobile', 'lottie-react', 'lottie-web'],
-          }
-        : undefined,
+    preview: {
+      port: 4173,
+      host: true,
+    },
     build: {
-      outDir: isServerBuild
-        ? path.resolve(__dirname, `dist/server`)
-        : path.resolve(__dirname, `dist/client`),
-      emptyOutDir: false,
-      // sourcemap: true,
-      // 客户端生产构建用 terser drop_console（esbuild.drop 在 react-swc 链路下不可靠）
-      ...(!isServerBuild && {
-        minify: 'terser',
-        terserOptions: {
-          compress: {
-            drop_console: true,
-          },
+      outDir: path.resolve(__dirname, `dist/client`),
+      emptyOutDir: true,
+      // 生产构建用 terser drop_console（esbuild.drop 在 react-swc 链路下不可靠）
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
         },
-      }),
+      },
       // 统一静态资源目录（含 worker 默认输出目录）
       assetsDir: 'resource',
-      manifest: !isServerBuild, // 只有客户端构建需要 manifest.json
-      ssr: isServerBuild, // 服务器端构建启用 SSR 模式
-      rollupOptions: isServerBuild
-        ? {
-            // 服务器端构建配置
-            input: path.resolve(siteRoot, 'entry-server.tsx'),
-            output: {
-              format: 'cjs', // CommonJS 格式，Node.js 使用
-              // 保持目录结构，便于 require
-              chunkFileNames: '[name].js',
-              assetFileNames: '[name].[ext]',
-            },
-            external: (id) => {
-              // 友盟 APM 仅浏览器可用，禁止打进 SSR bundle
-              if (id === '@umengfe/apm' || id.includes('@umengfe/apm')) {
-                return true;
-              }
-              if (id.includes('core/apm/umeng.client')) {
-                return true;
+      manifest: true,
+      rollupOptions: {
+        input: {
+          main: path.resolve(siteRoot, 'index.html'),
+        },
+        output: {
+          // 手动代码分割：避免按包细拆导致首屏并发请求过多
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              // Sentry / APM 单独拆包会导致内部循环依赖（Cannot access before initialization）
+              if (id.includes('sentry') || id.includes('@umengfe/apm')) {
+                return undefined;
               }
 
-              //  lottie-react vite打包CJS require兼容处理
-              if (
-                id === 'lottie-react' ||
-                id === 'lottie-web' ||
-                id.startsWith('lottie-react/') ||
-                id.startsWith('lottie-web/')
-              ) {
-                return false;
+              const pkgName = getNpmPackageName(id);
+              if (!pkgName) return 'vendor-utils';
+
+              if (REACT_CORE_PKGS.has(pkgName)) {
+                return 'vendor-react';
               }
 
-              // Node.js 内置模块
-              const nodeBuiltins = [
-                'fs',
-                'path',
-                'url',
-                'http',
-                'https',
-                'stream',
-                'util',
-                'crypto',
-                'events',
-                'buffer',
-                'querystring',
-                'os',
-                'net',
-                'tls',
-                'zlib',
-                'http2',
-                'perf_hooks',
-                'worker_threads',
-                'child_process',
-                'cluster',
-                'dgram',
-                'dns',
-                'readline',
-                'repl',
-                'string_decoder',
-                'timers',
-                'tty',
-                'v8',
-                'vm',
-                'assert',
-                'console',
-                'process',
-              ];
-
-              // CSS/样式文件：不 external，由 ssrCssTransformPlugin 转为空模块
-              if (
-                id.endsWith('.css') ||
-                id.endsWith('.less') ||
-                id.includes('swiper/css') ||
-                id.includes('swiper/swiper.css') ||
-                id.includes('swiper/modules/') ||
-                id.includes('antd-mobile')
-              ) {
-                return false;
+              const largeChunk = LARGE_ASYNC_PKGS.get(pkgName);
+              if (largeChunk) {
+                return largeChunk;
               }
 
-              // 排除 Node.js 内置模块和 node_modules
-              // 不排除路径别名
-              if (nodeBuiltins.includes(id)) {
-                return true;
+              if (UI_PKGS.has(pkgName)) {
+                return 'vendor-ui';
               }
-              if (
-                id.startsWith('@/') ||
-                id.startsWith('@common/') ||
-                id.startsWith('@core/') ||
-                id.startsWith('@sdk/')
-              ) {
-                return false;
+
+              // 其余低频小依赖合并，降低 HTTP 并发
+              return 'vendor-utils';
+            }
+
+            // SDK 层单独分割
+            if (id.includes('/sdk/')) {
+              return 'sdk';
+            }
+
+            // 公共重型组件单独分割
+            if (id.includes('/common/components/') && !id.includes('/common/components/odds/')) {
+              if (id.includes('VirtualList') || id.includes('InfiniteScroll')) {
+                return 'components-heavy';
               }
-              // 其他非相对路径和非绝对路径的模块
-              return !id.startsWith('.') && !path.isAbsolute(id);
-            },
-          }
-        : {
-            // 客户端构建配置
-            input: {
-              main: path.resolve(siteRoot, 'index.html'),
-            },
-            output: {
-              // 手动代码分割：避免按包细拆导致首屏并发请求过多
-              manualChunks: (id) => {
-                if (id.includes('node_modules')) {
-                  // Sentry / APM 单独拆包会导致内部循环依赖（Cannot access before initialization）
-                  if (id.includes('sentry') || id.includes('@umengfe/apm')) {
-                    return undefined;
-                  }
-
-                  const pkgName = getNpmPackageName(id);
-                  if (!pkgName) return 'vendor-utils';
-
-                  if (REACT_CORE_PKGS.has(pkgName)) {
-                    return 'vendor-react';
-                  }
-
-                  const largeChunk = LARGE_ASYNC_PKGS.get(pkgName);
-                  if (largeChunk) {
-                    return largeChunk;
-                  }
-
-                  if (UI_PKGS.has(pkgName)) {
-                    return 'vendor-ui';
-                  }
-
-                  // 其余低频小依赖合并，降低 HTTP 并发
-                  return 'vendor-utils';
-                }
-
-                // SDK 层单独分割
-                if (id.includes('/sdk/')) {
-                  return 'sdk';
-                }
-
-                // 公共重型组件单独分割
-                if (
-                  id.includes('/common/components/') &&
-                  !id.includes('/common/components/odds/')
-                ) {
-                  if (id.includes('VirtualList') || id.includes('InfiniteScroll')) {
-                    return 'components-heavy';
-                  }
-                }
-                return null;
-              },
-
-              // 文件命名规则
-              chunkFileNames: 'resource/[name]-[hash].js',
-              entryFileNames: 'resource/[name]-[hash].js',
-              assetFileNames: 'resource/[name]-[hash].[ext]',
-            },
+            }
+            return null;
           },
+
+          // 文件命名规则
+          chunkFileNames: 'resource/[name]-[hash].js',
+          entryFileNames: 'resource/[name]-[hash].js',
+          assetFileNames: 'resource/[name]-[hash].[ext]',
+        },
+      },
     },
     worker: {
       rollupOptions: {

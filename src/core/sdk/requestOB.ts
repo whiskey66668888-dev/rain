@@ -5,8 +5,6 @@ import { toast } from '@/common/components/Toast';
 import { getOBTokenReq } from '@/apis/origin/system';
 import { getGlobalStoreForApiRequest } from '@/core/store/util';
 import { API_CODE_OB_SUCCESS, API_CODE_OB_USER_LOGIN_EXPIRE } from '@/utils/constants/apiCodeOB';
-import { isSSR } from '@/utils/env';
-
 import { navigateTo } from '@/common/hooks/useGlobalNavigate';
 
 import { i18n } from '../i18n';
@@ -65,12 +63,12 @@ const obConfig: RequestConf = {
     error: ResponseError<TCode, TResponse>,
     isErrorToast: boolean,
   ) => {
-    if (!isSSR() && getGlobalStoreForApiRequest().getState().thirdApiConfig.ob.isMaintenance) {
+    if (getGlobalStoreForApiRequest().getState().thirdApiConfig.ob.isMaintenance) {
       // 场馆维护中，或者接口获取三方api失败了，回到首页
       navigateTo('/');
       return;
     }
-    if (!isSSR() && isErrorToast) {
+    if (isErrorToast) {
       switch (error.code) {
         case API_CODE_OB_USER_LOGIN_EXPIRE:
           toast({

@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 
 import { COOKIE_EXPIRES, TOKEN_KEY } from '@/utils/constants/cacheKey';
-import { isSSR } from '@/utils/env';
 
 const EMBEDDED_SESSION_KEY = 'op7:embeddedInApp';
 
@@ -14,7 +13,6 @@ const isTruthyQuery = (value: string | null): boolean => {
 
 /** 当前 URL 是否带「App / 马甲包内嵌」标记 */
 const hasEmbeddedQuery = (): boolean => {
-  if (isSSR()) return false;
   const params = new URLSearchParams(window.location.search);
   return (
     isTruthyQuery(params.get('isApp')) ||
@@ -31,8 +29,6 @@ const hasEmbeddedQuery = (): boolean => {
  * 2. 原生注入：`window.__OP7_IN_APP__ = true` 或 `window.__OP7_HIDE_PWA__ = true`
  */
 export const isEmbeddedInNativeApp = (): boolean => {
-  if (isSSR()) return false;
-
   if (window.__OP7_IN_APP__ === true || window.__OP7_HIDE_PWA__ === true) {
     return true;
   }
@@ -65,7 +61,6 @@ const LEGACY_INVITE_FRIENDS_APP_TOKEN_KEY = 'op7:inviteFriendsAppToken';
 
 /** 从 URL 解析 token */
 export const getTokenFromSearch = (search?: string): string | null => {
-  if (isSSR()) return null;
   const params = new URLSearchParams((search ?? window.location.search).replace(/^\?/, ''));
   const token = params.get('token')?.trim();
   return token || null;
@@ -87,7 +82,6 @@ export const persistAppAuthFromUrl = (search?: string): void => {
 
 /** 当前是否具备 App token 会话（URL、Cookie 或 session 备份） */
 export const hasAppAuthToken = (search?: string): boolean => {
-  if (isSSR()) return false;
   if (getTokenFromSearch(search)) return true;
   const fromCookie = Cookies.get(TOKEN_KEY)?.trim();
   if (fromCookie) return true;

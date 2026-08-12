@@ -6,7 +6,6 @@ import { useGetMemberInfo } from '@/common/hooks/useMemberInfo';
 import { useAppSelector } from '@/core/store/hooks';
 import { getSystemTheme } from '@/utils';
 import { VERSION } from '@/utils/constants/system';
-import { isSSR } from '@/utils/env';
 
 import styles from './MomentsPage.module.scss';
 import {
@@ -70,7 +69,7 @@ const MomentsView: React.FC<MomentsViewProps> = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    if (isSSR() || !isLogin) {
+    if (!isLogin) {
       setReadyId(0);
       return;
     }
@@ -113,7 +112,7 @@ const MomentsView: React.FC<MomentsViewProps> = ({
   // 正常进入（无该参数）不做任何处理。
   const openPublishRequested = searchParams.get('openPublish') === '1';
   useEffect(() => {
-    if (isSSR() || !isLogin || !iframeSrc || !openPublishRequested) return;
+    if (!isLogin || !iframeSrc || !openPublishRequested) return;
     requestMomentsOpenPublish();
     // 消费掉参数，避免从子页返回本页时重复唤起
     setSearchParams(

@@ -4,7 +4,6 @@ import Lottie from 'lottie-react';
 import Overlay from '@/common/components/Overlay';
 import { useAppSelector } from '@/core/store/hooks';
 import loadingData from '@/sites/op7/images/common/lottie/blue_loading_op7.json';
-import { isSSR } from '@/utils/env';
 import { zIndexMap } from '@/utils/constants/zIndex';
 
 /** 动画画布 97×96，按宽度等比推高度 */
@@ -34,7 +33,7 @@ const FullScreenLoading: React.FC<FullScreenLoadingProps> = ({ show, text, width
 
   // Overlay 不锁滚动，但 loading 期间页面不该还能被滚走
   useEffect(() => {
-    if (!show || isSSR()) return;
+    if (!show) return;
     const { body } = document;
     const prev = body.style.overflow;
     body.style.overflow = 'hidden';

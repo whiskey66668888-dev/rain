@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 
 import Overlay, { type OverlayPosition } from '@/common/components/Overlay';
 import Button from '@/common/components/Button';
-import { isSSR } from '@/utils/env';
 
 import styles from './Modal.module.scss';
 import { useAppSelector } from '@/core/store/hooks';
@@ -225,14 +224,6 @@ export interface ModalInstance {
 
 /** 动态创建 Modal 的内部实现 */
 const createModalInstance = (config: ModalConfig): ModalInstance => {
-  if (isSSR()) {
-    // SSR 环境下返回空实现
-    return {
-      close: () => {},
-      update: () => {},
-    };
-  }
-
   // 获取全局 Redux store，如果不存在则返回空实例
   const store = getGlobalStoreForApiRequest();
   if (!store) {

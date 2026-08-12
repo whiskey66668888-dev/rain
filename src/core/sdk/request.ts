@@ -15,7 +15,7 @@ import {
 import { needRemoveCookies, needRemoveSession } from '@/utils/constants/cacheKey';
 import { ORIGIN_LANGUAGE_TYPE, Locale } from '@/utils/constants/local';
 import { VERSION } from '@/utils/constants/system';
-import { isSSR, isIos } from '@/utils/env';
+import { isIos } from '@/utils/env';
 
 import { i18n } from '../i18n';
 import type { RequestConf } from './request/config';
@@ -75,10 +75,10 @@ export function isErrorResponseWithCode(
   );
 }
 
-// Origin（主站）API 配置（SSR 开发时 tsx 直接跑服务未经过 Vite，__SITE_CONFIG__ 未注入，需做存在判断）
+// Origin（主站）API 配置
 const originConfig: RequestConf = {
   host: __SITE_CONFIG__?.api?.baseUrl ?? '',
-  timeout: isSSR() ? 5000 : 10000,
+  timeout: 10000,
   sharedHeaders: () => {
     return {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -152,7 +152,7 @@ const originConfig: RequestConf = {
           data,
         );
         if (isEncrypted) {
-          if (process.env.NODE_ENV !== 'production') {
+          if (__NODE_ENV__ !== 'production') {
             console.log('[request] 加密前参数', url, requestData);
           }
           return encryption.zip_data(requestData);
@@ -194,51 +194,44 @@ const originConfig: RequestConf = {
     isErrorToast: boolean,
     // tokenExpiresnotGoLogin?: boolean,
   ) => {
-    if (!isSSR()) {
-      // 类型守卫：确保 error.response 是包含 code 的对象
-      if (!isErrorResponseWithCode(error.response)) {
-        return;
-      }
-
-      const { code, info } = error.response;
-
-      if (API_CODE_ORIGIN_LOGIN_EXPIRED.includes(String(code))) {
-        const inApp = isEmbeddedInNativeApp();
-        if (inApp) return;
-
-        navigateTo(PATHS.home, { replace: true });
-        // 打开其他设备登录弹窗
-        openOtherDeviceLoginModal({ info, code });
-        for (const item of needRemoveCookies) {
-          Cookies.remove(item);
-        }
-        for (const item of needRemoveSession) {
-          sessionStorage.removeItem(item);
-        }
-        // toast({
-        //   title: '登录过期',
-        //   description: info || '登录已过期，请重新登录',
-        //   type: 'error',
-        // });
-        getGlobalStoreForApiRequest().dispatch(clearUserInfo());
-        getGlobalStoreForApiRequest().dispatch(clearLoginInfo());
-        getGlobalStoreForApiRequest().dispatch(clearThirdPartyApiConfig());
-        void resetOpenImSession();
-        return;
-      }
-
-      // 只有一种校验解绑后接口报错 不toast
-      if (code === '9019') return;
-
-      if (isErrorToast) {
-        toast({
-          description: info || '请求失败',
-          type: 'error',
-          duration: 1500,
-        });
-      }
-      console.log('@error:', error.response);
+    // 类型守卫：确保 error.response 是包含 code 的对象
+    if (!isErrorResponseWithCode(error.response)) {
+      return;
     }
+
+    const { code, info } = error.response;
+
+    if (API_CODE_ORIGIN_LOGIN_EXPIRED.includes(String(code))) {
+      const inApp = isEmbeddedInNativeApp();
+      if (inApp) return;
+
+      navigateTo(PATHS.home, { replace: true });
+      // 打开其他设备登录弹窗
+      openOtherDeviceLoginModal({ info, code });
+      for (const item of needRemoveCookies) {
+        Cookies.remove(item);
+      }
+      for (const item of needRemoveSession) {
+        sessionStorage.removeItem(item);
+      }
+      getGlobalStoreForApiRequest().dispatch(clearUserInfo());
+      getGlobalStoreForApiRequest().dispatch(clearLoginInfo());
+      getGlobalStoreForApiRequest().dispatch(clearThirdPartyApiConfig());
+      void resetOpenImSession();
+      return;
+    }
+
+    // 只有一种校验解绑后接口报错 不toast
+    if (code === '9019') return;
+
+    if (isErrorToast) {
+      toast({
+        description: info || '请求失败',
+        type: 'error',
+        duration: 1500,
+      });
+    }
+    console.log('@error:', error.response);
   },
 };
 
