@@ -67,7 +67,9 @@ const Overlay = ({
    * 通过 useTransform 映射为实际 CSS 属性（y / x / opacity），
    * 用 animate() 命令式驱动，从当前值出发，天然支持中途反转。
    */
-  const progress = useMotionValue(show ? 1 : 0);
+  // 始终从 0 起步。若组件在 show=true 时才挂载（路由/弹窗懒加载），
+  // 从 1 起步会跳过入场动画；useLayoutEffect 会在首次绘制前把进度补到目标值。
+  const progress = useMotionValue(0);
 
   /** 蒙层透明度直接跟随 progress（0→1 恒等映射，无需 useTransform） */
 

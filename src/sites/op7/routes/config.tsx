@@ -475,10 +475,16 @@ const siteRoutes: RouteConfig[] = [
       {
         path: PATHS.login,
         element: lazy(() => import('../pages/LoginEntryPage')),
+        handle: {
+          noPageSkeleton: true,
+        },
       },
       {
         path: PATHS.register,
         element: lazy(() => import('../pages/RegisterEntryPage')),
+        handle: {
+          noPageSkeleton: true,
+        },
       },
       // {
       //   path: 'sponsorship',

@@ -1,5 +1,4 @@
 import { SpinLoading } from 'antd-mobile';
-import html2canvas from 'html2canvas';
 import fileSaver from 'file-saver';
 import QRCode from 'react-qr-code';
 import { useRequest } from 'ahooks';
@@ -59,6 +58,7 @@ export default function DownloadInviteModal({ onClose }: DownloadInviteModalProp
     if (!inviteImageRef.current) return;
     setDownloading(true);
     try {
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await html2canvas(inviteImageRef.current, {
         useCORS: true,
         scale: 3,

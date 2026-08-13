@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 import fileSaver from 'file-saver';
-import html2canvas from 'html2canvas';
 import isEmpty from 'lodash/isEmpty';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -280,6 +279,7 @@ const VIPCenterPage: React.FC = () => {
       // setDownloading(true);
 
       // 使用html2canvas将DOM元素转换为canvas
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await html2canvas(inviteImageRef.current, {
         useCORS: true, // 允许跨域图片
         scale: 3, // 提高清晰度

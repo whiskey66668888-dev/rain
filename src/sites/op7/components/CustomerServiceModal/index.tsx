@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
-import html2canvas from 'html2canvas';
 import fileSaver from 'file-saver';
 
 import Overlay from '@/common/components/Overlay';
@@ -109,6 +108,7 @@ const CustomerServiceModal: React.FC<CustomerServiceModalProps> = ({
           ? computed.backgroundColor
           : '#ecf2ff';
 
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await html2canvas(el, {
         useCORS: true,
         scale: Math.min(3, window.devicePixelRatio || 2),

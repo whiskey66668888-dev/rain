@@ -10,6 +10,7 @@ import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage'
 import { useHeaderBalanceData } from '@/common/hooks/useHeaderBalance';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { openLoginModal, openRegisterModal } from '@/core/store/slices/authUISlice';
+import { prefetchAuthModals } from '@/sites/op7/pages/prefetchAuthModals';
 import { PATHS } from '@/sites/op7/routes/paths';
 
 import FastSettingsModal from '../../pages/FastSettingsPage';
@@ -124,6 +125,7 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
                 <button
                   type="button"
                   className={clsx(styles.mobileAuthButton, styles.mobileAuthButtonSecondary)}
+                  onPointerEnter={prefetchAuthModals}
                   onClick={handleLoginClick}
                 >
                   {t('header.login')}
@@ -131,6 +133,7 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
                 <button
                   type="button"
                   className={clsx(styles.mobileAuthButton, styles.mobileAuthButtonPrimary)}
+                  onPointerEnter={prefetchAuthModals}
                   onClick={handleRegisterClick}
                 >
                   {t('header.register')}

@@ -4,7 +4,6 @@ import { toast } from '@/common/components/Toast';
 import Button from '@/common/components/Button';
 
 // utis
-import html2canvas from 'html2canvas';
 import fileSaver from 'file-saver';
 import { copyToClipboard } from '@/utils';
 
@@ -37,6 +36,7 @@ const PermanentModal = () => {
 
     try {
       // 使用html2canvas将DOM元素转换为canvas
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await html2canvas(inviteImageRef.current, {
         useCORS: true, // 允许跨域图片
         scale: 3,

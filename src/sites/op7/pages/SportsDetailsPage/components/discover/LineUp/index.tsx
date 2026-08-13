@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
-import html2canvas from 'html2canvas';
 import fileSaver from 'file-saver';
 import QRCode from 'react-qr-code';
 
@@ -104,6 +103,7 @@ const LineUp: React.FC<LineUpProps> = ({ scheduleId, homeTeam, awayTeam, leagueN
 
     setPosterSaving(true);
     try {
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await withTimeout(
         html2canvas(el, {
           useCORS: true,

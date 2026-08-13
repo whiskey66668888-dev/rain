@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import html2canvas from 'html2canvas';
 import fileSaver from 'file-saver';
 
 import { toast } from '@/common/components/Toast';
@@ -21,6 +20,7 @@ export const useSharePosterSave = () => {
       }
       let canvas: HTMLCanvasElement;
       try {
+        const { default: html2canvas } = await import('html2canvas');
         canvas = await html2canvas(el, { useCORS: true, scale: 3, backgroundColor: null });
       } catch {
         toast({ type: 'warning', description: '保存失败，请重试' });

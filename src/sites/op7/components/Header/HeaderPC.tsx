@@ -11,6 +11,7 @@ import { useToggleMessageCenter } from '@/common/hooks/messageCenter/useToggleMe
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { openLoginModal, openRegisterModal } from '@/core/store/slices/authUISlice';
 import { toggleRightSidebarVisible } from '@/core/store/slices/configSlice';
+import { prefetchAuthModals } from '@/sites/op7/pages/prefetchAuthModals';
 import { PATHS } from '@/sites/op7/routes/paths';
 
 import WalletModal from '../../pages/Finance/wallet/walletModal';
@@ -145,6 +146,7 @@ const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
                       'bg-[var(--Background-600)]',
                       styles.headerActionButton,
                     )}
+                    onPointerEnter={prefetchAuthModals}
                     onClick={handleLoginClick}
                   >
                     {t('header.login')}
@@ -157,6 +159,7 @@ const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
                       styles.headerActionButton,
                       styles.headerRegisterButton,
                     )}
+                    onPointerEnter={prefetchAuthModals}
                     onClick={handleRegisterClick}
                   >
                     {t('header.register')}
