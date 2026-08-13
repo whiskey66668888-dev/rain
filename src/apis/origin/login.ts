@@ -2,6 +2,8 @@ import request from '@/core/sdk/request';
 import { useQueryHook } from '@/core/query/hooks';
 import { ResponseData } from '@/core/sdk/request/model';
 
+import { buildLoginRequestOptions } from './loginRequestOptions';
+
 export interface LoginParams {
   loginName: string;
   password: string;
@@ -36,10 +38,7 @@ export interface LoginResponse {
 }
 // 登录
 export const loginReq = (data: LoginParams): Promise<ResponseData<LoginResponse>> => {
-  return request.post<LoginResponse, LoginParams>('/v3/login2', {
-    isErrorToast: true,
-    body: data,
-  });
+  return request.post<LoginResponse, LoginParams>('/v3/login2', buildLoginRequestOptions(data));
 };
 // 二次登录
 export const loginWithTokenReq = (data: LoginParams): Promise<ResponseData<LoginResponse>> => {
@@ -52,10 +51,7 @@ export const loginWithTokenReq = (data: LoginParams): Promise<ResponseData<Login
 // 登录日志发送
 export const loginLogReq = (data: LoginParams): Promise<void> => {
   return request
-    .post<void, LoginParams>('/v3/getLoginLog', {
-      isErrorToast: false,
-      body: data,
-    })
+    .post<void, LoginParams>('/v3/getLoginLog', buildLoginRequestOptions(data, undefined, false))
     .then((res) => res.data);
 };
 

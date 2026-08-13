@@ -238,11 +238,11 @@ const FootballWebScoreboard: React.FC<{ matchInfo: MatchBaseInfo }> = ({ matchIn
   }
 
   if (isTennis || isBadminton || isPingPong || isVolleyball) {
-    const fixedSets = isPingPong || isVolleyball ? 5 : 3;
-    const setHeaders =
-      isTennis || isBadminton || isPingPong || isVolleyball
-        ? Array.from({ length: fixedSets }, (_, index) => String(index + 1))
-        : scoreAll.map((_: string, index: number) => String(index + 1));
+    // 乒乓球/排球常见 BO5，也可能 BO7；网球常见 BO3，也可能 BO5。以实际 scoreAll 为准，至少保留默认局数占位。
+    const minSets = isPingPong || isVolleyball ? 5 : 3;
+    const setCount = Math.max(minSets, scoreAll.length);
+    console.log(scoreAll);
+    const setHeaders = Array.from({ length: setCount }, (_, index) => String(index + 1));
     const [homeSetScores, awaySetScores] = scoreAll.reduce<[string[], string[]]>(
       (acc: [string[], string[]], current: string) => {
         const [homePart, awayPart] = parseStageScorePair(current);
@@ -254,11 +254,11 @@ const FootballWebScoreboard: React.FC<{ matchInfo: MatchBaseInfo }> = ({ matchIn
     );
 
     const fixedSetScoresHome = Array.from(
-      { length: fixedSets },
+      { length: setCount },
       (_, index) => homeSetScores[index] ?? '-',
     );
     const fixedSetScoresAway = Array.from(
-      { length: fixedSets },
+      { length: setCount },
       (_, index) => awaySetScores[index] ?? '-',
     );
 
@@ -278,7 +278,7 @@ const FootballWebScoreboard: React.FC<{ matchInfo: MatchBaseInfo }> = ({ matchIn
         ]
       : [...fixedSetScoresAway, String(detailAwayScore ?? 0)];
     const tennisColumnsStyle = {
-      gridTemplateColumns: `repeat(${headerColumns.length}, minmax(0, 1fr))`,
+      gridTemplateColumns: `repeat(${headerColumns.length}, minmax(24px, 1fr))`,
     };
 
     return (

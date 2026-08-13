@@ -55,47 +55,61 @@ export const communityData: { name: string; logo: string; url: string }[] = [
 ];
 
 // 游戏供应商数据
-export const gameProviderData: { logo: string }[] = [
+export const gameProviderData: { logo: string; id: string }[] = [
   {
     logo: '/images/common/footer/1.png',
+    id: '89',
   },
   {
     logo: '/images/common/footer/2.png',
+    id: '79',
   },
   {
     logo: '/images/common/footer/3.png',
+    id: '30',
   },
   {
     logo: '/images/common/footer/4.png',
+    id: '72',
   },
   {
     logo: '/images/common/footer/5.png',
+    id: '68',
   },
   {
     logo: '/images/common/footer/6.png',
+    id: '31',
   },
   {
     logo: '/images/common/footer/7.png',
+    id: '20',
   },
   {
     logo: '/images/common/footer/8_1.png',
+    id: '5',
   },
   {
     logo: '/images/common/footer/9.png',
+    id: '',
   },
   {
     logo: '/images/common/footer/10.png',
+    id: '88',
   },
   {
     logo: '/images/common/footer/11.png',
+    id: '',
   },
   {
     logo: '/images/common/footer/12.png',
+    id: '78',
   },
   {
     logo: '/images/common/footer/13.png',
+    id: '55',
   },
   {
     logo: '/images/common/footer/14.png',
+    id: '9',
   },
 ];

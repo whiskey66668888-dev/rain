@@ -1,15 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  browserName,
-  isAndroid,
-  isIOS,
-  isMacOs,
-  isWindows,
-  mobileModel,
-  osVersion,
-} from 'react-device-detect';
 
 import { getVisitIpReq } from '@/apis/origin/getVisitIp';
+import { getCustomerServiceDeviceInfo } from '@/common/utils/customerServiceDeviceInfo';
 
 const LOGIN_PORT_OP7 = 'o.p.7';
 
@@ -55,25 +47,10 @@ export function useCustomerServiceDeviceInfo(enabled: boolean): CustomerServiceD
   const [state, setState] = useState<CustomerServiceDeviceInfoState>(defaultState);
 
   const refreshStatic = useCallback(() => {
-    const model =
-      mobileModel?.trim() ||
-      (typeof navigator !== 'undefined' ? navigator.platform || 'PC / Web' : '—');
-    const ver = osVersion?.trim() || '—';
-    const osFamily = isIOS
-      ? 'iOS'
-      : isAndroid
-        ? 'Android'
-        : isWindows
-          ? 'Windows'
-          : isMacOs
-            ? 'macOS'
-            : 'Web';
+    const deviceInfo = getCustomerServiceDeviceInfo();
     setState((prev) => ({
       ...prev,
-      phoneModel: model,
-      phoneOs: ver,
-      osName: ver !== '—' ? `${osFamily} ${ver}` : osFamily,
-      browser: browserName?.trim() || '—',
+      ...deviceInfo,
       loginPort: LOGIN_PORT_OP7,
       currentTime: formatDeviceTime(),
     }));
