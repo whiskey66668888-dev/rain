@@ -76,8 +76,8 @@ export default function mergeLocalePlugin(SITE: string): Plugin {
       return null;
     },
 
-    // 生产环境：在构建时生成合并后的文件
-    buildEnd() {
+    // 生产环境：在产物落盘后再写入合并语言文件
+    writeBundle() {
       const outputDir = path.resolve(process.cwd(), 'dist/client/locales');
 
       // 确保输出目录存在
@@ -87,7 +87,6 @@ export default function mergeLocalePlugin(SITE: string): Plugin {
 
       for (const locale of locales) {
         const result = mergeLocaleFiles(locale);
-        console.log('result@@@@@@', result);
         if (result) {
           const outputPath = path.join(outputDir, `${LOCALE_FILE_MAP[locale]}.json`);
           fs.writeFileSync(outputPath, JSON.stringify(result.content, null, 2), 'utf-8');

@@ -47,6 +47,13 @@ export function initBootSplashDismiss(): void {
 export function markBootAppReady(): void {
   bootAppReady = true;
   tryDismissBootShieldWhenReady();
+  // 首屏就绪后通知 SW：开始高优先级分批预缓存（开发环境内部会 no-op）
+  void import('@/core/pwa/sw-register')
+    .then((m) => {
+      m.notifySwHomeReady();
+      m.notifySwRouteAssets();
+    })
+    .catch(() => undefined);
 }
 
 function removeBootShieldNodes(): void {

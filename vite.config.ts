@@ -251,6 +251,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     preview: {
       port: 4173,
       host: true,
+      https: false,
     },
     build: {
       outDir: path.resolve(__dirname, `dist/client`),

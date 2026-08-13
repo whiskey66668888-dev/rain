@@ -1,5 +1,62 @@
 const SW_PATH = '/sw.js';
 
+type NetworkInformationLike = {
+  saveData?: boolean;
+  effectiveType?: string;
+  addEventListener?: (type: string, listener: () => void) => void;
+};
+
+function getConnection(): NetworkInformationLike | undefined {
+  const nav = navigator as Navigator & { connection?: NetworkInformationLike };
+  return nav.connection;
+}
+
+function postToServiceWorker(message: Record<string, unknown>): void {
+  const controller = navigator.serviceWorker?.controller;
+  if (!controller) return;
+  controller.postMessage(message);
+}
+
+function postNetworkHint(): void {
+  const connection = getConnection();
+  postToServiceWorker({
+    type: 'NETWORK_HINT',
+    saveData: Boolean(connection?.saveData),
+    effectiveType: connection?.effectiveType || '4g',
+  });
+}
+
+/** 首页/首屏就绪后通知 SW：开始高优先级分批预缓存 */
+export function notifySwHomeReady(): void {
+  if (!('serviceWorker' in navigator) || __NODE_ENV__ === 'development') return;
+  postNetworkHint();
+  postToServiceWorker({ type: 'HOME_READY' });
+}
+
+/** 将当前页已加载的同源静态资源加入 SW 优先预缓存队列 */
+export function notifySwRouteAssets(): void {
+  if (!('serviceWorker' in navigator) || __NODE_ENV__ === 'development') return;
+
+  const urls = performance
+    .getEntriesByType('resource')
+    .map((entry) => {
+      try {
+        const url = new URL(entry.name);
+        if (url.origin !== window.location.origin) return null;
+        if (!/\.(js|css|woff2?|png|jpe?g|webp|svg|avif)(\?|$)/i.test(url.pathname)) {
+          return null;
+        }
+        return `${url.pathname}${url.search}`;
+      } catch {
+        return null;
+      }
+    })
+    .filter((item): item is string => Boolean(item));
+
+  if (urls.length === 0) return;
+  postToServiceWorker({ type: 'ROUTE_ASSETS', urls });
+}
+
 /**
  * Service Worker 注册工具
  */
@@ -33,6 +90,22 @@ export function registerServiceWorker(): void {
         };
 
         forceActivateWaitingWorker();
+        postNetworkHint();
+
+        const connection = getConnection();
+        connection?.addEventListener?.('change', () => {
+          postNetworkHint();
+        });
+
+        // 路由切换后收集本页资源，优先空闲预缓存
+        window.addEventListener('popstate', () => {
+          window.setTimeout(() => notifySwRouteAssets(), 800);
+        });
+        const originalPushState = history.pushState.bind(history);
+        history.pushState = (...args) => {
+          originalPushState(...args);
+          window.setTimeout(() => notifySwRouteAssets(), 800);
+        };
 
         // 检查更新
         registration.addEventListener('updatefound', () => {

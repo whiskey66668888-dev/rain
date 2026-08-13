@@ -2,15 +2,41 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Plugin } from 'vite';
 
+type ManifestChunk = {
+  file?: string;
+  css?: string[];
+  assets?: string[];
+  imports?: string[];
+  dynamicImports?: string[];
+  isEntry?: boolean;
+  isDynamicEntry?: boolean;
+};
+
+type PrecachePlan = {
+  shell: string[];
+  high: string[];
+  idle: string[];
+};
+
+function toAssetUrl(file: string): string {
+  return file.startsWith('/') ? file : `/${file}`;
+}
+
+function isHtml(file: string): boolean {
+  return file.endsWith('.html');
+}
+
 /**
- * Service Worker 插件
+ * Service Worker 插件：注入分级预缓存清单
+ * - shell: 入口及其直接依赖（首装）
+ * - high: react/utils/ui vendor、locales、入口 css
+ * - idle: 其余可缓存静态资源
  */
 export default function swPlugin(version: string): Plugin {
   return {
     name: 'vite-plugin-sw',
     enforce: 'post',
     async writeBundle() {
-      // 读取 sw.js 模板
       const swTemplatePath = path.resolve(__dirname, '../public/sw.js');
       if (!fs.existsSync(swTemplatePath)) {
         console.warn('⚠️ sw.js template not found');
@@ -18,96 +44,92 @@ export default function swPlugin(version: string): Plugin {
       }
 
       let swContent = fs.readFileSync(swTemplatePath, 'utf-8');
-
-      // 读取 Vite 生成的 manifest.json 来获取预缓存资源
       const manifestPath = path.resolve(process.cwd(), 'dist/client/.vite/manifest.json');
-      let precacheAssets: string[] = [];
+      const plan: PrecachePlan = { shell: [], high: [], idle: [] };
 
       if (fs.existsSync(manifestPath)) {
         try {
-          const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
-          const assetSet = new Set<string>();
+          const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8')) as Record<
+            string,
+            ManifestChunk
+          >;
+          const allAssets = new Set<string>();
+          const shellAssets = new Set<string>();
+          const highAssets = new Set<string>();
           const processedKeys = new Set<string>();
 
-          // 递归收集所有资源（包括 imports、dynamicImports、assets）
-          function collectAssets(key: string): void {
-            if (processedKeys.has(key) || !manifest[key]) {
-              return;
-            }
-            processedKeys.add(key);
+          const addFile = (set: Set<string>, file?: string) => {
+            if (!file || isHtml(file)) return;
+            const url = toAssetUrl(file);
+            set.add(url);
+            allAssets.add(url);
+          };
 
+          const collectRecursive = (key: string, withDynamic: boolean): void => {
+            if (processedKeys.has(`${key}:${withDynamic}`) || !manifest[key]) return;
+            processedKeys.add(`${key}:${withDynamic}`);
             const entry = manifest[key];
-
-            // 添加主文件
-            if (entry.file && !entry.file.endsWith('.html')) {
-              assetSet.add(`/${entry.file}`);
+            addFile(allAssets, entry.file);
+            entry.css?.forEach((css) => addFile(allAssets, css));
+            entry.assets?.forEach((asset) => addFile(allAssets, asset));
+            entry.imports?.forEach((importKey) => collectRecursive(importKey, false));
+            if (withDynamic) {
+              entry.dynamicImports?.forEach((dynamicKey) => collectRecursive(dynamicKey, true));
             }
+          };
 
-            // 添加 CSS 文件
-            if (entry.css) {
-              entry.css.forEach((css: string) => {
-                assetSet.add(`/${css}`);
-              });
-            }
+          // shell：仅入口主文件 + 入口 CSS（真正的 app shell，避免一次拉全量依赖）
+          Object.entries(manifest).forEach(([, entry]) => {
+            if (!(entry.isEntry || entry.file?.endsWith('.html'))) return;
+            addFile(shellAssets, entry.file);
+            entry.css?.forEach((css) => addFile(shellAssets, css));
+          });
 
-            // 添加其他资源（图片等）
-            if (entry.assets) {
-              entry.assets.forEach((asset: string) => {
-                if (!asset.endsWith('.html')) {
-                  assetSet.add(`/${asset}`);
-                }
-              });
-            }
+          // 全量收集
+          Object.keys(manifest).forEach((key) => {
+            collectRecursive(key, true);
+          });
+          Object.values(manifest).forEach((entry) => {
+            addFile(allAssets, entry.file);
+            entry.css?.forEach((css) => addFile(allAssets, css));
+            entry.assets?.forEach((asset) => addFile(allAssets, asset));
+          });
 
-            // 递归处理 imports
-            if (entry.imports) {
-              entry.imports.forEach((importKey: string) => {
-                collectAssets(importKey);
-              });
-            }
-
-            // 递归处理 dynamicImports
-            if (entry.dynamicImports) {
-              entry.dynamicImports.forEach((dynamicKey: string) => {
-                collectAssets(dynamicKey);
-              });
+          // high：仅首屏高概率小中型依赖（排除 echarts/openim 等大体量包）
+          for (const asset of allAssets) {
+            const isCoreVendor = /\/vendor-(react|utils|ui)(-|\.)/i.test(asset);
+            const isLocale = /\/locales\/.+\.json$/i.test(asset);
+            const isSdk = /\/sdk-[^/]+\.(js|css)$/i.test(asset);
+            if (isCoreVendor || isLocale || isSdk) {
+              highAssets.add(asset);
             }
           }
 
-          // 从所有入口开始收集
-          Object.keys(manifest).forEach((key) => {
-            const entry = manifest[key];
-            if (entry.isEntry || entry.isDynamicEntry || key.endsWith('.html')) {
-              collectAssets(key);
-            }
-          });
+          const shell = Array.from(shellAssets);
+          const high = Array.from(highAssets).filter((asset) => !shellAssets.has(asset));
+          const idle = Array.from(allAssets).filter(
+            (asset) => !shellAssets.has(asset) && !highAssets.has(asset),
+          );
 
-          // 确保所有有 file 属性的条目都被收集（防止遗漏间接引用的资源）
-          Object.keys(manifest).forEach((key) => {
-            const entry = manifest[key];
-            if (entry.file && !entry.file.endsWith('.html')) {
-              assetSet.add(`/${entry.file}`);
-            }
-          });
-
-          precacheAssets = Array.from(assetSet).filter((asset: string) => !asset.endsWith('.html'));
+          plan.shell = shell;
+          plan.high = high;
+          plan.idle = idle;
         } catch (error) {
           console.warn('⚠️ Failed to read manifest.json:', error);
         }
       }
 
-      // 注入预缓存资源列表
       swContent = swContent.replace(
-        /const PRECACHE_ASSETS = \[\];/,
-        `const PRECACHE_ASSETS = ${JSON.stringify(precacheAssets)};`,
+        /const PRECACHE_PLAN = \{ shell: \[\], high: \[\], idle: \[\] \};/,
+        `const PRECACHE_PLAN = ${JSON.stringify(plan)};`,
       );
-      // 替换版本号
       swContent = swContent.replace(/__VERSION__/g, version);
 
-      // 写入到 dist/client/sw.js
       const outputPath = path.resolve(process.cwd(), 'dist/client/sw.js');
       fs.writeFileSync(outputPath, swContent, 'utf-8');
-      console.log(`✅ Service Worker generated: ${outputPath}`);
+      console.log(
+        `✅ Service Worker generated: ${outputPath} (shell=${plan.shell.length}, high=${plan.high.length}, idle=${plan.idle.length})`,
+      );
     },
   };
 }

@@ -77,11 +77,11 @@ const loadGeetest4Script = (): Promise<void> => {
   }
 
   geetest4ScriptPromise = new Promise((resolve, reject) => {
-    const existingScript = document.querySelector(
+    const existingScript = document.querySelector<HTMLScriptElement>(
       `script[src="${GEETEST4_SCRIPT_SRC}"]`,
-    ) as HTMLScriptElement | null;
+    );
 
-    const script = existingScript ?? document.createElement('script');
+    const script: HTMLScriptElement = existingScript ?? document.createElement('script');
 
     const cleanup = () => {
       script.removeEventListener('load', handleLoad);
@@ -90,7 +90,7 @@ const loadGeetest4Script = (): Promise<void> => {
 
     const handleLoad = () => {
       cleanup();
-      script.dataset.loaded = 'true';
+      script.setAttribute('data-loaded', 'true');
       resolve();
     };
 
@@ -100,7 +100,7 @@ const loadGeetest4Script = (): Promise<void> => {
       reject(new Error('Geetest4 脚本加载失败'));
     };
 
-    if (window.initGeetest4 || script.dataset.loaded === 'true') {
+    if (window.initGeetest4 || script.getAttribute('data-loaded') === 'true') {
       resolve();
       return;
     }

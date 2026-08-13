@@ -7,6 +7,7 @@
     "dev:client:op7": "cross-env NODE_ENV=development BUILD_ENV=sit SITE_ID=op7 vite",
     "uat:client:op7": "cross-env NODE_ENV=development BUILD_ENV=main SITE_ID=op7 vite",
     "build:client:op7": "cross-env SITE_ID=op7 BUILD_ENV=main NODE_ENV=production vite build",
+    "build:ssr:op7": "cross-env SITE_ID=op7 BUILD_ENV=main NODE_ENV=production vite build",
     "analyze:client:op7": "cross-env SITE_ID=op7 BUILD_ENV=main NODE_ENV=production ANALYZE=true vite build",
     "build:sit:client:op7": "cross-env SITE_ID=op7 BUILD_ENV=sit NODE_ENV=production vite build",
     "preview:op7": "yarn build:client:op7 && cross-env SITE_ID=op7 BUILD_ENV=main NODE_ENV=production vite preview",
