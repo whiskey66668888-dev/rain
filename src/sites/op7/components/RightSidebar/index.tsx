@@ -1,9 +1,7 @@
 import clsx from 'clsx';
 import _ from 'lodash';
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { lazy, memo, Suspense, useCallback, useMemo } from 'react';
+import React, { lazy, memo, Suspense, useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
-import MessageCenter from '../../pages/MessageCenter';
 import Advertise from './Advertise';
 import { ClientOnly } from '@/common/components/ClientOnly';
 import styles from './RightSidebar.module.scss';
@@ -28,6 +26,7 @@ import { useWebsiteSwitchListQuery } from '@/apis/origin/websiteSwitch';
 import VideoPlayerWeb from '../VideoPlayerWeb';
 
 const SportDetail = lazy(() => import('../../pages/SportsDetailsPage'));
+const MessageCenter = lazy(() => import('../../pages/MessageCenter'));
 
 // PC端右侧边栏，一定不是mobile
 const RightSidebar: React.FC = () => {
@@ -221,26 +220,56 @@ const RightSidebar: React.FC = () => {
   const isH5 = screenBreakpoint === 'md';
   const show = showSportsHomeSidebarDetail || showSportsDetailsMatchList;
   const showAdvertise = !showSportsHomeSidebarDetail && !showSportsDetailsMatchList;
+  const sidebarTargetWidth = messageCenterVisible || showAdvertise ? 351 : 391;
+  const [sidebarMounted, setSidebarMounted] = useState(rightSidebarVisible);
+  const [sidebarWidth, setSidebarWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    if (rightSidebarVisible) {
+      setSidebarMounted(true);
+    }
+  }, [rightSidebarVisible]);
+
+  useLayoutEffect(() => {
+    if (!sidebarMounted) return;
+    const nextWidth = rightSidebarVisible ? sidebarTargetWidth : 0;
+    const id = window.requestAnimationFrame(() => {
+      setSidebarWidth(nextWidth);
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [sidebarMounted, rightSidebarVisible, sidebarTargetWidth]);
+
+  const handleSidebarTransitionEnd = useCallback(
+    (event: React.TransitionEvent<HTMLDivElement>) => {
+      if (event.propertyName !== 'width') return;
+      if (!rightSidebarVisible) {
+        setSidebarMounted(false);
+        setSidebarWidth(0);
+      }
+    },
+    [rightSidebarVisible],
+  );
+
   return (
     <ClientOnly>
       <div
         className={clsx('h-full', rightSidebarVisible && styles.rightSidebarContainer)}
         onClick={closeRightSidebar}
       >
-        <AnimatePresence mode="wait">
-          {rightSidebarVisible && (
-            <motion.div
+        {sidebarMounted ? (
+            <div
               onClick={(e) => e.stopPropagation()}
+              onTransitionEnd={handleSidebarTransitionEnd}
               className={clsx(
                 'h-full flex flex-col shrink-0 overflow-hidden',
                 'relative z-[var(--z-right-sidebar)]',
                 'bg-[var(--Background-700)]',
                 messageCenterVisible && 'shadow-[-2px_0_10px_0_var(--Shadow-400)]',
               )}
-              initial={{ width: 0 }}
-              animate={{ width: messageCenterVisible || showAdvertise ? 351 : 391 }}
-              exit={{ width: 0 }}
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              style={{
+                width: sidebarWidth,
+                transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
             >
               <div className="relative flex-1 min-h-0 overflow-hidden">
                 {!messageCenterVisible && showAdvertise ? (
@@ -289,15 +318,16 @@ const RightSidebar: React.FC = () => {
                     ) : null}
                   </div>
                 )}
-                {messageCenterVisible && (
+                {messageCenterVisible ? (
                   <div className="absolute inset-0 z-10 flex flex-col">
-                    <MessageCenter />
+                    <Suspense fallback={null}>
+                      <MessageCenter />
+                    </Suspense>
                   </div>
-                )}
+                ) : null}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+        ) : null}
       </div>
     </ClientOnly>
   );

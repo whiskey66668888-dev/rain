@@ -1,23 +1,18 @@
-import React, { useMemo } from 'react';
+import React, { lazy, Suspense, useMemo } from 'react';
 import { generatePath, useLocation } from 'react-router-dom';
-import Lottie from 'lottie-react';
 import clsx from 'clsx';
 
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
 import { AppPath, PATHS } from '@/sites/op7/routes/paths';
 import { useAppSelector } from '@/core/store/hooks';
 
-import faxianData from '@/sites/op7/images/common/lottie/faxian.json';
-import yuleData2 from '@/sites/op7/images/common/lottie/yule.json';
-import tiyuData2 from '@/sites/op7/images/common/lottie/tiyu.json';
-import zhudanData from '@/sites/op7/images/common/lottie/zhudan.json';
-import wodeData from '@/sites/op7/images/common/lottie/wode.json';
-
 import styles from './BottomMenu.module.scss';
 import Icon from '@/common/components/Icon';
 import { useAppDispatch } from '@/core/store/hooks';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
 import { useSocialUnreadCount } from '@/apis/origin/social/getSocialUnreadCount';
+
+const BottomMenuLottie = lazy(() => import('./BottomMenuLottie'));
 
 /** 与 activeMenuId 一致：去掉语言前缀，供底部 Tab 与 PWA 横幅等共用 */
 export const stripLocaleFromPathname = (pathname: string): string =>
@@ -27,8 +22,6 @@ interface BottomMenuItem {
   id: string;
   label: string;
   path: AppPath;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  lottieData: any;
   /** 非激活状态下显示的静态 SVG 图标 */
   defaultIcon?: string;
   /** 激活时显示背景装饰图并悬浮在导航栏上方 */
@@ -39,16 +32,12 @@ interface BottomMenuItem {
 }
 
 const buildBottomMenuItems = (): BottomMenuItem[] => {
-  const entertainmentLottie = yuleData2;
-  const sportsLottie = tiyuData2;
-
   return [
     {
       id: 'promotion',
       label: '发现',
       path: PATHS.promotionSponsor,
       defaultIcon: '/images/common/menu/faxian.svg',
-      lottieData: faxianData,
       activePaths: [
         PATHS.promotion,
         PATHS.promotionSponsor,
@@ -62,7 +51,6 @@ const buildBottomMenuItems = (): BottomMenuItem[] => {
       label: '娱乐',
       path: generatePath(PATHS.entertainment, { pageType: 'home', id: '' }) as AppPath,
       activePaths: ['/entertainment'],
-      lottieData: entertainmentLottie,
       defaultIcon: '/images/common/menu/recreation-unselected.svg',
       bgImage: '/images/common/menu/main_tab/entertainment_bg.png',
       floatOnActive: true,
@@ -72,7 +60,6 @@ const buildBottomMenuItems = (): BottomMenuItem[] => {
       label: '体育',
       path: PATHS.sports,
       activePaths: [PATHS.sports, '/SportsDetailsPage', '/Champion'],
-      lottieData: sportsLottie,
       defaultIcon: '/images/common/menu/sports-icon.svg',
       bgImage: '/images/common/menu/main_tab/sport_bg.png',
       floatOnActive: true,
@@ -82,7 +69,6 @@ const buildBottomMenuItems = (): BottomMenuItem[] => {
       label: '注单',
       path: PATHS.betHistoryH5,
       defaultIcon: '/images/common/menu/betting.svg',
-      lottieData: zhudanData,
     },
     {
       id: 'mine',
@@ -90,7 +76,6 @@ const buildBottomMenuItems = (): BottomMenuItem[] => {
       path: PATHS.mineH5,
       activePaths: ['/mine'],
       defaultIcon: '/images/common/menu/mine_1.svg',
-      lottieData: wodeData,
     },
   ];
 };
@@ -189,12 +174,20 @@ const BottomMenu: React.FC = () => {
                     draggable={false}
                   />
                 ) : (
-                  <Lottie
-                    animationData={item.lottieData}
-                    autoplay
-                    loop={false}
-                    style={{ width: '100%', height: '100%' }}
-                  />
+                  <Suspense
+                    fallback={
+                      item.defaultIcon ? (
+                        <Icon
+                          src={item.defaultIcon}
+                          color="var(--Text-700)"
+                          style={{ width: '100%', height: '100%' }}
+                          draggable={false}
+                        />
+                      ) : null
+                    }
+                  >
+                    <BottomMenuLottie itemId={item.id} fallbackIcon={item.defaultIcon} />
+                  </Suspense>
                 )}
                 {showPromotionRedDot && <span className={styles.redDot} />}
                 {showRedDot && <span className={styles.redDot} />}

@@ -26,7 +26,6 @@ import { initMouseActionTracking, isPC } from '@/utils/mouseAction';
 import DevSystemSettingsFloat from './components/DevSystemSettingsFloat';
 import { useFullScreenLoadingState } from './components/FullScreenLoading/loadingStore';
 import GlobalPostMessageHost from './components/GlobalPostMessageHost';
-import { InviteModal } from './components/Modals/InviteModal';
 import { loadLoginPage, loadRegisterPage, prefetchAuthModals } from './pages/prefetchAuthModals';
 import { useBetShareState } from './pages/SportsDetailsPage/components/share/betShareStore';
 
@@ -40,6 +39,9 @@ const FullScreenLoadingHost = lazy(
   () => import('./components/FullScreenLoading/FullScreenLoadingHost'),
 );
 const NotificationWsHost = lazy(() => import('./components/NotificationWsHost'));
+const InviteModal = lazy(() =>
+  import('./components/Modals/InviteModal').then((m) => ({ default: m.InviteModal })),
+);
 
 /**
  * 应用根组件
@@ -50,16 +52,19 @@ const App: React.FC = () => {
   const customerServiceOpenSeq = useAppSelector((state) => state.customerServiceUI.openSeq);
   const { open: betShareOpen } = useBetShareState();
   const { open: fullScreenLoadingOpen } = useFullScreenLoadingState();
+  const inviteModalVisible = useAppSelector((state) => state.user.inviteModalVisible);
 
   const [authModalLoaded, setAuthModalLoaded] = useState(false);
   const [customerServiceHostLoaded, setCustomerServiceHostLoaded] = useState(false);
   const [betShareHostLoaded, setBetShareHostLoaded] = useState(false);
   const [fullScreenLoadingHostLoaded, setFullScreenLoadingHostLoaded] = useState(false);
+  const [inviteModalLoaded, setInviteModalLoaded] = useState(false);
 
   const showAuthModals = authModalLoaded || Boolean(authModalType);
   const showCustomerServiceHost = customerServiceHostLoaded || customerServiceOpenSeq > 0;
   const showBetShareHost = betShareHostLoaded || betShareOpen;
   const showFullScreenLoadingHost = fullScreenLoadingHostLoaded || fullScreenLoadingOpen;
+  const showInviteModal = inviteModalLoaded || inviteModalVisible;
 
   useRegisterGlobalActions();
   useInitCanHover();
@@ -113,6 +118,12 @@ const App: React.FC = () => {
     }
   }, [fullScreenLoadingOpen]);
 
+  useEffect(() => {
+    if (inviteModalVisible) {
+      setInviteModalLoaded(true);
+    }
+  }, [inviteModalVisible]);
+
   return (
     <MainLayout>
       <BootSplashDismissBridge />
@@ -125,8 +136,12 @@ const App: React.FC = () => {
           <RegisterPage />
         </Suspense>
       )}
-      {/* 首充开启邀请特权弹窗 */}
-      <InviteModal />
+      {/* 首充开启邀请特权弹窗：首次打开后再挂载，关闭后保持以播退场动画 */}
+      {showInviteModal ? (
+        <Suspense fallback={null}>
+          <InviteModal />
+        </Suspense>
+      ) : null}
       {showCustomerServiceHost && (
         <Suspense fallback={null}>
           <GlobalCustomerServiceHost />

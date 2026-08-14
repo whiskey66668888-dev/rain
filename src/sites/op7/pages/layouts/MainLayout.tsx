@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
+import React, { lazy, memo, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useOutlet } from 'react-router-dom';
 import { useHandle } from '@/sites/op7/hooks/useRoute';
 import styles from './MainLayout.module.scss';
@@ -14,7 +14,6 @@ import SidebarMenu from '../../components/SidebarMenu';
 import RightSidebar from '../../components/RightSidebar';
 import clsx from 'clsx';
 import { getSystemTheme, scrollToTopLayoutMainContent } from '@/utils';
-import MessageCenter from '../MessageCenter';
 import FloatingButton from '@/common/components/FloatingButton';
 import { ClientOnly } from '@/common/components/ClientOnly';
 import { useWebsiteSwitchListQuery } from '@/apis/origin/websiteSwitch';
@@ -25,15 +24,16 @@ import {
 } from '@/sites/op7/utils/sportVideoSoundSession';
 import { getQueryString } from '@/core/sdk/request/util';
 import {
-  PwaInstallMobileBanner,
-  runStandaloneWelcomeToastOnce,
-} from '@/sites/op7/components/PwaInstall';
-import {
   applyH5NotchColor,
   getH5NotchSolidColor,
   getNotchPageKind,
 } from '@/sites/op7/utils/h5NotchColor';
 import { useMarkBootAppReady } from '@/core/boot/useMarkBootAppReady';
+
+const MessageCenter = lazy(() => import('../MessageCenter'));
+const PwaInstallMobileBanner = lazy(() =>
+  import('@/sites/op7/components/PwaInstall').then((m) => ({ default: m.PwaInstallMobileBanner })),
+);
 
 const isHomePath = (pathname: string) => pathname === '/' || pathname === '';
 const H5_NOTCH_COLOR_ENTERTAIN = 'var(--Background-700)';
@@ -49,6 +49,7 @@ const MainLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
   const isMobile = useAppSelector((state) => state.config.isMobile);
+  const messageCenterVisible = useAppSelector((state) => state.messageCenter.messageCenterVisible);
   const themeMode = useAppSelector((state) => state.config.system.themeMode);
   const outlet = useOutlet();
   const { data: websiteSwitchList = [] } = useWebsiteSwitchListQuery();
@@ -92,6 +93,13 @@ const MainLayout: React.FC = () => {
     [isDark, isFBSportsMaintenance, isMobile, pageKind],
   );
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
+  const [messageCenterLoaded, setMessageCenterLoaded] = useState(false);
+
+  useEffect(() => {
+    if (messageCenterVisible) {
+      setMessageCenterLoaded(true);
+    }
+  }, [messageCenterVisible]);
 
   // 在 MainLayout 中触发站内信接口（首页且已登录时），确保不依赖 HomePage 挂载
   useEffect(() => {
@@ -171,7 +179,9 @@ const MainLayout: React.FC = () => {
   // Safari「添加到程序坞」不触发 appinstalled：首次从程序坞/主屏幕以独立窗口打开时补一条成功提示
   useEffect(() => {
     const id = window.requestAnimationFrame(() => {
-      runStandaloneWelcomeToastOnce();
+      void import('@/sites/op7/components/PwaInstall').then((m) => {
+        m.runStandaloneWelcomeToastOnce();
+      });
     });
     return () => window.cancelAnimationFrame(id);
   }, []);
@@ -266,13 +276,23 @@ const MainLayout: React.FC = () => {
           <ClientOnly>
             <FloatingButton scrollContainerRef={mainScrollRef} scrollSyncKey={location.pathname} />
             {isMobile && !h5NoBottomMenu && isRouteUnderH5BottomTabs(location.pathname) ? (
-              <PwaInstallMobileBanner />
+              <Suspense fallback={null}>
+                <PwaInstallMobileBanner />
+              </Suspense>
             ) : null}
           </ClientOnly>
         </main>
       </div>
 
-      {isMobile ? <MessageCenter /> : <RightSidebar />}
+      {isMobile ? (
+        messageCenterLoaded || messageCenterVisible ? (
+          <Suspense fallback={null}>
+            <MessageCenter />
+          </Suspense>
+        ) : null
+      ) : (
+        <RightSidebar />
+      )}
 
       {/* 小于lg时h5显示底部菜单 */}
       <div className={clsx({ ['hidden']: h5NoBottomMenu })}>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 
 import LazyImage from '@/common/components/LazyImage';
 import clsx from 'clsx';
-import LegalContentPopup from './Footer/LegalContentPopup';
 import { LEGAL_LINK_ITEMS, type LegalLinkKey } from './Footer/legalContents';
+
+const LegalContentPopup = lazy(() => import('./Footer/LegalContentPopup'));
 
 const licenseImages = [
   {
@@ -46,6 +47,13 @@ const licenseImages = [
  */
 const Footer: React.FC = () => {
   const [activeLegal, setActiveLegal] = useState<LegalLinkKey | null>(null);
+  const [legalPopupLoaded, setLegalPopupLoaded] = useState(false);
+
+  useEffect(() => {
+    if (activeLegal) {
+      setLegalPopupLoaded(true);
+    }
+  }, [activeLegal]);
 
   return (
     <>
@@ -106,7 +114,11 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      <LegalContentPopup linkKey={activeLegal} onClose={() => setActiveLegal(null)} />
+      {legalPopupLoaded || activeLegal ? (
+        <Suspense fallback={null}>
+          <LegalContentPopup linkKey={activeLegal} onClose={() => setActiveLegal(null)} />
+        </Suspense>
+      ) : null}
     </>
   );
 };

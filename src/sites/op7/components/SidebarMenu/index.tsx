@@ -1,5 +1,5 @@
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useMemoizedFn } from 'ahooks';
-import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Icon from '@/common/components/Icon';
@@ -25,8 +25,6 @@ import { ClientOnly } from '@/common/components/ClientOnly';
 import { getSystemTheme } from '@/utils';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
 import { useOpenCustomerService } from '@/sites/op7/hooks/useOpenCustomerService';
-import Bet from '../Bet';
-import BetHistorySidebar from '@/sites/op7/pages/BetHistoryPage/BetHistorySidebar';
 import { generatePath } from 'react-router-dom';
 // import { useDiscountListQuery } from '@/apis/origin/promotion/getDiscountList';
 import LazyImage from '@/common/components/LazyImage';
@@ -34,9 +32,14 @@ import { ESportsLeftPanelType, PlayType, PlayTypeId } from '@/apis/commonSports/
 import { FBSportIdValue } from '@/apis/fbSports/common/constants';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 import { BackMenuArrowSvg } from '../SvgIcons';
-import { PwaInstallDesktopEntry } from '../PwaInstall';
 import { scrollToTopLayoutMainContent } from '@/utils';
 import OneClickTransferButton from '../Bet/components/OneClickTransferButton';
+
+const Bet = lazy(() => import('../Bet'));
+const BetHistorySidebar = lazy(() => import('@/sites/op7/pages/BetHistoryPage/BetHistorySidebar'));
+const PwaInstallDesktopEntry = lazy(() =>
+  import('../PwaInstall').then((m) => ({ default: m.PwaInstallDesktopEntry })),
+);
 
 interface MenuSubItem {
   id: string;
@@ -604,7 +607,9 @@ const SidebarMenu: React.FC = () => {
             </ClientOnly>
           )}
           <ClientOnly>
-            <PwaInstallDesktopEntry />
+            <Suspense fallback={null}>
+              <PwaInstallDesktopEntry />
+            </Suspense>
           </ClientOnly>
         </div>
       )}
@@ -628,8 +633,14 @@ const SidebarMenu: React.FC = () => {
             )}
           </div>
         )}
-        <Bet />
-        {sportsLeftPanelType === ESportsLeftPanelType.BET_HISTORY && <BetHistorySidebar />}
+        <Suspense fallback={null}>
+          <Bet />
+        </Suspense>
+        {sportsLeftPanelType === ESportsLeftPanelType.BET_HISTORY ? (
+          <Suspense fallback={null}>
+            <BetHistorySidebar />
+          </Suspense>
+        ) : null}
       </ClientOnly>
     </aside>
     // </div>

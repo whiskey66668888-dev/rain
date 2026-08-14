@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import { usePreInfoQuery } from '@/apis/origin/setting';
-import { load as loadFingerprintJS } from '@fingerprintjs/fingerprintjs-pro';
-
-interface FingerprintAgent {
-  get(): Promise<{ visitorId: string }>;
-}
-
-type LoadFingerprint = (options: { apiKey: string }) => Promise<FingerprintAgent>;
-
-const loadFingerprint = loadFingerprintJS as LoadFingerprint;
 
 interface UseFingerprintReturn {
   /** 访客指纹 ID */
@@ -44,7 +35,8 @@ export function useFingerprint(): UseFingerprintReturn {
         setLoading(true);
         setError(null);
 
-        const fp = await loadFingerprint({
+        const { load } = await import('@fingerprintjs/fingerprintjs-pro');
+        const fp = await load({
           apiKey: fingerPrintKey,
         });
 

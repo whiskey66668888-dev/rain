@@ -45,11 +45,6 @@ const UI_PKGS = new Set([
   'antd-mobile',
   'antd-mobile-icons',
   'swiper',
-  'framer-motion',
-  'motion-dom',
-  'motion-utils',
-  'lottie-react',
-  'lottie-web',
   'react-window',
   'react-qr-code',
   'qr.js',
@@ -97,7 +92,22 @@ const LARGE_ASYNC_PKGS = new Map<string, string>([
   ['@fingerprintjs/fingerprintjs-pro', 'vendor-fingerprint'],
   ['@emoji-mart/data', 'vendor-emoji'],
   ['emoji-mart', 'vendor-emoji'],
+  ['framer-motion', 'vendor-motion'],
+  ['motion-dom', 'vendor-motion'],
+  ['motion-utils', 'vendor-motion'],
+  ['lottie-react', 'vendor-lottie'],
+  ['lottie-web', 'vendor-lottie'],
 ]);
+
+const LARGE_ASYNC_CHUNK_NAMES = new Set(LARGE_ASYNC_PKGS.values());
+
+const isLargeAsyncChunkFile = (file: string): boolean => {
+  const base = file.replace(/\\/g, '/').split('/').pop() ?? file;
+  for (const name of LARGE_ASYNC_CHUNK_NAMES) {
+    if (base.startsWith(`${name}-`)) return true;
+  }
+  return false;
+};
 
 /**
  * OpenIM wasm 客户端（会静态 import @front-openim/wasm-client-sdk）。
@@ -267,6 +277,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     build: {
       outDir: path.resolve(__dirname, `dist/client`),
       emptyOutDir: true,
+      modulePreload: {
+        resolveDependencies: (_filename, deps) =>
+          deps.filter((dep) => !isLargeAsyncChunkFile(dep)),
+      },
       // 生产构建用 terser drop_console（esbuild.drop 在 react-swc 链路下不可靠）
       minify: 'terser',
       terserOptions: {

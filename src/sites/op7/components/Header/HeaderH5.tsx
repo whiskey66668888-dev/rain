@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
@@ -13,11 +13,11 @@ import { openLoginModal, openRegisterModal } from '@/core/store/slices/authUISli
 import { prefetchAuthModals } from '@/sites/op7/pages/prefetchAuthModals';
 import { PATHS } from '@/sites/op7/routes/paths';
 
-import FastSettingsModal from '../../pages/FastSettingsPage';
-
-import LogoLottie from './LogoLottie';
 import styles from './Header.module.scss';
 import { bigNB } from '@/utils/bet/bigMath';
+
+const LogoLottie = lazy(() => import('./LogoLottie'));
+const FastSettingsModal = lazy(() => import('../../pages/FastSettingsPage'));
 
 interface HeaderH5Props {
   theme: 'light' | 'dark';
@@ -32,6 +32,13 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
   const { balance, balanceLoading, refreshBalance } = useHeaderBalanceData();
 
   const [fastSettingsModalShow, setFastSettingsModalShow] = useState(false);
+  const [fastSettingsModalLoaded, setFastSettingsModalLoaded] = useState(false);
+
+  useEffect(() => {
+    if (fastSettingsModalShow) {
+      setFastSettingsModalLoaded(true);
+    }
+  }, [fastSettingsModalShow]);
 
   const pathWithoutLang = useMemo(
     () => location.pathname.replace(/^\/[a-z]{2}/, '') || PATHS.home,
@@ -67,12 +74,24 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
         {/* 左侧：体育显示动画 Logo，其他页面显示静态 Logo */}
         <section className="flex items-center gap-12px">
           {isSportsPage ? (
-            <LogoLottie
-              className={styles.logoLottie}
-              isDark={theme === 'dark'}
-              playKey={isSportsPath ? pathWithoutLang : 'default'}
-              onClick={handleLogoClick}
-            />
+            <Suspense
+              fallback={
+                <LazyImage
+                  className="w-52px h-20px cursor-pointer"
+                  src={`/images/${theme}/logo.png`}
+                  alt="OP7"
+                  lazy={false}
+                  onClick={handleLogoClick}
+                />
+              }
+            >
+              <LogoLottie
+                className={styles.logoLottie}
+                isDark={theme === 'dark'}
+                playKey={isSportsPath ? pathWithoutLang : 'default'}
+                onClick={handleLogoClick}
+              />
+            </Suspense>
           ) : (
             <LazyImage
               className="w-52px h-20px cursor-pointer"
@@ -143,11 +162,15 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
           </ClientOnly>
         </section>
       </div>
-      {/* H5 体育页快捷设置弹窗 */}
-      <FastSettingsModal
-        handleClose={() => setFastSettingsModalShow(false)}
-        show={fastSettingsModalShow}
-      />
+      {/* H5 体育页快捷设置弹窗：关闭后保持挂载，交给 Overlay 播退场动画 */}
+      {fastSettingsModalLoaded || fastSettingsModalShow ? (
+        <Suspense fallback={null}>
+          <FastSettingsModal
+            handleClose={() => setFastSettingsModalShow(false)}
+            show={fastSettingsModalShow}
+          />
+        </Suspense>
+      ) : null}
     </>
   );
 };
