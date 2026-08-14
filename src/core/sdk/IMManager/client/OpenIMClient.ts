@@ -4,6 +4,7 @@ import { getImSdkPlatformId } from '@/utils/constants/apiCodeIm';
 import { createImLogger } from '../logger/imLogger';
 import { installImNetworkHooks } from './imNetworkHooks';
 import { createListenerRegistry, type ListenerRegistry } from './listenerRegistry';
+import { registerOpenImLogoutReset } from './openImSessionHooks';
 
 const logger = createImLogger('OpenIMClient');
 
@@ -318,3 +319,4 @@ class OpenIMClient {
 }
 
 export const openIMClient = new OpenIMClient();
+registerOpenImLogoutReset(() => openIMClient.logoutAndReset());

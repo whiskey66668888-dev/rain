@@ -25,7 +25,7 @@ import { openOtherDeviceLoginModal } from '@/common/components/OtherDeviceLoginM
 
 import { clearLoginInfo, clearUserInfo } from '../store/slices/userSlice';
 import { clearThirdPartyApiConfig } from '../store/slices/thirdApiConfigSlice';
-import { resetOpenImSession } from '@/core/sdk/IMManager';
+import { resetOpenImSession } from '@/core/sdk/IMManager/utils/resetOpenImSession';
 import { isEmbeddedInNativeApp } from '@/utils/appEmbed';
 const _successCode: ReadonlyArray<number | string> = [
   1,

@@ -1,10 +1,6 @@
 import type { TBetHistoryOrderItem } from '@/apis/commonSports/types';
 import { EVenue } from '@/apis/commonSports/constants';
-import {
-  BET_SHARE_SEND_DESCRIPTION,
-  getExtensionFromVenueId,
-  sendCustomMessage,
-} from '@/core/sdk/IMManager';
+import { EMC_MSG_DESCRIPTION_LABEL, getExtensionFromVenueId } from '@/core/sdk/IMManager';
 import { toast } from '@/common/components/Toast';
 import { withLoading } from '@/sites/op7/components/FullScreenLoading/loadingStore';
 
@@ -40,9 +36,12 @@ export const shareBetToChatRoom = async (
         toast({ type: 'error', description: '聊天室连接失败' });
         return false;
       }
+      const { sendCustomMessage } = await import(
+        '@/core/sdk/IMManager/client/conversationService'
+      );
       const result = await sendCustomMessage({
         groupId: room.groupId,
-        description: BET_SHARE_SEND_DESCRIPTION,
+        description: EMC_MSG_DESCRIPTION_LABEL.Emc1,
         extension: getExtensionFromVenueId(venueId),
         payload: serializeBetShareForFlutter(card),
       });

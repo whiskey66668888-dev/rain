@@ -1,6 +1,7 @@
 import requestImOrigin from '@/core/sdk/requestImOrigin';
 import requestOpenIm from '@/core/sdk/requestOpenIm';
-import { getOpenImConfig, normalizeChatConfigInfo } from '@/apis/origin/discover';
+import { getOpenImConfig } from '@/apis/origin/discover/imConfig';
+import { normalizeChatConfigInfo } from '@/apis/origin/discover/types';
 import type {
   ChatConfigInfo,
   ChatNotice,

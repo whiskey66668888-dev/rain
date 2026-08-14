@@ -1,5 +1,5 @@
 import { ensureOpenImAuthConfigLoaded } from '@/apis/origin/discover';
-import { getChatRoomInfo, openIMClient, type ChatRoomInfo } from '@/core/sdk/IMManager';
+import { getChatRoomInfo, type ChatRoomInfo } from '@/core/sdk/IMManager';
 
 /**
  * 分享/晒单直发前的链路准备（聊天室未挂载时走这里）。
@@ -13,6 +13,7 @@ import { getChatRoomInfo, openIMClient, type ChatRoomInfo } from '@/core/sdk/IMM
  */
 export const prepareChatShare = async (): Promise<ChatRoomInfo | null> => {
   if (!(await ensureOpenImAuthConfigLoaded())) return null;
+  const { openIMClient } = await import('@/core/sdk/IMManager/client/OpenIMClient');
   const [ready, room] = await Promise.all([
     openIMClient.ensureReady({ waitSync: false }),
     getChatRoomInfo(),

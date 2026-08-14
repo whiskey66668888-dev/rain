@@ -1,3 +1,9 @@
+/**
+ * IM 轻量 barrel：类型、常量、HTTP/WS 工具。
+ * 不要在此 re-export OpenIMClient / conversationService / groupMemberService，
+ * 否则 `import { 任意工具 } from '@/core/sdk/IMManager'` 会把 wasm SDK 打进调用方静态图。
+ * SDK 请从 `@/core/sdk/IMManager/client/*` 叶子模块引用，或在函数内 `import()`。
+ */
 export * from './constants/contentTypes';
 export * from './constants/emcMessage';
 export * from './constants/errorCodes';
@@ -16,6 +22,3 @@ export * from './utils/vipLevel';
 export * from './utils/resetOpenImSession';
 export * from './services/chatApiService';
 export * from './services/chatMuteWs';
-export * from './client/OpenIMClient';
-export * from './client/conversationService';
-export * from './client/groupMemberService';

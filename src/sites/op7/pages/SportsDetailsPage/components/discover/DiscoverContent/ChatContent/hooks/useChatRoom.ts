@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MessageType } from '@front-openim/wasm-client-sdk';
 import {
-  BET_SHARE_SEND_DESCRIPTION,
   ChatMessageType,
   EmcMsgDescription,
   chatMuteWsClient,
@@ -23,13 +22,6 @@ import {
   getUserValidMoney,
   isBetShareMatchedVenue,
   isBigBet,
-  loadHistoryMessages,
-  openIMClient,
-  putUserInfoCache,
-  cleanupFailedSendLocalMessage,
-  resetOpenImSession,
-  sendCustomMessage,
-  sendTextMessage,
   serializeMatchShareForFlutter,
   splitMessagesByFilterType,
   type ChatConfigInfo,
@@ -42,7 +34,19 @@ import {
   type MatchShareInfo,
   type BetShareCard,
 } from '@/core/sdk/IMManager';
-import { getUserInfoByGroup } from '@/core/sdk/IMManager/client/groupMemberService';
+import { openIMClient } from '@/core/sdk/IMManager/client/OpenIMClient';
+import {
+  BET_SHARE_SEND_DESCRIPTION,
+  cleanupFailedSendLocalMessage,
+  loadHistoryMessages,
+  sendCustomMessage,
+  sendTextMessage,
+} from '@/core/sdk/IMManager/client/conversationService';
+import {
+  getUserInfoByGroup,
+  putUserInfoCache,
+} from '@/core/sdk/IMManager/client/groupMemberService';
+import { resetOpenImSession } from '@/core/sdk/IMManager/utils/resetOpenImSession';
 import {
   ensureOpenImConfigLoaded,
   getOpenImConfig as readImConfigCache,

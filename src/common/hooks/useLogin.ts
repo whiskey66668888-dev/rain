@@ -14,7 +14,7 @@ import {
   setLoginInfo,
   clearLoginInfo,
 } from '@/core/store/slices/userSlice';
-import { resetOpenImSession } from '@/core/sdk/IMManager';
+import { resetOpenImSession } from '@/core/sdk/IMManager/utils/resetOpenImSession';
 import { API_CODE_ORIGIN_FIRST_LOGIN_NEED_SET_PASSWORD } from '@/utils/constants/apiCodeOrigin';
 import { consumeAuthRedirectPath } from '@/common/router/authRedirect';
 import { getMouseAction } from '@/utils/mouseAction';
