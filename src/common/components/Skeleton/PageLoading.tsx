@@ -35,19 +35,22 @@ import ResultLeagueFilterPageSkeleton from './ResultLeagueFilterPageSkeleton';
 const delayTime = 100;
 
 const normalizeSkeletonPath = (path: string): string => {
-  const withoutQuery = path.split('?')[0]?.split('#')[0] || '/';
-  const withoutLocale = withoutQuery.replace(/^\/[a-z]{2}(?:-[a-z]{2})?(?=\/|$)/i, '');
+  const withoutHash = path.split('#')[0] || '/';
+  const withoutLocale = withoutHash.replace(/^\/[a-z]{2}(?:-[a-z]{2})?(?=\/|$)/i, '');
   if (!withoutLocale || withoutLocale === '') return '/';
   return withoutLocale.length > 1 ? withoutLocale.replace(/\/$/, '') : withoutLocale;
 };
 
 // null 表示该页由组件内部自行管理骨架屏，Suspense fallback 期间不渲染，避免与组件级骨架双重出现
 const skeletonMap: Record<string, (() => React.ReactElement) | null> = {
-  [PATHS.home]: () => <HomePageSkeleton />, // 娱乐首页
+  [PATHS.home]: null, // 落地页保持同步加载，不走页面级骨架
+  [PATHS.entertainment]: () => <HomePageSkeleton />, // 娱乐首页
+  '/entertainment': () => <HomePageSkeleton />, // 娱乐首页（无 slot 时的实际路径）
   [PATHS.sports]: () => <SportsPageSkeleton />, // 体育首页
   [PATHS.sportsDetail]: null, // 体育详情：由 SportDetail 组件内 showSkeleton 统一管理
   [PATHS.champion]: () => <SportsChampionSkeleton />, // 冠军
   [PATHS.betHistoryH5]: () => <SportsBettingSkeleton />, // 注单
+  [PATHS.betHistoryPc]: () => <SportsBettingSkeleton />, // PC 注单
   [PATHS.betHistoryH5ResultLeagueFilter]: () => <ResultLeagueFilterPageSkeleton />, // H5 赛果联赛筛选
   [PATHS.mineDeposit]: () => <DepositPageSkeleton />, // 充值
   [PATHS.mineWithdrawal]: () => <WithdrawalPageSkeleton />, // 提现
@@ -56,6 +59,7 @@ const skeletonMap: Record<string, (() => React.ReactElement) | null> = {
   [PATHS.mineMemberTransfer]: () => <MemberTransferPageSkeleton />, // 会员互转
   [PATHS.mine]: () => <SecurityCenterSkeleton />, // 我的
   [PATHS.mineSecurity]: () => <SecurityCenterSkeleton />, // 安全中心
+  [PATHS.mineSecurityPhone]: () => <SecurityCenterSkeleton />, // 安全手机号
   [PATHS.promotionDiscount]: () => <DiscountPageSkeleton showSubTabs={true} />,
   [PATHS.promotionSponsor]: () => <DiscountPageSkeleton showSubTabs={false} />,
   [PATHS.promotionHotEvent]: () => <HotEventPageSkeleton />,
@@ -88,6 +92,25 @@ const skeletonMap: Record<string, (() => React.ReactElement) | null> = {
   [PATHS.sportsRulesPc]: () => <PcResultPageSkeleton />, // 投注规则独立页
   [PATHS.bettingTutorialPc]: () => <PcResultPageSkeleton />, // 盘口教程独立页
 };
+
+const resolveSkeleton = (
+  currentPath: string,
+  routePath: string,
+): (() => React.ReactElement) | null | undefined => {
+  if (currentPath in skeletonMap) return skeletonMap[currentPath];
+  if (routePath in skeletonMap) return skeletonMap[routePath];
+
+  // `/entertainment/home` 这类动态段：命中最长静态前缀
+  let bestKey: string | undefined;
+  for (const key of Object.keys(skeletonMap)) {
+    if (key === '/' || key.includes(':')) continue;
+    if (currentPath === key || currentPath.startsWith(`${key}/`)) {
+      if (!bestKey || key.length > bestKey.length) bestKey = key;
+    }
+  }
+  return bestKey ? skeletonMap[bestKey] : undefined;
+};
+
 /**
  * 页面路由切换时加载动画组件
  */
@@ -106,11 +129,10 @@ const PageLoading: React.FC<{ path: string }> = ({ path }) => {
 
   const currentPath = normalizeSkeletonPath(location.pathname);
   const routePath = normalizeSkeletonPath(path);
-  const skeletonPath = currentPath in skeletonMap ? currentPath : routePath;
+  const renderSkeleton = resolveSkeleton(currentPath, routePath);
 
   // path 在 map 中但值为 null：组件自管理骨架，Suspense 期间不渲染任何内容
-  if (skeletonPath in skeletonMap) {
-    const renderSkeleton = skeletonMap[skeletonPath];
+  if (renderSkeleton !== undefined) {
     if (renderSkeleton) return renderSkeleton();
     return <></>;
   }

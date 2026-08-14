@@ -4,9 +4,7 @@ import { commonRoutes, deepMergeRoutes, type RouteConfig } from '@/common/router
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { buildAgentPromoRedirectUrl } from '@/utils/agentPromoLink';
 import MainLayout from '../pages/layouts/MainLayout';
-import HomePage from '../pages/HomePage';
 import LandingPage from '../pages/LandingPage';
-import SportsPage from '../pages/SportsPage';
 import { PATHS } from './paths';
 
 /**
@@ -93,7 +91,7 @@ const siteRoutes: RouteConfig[] = [
       },
       {
         path: PATHS.entertainment, // 娱乐页面
-        element: HomePage,
+        element: lazy(() => import('../pages/HomePage')),
         handle: {
           h5ShowHeader: true,
           h5ShowFooter: true,
@@ -186,7 +184,7 @@ const siteRoutes: RouteConfig[] = [
       },
       {
         path: PATHS.sports, // 体育页面
-        element: SportsPage,
+        element: lazy(() => import('../pages/SportsPage')),
         handle: {
           h5ShowHeader: true,
           h5ShowFooter: true,
@@ -465,12 +463,11 @@ const siteRoutes: RouteConfig[] = [
         },
       },
       {
-        path: PATHS.system,
-        element: lazy(() => import('../pages/SystemPage')),
-      },
-      {
         path: PATHS.onlineCustomerService,
         element: lazy(() => import('../pages/OnlineCustomerServiceEntryPage')),
+        handle: {
+          noPageSkeleton: true,
+        },
       },
       {
         path: PATHS.login,

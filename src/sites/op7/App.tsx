@@ -27,11 +27,7 @@ import DevSystemSettingsFloat from './components/DevSystemSettingsFloat';
 import { useFullScreenLoadingState } from './components/FullScreenLoading/loadingStore';
 import GlobalPostMessageHost from './components/GlobalPostMessageHost';
 import { InviteModal } from './components/Modals/InviteModal';
-import {
-  loadLoginPage,
-  loadRegisterPage,
-  prefetchAuthModals,
-} from './pages/prefetchAuthModals';
+import { loadLoginPage, loadRegisterPage, prefetchAuthModals } from './pages/prefetchAuthModals';
 import { useBetShareState } from './pages/SportsDetailsPage/components/share/betShareStore';
 
 const LoginPage = lazy(loadLoginPage);
