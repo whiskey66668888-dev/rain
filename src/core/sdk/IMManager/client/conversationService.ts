@@ -1,5 +1,5 @@
 import { MessageType, ViewType, type MessageItem } from '@front-openim/wasm-client-sdk';
-import { getOpenImConfig } from '@/apis/origin/discover';
+import { getOpenImConfig } from '@/apis/origin/discover/imConfig';
 import { IM_SUPPORTED_CONTENT_TYPES } from '../constants/contentTypes';
 import { EMC_MSG_DESCRIPTION_LABEL, isBetShareDescription } from '../constants/emcMessage';
 import { IM_ERROR_CODES, parseImErrorCode } from '../constants/errorCodes';

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import LineUp from '../LineUp';
@@ -11,12 +11,13 @@ import type { MatchShareInfo } from '@/core/sdk/IMManager';
 import { useAppSelector } from '@/core/store/hooks';
 import { getDefaultDiscoverSubTabIndex, getDiscoverSubTabs } from '../utils/getDiscoverSubTabs';
 import styles from './DiscoverContent.module.scss';
-import ChatContent from './ChatContent';
 import IndexOdds from '../IndexOdds';
 import Intel from '../Intel';
 import History from '../History';
 import Analysis from '../Analysis';
 import Goal from '../Goal';
+
+const ChatContent = lazy(() => import('./ChatContent'));
 
 interface DiscoverContentProps {
   loading?: boolean;
@@ -91,12 +92,14 @@ const DiscoverContent: React.FC<DiscoverContentProps> = ({
     switch (activeSubTab) {
       case '聊天':
         return (
-          <ChatContent
-            sportId={sportId}
-            loading={loading}
-            chatConfig={chatConfig}
-            matchShareInfo={matchShareInfo}
-          />
+          <Suspense fallback={null}>
+            <ChatContent
+              sportId={sportId}
+              loading={loading}
+              chatConfig={chatConfig}
+              matchShareInfo={matchShareInfo}
+            />
+          </Suspense>
         );
       case '直播':
         return (

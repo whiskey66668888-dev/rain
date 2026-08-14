@@ -1,5 +1,5 @@
 import { CbEvents, getSDK, type MessageItem } from '@front-openim/wasm-client-sdk';
-import { ensureOpenImAuthConfigLoaded, getOpenImConfig } from '@/apis/origin/discover';
+import { ensureOpenImAuthConfigLoaded, getOpenImConfig } from '@/apis/origin/discover/imConfig';
 import { getImSdkPlatformId } from '@/utils/constants/apiCodeIm';
 import { createImLogger } from '../logger/imLogger';
 import { installImNetworkHooks } from './imNetworkHooks';

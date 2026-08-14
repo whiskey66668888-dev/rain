@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import _ from 'lodash';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { lazy, memo, Suspense, useCallback, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import MessageCenter from '../../pages/MessageCenter';
 import Advertise from './Advertise';
@@ -10,7 +10,6 @@ import styles from './RightSidebar.module.scss';
 import { setRightSidebarVisible } from '@/core/store/slices/configSlice';
 import { useLocation, useParams } from 'react-router-dom';
 import SportsDetailsSidebarMatchList from './SportsDetailsSidebarMatchList';
-import SportDetail from '../../pages/SportsDetailsPage';
 import { PlayType } from '@/apis/commonSports/constants';
 import { FBSportIdValue, MatchPlayType } from '@/apis/fbSports/common/constants';
 import { useVenueService } from '@/apis/commonSports';
@@ -27,6 +26,8 @@ import { useGetMatchDetailQuery } from '@/apis/fbSports/getMatchDetail';
 import { formatFBSportItem } from '@/apis/fbSports/common/fbFormat';
 import { useWebsiteSwitchListQuery } from '@/apis/origin/websiteSwitch';
 import VideoPlayerWeb from '../VideoPlayerWeb';
+
+const SportDetail = lazy(() => import('../../pages/SportsDetailsPage'));
 
 // PC端右侧边栏，一定不是mobile
 const RightSidebar: React.FC = () => {
@@ -268,14 +269,16 @@ const RightSidebar: React.FC = () => {
                               ? sidebarHomePrimaryMatchId != null
                               : firstSportsMatchId != null
                           ) ? (
-                          <SportDetail
-                            id={
-                              useLiveFirstMatchForHomeSidebar
-                                ? sidebarHomePrimaryMatchId
-                                : firstSportsMatchId
-                            }
-                            hideMatchInfo={true}
-                          />
+                          <Suspense fallback={<Skeleton type="sportsDetails" />}>
+                            <SportDetail
+                              id={
+                                useLiveFirstMatchForHomeSidebar
+                                  ? sidebarHomePrimaryMatchId
+                                  : firstSportsMatchId
+                              }
+                              hideMatchInfo={true}
+                            />
+                          </Suspense>
                         ) : (
                           <Empty
                             className="flex-1 min-h-0 bg-[var(--Background-300)]"

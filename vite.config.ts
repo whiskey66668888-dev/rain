@@ -99,6 +99,17 @@ const LARGE_ASYNC_PKGS = new Map<string, string>([
   ['emoji-mart', 'vendor-emoji'],
 ]);
 
+/**
+ * OpenIM wasm 客户端（会静态 import @front-openim/wasm-client-sdk）。
+ * 不能并进首屏 `sdk` chunk：request.ts 也在 /sdk/ 下，manualChunks 会把整个目录打成一包。
+ * groupMemberCache / openImSessionHooks 是登出 reset 的轻量叶子，不含 wasm，必须留在 sdk。
+ */
+const isOpenImWasmClientModule = (id: string): boolean => {
+  const normalized = id.replace(/\\/g, '/');
+  if (!normalized.includes('/sdk/IMManager/client/')) return false;
+  return !/\/sdk\/IMManager\/client\/(groupMemberCache|openImSessionHooks)\b/.test(normalized);
+};
+
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd(), '');
   const version = Date.now().toString();
@@ -299,8 +310,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
               return 'vendor-utils';
             }
 
-            // SDK 层单独分割
+            // SDK 层单独分割。OpenIM wasm 客户端必须跟 vendor-openim 走，否则首页加载 request.ts 就会带上 wasm SDK。
             if (id.includes('/sdk/')) {
+              if (isOpenImWasmClientModule(id)) {
+                return 'vendor-openim';
+              }
               return 'sdk';
             }
 

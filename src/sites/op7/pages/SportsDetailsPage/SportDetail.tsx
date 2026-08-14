@@ -52,7 +52,6 @@ import MatchDetailsHeader from './components/MatchDetailsHeader';
 import MatchInfo from './components/MatchInfo';
 import MatchDrawer from './components/MatchDrawer';
 import MatchShareSheet from './components/MatchShareSheet';
-import { shareMatchToChatRoom } from './components/share/shareMatchToChatRoom';
 
 import Skeleton from '@/common/components/Skeleton';
 import { MatchRecommendItem, VideoLine } from './type';
@@ -571,7 +570,9 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       toast({ type: 'info', description: '当前赛事暂不支持聊天室' });
       return;
     }
-    void shareMatchToChatRoom(chatMatchShareInfoRef.current);
+    void import('./components/share/shareMatchToChatRoom').then(({ shareMatchToChatRoom }) =>
+      shareMatchToChatRoom(chatMatchShareInfoRef.current),
+    );
     hasManualTabChangedRef.current = true;
     setActiveTab(discoverTabLabel);
     onDiscoverSubTabChanged(chatIndex);
