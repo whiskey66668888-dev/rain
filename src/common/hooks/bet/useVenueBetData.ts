@@ -7,14 +7,17 @@ import {
   EVenue,
 } from '@/apis/commonSports/constants';
 import { useAppSelector } from '@/core/store/hooks';
+import { selectVenueBetState } from '@/core/store/selectors/betSelectors';
+import { selectSportVenue, selectSyncSingleParlay } from '@/core/store/selectors/sportSelectors';
+import { selectAcceptOddsPrefer, selectVenueBalance } from '@/core/store/selectors/userSelectors';
 import bigMath, { bigNB } from '@/utils/bet/bigMath';
 
 export const useVenueBetData = () => {
-  const venue = useAppSelector((state) => state.sport.venue);
-  const syncSingleParlay = useAppSelector((state) => !!state.sport.syncSingleParlay);
-  const venueBetStore = useAppSelector((state) => state.bet[state.sport.venue]);
-  const totalBalance = useAppSelector((state) => state.user[state.sport.venue].balance);
-  const acceptOddsPrefer = useAppSelector((state) => state.user.acceptOddsPrefer);
+  const venue = useAppSelector(selectSportVenue);
+  const syncSingleParlay = useAppSelector(selectSyncSingleParlay);
+  const venueBetStore = useAppSelector(selectVenueBetState);
+  const totalBalance = useAppSelector(selectVenueBalance);
+  const acceptOddsPrefer = useAppSelector(selectAcceptOddsPrefer);
 
   const isParlay = useMemo(
     () => venueBetStore.betType === EBetType.Parlay,

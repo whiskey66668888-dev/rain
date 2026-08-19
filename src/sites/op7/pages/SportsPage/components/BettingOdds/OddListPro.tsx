@@ -22,6 +22,8 @@ import { fetchOBListDetailMarkets } from '@/apis/obSports/getMatchOddsInfo';
 import LazyImage from '@/common/components/LazyImage';
 import { useAllBetItemIds } from '@/common/hooks/bet/useAllBetItemIds';
 import { useAppSelector } from '@/core/store/hooks';
+import { selectIsMobile } from '@/core/store/selectors/configSelectors';
+import { selectSportVenue } from '@/core/store/selectors/sportSelectors';
 
 /** 对齐 Flutter ProOddsBlueSlider 详情轮询间隔 */
 const OB_DETAIL_POLL_MS = 5000;
@@ -132,8 +134,8 @@ const ProOddList: React.FC<ProOddListProps> = ({
   onToggleOdds,
   filterMarketTypes,
 }) => {
-  const isMobile = useAppSelector((state) => state.config.isMobile);
-  const venue = useAppSelector((state) => state.sport.venue);
+  const isMobile = useAppSelector(selectIsMobile);
+  const venue = useAppSelector(selectSportVenue);
   const allBetItemIds = useAllBetItemIds(matchId);
   const swiperRef = useRef<SwiperRef>(null);
   const [nav, setNav] = useState({ canGoPrev: false, canGoNext: false });

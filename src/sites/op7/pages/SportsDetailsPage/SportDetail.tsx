@@ -44,8 +44,8 @@ import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage'
 import { NoticeBar } from '@/common/components/NoticeBar';
 import { toast } from '@/common/components/Toast';
 import { useVenueService } from '@/apis/commonSports';
-import { EBetType, EVenue } from '@/apis/commonSports/constants';
-import type { MatchBaseInfo, TBaseBetItem, TBetItem } from '@/apis/commonSports/types';
+import { EVenue } from '@/apis/commonSports/constants';
+import type { MatchBaseInfo, TBaseBetItem } from '@/apis/commonSports/types';
 import { PATHS } from '@/sites/op7/routes/paths';
 import OptionBarPC from '../SportsPage/components/OptionBarPC';
 
@@ -68,9 +68,14 @@ import { useRetainedMatchRecord } from './hooks/useRetainedMatchRecord';
 
 import styles from './MatchDetails.module.scss';
 import { useAppSelector } from '@/core/store/hooks';
-import type { RootState } from '@/core/store';
+import { selectSelectedBetsForMatch } from '@/core/store/selectors/betSelectors';
+import {
+  selectRightSidebarVisible,
+  selectScreenBreakpoint,
+} from '@/core/store/selectors/configSelectors';
+import { selectFollowMatch, selectSportVenue } from '@/core/store/selectors/sportSelectors';
+import { selectIsLogin } from '@/core/store/selectors/userSelectors';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
-import type { EntityState } from '@reduxjs/toolkit';
 import Empty from '@/common/components/Empty';
 import VideoPlayerMobile from './components/VideoPlayerMobile';
 import HeaderWeb from './components/MatchDetailsHeader/headerWeb';
@@ -127,15 +132,11 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       : (matchIdFromRoute ?? '');
   const navigate = useNavigateWithLanguage();
   const { changeFollowMatchStatus } = useSportsMainListControl();
-  const followMatch = useAppSelector(
-    (state: RootState) => state.sport.mainList.settings.followMatch,
-  );
-  const screenBreakpoint = useAppSelector((state: RootState) => state.config.screenBreakpoint);
+  const followMatch = useAppSelector(selectFollowMatch);
+  const screenBreakpoint = useAppSelector(selectScreenBreakpoint);
   const isMobile = screenBreakpoint === 'md';
-  const rightSidebarVisible = useAppSelector(
-    (state: RootState) => state.config.rightSidebarVisible,
-  );
-  const isLogin = useAppSelector((state: RootState) => state.user.userInfo.isLogin);
+  const rightSidebarVisible = useAppSelector(selectRightSidebarVisible);
+  const isLogin = useAppSelector(selectIsLogin);
   const [activeTab, setActiveTab] = useState<string>('');
   /** 「分享至」弹窗开关 */
   const [shareSheetOpen, setShareSheetOpen] = useState(false);
@@ -225,7 +226,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
   );
 
   // 获取赛事详情数据（需早于 useScrollTop：骨架屏阶段无 ref，bindKey 就绪后需重绑滚动）
-  const venue = useAppSelector((state: RootState) => state.sport.venue);
+  const venue = useAppSelector(selectSportVenue);
   const isOb = venue === EVenue.OB;
 
   const {
@@ -448,32 +449,10 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
   }, [screenBreakpoint, hideMatchInfo, rightSidebarVisible]);
 
   // 从 Redux 同步本场已加入投注单的选项，用于赔率按钮高亮（与首页列表一致）
-  const singleBetData = useAppSelector((state: RootState) => state.bet[venue]?.singleBetData) as
-    EntityState<TBetItem, string> | undefined;
-  const parlayBetData = useAppSelector((state: RootState) => state.bet[venue]?.parlayBetData) as
-    EntityState<TBetItem, string> | undefined;
-  const betType = useAppSelector((state: RootState) => state.bet[venue]?.betType);
-  const selectedBets = useMemo(() => {
-    const matchIdStr = matchInfo?.matchId?.toString();
-    if (!matchIdStr) return [];
-    const list: Array<{ marketId: string; selectionId: string }> = [];
-    const addFrom = (data: EntityState<TBetItem, string> | undefined) => {
-      if (!data?.ids?.length || !data.entities) return;
-      data.ids.forEach((id: string) => {
-        const entity = data.entities[id];
-        if (entity && String(entity.matchId) === matchIdStr) {
-          list.push({ marketId: String(entity.marketId), selectionId: entity.betItemId });
-        }
-      });
-    };
-    // 与列表赔率一致：仅按当前 tab（单关/串关）高亮，串关同场只保留最后一注
-    if (betType === EBetType.Parlay) {
-      addFrom(parlayBetData);
-    } else {
-      addFrom(singleBetData);
-    }
-    return list;
-  }, [matchInfo?.matchId, singleBetData, parlayBetData, betType]);
+  // 必须用 matchInfo.matchId：下单写入的是这个值；OB 超长 mid 不能和路由/Number 混用
+  const selectedBets = useAppSelector((state) =>
+    selectSelectedBetsForMatch(state, matchInfo?.matchId),
+  );
 
   const selectedBetItemIds = useMemo(
     () => new Set(selectedBets.map((b) => b.selectionId)),

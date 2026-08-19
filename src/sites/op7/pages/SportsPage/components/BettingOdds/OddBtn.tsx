@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import styles from './OddBtn.module.scss';
 import { TBaseBetItem } from '@/apis/commonSports/types';
 import { useAppSelector } from '@/core/store/hooks';
+import { selectCurrentOddsType } from '@/core/store/selectors/sportSelectors';
 import { getDisplayOdds } from '@/utils/bet';
 
 export interface OddBtnProps {
@@ -20,7 +21,7 @@ export interface OddBtnProps {
   isLoading?: boolean;
 }
 
-export const OddBtn: React.FC<OddBtnProps> = ({
+export const OddBtn: React.FC<OddBtnProps> = React.memo(function OddBtn({
   betItem,
   isLocked,
   threeLine,
@@ -30,8 +31,8 @@ export const OddBtn: React.FC<OddBtnProps> = ({
   isProMode = true,
   isLoading,
   onClick,
-}) => {
-  const currentOddsType = useAppSelector((state) => state.sport.currentOddsType);
+}) {
+  const currentOddsType = useAppSelector(selectCurrentOddsType);
   const [oldOdds, setOldOdds] = useState(betItem?.baseOdds);
   useEffect(() => {
     setTimeout(() => {
@@ -109,4 +110,4 @@ export const OddBtn: React.FC<OddBtnProps> = ({
       )}
     </button>
   );
-};
+});

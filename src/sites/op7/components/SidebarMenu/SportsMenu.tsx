@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '@/core/store/hooks';
+import {
+  selectFollowMatch,
+  selectMainListPlayType,
+  selectMainListSportId,
+  selectMenus,
+} from '@/core/store/selectors/sportSelectors';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
 import { PATHS } from '@/sites/op7/routes/paths';
 import { useLocation } from 'react-router-dom';
@@ -23,11 +29,10 @@ const SportsMenu: React.FC<{
   isSidebarMenuOpen: boolean;
   setIsSidebarMenuOpen: (isSidebarMenuOpen: boolean) => void;
 }> = ({ isSidebarMenuOpen, setIsSidebarMenuOpen }) => {
-  const menus = useAppSelector((state) => state.sport.mainList.datas.menuInfo.menus);
-  const currentPlayType = useAppSelector((state) => state.sport.mainList.settings.playType);
-  const currentSportId = useAppSelector((state) => state.sport.mainList.settings.sportId);
-  const followMatch = useAppSelector((state) => state.sport.mainList.settings.followMatch);
-  const menuInfo = useAppSelector((state) => state.sport.mainList.datas.menuInfo);
+  const menus = useAppSelector(selectMenus);
+  const currentPlayType = useAppSelector(selectMainListPlayType);
+  const currentSportId = useAppSelector(selectMainListSportId);
+  const followMatch = useAppSelector(selectFollowMatch);
   const [isSportsMenuExpanded, setIsSportsMenuExpanded] = useState(false);
   const [menuPlayType, setMenuPlayType] = useState(PlayType.Today);
   const { switchPlayType, switchSportId, switchSportsLeftPanelType } = useSportsMainListControl();
@@ -215,7 +220,7 @@ const SportsMenu: React.FC<{
             <span className="flex-1 text-left _tf[14]">LIVE滚球</span>
           </div>
           <p className="_tf[12] leading-[1] font-500 text-center text-[var(--Text-Main-10)]  bg-[var(--Background-300)] py-2px px-6px rounded-10px">
-            {menuInfo?.menus.living.reduce((acc, item) => acc + item.count, 0)}
+            {menus?.living.reduce((acc, item) => acc + item.count, 0)}
           </p>
         </button>
       </div>
@@ -317,7 +322,7 @@ const SportsMenu: React.FC<{
           <span className="flex-1 text-left _tf[14]">冠军赛事</span>
         </div>
         <p className="_tf[12] leading-[1] font-500 text-center text-[var(--Text-Main-10)]  bg-[var(--Background-300)] py-2px px-6px rounded-10px">
-          {menuInfo?.menus.champion.reduce((acc, item) => acc + item.count, 0)}
+          {menus?.champion.reduce((acc, item) => acc + item.count, 0)}
         </p>
       </button>
     </>

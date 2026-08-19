@@ -6,6 +6,20 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MatchListParams } from '@/apis/fbSports/getList';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
+import {
+  selectFilterByLeagueIds,
+  selectFilterTime,
+  selectFollowMatch,
+  selectMainListPlayType,
+  selectMainListPlayTypeId,
+  selectMainListSportId,
+  selectMenus,
+  selectOrderBy,
+  selectPinnedMatchs,
+  selectPinnedSportIds,
+  selectSportVenue,
+} from '@/core/store/selectors/sportSelectors';
+import { selectIsLogin } from '@/core/store/selectors/userSelectors';
 import _ from 'lodash';
 import { HotSportId, LotterySportId, PlayType, EVenue } from '@/apis/commonSports/constants';
 
@@ -78,20 +92,18 @@ export function getFirstMatchFromListData(
 }
 
 export const useSportsMainListData = () => {
-  const { sportId, playTypeId, playType } = useAppSelector(
-    (state) => state.sport.mainList.settings,
-  );
-  const venue = useAppSelector((state) => state.sport.venue);
-  const pinnedSportIds = useAppSelector((state) => state.sport.mainList.datas.pinnedSportIds);
-  const pinnedMatchs = useAppSelector((state) => state.sport.mainList.datas.pinnedMatchs);
-  const followMatch = useAppSelector((state) => state.sport.mainList.settings.followMatch);
-  const filterByLeagueIds = useAppSelector(
-    (state) => state.sport.mainList.settings.filterByLeagueIds,
-  );
-  const orderBy = useAppSelector((state) => state.sport.mainList.settings.orderBy);
-  const filterTime = useAppSelector((state) => state.sport.mainList.settings.filterTime);
-  const menus = useAppSelector((state) => state.sport.mainList.datas.menuInfo.menus);
-  const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
+  const sportId = useAppSelector(selectMainListSportId);
+  const playTypeId = useAppSelector(selectMainListPlayTypeId);
+  const playType = useAppSelector(selectMainListPlayType);
+  const venue = useAppSelector(selectSportVenue);
+  const pinnedSportIds = useAppSelector(selectPinnedSportIds);
+  const pinnedMatchs = useAppSelector(selectPinnedMatchs);
+  const followMatch = useAppSelector(selectFollowMatch);
+  const filterByLeagueIds = useAppSelector(selectFilterByLeagueIds);
+  const orderBy = useAppSelector(selectOrderBy);
+  const filterTime = useAppSelector(selectFilterTime);
+  const menus = useAppSelector(selectMenus);
+  const isLogin = useAppSelector(selectIsLogin);
   const dispatch = useAppDispatch();
   const followMatchIds = _.map(followMatch, (item) => item.matchId);
   /**

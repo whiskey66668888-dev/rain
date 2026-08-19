@@ -5,6 +5,10 @@
 
 import React, { useMemo } from 'react';
 import { useAppSelector } from '@/core/store/hooks';
+import {
+  selectRightSidebarVisible,
+  selectScreenBreakpoint,
+} from '@/core/store/selectors/configSelectors';
 import type { TBaseBetItem, MatchBaseInfo } from '@/apis/commonSports/types';
 import styles from './BettingOdds.module.scss';
 import OddListPro from './OddListPro';
@@ -44,8 +48,8 @@ const BettingOdds: React.FC<BettingOddsProps> = ({
   threeLineColumn,
   hideMatchNum,
 }) => {
-  const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
-  const rightSidebarVisible = useAppSelector((state) => state.config.rightSidebarVisible);
+  const screenBreakpoint = useAppSelector(selectScreenBreakpoint);
+  const rightSidebarVisible = useAppSelector(selectRightSidebarVisible);
   const { clickBetItem } = useClickBetItem();
 
   const isEnded = isFBMatchEnded(match);

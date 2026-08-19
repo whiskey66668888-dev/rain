@@ -12,6 +12,10 @@ import { EOddsStatus } from '@/apis/commonSports/constants';
 import { findVenueCompetition, type VenueHandicapItem } from '@/apis/commonSports/venueCompetition';
 import { useAllBetItemIds } from '@/common/hooks/bet/useAllBetItemIds';
 import { useAppSelector } from '@/core/store/hooks';
+import {
+  selectSimpleActiveItemName,
+  selectSportVenue,
+} from '@/core/store/selectors/sportSelectors';
 import Icon from '@/common/components/Icon';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
@@ -39,22 +43,20 @@ const SimpleOddList: React.FC<SimpleOddListProps> = ({
   hideMatchNum,
   onToggleOdds,
 }) => {
-  const simpleActiveItem = useAppSelector(
-    (state) => state.sport.mainList.settings.simpleActiveItem,
-  );
-  const venue = useAppSelector((state) => state.sport.venue);
+  const simpleActiveItemName = useAppSelector(selectSimpleActiveItemName);
+  const venue = useAppSelector(selectSportVenue);
   const allBetItemIds = useAllBetItemIds(match.matchId);
   const { changeFollowMatchStatus } = useSportsMainListControl();
   const navigate = useNavigateWithLanguage();
   /** 只显示当前简洁版 simpleActiveItem 选中的玩法（无分页，单玩法） */
   const activeHandicapItem = useMemo<VenueHandicapItem | null>(() => {
     const competition = findVenueCompetition(venue, sportId);
-    let simpleActiveItemName = simpleActiveItem?.name;
-    if (!simpleActiveItemName) {
-      simpleActiveItemName = competition?.simpleList[0]?.name ?? '';
+    let name = simpleActiveItemName;
+    if (!name) {
+      name = competition?.simpleList[0]?.name ?? '';
     }
-    return competition?.simpleList.find((item) => item.name === simpleActiveItemName) ?? null;
-  }, [venue, sportId, simpleActiveItem?.name]);
+    return competition?.simpleList.find((item) => item.name === name) ?? null;
+  }, [venue, sportId, simpleActiveItemName]);
 
   /** 根据传入 id 在接口 matchMarket 中找第一个 scoreId/playId 匹配的项 */
   const getOddsByCode = (id: string | number, _period: number): MatchMarket | undefined => {

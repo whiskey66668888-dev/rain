@@ -102,7 +102,7 @@ interface BettingMarketProps {
   scrollAnchorId?: string;
   isCollapsed: boolean;
   isFixed: boolean;
-  selectedBets: Array<{ marketId: string; selectionId: string }>;
+  selectedBets: ReadonlyArray<{ marketId: string; selectionId: string }>;
   onToggleCollapse: () => void;
   onToggleFixed: () => void;
   /** 点击赔率时调用，与 OddListPro 一致，加入投注单并打开投注抽屉 */
