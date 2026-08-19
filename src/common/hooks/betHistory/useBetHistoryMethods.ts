@@ -1,6 +1,5 @@
 import { useAppDispatch } from '@/core/store/hooks';
 import {
-  setActiveVenue,
   setBetHistoryQueryParams,
   updateBetHistoryQueryParams,
   openReserveEdit,
@@ -16,6 +15,7 @@ import {
   type TCancelReserveBetEntry,
   type TReserveEditState,
 } from '@/core/store/slices/betHistorySlice';
+import { setVenue } from '@/core/store/slices/sportSlice';
 import { EBetHistoryQueryType, EBetHistoryTab, EVenue } from '@/apis/commonSports/constants';
 import { useCallback } from 'react';
 import { BET_HISTORY_PAGE_SIZE, queryTypeToTabMap, tabListH5 } from './constants';
@@ -25,15 +25,17 @@ import { bigNB } from '@/utils/bet/bigMath';
 import bigMath from '@/utils/bet/bigMath';
 import { toast } from '@/common/components/Toast';
 import { cancelReserveBetFb } from '@/apis/fbSports/betHistory/cancelReserveBetFb';
+import { cancelPreBetOrderOb } from '@/apis/obSports/betHistory/cancelPreBetOrderOb';
 import { updateReserveFb } from '@/apis/fbSports/betHistory/updateReserveFb';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const useBetHistoryBaseMethods = () => {
   const dispatch = useAppDispatch();
 
+  /** 场馆是全局状态（sport.venue），投注记录切场馆等于切全站场馆 */
   const changeActiveVenue = useCallback(
     (activeVenue: EVenue) => {
-      dispatch(setActiveVenue(activeVenue));
+      dispatch(setVenue(activeVenue));
     },
     [dispatch],
   );
@@ -246,13 +248,20 @@ export const useBetHistoryMethods = () => {
 
   const submitCancelReserveBet = useCallback(
     async (venue: EVenue, entry: TCancelReserveBetEntry) => {
-      if (venue !== EVenue.FB) return;
       const { orderId } = entry;
 
       dispatch(setCancelReserveBetLoading({ venue, loading: true }));
       try {
-        const res = await cancelReserveBetFb({ reserveId: orderId });
-        if (res.data) {
+        let success = false;
+        if (venue === EVenue.OB) {
+          // OB 接口无返回体，未抛异常即成功
+          await cancelPreBetOrderOb({ orderNo: orderId });
+          success = true;
+        } else {
+          const res = await cancelReserveBetFb({ reserveId: orderId });
+          success = res.data;
+        }
+        if (success) {
           toast({ title: '取消预约成功', type: 'success' });
           dispatch(closeCancelReserveBet({ venue }));
           queryClient.invalidateQueries({ queryKey: ['betHistorylist'] });

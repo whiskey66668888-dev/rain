@@ -103,7 +103,6 @@ const siteRoutes: RouteConfig[] = [
         element: lazy(() => import('../pages/PromotionPage')),
         handle: {
           module: 'discount',
-          noPageSkeleton: true, // 子组件有自己的骨架屏，无需页面级骨架屏
         },
         children: [
           {
@@ -115,7 +114,6 @@ const siteRoutes: RouteConfig[] = [
             element: lazy(() => import('../pages/PromotionPage/SponsorPage')),
             handle: {
               module: 'discount',
-              noPageSkeleton: true, // 无需页面级骨架屏
             },
           },
           {
@@ -123,7 +121,6 @@ const siteRoutes: RouteConfig[] = [
             element: lazy(() => import('../pages/PromotionPage/DiscountPage')),
             handle: {
               module: 'discount',
-              noPageSkeleton: true,
             },
           },
           {

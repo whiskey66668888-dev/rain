@@ -60,6 +60,7 @@ const skeletonMap: Record<string, (() => React.ReactElement) | null> = {
   [PATHS.mine]: () => <SecurityCenterSkeleton />, // 我的
   [PATHS.mineSecurity]: () => <SecurityCenterSkeleton />, // 安全中心
   [PATHS.mineSecurityPhone]: () => <SecurityCenterSkeleton />, // 安全手机号
+  [PATHS.promotion]: () => <DiscountPageSkeleton showSubTabs={false} />,
   [PATHS.promotionDiscount]: () => <DiscountPageSkeleton showSubTabs={true} />,
   [PATHS.promotionSponsor]: () => <DiscountPageSkeleton showSubTabs={false} />,
   [PATHS.promotionHotEvent]: () => <HotEventPageSkeleton />,
@@ -111,24 +112,41 @@ const resolveSkeleton = (
   return bestKey ? skeletonMap[bestKey] : undefined;
 };
 
+const shouldShowSkeletonImmediately = (path: string): boolean =>
+  path === PATHS.sports ||
+  path === PATHS.betHistoryH5 ||
+  path === PATHS.mineH5 ||
+  path === PATHS.promotion ||
+  path === PATHS.promotionSponsor ||
+  path === PATHS.promotionDiscount ||
+  path === '/entertainment' ||
+  path.startsWith('/entertainment/');
+
 /**
  * 页面路由切换时加载动画组件
  */
 const PageLoading: React.FC<{ path: string }> = ({ path }) => {
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(true);
+  const currentPath = normalizeSkeletonPath(location.pathname);
+  const routePath = normalizeSkeletonPath(path);
+  const showImmediately =
+    shouldShowSkeletonImmediately(currentPath) || shouldShowSkeletonImmediately(routePath);
+  const [isLoading, setIsLoading] = useState(!showImmediately);
   useEffect(() => {
-    // 骨架屏延迟0.3秒后加载，避免网络好的时候加载骨架屏闪烁
-    setTimeout(() => {
+    if (showImmediately) {
+      setIsLoading(false);
+      return;
+    }
+    // 骨架屏延迟 100ms 后加载，避免网络好的时候加载骨架屏闪烁
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, delayTime);
-  }, []);
+    return () => clearTimeout(timer);
+  }, [showImmediately]);
   if (isLoading) {
     return <></>;
   }
 
-  const currentPath = normalizeSkeletonPath(location.pathname);
-  const routePath = normalizeSkeletonPath(path);
   const renderSkeleton = resolveSkeleton(currentPath, routePath);
 
   // path 在 map 中但值为 null：组件自管理骨架，Suspense 期间不渲染任何内容

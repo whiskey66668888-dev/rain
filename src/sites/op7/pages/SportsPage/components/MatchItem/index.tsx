@@ -19,16 +19,16 @@ import { buildMatchData } from '@/common/hooks/follow';
 
 interface MatchItemProps {
   match: MatchBaseInfo;
-  changePinnedMatchStatus: (matchId: number, type: 'add' | 'remove') => void;
+  changePinnedMatchStatus: (matchId: string, type: 'add' | 'remove') => void;
   changeFollowMatchStatus: (
-    base: { matchId: number; sportId: number; bt: number },
+    base: { matchId: string; sportId: number; bt: number },
     type: 'add' | 'remove',
     matchData?: string,
   ) => void;
   /** 强制使用移动端样式，用于弹窗等场景 */
   forceMobile?: boolean;
   isLast?: boolean;
-  onMatchClick?: (matchId: string | number) => void;
+  onMatchClick?: (matchId: string) => void;
   lotterySportTips?: string; // 竞猜赛事周数
 }
 
@@ -229,11 +229,12 @@ const TeamInfo: React.FC<{
   bold?: boolean;
   sportId: number;
 }> = React.memo(({ logo, name, score, isLive, showScore, redCard, bold, sportId }) => {
+  const teamLogo = logo?.trim() || '/images/common/logo_small.png';
   return (
     <div className={clsx(styles.teamInfo, '_tf[14]')}>
       <div className={styles.team}>
         <LazyImage
-          src={logo}
+          src={teamLogo}
           alt={name}
           width={16}
           height={16}

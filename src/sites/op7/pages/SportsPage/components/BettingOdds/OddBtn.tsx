@@ -4,6 +4,8 @@ import { Icon } from '@/common/components/Icon';
 import clsx from 'clsx';
 import styles from './OddBtn.module.scss';
 import { TBaseBetItem } from '@/apis/commonSports/types';
+import { useAppSelector } from '@/core/store/hooks';
+import { getDisplayOdds } from '@/utils/bet';
 
 export interface OddBtnProps {
   betItem?: TBaseBetItem;
@@ -14,6 +16,8 @@ export interface OddBtnProps {
   className?: string;
   onClick?: (betItem: TBaseBetItem) => void;
   isProMode?: boolean; // 是否专业模式
+  /** OB 详情补盘加载中：空位显示小 loading（不影响 FB） */
+  isLoading?: boolean;
 }
 
 export const OddBtn: React.FC<OddBtnProps> = ({
@@ -24,14 +28,35 @@ export const OddBtn: React.FC<OddBtnProps> = ({
   active,
   className,
   isProMode = true,
+  isLoading,
   onClick,
 }) => {
+  const currentOddsType = useAppSelector((state) => state.sport.currentOddsType);
   const [oldOdds, setOldOdds] = useState(betItem?.baseOdds);
   useEffect(() => {
     setTimeout(() => {
       setOldOdds(betItem?.baseOdds);
     }, 3000);
   }, [betItem?.baseOdds]);
+
+  if (isLoading) {
+    return (
+      <button
+        className={clsx(
+          styles.oddBtn,
+          '_tf[14]',
+          'cursor-not-allowed',
+          { [styles.active as string]: active },
+          className,
+        )}
+        type="button"
+        aria-busy
+      >
+        <span className={styles.loadingSpinner} />
+      </button>
+    );
+  }
+
   if (!betItem) {
     return (
       <button
@@ -49,6 +74,8 @@ export const OddBtn: React.FC<OddBtnProps> = ({
   }
   const title = betItem?.betItemShortName ?? '—';
   const allowClick = !isLocked && betItem.baseOdds;
+  // 展示值按当前盘口换算；是否有赔率、涨跌比较仍统一用欧洲盘的 baseOdds
+  const displayOdds = getDisplayOdds(betItem.baseOdds, betItem.isSupportHK, currentOddsType);
   return (
     <button
       className={clsx(
@@ -76,7 +103,7 @@ export const OddBtn: React.FC<OddBtnProps> = ({
               [styles.odddown as string]: oldOdds && betItem.baseOdds && betItem.baseOdds < oldOdds,
             })}
           >
-            {betItem?.baseOdds ? betItem?.baseOdds.toFixed(2) : '—'}
+            {betItem?.baseOdds ? displayOdds : '—'}
           </span>
         </>
       )}

@@ -279,6 +279,47 @@ export enum EVenue {
   FB = 'fb',
 }
 
+/**
+ * 场馆在平台钱包体系里的 gameId（对齐 Flutter GameId）。
+ * 一键转入 / 场馆锁定检查等钱包接口都按它区分场馆。
+ */
+export const VENUE_GAME_ID: Record<EVenue, number> = {
+  [EVenue.FB]: 89,
+  [EVenue.OB]: 79,
+};
+
+/**
+ * 盘口类型（赔率盘口），取值与 OB 注单下发的 `marketType` 一致。
+ *
+ * 只区分欧洲盘 / 香港盘：**除香港盘外一律按欧洲盘处理**。
+ * 三方站点可能下出马来 / 印尼 / 美盘的注单，我们没有换算公式，
+ * 统一当欧洲盘展示（赔率本来就存欧赔），保证文案与数字自洽。
+ */
+export enum EOddsType {
+  /** 欧洲盘 */
+  EU = 'EU',
+  /** 香港盘 */
+  HK = 'HK',
+}
+
+/** 盘口类型文案 */
+export const ODDS_TYPE_LABEL: Record<EOddsType, string> = {
+  [EOddsType.EU]: '欧洲盘',
+  [EOddsType.HK]: '香港盘',
+};
+
+/** 盘口类型 → 后端 `bettingOddsSettings` 取值 */
+export const ODDS_TYPE_TO_BETTING_ODDS_SETTINGS: Record<EOddsType, number> = {
+  [EOddsType.EU]: 1,
+  [EOddsType.HK]: 2,
+};
+
+/** 后端 `bettingOddsSettings` 取值 → 盘口类型 */
+export const BETTING_ODDS_SETTINGS_TO_ODDS_TYPE: Record<number, EOddsType> = {
+  1: EOddsType.EU,
+  2: EOddsType.HK,
+};
+
 // 投注类型，单关 or 串关
 export enum EBetType {
   Single = 'single',

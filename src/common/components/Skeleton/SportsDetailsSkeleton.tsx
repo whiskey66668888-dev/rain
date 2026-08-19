@@ -5,7 +5,68 @@ import React from 'react';
 
 import styles from './Skeleton.module.scss';
 
-const SportsDetailsSkeleton: React.FC = () => {
+interface SportsDetailsSkeletonProps {
+  compact?: boolean;
+  groupCount?: number;
+}
+
+interface MarketListSkeletonProps {
+  groupCount?: number;
+}
+
+const BettingTabsSkeleton: React.FC = () => (
+  <div className="flex items-center justify-between bg-[var(--Background-700)] px-3 py-2">
+    <div className="flex min-w-0 flex-1 gap-2 overflow-hidden">
+      {[56, 44, 44, 44].map((width, index) => (
+        <div
+          key={index}
+          className={`${styles.skeletonBase} ${styles.delay2} h-8 shrink-0 rounded-full`}
+          style={{ width }}
+        />
+      ))}
+    </div>
+    <div className={`${styles.skeletonBase} ${styles.delay2} ml-2 h-8 w-8 shrink-0 rounded-lg`} />
+  </div>
+);
+
+const MarketListSkeleton: React.FC<MarketListSkeletonProps> = ({ groupCount = 5 }) => (
+  <div className="px-3 pt-0 bg-[var(--Background-700)]">
+    {Array.from({ length: groupCount }).map((_, groupIndex) => (
+      <div key={groupIndex} className="mb-3 last:mb-0">
+        {/* 盘口组标题 */}
+        <div className="flex items-center justify-between py-2">
+          <div className={`${styles.skeletonBase} ${styles.delay1} h-4 w-24 rounded`} />
+          <div className={`${styles.skeletonBase} ${styles.delay2} w-5 h-5 rounded`} />
+        </div>
+        {/* 盘口行 */}
+        <div className="flex flex-col gap-2">
+          {[1, 2, 3].map((rowIndex) => (
+            <div key={rowIndex} className="flex items-center gap-2">
+              <div className={`${styles.skeletonBase} ${styles.delay2} h-9 flex-1 rounded`} />
+              <div className={`${styles.skeletonBase} ${styles.delay3} h-9 w-16 rounded`} />
+              <div className={`${styles.skeletonBase} ${styles.delay3} h-9 w-16 rounded`} />
+              <div className={`${styles.skeletonBase} ${styles.delay3} h-9 w-16 rounded`} />
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const SportsDetailsSkeleton: React.FC<SportsDetailsSkeletonProps> = ({
+  compact = false,
+  groupCount,
+}) => {
+  if (compact) {
+    return (
+      <section className="w-full bg-[var(--Background-700)] pt-0">
+        <BettingTabsSkeleton />
+        <MarketListSkeleton groupCount={groupCount ?? 3} />
+      </section>
+    );
+  }
+
   return (
     <section className="base-main-background">
       <div className="flex flex-col min-h-[100vh] w-full max-w-[1200px] mx-auto bg-[var(--color-bg)] text-white">
@@ -53,46 +114,10 @@ const SportsDetailsSkeleton: React.FC = () => {
           </div>
 
           {/* BettingTabs 骨架 */}
-          <div className="flex items-center bg-[var(--Background-700)] justify-between px-3 py-2">
-            <div className="flex gap-2 flex-1 min-w-0 overflow-hidden">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className={`${styles.skeletonBase} ${styles.delay2} h-8 rounded-full shrink-0`}
-                  style={{ width: i === 1 ? 56 : 44 }}
-                />
-              ))}
-            </div>
-            <div
-              className={`${styles.skeletonBase} ${styles.delay2} w-8 h-8 rounded-lg shrink-0 ml-2`}
-            />
-          </div>
+          <BettingTabsSkeleton />
 
           {/* 盘口列表骨架 */}
-          <div className="px-3 pt-0 bg-[var(--Background-700)]">
-            {[1, 2, 3, 4, 5].map((groupIndex) => (
-              <div key={groupIndex} className="mb-3 last:mb-0">
-                {/* 盘口组标题 */}
-                <div className="flex items-center justify-between py-2">
-                  <div className={`${styles.skeletonBase} ${styles.delay1} h-4 w-24 rounded`} />
-                  <div className={`${styles.skeletonBase} ${styles.delay2} w-5 h-5 rounded`} />
-                </div>
-                {/* 盘口行 */}
-                <div className="flex flex-col gap-2">
-                  {[1, 2, 3].map((rowIndex) => (
-                    <div key={rowIndex} className="flex items-center gap-2">
-                      <div
-                        className={`${styles.skeletonBase} ${styles.delay2} h-9 flex-1 rounded`}
-                      />
-                      <div className={`${styles.skeletonBase} ${styles.delay3} h-9 w-16 rounded`} />
-                      <div className={`${styles.skeletonBase} ${styles.delay3} h-9 w-16 rounded`} />
-                      <div className={`${styles.skeletonBase} ${styles.delay3} h-9 w-16 rounded`} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <MarketListSkeleton groupCount={groupCount} />
         </div>
       </div>
     </section>

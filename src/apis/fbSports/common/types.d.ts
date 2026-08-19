@@ -136,7 +136,8 @@ export interface LeagueGroup {
 
 export interface LeagueItem {
   sportId: number; // 运动种类id
-  id: number; // 联赛ID
+  /** 联赛 ID；OB 可能超过 Number 安全整数，需保留原始字符串 */
+  id: number | string;
   name: string; // 联赛名称
   icon: string; // 联赛图标
   hot: boolean; // 是否热门

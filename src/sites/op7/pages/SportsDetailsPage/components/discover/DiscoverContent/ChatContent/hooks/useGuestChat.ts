@@ -30,7 +30,7 @@ export const useGuestChat = (sportId?: number, enabled = true) => {
     queryKey: [...GUEST_CHAT_QUERY_KEY, sportType, venue],
     queryFn: async () => {
       const list = await getNotLoginMsgContent(sportType);
-      return convertNotLoginMsgContentList(list as Record<string, unknown>[], {
+      return convertNotLoginMsgContentList(list, {
         allowedVenueId: venue,
       });
     },

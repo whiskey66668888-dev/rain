@@ -5,15 +5,18 @@
  *   1. EPopupWindowKey 里加一个 key
  *   2. POPUP_CONFIGS 里补对应配置（heartbeat: true 表示启用心跳检测）
  */
+import type { EVenue } from '@/apis/commonSports/constants';
 
 // ─── 心跳协议常量（父子页面共用）────────────────────────────────────────────
 export const POPUP_PING_MSG = '__POPUP_PING__';
 export const POPUP_PONG_MSG = '__POPUP_PONG__';
 
-// ─── 业务消息协议（子窗口 → 父窗口）──────────────────────────────────────────
+// ─── 业务消息协议（父子窗口双向）─────────────────────────────────────────────
 export enum EPopupMessageType {
-  /** 注单弹窗点击赛事：通知主窗口跳转赛事详情 */
+  /** 子 → 父：注单弹窗点击赛事，通知主窗口跳转赛事详情 */
   GoMatchDetail = 'GO_MATCH_DETAIL',
+  /** 父 → 子：主窗口切换体育场馆，通知注单弹窗同步场馆 */
+  SwitchVenue = 'SWITCH_VENUE',
 }
 
 export interface GoMatchDetailMessage {
@@ -22,7 +25,12 @@ export interface GoMatchDetailMessage {
   isChampion: boolean;
 }
 
-export type PopupMessage = GoMatchDetailMessage;
+export interface SwitchVenueMessage {
+  type: EPopupMessageType.SwitchVenue;
+  venue: EVenue;
+}
+
+export type PopupMessage = GoMatchDetailMessage | SwitchVenueMessage;
 
 const HEARTBEAT_INTERVAL_MS = 10 * 1000; // 每 5s 发一次 ping
 const HEARTBEAT_TIMEOUT_MS = 20 * 1000; // 超过 8s 未收到 pong 则判定失联

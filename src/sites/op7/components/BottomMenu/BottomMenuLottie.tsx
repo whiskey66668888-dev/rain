@@ -11,6 +11,31 @@ const LOTTIE_LOADERS: Record<string, () => Promise<{ default: unknown }>> = {
   mine: () => import('@/sites/op7/images/common/lottie/wode.json'),
 };
 
+const lottieDataCache = new Map<string, Promise<unknown>>();
+
+const loadBottomMenuLottieData = (itemId: string): Promise<unknown> | null => {
+  const load = LOTTIE_LOADERS[itemId];
+  if (!load) return null;
+
+  let promise = lottieDataCache.get(itemId);
+  if (!promise) {
+    promise = load().then((mod) => mod.default);
+    lottieDataCache.set(itemId, promise);
+  }
+
+  return promise;
+};
+
+export const prefetchBottomMenuLotties = (): Promise<void> => {
+  const loaders = Object.keys(LOTTIE_LOADERS).reduce<Promise<unknown>[]>((list, itemId) => {
+    const promise = loadBottomMenuLottieData(itemId);
+    if (promise) list.push(promise);
+    return list;
+  }, []);
+
+  return Promise.all(loaders).then(() => undefined);
+};
+
 interface BottomMenuLottieProps {
   itemId: string;
   fallbackIcon?: string;
@@ -20,11 +45,12 @@ const BottomMenuLottie: React.FC<BottomMenuLottieProps> = ({ itemId, fallbackIco
   const [data, setData] = useState<unknown>(null);
 
   useEffect(() => {
-    const load = LOTTIE_LOADERS[itemId];
-    if (!load) return;
+    const promise = loadBottomMenuLottieData(itemId);
+    if (!promise) return;
+
     let cancelled = false;
-    void load().then((mod) => {
-      if (!cancelled) setData(mod.default);
+    void promise.then((nextData) => {
+      if (!cancelled) setData(nextData);
     });
     return () => {
       cancelled = true;

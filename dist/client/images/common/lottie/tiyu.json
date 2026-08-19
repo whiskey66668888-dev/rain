@@ -1,0 +1,647 @@
+{
+  "v": "5.12.1",
+  "fr": 24,
+  "ip": 0,
+  "op": 51,
+  "w": 108,
+  "h": 108,
+  "nm": "点击",
+  "ddd": 0,
+  "assets": [
+    {
+      "id": "image_0",
+      "w": 108,
+      "h": 108,
+      "u": "",
+      "p": "data:image/png;base64,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",
+      "e": 1
+    },
+    {
+      "id": "image_1",
+      "w": 120,
+      "h": 120,
+      "u": "",
+      "p": "data:image/png;base64,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",
+      "e": 1
+    },
+    {
+      "id": "image_2",
+      "w": 108,
+      "h": 108,
+      "u": "",
+      "p": "data:image/png;base64,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",
+      "e": 1
+    },
+    {
+      "id": "image_3",
+      "w": 120,
+      "h": 120,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAACnElEQVR4nO3b3XWbMBjG8Zee3tcjaISMwAjeIHSCZoN6g7oTpBtkBI8QdwK7E5BO8PRCcKojhET6gUjy/90BshDnQeJD2AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8MY1tRuwlCRnZq2ZOTP7MKz+aWZnM7s2TXOu0jD8PUmPKrtIuh9OBLwkkg4LAg59rt1mzJDkJJ0ktcG6naT+mSGfKh4GUoZwL6mAJHXPCPcihupticIddVGZePuicCXt1jwWJMgPy5OwojKlXpwK91YM13UVguuisq2kO0nH4aQY77Dnwh3drXlMCCg/9F4W/H6naBiOwpX8TRpD9doKvVeS7v+gzjhcenEtSl97Qy4o64YTop3rjZJuMnVxLV6T/NC6uPfKv6kK9cMJsg/KuEKdDNNrGXpijgvK5oKLT4TcS5F27eOs6V3l/bvMtq9N01yD5dy1+CZavqYKLdjnq/O+dgMiV/OzQz/M7DiuHHpdm/mdi5a/2zT0N6l2wGcz+2i/p/yeZsp9KtSzk+SCHj9XD7ZI6deYsfBGK/fotc/tCyuQv7t20bq5kHv56cT4RUc3U56he03yz62dpC+SHqJQbqOyYcjJYBP1h0H3//doMKHyi45UyMVgE/vpJB3+aeNRpvKz8CTkTD2nobd2KzQdS81cKxeFHAQbI+itWNiLFf1m/LSnhKC3QH5+N6ePyj8sOSkGh0qHhZH8o1Hu89j4G60ln9JK0mOtY0KkEPIxKrvEScwebY/Sw/VdsD0355s8IbAxmr6JaoNt+0KvbedrxqYMYX4Lh1pN/+nQy38M0FZs6ia9mD+fhYYgnfnpxWs0bwwAAAAAAAAAAAAAAAAAAAAAAAAAAAC8Vr8AHC+oZdL+0DMAAAAASUVORK5CYII=",
+      "e": 1
+    },
+    {
+      "id": "comp_0",
+      "nm": "外圈.png Comp 1",
+      "fr": 24,
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 2,
+          "nm": "b.png",
+          "cl": "png",
+          "refId": "image_1",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [60, 60, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [60, 60, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    },
+    {
+      "id": "comp_1",
+      "nm": "足球.png Comp 2",
+      "fr": 24,
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 2,
+          "nm": "q.png",
+          "cl": "png",
+          "refId": "image_3",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [60, 60, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [60, 60, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "ddd": 0,
+      "ind": 1,
+      "ty": 2,
+      "nm": "icon.png",
+      "cl": "png",
+      "refId": "image_0",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [54, 54, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ip": 0,
+      "op": 1,
+      "st": 0,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 3,
+      "ty": 3,
+      "nm": "NULL",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 0, "ix": 11 },
+        "r": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.833], "y": [0.833] },
+              "o": { "x": [0.167], "y": [0.167] },
+              "t": 0,
+              "s": [0]
+            },
+            {
+              "i": { "x": [0.833], "y": [0.833] },
+              "o": { "x": [0.167], "y": [0.167] },
+              "t": 5,
+              "s": [-59]
+            },
+            { "t": 10, "s": [0] }
+          ],
+          "ix": 10
+        },
+        "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [50, 50, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ip": 0,
+      "op": 480,
+      "st": 0,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 4,
+      "ty": 0,
+      "nm": "外圈.png Comp 1",
+      "cl": "png",
+      "refId": "comp_0",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [60, 60, 0], "ix": 1, "l": 2 },
+        "s": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 1,
+              "s": [75, 75, 100]
+            },
+            {
+              "i": { "x": [0.833, 0.833, 0.833], "y": [0.833, 0.833, 0.558] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 6,
+              "s": [110, 110, 100]
+            },
+            { "t": 11, "s": [75, 75, 100] }
+          ],
+          "ix": 6,
+          "l": 2,
+          "x": "var $bm_rt;\nvar enable, amp, freq, decay, n, t, v;\ntry {\n    $bm_rt = enable = effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0001');\n    if (enable == 0) {\n        $bm_rt = value;\n    } else {\n        amp = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0003'), 2.5);\n        freq = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0004'), 20);\n        decay = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0005'), 20);\n        n = 0, 0 < numKeys && (n = nearestKey(time).index, key(n).time > time && n--), t = 0 === n ? 0 : $bm_sub(time, key(n).time), $bm_rt = 0 < n ? (v = velocityAtTime($bm_sub(key(n).time, $bm_div(thisComp.frameDuration, 10))), $bm_sum(value, $bm_div($bm_mul($bm_mul($bm_div(v, 100), amp), Math.sin($bm_mul($bm_mul($bm_mul(freq, t), 2), Math.PI))), Math.exp($bm_mul(decay, t))))) : value;\n    }\n} catch (err) {\n    $bm_rt = value = value;\n}"
+        }
+      },
+      "ao": 0,
+      "ef": [
+        {
+          "ty": 5,
+          "nm": "Excite - Scale",
+          "np": 8,
+          "mn": "Pseudo/BNCA2506f0b33",
+          "ix": 1,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 7,
+              "nm": "启用",
+              "mn": "Pseudo/BNCA2506f0b33-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 1, "ix": 1 }
+            },
+            { "ty": 6, "nm": "属性", "mn": "Pseudo/BNCA2506f0b33-0002", "ix": 2, "v": 0 },
+            {
+              "ty": 0,
+              "nm": "回弹幅度",
+              "mn": "Pseudo/BNCA2506f0b33-0003",
+              "ix": 3,
+              "v": { "a": 0, "k": 20, "ix": 3, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            {
+              "ty": 0,
+              "nm": "强度",
+              "mn": "Pseudo/BNCA2506f0b33-0004",
+              "ix": 4,
+              "v": { "a": 0, "k": 40, "ix": 4, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            {
+              "ty": 0,
+              "nm": "摩擦力",
+              "mn": "Pseudo/BNCA2506f0b33-0005",
+              "ix": 5,
+              "v": { "a": 0, "k": 40, "ix": 5, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            { "ty": 6, "nm": "", "mn": "Pseudo/BNCA2506f0b33-0006", "ix": 6, "v": 0 }
+          ]
+        }
+      ],
+      "w": 120,
+      "h": 120,
+      "ip": 1,
+      "op": 481,
+      "st": 1,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 5,
+      "ty": 2,
+      "nm": "matte 2",
+      "td": 1,
+      "refId": "image_2",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [54, 54, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ip": 7,
+      "op": 482,
+      "st": 2,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 6,
+      "ty": 0,
+      "nm": "足球.png Comp 2",
+      "cl": "png",
+      "tt": 1,
+      "tp": 5,
+      "refId": "comp_1",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.833], "y": [0.833] },
+              "o": { "x": [0.167], "y": [0.167] },
+              "t": 1,
+              "s": [0]
+            },
+            { "t": 26, "s": [360] }
+          ],
+          "ix": 10
+        },
+        "p": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": 0.667, "y": 1 },
+              "o": { "x": 0.333, "y": 0 },
+              "t": 1,
+              "s": [44.6, 62.75, 0],
+              "to": [15.167, -8.917, 0],
+              "ti": [0, 0, 0]
+            },
+            {
+              "i": { "x": 0.667, "y": 0.965 },
+              "o": { "x": 0.333, "y": 0 },
+              "t": 6,
+              "s": [135.6, 9.25, 0],
+              "to": [0, 0, 0],
+              "ti": [25.458, -15.018, 0]
+            },
+            {
+              "i": { "x": 0.562, "y": 0.949 },
+              "o": { "x": 0.176, "y": 0.206 },
+              "t": 7,
+              "s": [-41.519, 118.878, 0],
+              "to": [-15.603, 9.205, 0],
+              "ti": [-26.57, 17.096, 0]
+            },
+            {
+              "i": { "x": 0.706, "y": 1 },
+              "o": { "x": 0.334, "y": 0.307 },
+              "t": 14,
+              "s": [65.04, 46.416, 0],
+              "to": [6.635, -4.269, 0],
+              "ti": [-0.13, 0.123, 0]
+            },
+            { "t": 26, "s": [44.6, 62.75, 0] }
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": { "a": 0, "k": [45.75, 73.75, 0], "ix": 1, "l": 2 },
+        "s": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 1,
+              "s": [83, 83, 100]
+            },
+            {
+              "i": { "x": [0.833, 0.833, 0.833], "y": [0.833, 0.833, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 8,
+              "s": [200, 200, 100]
+            },
+            { "t": 17, "s": [83, 83, 100] }
+          ],
+          "ix": 6,
+          "l": 2,
+          "x": "var $bm_rt;\nvar enable, amp, freq, decay, n, t, v;\ntry {\n    $bm_rt = enable = effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0001');\n    if (enable == 0) {\n        $bm_rt = value;\n    } else {\n        amp = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0003'), 2.5);\n        freq = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0004'), 20);\n        decay = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0005'), 20);\n        n = 0, 0 < numKeys && (n = nearestKey(time).index, key(n).time > time && n--), t = 0 === n ? 0 : $bm_sub(time, key(n).time), $bm_rt = 0 < n ? (v = velocityAtTime($bm_sub(key(n).time, $bm_div(thisComp.frameDuration, 10))), $bm_sum(value, $bm_div($bm_mul($bm_mul($bm_div(v, 100), amp), Math.sin($bm_mul($bm_mul($bm_mul(freq, t), 2), Math.PI))), Math.exp($bm_mul(decay, t))))) : value;\n    }\n} catch (err) {\n    $bm_rt = value = value;\n}"
+        }
+      },
+      "ao": 0,
+      "ef": [
+        {
+          "ty": 5,
+          "nm": "Excite - Scale",
+          "np": 8,
+          "mn": "Pseudo/BNCA2506f0b33",
+          "ix": 2,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 7,
+              "nm": "启用",
+              "mn": "Pseudo/BNCA2506f0b33-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 1, "ix": 1 }
+            },
+            { "ty": 6, "nm": "属性", "mn": "Pseudo/BNCA2506f0b33-0002", "ix": 2, "v": 0 },
+            {
+              "ty": 0,
+              "nm": "回弹幅度",
+              "mn": "Pseudo/BNCA2506f0b33-0003",
+              "ix": 3,
+              "v": { "a": 0, "k": 20, "ix": 3, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            {
+              "ty": 0,
+              "nm": "强度",
+              "mn": "Pseudo/BNCA2506f0b33-0004",
+              "ix": 4,
+              "v": { "a": 0, "k": 40, "ix": 4, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            {
+              "ty": 0,
+              "nm": "摩擦力",
+              "mn": "Pseudo/BNCA2506f0b33-0005",
+              "ix": 5,
+              "v": { "a": 0, "k": 40, "ix": 5, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            { "ty": 6, "nm": "", "mn": "Pseudo/BNCA2506f0b33-0006", "ix": 6, "v": 0 }
+          ]
+        }
+      ],
+      "w": 120,
+      "h": 120,
+      "ip": 7,
+      "op": 481,
+      "st": 1,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 7,
+      "ty": 2,
+      "nm": "matte",
+      "td": 1,
+      "refId": "image_2",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [54, 54, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ef": [
+        {
+          "ty": 21,
+          "nm": "Fill",
+          "np": 9,
+          "mn": "ADBE Fill",
+          "ix": 1,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 10,
+              "nm": "Fill Mask",
+              "mn": "ADBE Fill-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 0, "ix": 1 }
+            },
+            {
+              "ty": 7,
+              "nm": "All Masks",
+              "mn": "ADBE Fill-0007",
+              "ix": 2,
+              "v": { "a": 0, "k": 0, "ix": 2 }
+            },
+            {
+              "ty": 2,
+              "nm": "Color",
+              "mn": "ADBE Fill-0002",
+              "ix": 3,
+              "v": { "a": 0, "k": [0, 0, 0, 1], "ix": 3 }
+            },
+            {
+              "ty": 7,
+              "nm": "Invert",
+              "mn": "ADBE Fill-0006",
+              "ix": 4,
+              "v": { "a": 0, "k": 0, "ix": 4 }
+            },
+            {
+              "ty": 0,
+              "nm": "Horizontal Feather",
+              "mn": "ADBE Fill-0003",
+              "ix": 5,
+              "v": { "a": 0, "k": 0, "ix": 5 }
+            },
+            {
+              "ty": 0,
+              "nm": "Vertical Feather",
+              "mn": "ADBE Fill-0004",
+              "ix": 6,
+              "v": { "a": 0, "k": 0, "ix": 6 }
+            },
+            {
+              "ty": 0,
+              "nm": "Opacity",
+              "mn": "ADBE Fill-0005",
+              "ix": 7,
+              "v": { "a": 0, "k": 1, "ix": 7 }
+            }
+          ]
+        }
+      ],
+      "ip": 1,
+      "op": 6,
+      "st": 1,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 8,
+      "ty": 0,
+      "nm": "足球.png Comp 2",
+      "cl": "png",
+      "tt": 1,
+      "tp": 7,
+      "refId": "comp_1",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.833], "y": [0.833] },
+              "o": { "x": [0.167], "y": [0.167] },
+              "t": 1,
+              "s": [0]
+            },
+            { "t": 26, "s": [360] }
+          ],
+          "ix": 10
+        },
+        "p": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": 0.667, "y": 1 },
+              "o": { "x": 0.333, "y": 0 },
+              "t": 1,
+              "s": [44.6, 62.75, 0],
+              "to": [15.167, -8.917, 0],
+              "ti": [0, 0, 0]
+            },
+            {
+              "i": { "x": 0.667, "y": 0.965 },
+              "o": { "x": 0.333, "y": 0 },
+              "t": 6,
+              "s": [135.6, 9.25, 0],
+              "to": [0, 0, 0],
+              "ti": [25.458, -15.018, 0]
+            },
+            {
+              "i": { "x": 0.562, "y": 0.949 },
+              "o": { "x": 0.176, "y": 0.206 },
+              "t": 7,
+              "s": [-41.519, 118.878, 0],
+              "to": [-15.603, 9.205, 0],
+              "ti": [-26.57, 17.096, 0]
+            },
+            {
+              "i": { "x": 0.706, "y": 1 },
+              "o": { "x": 0.334, "y": 0.307 },
+              "t": 14,
+              "s": [65.04, 46.416, 0],
+              "to": [6.635, -4.269, 0],
+              "ti": [-0.13, 0.123, 0]
+            },
+            { "t": 26, "s": [44.6, 62.75, 0] }
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": { "a": 0, "k": [45.75, 73.75, 0], "ix": 1, "l": 2 },
+        "s": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 1,
+              "s": [83, 83, 100]
+            },
+            {
+              "i": { "x": [0.833, 0.833, 0.833], "y": [0.833, 0.833, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 8,
+              "s": [200, 200, 100]
+            },
+            { "t": 17, "s": [83, 83, 100] }
+          ],
+          "ix": 6,
+          "l": 2,
+          "x": "var $bm_rt;\nvar enable, amp, freq, decay, n, t, v;\ntry {\n    $bm_rt = enable = effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0001');\n    if (enable == 0) {\n        $bm_rt = value;\n    } else {\n        amp = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0003'), 2.5);\n        freq = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0004'), 20);\n        decay = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0005'), 20);\n        n = 0, 0 < numKeys && (n = nearestKey(time).index, key(n).time > time && n--), t = 0 === n ? 0 : $bm_sub(time, key(n).time), $bm_rt = 0 < n ? (v = velocityAtTime($bm_sub(key(n).time, $bm_div(thisComp.frameDuration, 10))), $bm_sum(value, $bm_div($bm_mul($bm_mul($bm_div(v, 100), amp), Math.sin($bm_mul($bm_mul($bm_mul(freq, t), 2), Math.PI))), Math.exp($bm_mul(decay, t))))) : value;\n    }\n} catch (err) {\n    $bm_rt = value = value;\n}"
+        }
+      },
+      "ao": 0,
+      "ef": [
+        {
+          "ty": 5,
+          "nm": "Excite - Scale",
+          "np": 8,
+          "mn": "Pseudo/BNCA2506f0b33",
+          "ix": 2,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 7,
+              "nm": "启用",
+              "mn": "Pseudo/BNCA2506f0b33-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 1, "ix": 1 }
+            },
+            { "ty": 6, "nm": "属性", "mn": "Pseudo/BNCA2506f0b33-0002", "ix": 2, "v": 0 },
+            {
+              "ty": 0,
+              "nm": "回弹幅度",
+              "mn": "Pseudo/BNCA2506f0b33-0003",
+              "ix": 3,
+              "v": { "a": 0, "k": 20, "ix": 3, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            {
+              "ty": 0,
+              "nm": "强度",
+              "mn": "Pseudo/BNCA2506f0b33-0004",
+              "ix": 4,
+              "v": { "a": 0, "k": 40, "ix": 4, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            {
+              "ty": 0,
+              "nm": "摩擦力",
+              "mn": "Pseudo/BNCA2506f0b33-0005",
+              "ix": 5,
+              "v": { "a": 0, "k": 40, "ix": 5, "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);" }
+            },
+            { "ty": 6, "nm": "", "mn": "Pseudo/BNCA2506f0b33-0006", "ix": 6, "v": 0 }
+          ]
+        }
+      ],
+      "w": 120,
+      "h": 120,
+      "ip": 1,
+      "op": 6,
+      "st": 1,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 10,
+      "ty": 2,
+      "nm": "背景色.png",
+      "cl": "png",
+      "refId": "image_2",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [54, 54, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ip": 1,
+      "op": 480,
+      "st": 0,
+      "bm": 0
+    }
+  ],
+  "markers": [],
+  "props": {}
+}

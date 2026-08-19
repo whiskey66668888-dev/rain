@@ -2,7 +2,6 @@
 export const loadLoginPage = () => import('./LoginPage');
 export const loadRegisterPage = () => import('./RegisterPage');
 
-export const prefetchAuthModals = (): void => {
-  void loadLoginPage();
-  void loadRegisterPage();
+export const prefetchAuthModals = (): Promise<void> => {
+  return Promise.all([loadLoginPage(), loadRegisterPage()]).then(() => undefined);
 };

@@ -4,17 +4,17 @@ import Icon from '@/common/components/Icon';
 import Timing from '@/common/components/Timing';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
 import { PATHS } from '@/sites/op7/routes/paths';
+import type { MatchBaseInfo } from '@/apis/commonSports/types';
+import { getSpecialSportScore } from '@/apis/fbSports/common/fbFormat';
 
 import styles from './headerMobile.module.scss';
 import LazyImage from '@/common/components/LazyImage';
 import clsx from 'clsx';
 
-import type { MatchRecord } from '@/apis/fbSports/getList';
-import { formatFBSportItem, getSpecialSportScore } from '@/apis/fbSports/common/fbFormat';
 import { Popover } from 'antd-mobile';
 
 interface HeaderMobileProps {
-  match: MatchRecord;
+  matchInfo: MatchBaseInfo;
   isFavorite: boolean;
   isMatchTeamHeader: boolean;
   isVideoVisible: boolean;
@@ -29,7 +29,7 @@ interface HeaderMobileProps {
  * 赛事详情页头部组件
  */
 const HeaderMobile: React.FC<HeaderMobileProps> = ({
-  match,
+  matchInfo,
   isFavorite,
   isMatchTeamHeader,
   isVideoVisible,
@@ -41,29 +41,23 @@ const HeaderMobile: React.FC<HeaderMobileProps> = ({
   const navigate = useNavigateWithLanguage();
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const formattedMatch = useMemo(() => {
-    const base = formatFBSportItem(match);
-
-    return { ...base, matchPeriod: base.periodName ?? base.matchPeriod ?? '' };
-  }, [match]);
-
   const {
     homeName,
     homeLogo,
     awayName,
     awayLogo,
-    homeScore,
-    awayScore,
+    homeScore = 0,
+    awayScore = 0,
     matchDate,
     isLive,
     isEnded = false,
-    matchPeriod,
     isCountdown,
-    matchTime,
+    matchTime = 0,
     leagueName,
     clockType,
-    sportId,
-  } = formattedMatch;
+    sportId = 0,
+  } = matchInfo;
+  const matchPeriod = matchInfo.periodName ?? matchInfo.matchPeriod ?? '';
 
   const showTeamHeader = useMemo(() => {
     return isVideoVisible || isMatchTeamHeader;
@@ -117,7 +111,7 @@ const HeaderMobile: React.FC<HeaderMobileProps> = ({
           ) : (
             <Icon
               src="/images/common/back.svg"
-              size="16px"
+              size="18px"
               color={showTeamHeader ? 'var(--Text-Main-10)' : 'var(--White-100)'}
             />
           )}
@@ -127,7 +121,12 @@ const HeaderMobile: React.FC<HeaderMobileProps> = ({
       <div className={styles.center} onClick={onDrawerOpen}>
         <div className={clsx(styles.league, showTeamHeader ? styles.hide : '')}>
           <span className={`${styles.leagueName} _tf[16]`}>{leagueName}</span>
-          <Icon src="/images/common/arrow_down.svg" size="12px" color="var(--White-100)" />
+          <Icon
+            src="/images/common/arrow_down.svg"
+            size="12px"
+            color="var(--White-100)"
+            className="shrink-0"
+          />
         </div>
 
         <div className={clsx(styles.match, showTeamHeader ? styles.show : '')}>
@@ -143,7 +142,7 @@ const HeaderMobile: React.FC<HeaderMobileProps> = ({
                   <Timing
                     className="_tf[10]"
                     time={matchTime}
-                    running={isCountdown}
+                    running={!!isCountdown}
                     isCountdown={clockType === 'DESC'}
                   />
                 </span>

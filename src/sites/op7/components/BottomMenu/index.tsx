@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo } from 'react';
 import { generatePath, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -11,8 +11,10 @@ import Icon from '@/common/components/Icon';
 import { useAppDispatch } from '@/core/store/hooks';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
 import { useSocialUnreadCount } from '@/apis/origin/social/getSocialUnreadCount';
+import { prefetchBottomTabRoutes } from '@/sites/op7/routes/prefetchBottomTabRoutes';
 
-const BottomMenuLottie = lazy(() => import('./BottomMenuLottie'));
+const loadBottomMenuLottie = () => import('./BottomMenuLottie');
+const BottomMenuLottie = lazy(loadBottomMenuLottie);
 
 /** 与 activeMenuId 一致：去掉语言前缀，供底部 Tab 与 PWA 横幅等共用 */
 export const stripLocaleFromPathname = (pathname: string): string =>
@@ -104,6 +106,42 @@ const BottomMenu: React.FC = () => {
   const hasSocialUnread = socialUnreadCount > 0;
 
   const bottomMenuItems = useMemo(() => buildBottomMenuItems(), []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let idleId: number | undefined;
+    let gapTimer: number | undefined;
+
+    // 首屏稳定后再预取，避免与关键渲染/API 抢带宽
+    const PREFETCH_FLOOR_MS = 2500;
+
+    const runPrefetch = () => {
+      if (cancelled) return;
+      void prefetchBottomTabRoutes().catch(() => {});
+      gapTimer = window.setTimeout(() => {
+        if (cancelled) return;
+        void loadBottomMenuLottie()
+          .then((mod) => mod.prefetchBottomMenuLotties())
+          .catch(() => {});
+      }, 600);
+    };
+
+    const floorTimer = window.setTimeout(() => {
+      if (cancelled) return;
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(runPrefetch, { timeout: 2000 });
+        return;
+      }
+      runPrefetch();
+    }, PREFETCH_FLOOR_MS);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(floorTimer);
+      if (gapTimer !== undefined) window.clearTimeout(gapTimer);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+    };
+  }, []);
 
   const activeMenuId = useMemo(() => {
     const pathname = location.pathname;

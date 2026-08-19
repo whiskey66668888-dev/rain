@@ -11,12 +11,7 @@ const logger = createImLogger('OpenIMClient');
 type SDKInstance = ReturnType<typeof getSDK>;
 
 export type ImConnectionState =
-  | 'idle'
-  | 'initializing'
-  | 'ready'
-  | 'failed'
-  | 'maintain'
-  | 'missing_config';
+  'idle' | 'initializing' | 'ready' | 'failed' | 'maintain' | 'missing_config';
 
 /** OpenIM 重复登录错误码 */
 const ERR_ALREADY_LOGGED_IN = 10102;

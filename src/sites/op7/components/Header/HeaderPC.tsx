@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 
 import Button from '@/common/components/Button';
@@ -21,6 +22,9 @@ import styles from './Header.module.scss';
 import { useHeaderBalanceData } from '@/common/hooks/useHeaderBalance';
 import { bigNB } from '@/utils/bet/bigMath';
 import { DEFAULT_AVATAR_SRC } from '@/common/utils/emcAvatar';
+import SegmentedControl from '@/common/components/SegmentedControl';
+import { SPORT_VENUE_OPTIONS } from '@/utils/constants/system';
+import { setVenue } from '@/core/store/slices/sportSlice';
 
 interface HeaderPCProps {
   theme: 'light' | 'dark';
@@ -29,6 +33,7 @@ interface HeaderPCProps {
 
 const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
   const { t } = useTranslation();
+  const location = useLocation();
   const navigate = useNavigateWithLanguage();
   const dispatch = useAppDispatch();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
@@ -43,15 +48,24 @@ const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
   const [isAvatarDropdownPinned, setIsAvatarDropdownPinned] = useState(false);
   const avatarDropdownContainerRef = useRef<HTMLDivElement>(null);
   const isGamePlaying = useAppSelector((state) => state.entertainment.isGamePlaying);
-
+  const venue = useAppSelector((state) => state.sport.venue);
   const { balance } = useHeaderBalanceData();
-
+  const pathWithoutLang = useMemo(
+    () => location.pathname.replace(/^\/[a-z]{2}/, '') || PATHS.home,
+    [location.pathname],
+  );
+  // 与 HeaderH5 一致：场馆切换仅在体育列表页 /sports 展示
+  const isSportsPage = pathWithoutLang === PATHS.sports;
   const handleLoginClick = (): void => {
     dispatch(openLoginModal());
   };
 
   const handleRegisterClick = (): void => {
     dispatch(openRegisterModal());
+  };
+
+  const handleAuthPointerEnter = (): void => {
+    void prefetchAuthModals();
   };
 
   const handleLogoutClick = (): void => {
@@ -100,6 +114,15 @@ const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
             })}
             onClick={handleLogoClick}
           />
+          {isSportsPage ? (
+            <SegmentedControl
+              options={SPORT_VENUE_OPTIONS}
+              className="bg-[var(--Background-500)]"
+              height={28}
+              value={venue}
+              onChange={(value) => dispatch(setVenue(value))}
+            />
+          ) : null}
         </section>
         <section>
           <ClientOnly fallback={<div className="flex items-center gap-12px">{/* SSR 占位 */}</div>}>
@@ -146,7 +169,7 @@ const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
                       'bg-[var(--Background-600)]',
                       styles.headerActionButton,
                     )}
-                    onPointerEnter={prefetchAuthModals}
+                    onPointerEnter={handleAuthPointerEnter}
                     onClick={handleLoginClick}
                   >
                     {t('header.login')}
@@ -159,7 +182,7 @@ const HeaderPC: React.FC<HeaderPCProps> = ({ theme, rightSidebarVisible }) => {
                       styles.headerActionButton,
                       styles.headerRegisterButton,
                     )}
-                    onPointerEnter={prefetchAuthModals}
+                    onPointerEnter={handleAuthPointerEnter}
                     onClick={handleRegisterClick}
                   >
                     {t('header.register')}

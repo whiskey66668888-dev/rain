@@ -126,8 +126,8 @@ const IndexOdds: React.FC<IndexOddsProps> = ({ scheduleId, matchId, sportId }) =
         visible={!!historyCompanyId}
         companyId={historyCompanyId}
         companyName={historyEntry?.name}
-        // 使用稳定的场馆 matchId，避免 list 轮询更新 historyOddsItem 时触发历史重载闪烁
-        matchId={matchId || historyOddsItem?.matchId || historyEntry?.matchId || scheduleId || ''}
+        // 对齐 App：历史必须用该机构 list 返回的 matchId，不能用当前场馆 id
+        matchId={historyOddsItem?.matchId || historyEntry?.matchId || matchId || scheduleId || ''}
         matchTime={historyOddsItem?.matchTime}
         sportId={resolvedSportId}
         tabKey={activeTab.key}

@@ -38,7 +38,6 @@ export const getDiscoverSubTabs = ({
   }
 
   const enabledTitles = new Set(enabledSubTabTitles);
-
   if (isBasketball && resultMatchId) {
     enabledTitles.add('分析');
     enabledTitles.add('直播');

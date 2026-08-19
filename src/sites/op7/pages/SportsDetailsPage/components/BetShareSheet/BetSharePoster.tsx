@@ -8,6 +8,7 @@ import { BetConfirmingSvg, BetFailedSvg, BetSuccessSvg } from '@/sites/op7/compo
 
 import SharePosterUserRow from '../share/SharePosterUserRow';
 import SharePosterInviteRow from '../share/SharePosterInviteRow';
+import { getOrderDisplayOdds, getOrderOddsFormatLabel } from '@/utils/betHistory';
 
 /**
  * 与 H5 注单列表 BetRecordCard 共用同一套主题变量，深色模式自动跟随
@@ -178,7 +179,7 @@ const Leg: React.FC<{ order: TBetHistoryOrderItem; detail: THistoryBetItem }> = 
             className="shrink-0 text-[14px] font-500 leading-[1.43]"
             style={{ color: isParlay ? C.main : C.theme }}
           >
-            @{fmt(detail.baseOdds)}
+            @{getOrderDisplayOdds(detail.baseOdds, detail)}
           </p>
         </div>
         <div
@@ -186,7 +187,8 @@ const Leg: React.FC<{ order: TBetHistoryOrderItem; detail: THistoryBetItem }> = 
           style={{ color: C.sub }}
         >
           <p className="min-w-0 truncate">
-            {detail.playName} 欧洲盘
+            {/* 注单下单时的盘口（欧洲盘/香港盘/…），未下发按欧洲盘兜底 */}
+            {detail.playName} {getOrderOddsFormatLabel(detail)}
             {detail.scoreWhileBetting ? <span>[{detail.scoreWhileBetting}]</span> : null}
           </p>
           <p className="ml-8px shrink-0">赛果 {detail.resultScore || '- -'}</p>
@@ -248,7 +250,7 @@ const BetSharePoster: React.FC<BetSharePosterProps> = ({
                   {order.orderLabel}*{order.orderSum}
                 </p>
                 <p className="shrink-0 text-[16px]" style={{ color: C.theme }}>
-                  @{fmt(order.orderOdds)}
+                  @{getOrderDisplayOdds(order.orderOdds, order)}
                 </p>
               </>
             )}

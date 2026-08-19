@@ -483,7 +483,7 @@ const GamePage: React.FC = (
                 >
                   {gameInitLoading && (
                     <div className={styles.gameInitLoading}>
-                      <img src={`/images/${leaveGameTheme}/loading.webp`} alt="loading" />
+                      <img src={`/images/${leaveGameTheme}/loading.png`} alt="loading" />
                     </div>
                   )}
                   <iframe
@@ -494,7 +494,7 @@ const GamePage: React.FC = (
                     onLoad={handleIframeLoad}
                   >
                     <div className={clsx(styles.gameInitLoading, gameInitLoading && styles.show)}>
-                      <img src={`/images/${leaveGameTheme}/loading.webp`} alt="loading" />
+                      <img src={`/images/${leaveGameTheme}/loading.png`} alt="loading" />
                     </div>
                   </iframe>
                 </div>
@@ -649,7 +649,7 @@ const GamePage: React.FC = (
             <div className={styles.h5GameContent} ref={gameContentRef}>
               {gameInitLoading && (
                 <div className={styles.gameInitLoading}>
-                  <img src={`/images/${leaveGameTheme}/loading.webp`} alt="loading" />
+                  <img src={`/images/${leaveGameTheme}/loading.png`} alt="loading" />
                 </div>
               )}
               {/* 全屏的时候展示悬浮球 */}
@@ -670,7 +670,7 @@ const GamePage: React.FC = (
                 onLoad={handleIframeLoad}
               >
                 <div className={clsx(styles.gameInitLoading, gameInitLoading && styles.show)}>
-                  <img src={`/images/${leaveGameTheme}/loading.webp`} alt="loading" />
+                  <img src={`/images/${leaveGameTheme}/loading.png`} alt="loading" />
                 </div>
               </iframe>
             </div>

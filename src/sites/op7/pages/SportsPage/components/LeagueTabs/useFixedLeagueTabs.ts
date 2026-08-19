@@ -50,7 +50,7 @@ export interface UseFixedLeagueTabsResult {
   /** 含「全部」的完整 tab 列表 */
   items: FixedLeagueTab[];
   /** 当前高亮项；null 表示筛选状态无法用单个 tab 表达（弹窗多选） */
-  activeId: number | null;
+  activeId: string | number | null;
   /** 点击某个 tab */
   select: (leagueId: number) => void;
 }
@@ -81,7 +81,7 @@ export const useFixedLeagueTabs = (options?: { enabled?: boolean }): UseFixedLea
   /** 本次玩法/赛种下真的有在售赛事的白名单联赛，按白名单顺序 */
   const leagues = useMemo(() => {
     if (!leagueGroups?.length) return [];
-    const availableIds = new Set<number>();
+    const availableIds = new Set<string | number>();
     leagueGroups.forEach((group) => {
       group.list.forEach((item) => {
         if (item.mt > 0) availableIds.add(item.id);

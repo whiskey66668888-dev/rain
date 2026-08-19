@@ -14,13 +14,13 @@ export const BASKETBALL_TABS: OddsTab[] = [
   { label: '总分', playType: 3, key: 'total' },
 ];
 
-export type CompanyId = 'OP' | 'EB' | 'CME';
+export type CompanyId = 'OP' | 'EB';
 
 export const INDEX_COMPANIES: Array<{
   id: CompanyId;
   name: string;
   image: string;
-  apiPlatform: 'FB' | 'OB' | 'BTI';
+  apiPlatform: 'FB' | 'OB';
 }> = [
   {
     id: 'OP',
@@ -34,16 +34,10 @@ export const INDEX_COMPANIES: Array<{
     image: '/images/common/sportsDetails/indexOdds/eb_sports.png.webp',
     apiPlatform: 'OB',
   },
-  {
-    id: 'CME',
-    name: 'CME体育',
-    image: '/images/common/sportsDetails/indexOdds/cme_sports.png.webp',
-    apiPlatform: 'BTI',
-  },
 ];
 
+/** 场馆展示顺序（已过滤 CME/EMC） */
 export const COMPANY_ORDER_BY_VENUE: Record<string, CompanyId[]> = {
-  fb: ['OP', 'EB', 'CME'],
-  ob: ['EB', 'OP', 'CME'],
-  bti: ['CME', 'OP', 'EB'],
+  fb: ['OP', 'EB'],
+  ob: ['EB', 'OP'],
 };

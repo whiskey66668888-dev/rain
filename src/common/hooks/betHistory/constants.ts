@@ -14,13 +14,14 @@ export const BET_HISTORY_VENUE_TAB_LIST = [
   {
     key: EVenue.FB,
     venue: EVenue.FB,
-    label: '体育',
+    label: 'OP',
   },
-  //   {
-  //     key: EVenue.OB,
-  //     venue: EVenue.OB,
-  //     label: 'OB',
-  //   },
+  {
+    key: EVenue.OB,
+    venue: EVenue.OB,
+    // OB 场馆对外文案为「EB」，与 App 一致
+    label: 'EB',
+  },
   {
     key: 'entertainment',
     label: '娱乐',
@@ -67,7 +68,7 @@ export const queryTypeToTabMap: Record<EBetHistoryQueryType, EBetHistoryTab> = {
   [EBetHistoryQueryType.RESULTS]: EBetHistoryTab.RESULTS,
 };
 
-// h5
+// h5：FB / OB 场馆 tab 一致，赛果两边都有入口
 export const tabListH5 = [tabItemUnsettled, tabItemSettled, tabItemReserve, tabItemResults];
 // pc左侧菜单二级页面模式
 export const tabListSidebar = [tabItemUnsettled, tabItemReserve];

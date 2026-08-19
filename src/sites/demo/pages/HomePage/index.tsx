@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { OBMenuListResponse, useMenuListQuery } from '@/apis/obSports/menu';
 import { useBannerListQuery, type BannerItem } from '@/apis/origin/bannerList';
 
 import styles from './HomePage.module.scss';
@@ -9,7 +8,6 @@ import styles from './HomePage.module.scss';
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
   const { data: bannerList = [] } = useBannerListQuery({ colorType: 'dark' });
-  const { data: obMenuList = [] } = useMenuListQuery();
 
   return (
     <div className={`${styles.homePage}`}>
@@ -28,14 +26,7 @@ const HomePage: React.FC = () => {
             ))}
           </ul>
         </section>
-        <section className={'flex gap-4 flex-col'}>
-          <h3>OB接口体育菜单列表数据 ({obMenuList.length})</h3>
-          <ul>
-            {obMenuList.map((menu: OBMenuListResponse) => (
-              <li key={menu.menuId}>{menu.menuName}</li>
-            ))}
-          </ul>
-        </section>
+        <section className={'flex gap-4 flex-col'}></section>
       </div>
     </div>
   );

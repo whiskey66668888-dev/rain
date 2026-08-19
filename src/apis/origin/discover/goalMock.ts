@@ -9,11 +9,10 @@
 import { normalizeGoalData, type GoalData } from './goalTypes';
 
 /**
- * 近期比赛缺少真实进球数据时，用 mock 兜底以便展示进球 tab：
- * 一方面给进球接口返回兜底数据，另一方面把「进球」注入发现子 tab 列表。
- * 上线接口稳定后置 false 即可整体关闭。
+ * 进球数据 mock 兜底开关（仅影响 /goal 无数据时是否用 mock）。
+ * 「进球」子 tab 是否展示一律以 /v2/sport/match/tab 接口为准，不做本地补 tab。
  */
-export const USE_GOAL_MOCK_FALLBACK = true;
+export const USE_GOAL_MOCK_FALLBACK = false;
 
 /** 发现子 tab 中进球的标题（与 DISCOVER_SUB_TAB_ORDER 保持一致） */
 export const GOAL_SUB_TAB_TITLE = '进球';

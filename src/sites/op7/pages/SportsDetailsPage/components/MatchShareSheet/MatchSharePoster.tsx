@@ -89,7 +89,7 @@ const MatchSharePoster: React.FC<MatchSharePosterProps> = ({
       {/* 赛事卡片 */}
       <div className="relative mt-8px h-[146px] w-full overflow-hidden rounded-[10px]">
         <img
-          src={`${SHARE_ASSET}/share_card_bg.png`}
+          src={`${SHARE_ASSET}/share_card_bg.webp`}
           className="absolute inset-0 h-full w-full object-cover"
           alt=""
         />

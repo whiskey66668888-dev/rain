@@ -45,7 +45,7 @@ const SearchModal: React.FC<{
   const prevVisibleRef = useRef(false);
 
   const onPickerLeagueFilter = useCallback(
-    (sid: number, leagueIds: number[], text?: string) => {
+    (sid: number, leagueIds: Array<number | string>, text?: string) => {
       changeFilterByLeagueIds(leagueIds, sid, text ?? '', { syncLeaguePicker: true });
       onClose();
     },
@@ -54,7 +54,7 @@ const SearchModal: React.FC<{
 
   /** 热门搜索：列表仍按联赛筛，不与筛选 Tab 勾选同步、再次打开默认搜索 Tab */
   const onHotSearchLeagueFilter = useCallback(
-    (sid: number, leagueIds: number[], text?: string) => {
+    (sid: number, leagueIds: Array<number | string>, text?: string) => {
       changeFilterByLeagueIds(leagueIds, sid, text ?? '', { syncLeaguePicker: false });
       onClose();
     },

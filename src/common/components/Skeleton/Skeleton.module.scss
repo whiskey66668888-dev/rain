@@ -12,7 +12,7 @@
 .skeletonBase {
   position: relative;
   overflow: hidden;
-  background: var(--Background-300);
+  background: var(--skeleton-base-color, var(--Background-300));
   border-radius: 4px;
 
   // 流光效果
@@ -23,7 +23,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent 0%, var(--Background-700) 50%, transparent 100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--skeleton-shimmer-color, var(--Background-700)) 50%,
+      transparent 100%
+    );
     animation: skeleton-shimmer 1.5s ease-in-out infinite;
   }
 
@@ -47,6 +52,31 @@
   &.delay5::after {
     animation-delay: 0.5s;
   }
+}
+
+.sportsH5SkeletonTheme {
+  @media (max-width: 1023px) {
+    --sports-skeleton-page-bg: linear-gradient(180deg, #dbe7f8 0%, #e4eeff 112px, #eaf2ff 100%);
+    --sports-skeleton-card-bg: rgba(225, 236, 253, 0.78);
+    --sports-skeleton-card-shadow: 0 0 0 1px rgba(198, 216, 242, 0.52);
+    --skeleton-base-color: rgba(211, 226, 248, 0.96);
+    --skeleton-shimmer-color: rgba(250, 252, 255, 0.76);
+  }
+}
+
+:global([data-theme='dark']) .sportsH5SkeletonTheme {
+  @media (max-width: 1023px) {
+    --sports-skeleton-page-bg: linear-gradient(180deg, #111827 0%, #172235 112px, #1b2638 100%);
+    --sports-skeleton-card-bg: rgba(25, 34, 49, 0.88);
+    --sports-skeleton-card-shadow: 0 0 0 1px rgba(71, 89, 121, 0.28);
+    --skeleton-base-color: rgba(38, 50, 70, 0.95);
+    --skeleton-shimmer-color: rgba(74, 92, 124, 0.72);
+  }
+}
+
+.sportsH5ListCard {
+  background: var(--sports-skeleton-card-bg, var(--Background-300));
+  box-shadow: var(--sports-skeleton-card-shadow, none);
 }
 
 /* H5 我的页顶部纹理（与 MinePageH5.module.scss .hero 一致） */

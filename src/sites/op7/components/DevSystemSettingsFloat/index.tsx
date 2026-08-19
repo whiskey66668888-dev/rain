@@ -7,11 +7,18 @@ import { ClientOnly } from '@/common/components/ClientOnly';
 import Icon from '@/common/components/Icon';
 import SegmentedControl from '@/common/components/SegmentedControl';
 import Switch from '@/common/components/Switch';
+import { EVenue } from '@/apis/commonSports/constants';
 import { useLogin } from '@/common/hooks/useLogin';
 import { useSystem } from '@/common/hooks/useSystem';
-import { useAppSelector } from '@/core/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import type { ConfigState } from '@/core/store/slices/configSlice';
-import { FontScaleType, FONT_SIZE_OPTIONS, THEME_OPTIONS } from '@/utils/constants/system';
+import { setVenue } from '@/core/store/slices/sportSlice';
+import {
+  FontScaleType,
+  FONT_SIZE_OPTIONS,
+  SPORT_VENUE_OPTIONS,
+  THEME_OPTIONS,
+} from '@/utils/constants/system';
 import { zIndexMap } from '@/utils/constants/zIndex';
 import { useOpenCustomerService } from '@/sites/op7/hooks/useOpenCustomerService';
 
@@ -63,12 +70,14 @@ const DevSystemSettingsFloat: React.FC = () => {
   const suppressNextClickRef = useRef(false);
   const openTimerRef = useRef<number | null>(null);
   const lastTapTimestampRef = useRef(0);
+  const dispatch = useAppDispatch();
   const { logout } = useLogin();
   const openCustomerService = useOpenCustomerService();
   const { setFontScaleType, setTheme, updateSystemConfig } = useSystem();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
   const userName = useAppSelector((state) => state.user.userInfo.loginName);
   const isMobile = useAppSelector((state) => state.config.isMobile);
+  const sportVenue = useAppSelector((state) => state.sport.venue);
   const {
     fontScaleType,
     themeMode,
@@ -347,6 +356,16 @@ const DevSystemSettingsFloat: React.FC = () => {
                   options={THEME_OPTIONS}
                   value={themeMode ?? 'system'}
                   onChange={(value) => setTheme(value)}
+                />
+              </ClientOnly>
+            </li>
+            <li>
+              <span>体育场馆</span>
+              <ClientOnly>
+                <SegmentedControl
+                  options={SPORT_VENUE_OPTIONS}
+                  value={sportVenue ?? EVenue.FB}
+                  onChange={(value) => dispatch(setVenue(value))}
                 />
               </ClientOnly>
             </li>

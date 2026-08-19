@@ -20,6 +20,7 @@ import Button from '@/common/components/Button';
 import { useCallback } from 'react';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 import { useAppSelector } from '@/core/store/hooks';
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 
 const BetPanelSingle = () => {
   const isMobile = useAppSelector((state) => state.config.isMobile);
@@ -47,6 +48,7 @@ const BetPanelSingle = () => {
     hideBetDrawer,
   } = useBetMethods();
   const { placePreBet } = usePlacePreBet();
+  const { getOddsDisplay } = useOddsDisplay();
   const { getVenueBalance } = useGetVenueBalance();
   const { switchSportsLeftPanelType } = useSportsMainListControl();
 
@@ -92,6 +94,15 @@ const BetPanelSingle = () => {
             const isOddsClosed = item.oddsStatus !== EOddsStatus.Open;
             const oddUp = showBetPanel && item.oddsChange === EOddsChange.Up;
             const oddDown = showBetPanel && item.oddsChange === EOddsChange.Down;
+            // 单关面板恒为单关口径；预约赔率与投注项赔率同盘口
+            const oddsDisplay = getOddsDisplay({
+              baseOdds: item.baseOdds,
+              isSupportHK: item.isSupportHK,
+            });
+            const preBetOddsDisplay = getOddsDisplay({
+              baseOdds: item.preBetInfo?.preBetOdds,
+              isSupportHK: item.isSupportHK,
+            });
             return (
               <div
                 key={id}
@@ -141,7 +152,7 @@ const BetPanelSingle = () => {
                             (<i className="din-pro not-italic">{item.score}</i>)
                           </span>
                         )}
-                        <span className="ml-2px text-[var(--Text-800)]">[欧洲盘]</span>
+                        <span className="ml-2px text-[var(--Text-800)]">[{oddsDisplay.label}]</span>
                       </div>
 
                       {/* 第二行：投注项名称 */}
@@ -159,7 +170,7 @@ const BetPanelSingle = () => {
                           })}
                         >
                           <span>@</span>
-                          <span className="din-pro">{bigNB(item.baseOdds).toFixed(2)}</span>
+                          <span className="din-pro">{oddsDisplay.odds}</span>
                           <OddsChangeArrowSvg
                             className={clsx(
                               'w-6px absolute right-[-8px] top-1/2 -translate-y-1/2',
@@ -222,9 +233,7 @@ const BetPanelSingle = () => {
                             </button>
                             <div className="_tf[12] leading-[1.43] flex-1 text-center text-[var(--Text-Main-10)]">
                               <span>@</span>
-                              <span className="din-pro">
-                                {bigNB(item.preBetInfo?.preBetOdds || 0).toFixed(2)}
-                              </span>
+                              <span className="din-pro">{preBetOddsDisplay.odds}</span>
                             </div>
                             {/* <input
                               type="text"

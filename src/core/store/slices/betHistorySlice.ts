@@ -27,14 +27,13 @@ interface TBetHistoryVenueState {
   cancelReserveBetEntry?: TCancelReserveBetEntry;
 }
 
+/** 当前场馆统一取 sport.venue，这里只按场馆分片存各自的查询/编辑状态 */
 interface TBetHistoryState {
-  activeVenue: EVenue;
   [EVenue.FB]: TBetHistoryVenueState;
   [EVenue.OB]: TBetHistoryVenueState;
 }
 
 const initialState: TBetHistoryState = {
-  activeVenue: EVenue.FB,
   [EVenue.FB]: {},
   [EVenue.OB]: {},
 };
@@ -43,9 +42,6 @@ const betHistorySlice = createSlice({
   name: 'betHistory',
   initialState,
   reducers: {
-    setActiveVenue: (state, action: PayloadAction<EVenue>) => {
-      state.activeVenue = action.payload;
-    },
     setBetHistoryQueryParams: (
       state,
       action: PayloadAction<{ activeVenue: EVenue; queryParams: TBetHistoryQueryParams }>,
@@ -118,7 +114,6 @@ const betHistorySlice = createSlice({
 });
 
 export const {
-  setActiveVenue,
   setBetHistoryQueryParams,
   updateBetHistoryQueryParams,
   openReserveEdit,

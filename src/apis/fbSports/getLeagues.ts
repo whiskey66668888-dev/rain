@@ -80,7 +80,6 @@ export const useGetLeaguesQuery = (
   enabled = true,
 ): ReturnType<typeof useQueryHook<LeagueGroup[], Error>> => {
   return useQueryHook<LeagueGroup[], Error>({
-    enabled,
     queryKey: ['fb', 'leagues', 'getLeagues', JSON.stringify(params)],
     queryFn: () =>
       getLeaguesReq(params)
@@ -89,6 +88,7 @@ export const useGetLeaguesQuery = (
           // 返回一个空对象，避免类型错误
           return [] as LeagueGroup[];
         }),
+    enabled,
   });
 };
 
@@ -173,6 +173,7 @@ export const getHotLeagueListReq = (
  */
 export const useGetHotLeagueList = (
   params: GetHotLeaguesParams,
+  enabled = true,
 ): ReturnType<typeof useQueryHook<LeagueItem[], Error>> => {
   return useQueryHook<LeagueItem[], Error>({
     queryKey: ['fb', 'leagues', 'getHotLeagueListReq', JSON.stringify(params)],
@@ -183,6 +184,7 @@ export const useGetHotLeagueList = (
           // 返回一个空对象，避免类型错误
           return [];
         }),
+    enabled,
   });
 };
 

@@ -17,6 +17,7 @@ import type {
   THistoryBetItem,
 } from '@/apis/commonSports/types';
 import { EBetHistoryType, queryTypeToTabMap } from './constants';
+import { parseVenueParam } from './useBetHistoryPopupVenue';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBetParameterFb } from '@/apis/fbSports/bet/getBetParameter';
 import { bigNB } from '@/utils/bet/bigMath';
@@ -29,6 +30,7 @@ import { earlySettleBetFb } from '@/apis/fbSports/betHistory/earlySettleBetFb';
 import { getEarlySettlesByIdsFb } from '@/apis/fbSports/betHistory/getEarlySettlesByIdsFb';
 import { reserveEarlySettleBetFb } from '@/apis/fbSports/betHistory/reserveEarlySettleBetFb';
 import { cancelReserveEarlySettleFb } from '@/apis/fbSports/betHistory/cancelReserveEarlySettleFb';
+import { submitObEarlySettle } from './obEarlySettle';
 import { calcEarlySettleStats, calcReservePercentsFromActive } from '@/utils/betHistory';
 import { EFbCashOutOrderStatus, EFbOrderStatus } from '@/apis/fbSports/common/constants/enum';
 import { getMatchDetailReq } from '@/apis/fbSports/getMatchDetail';
@@ -130,7 +132,8 @@ const useBetHistory = (type: EBetHistoryType) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const [checkingMatchId, setCheckingMatchId] = useState<string | null>(null);
-  const activeVenue = useAppSelector((state) => state.betHistory.activeVenue);
+  // 全局唯一场馆来源
+  const activeVenue = useAppSelector((state) => state.sport.venue);
   const queryParams = useAppSelector((state) => state.betHistory[activeVenue].queryParams);
   const reserveEdit = useAppSelector((state) => state.betHistory[activeVenue].reserveEdit);
   const { baseChangeActiveTab } = useBetHistoryBaseMethods();
@@ -161,13 +164,13 @@ const useBetHistory = (type: EBetHistoryType) => {
   // #region 实时比赛信息
   const liveMatchIds = useMemo(() => {
     if (activeTab !== EBetHistoryTab.UNSETTLED) return [];
-    const ids: number[] = [];
+    const ids: string[] = [];
     for (const order of list) {
       if (!order.isUnsettledOrder) continue;
       for (const detail of order.orderDetails) {
         if (detail.isLive && !detail.isChampion) {
-          const id = Number(detail.matchId);
-          if (!isNaN(id) && id > 0) ids.push(id);
+          const id = detail.matchId;
+          if (!id) ids.push(id);
         }
       }
     }
@@ -215,7 +218,8 @@ const useBetHistory = (type: EBetHistoryType) => {
    * 对齐 App 端逻辑（teamDetail.dart）：
    * - 接口返回正确内容（该场存在且未完场）→ 跳转赛事详情页；
    * - 接口返回为空（已下架/已清理）或赛事已结束（完场）→ toast「赛事已结束，无法查看投注盘口」。
-   * 注：目前仅 FB 场馆有详情接口，其它场馆暂不处理（与列表请求一致，仅 FB 实现）。
+   * 注：赛事详情页目前只接了 FB 数据源，OB（EB）暂无详情页，故只有 FB 可跳转，
+   * 是否可点由 canGoBetMatchDetail 统一判定（EB 注单不展示可点样式）。
    */
   const tryGoMatchDetail = useCallback(
     async ({ matchId, isChampion }: Pick<THistoryBetItem, 'matchId' | 'isChampion'>) => {
@@ -225,12 +229,12 @@ const useBetHistory = (type: EBetHistoryType) => {
 
       const notifyEnded = () => toast({ title: '赛事已结束，无法查看投注盘口', type: 'warning' });
 
-      // 目前仅 FB 场馆有详情接口
+      // 目前仅 FB 场馆有详情页
       if (activeVenue !== EVenue.FB) return;
 
       try {
         setCheckingMatchId(matchId);
-        const res = await getMatchDetailReq({ matchId: +matchId });
+        const res = await getMatchDetailReq({ matchId: matchId });
         const record = res?.data;
         // 接口未返回该场（matchId 为空）或赛事状态为「已结束/完场」→ 拦截并提示
         if (!record?.id || record.ms === 0) {
@@ -252,9 +256,10 @@ const useBetHistory = (type: EBetHistoryType) => {
 
   // #region 轮训未结算列表中的确认中订单
   const confirmingOrderIds = useMemo(() => {
-    if (activeTab !== EBetHistoryTab.UNSETTLED) return [];
+    // 查询接口为 FB 专用，其它场馆不轮询
+    if (activeTab !== EBetHistoryTab.UNSETTLED || activeVenue !== EVenue.FB) return [];
     return list.filter((o) => o.orderStatus === EBetOrderStatus.Confirming).map((o) => o.orderId);
-  }, [list, activeTab]);
+  }, [list, activeTab, activeVenue]);
 
   const { data: changedConfirmingIds } = useQuery({
     queryKey: ['betHistoryConfirmingOrders', confirmingOrderIds],
@@ -558,7 +563,8 @@ const useBetHistory = (type: EBetHistoryType) => {
       const minStake = isParlayOrder
         ? (earlySettleConfig.parlayMinStake ?? 0)
         : (earlySettleConfig.singleMinStake ?? 0);
-      const skipSheet = isParlayOrder || maxStake <= minStake;
+      // OB 只支持全额结算，没有金额面板，点按钮直接进二次确认
+      const skipSheet = activeVenue !== EVenue.FB || isParlayOrder || maxStake <= minStake;
 
       if (fromList || !entry) {
         if (skipSheet) {
@@ -593,13 +599,49 @@ const useBetHistory = (type: EBetHistoryType) => {
         setEarlySettleConfirmEntry(confirmEntry);
       }
     },
-    [],
+    [activeVenue],
   );
 
   // ── 用户在确认弹窗点击「确认」时调用 ────────────────────────────────────
 
+  /**
+   * OB 提前结算：只有全额结算，服务端异步接单，结果由结算单状态接口给出（对齐 App）。
+   * 拿到终态后复用 Poll 2 的延迟清理，让按钮上的「成功/失败」文案停留 1 秒。
+   */
+  const submitEarlySettleOb = useCallback(
+    async (orderId: string) => {
+      patchEarlySettle(orderId, { step: 'submitting' });
+      setEarlySettleConfirmEntry((prev) => (prev ? { ...prev, step: 'submitting' } : prev));
+
+      const result = await submitObEarlySettle(orderId);
+      setEarlySettleConfirmEntry(null);
+
+      if (result.status === 'pending') {
+        // 结算单仍在确认中：直接收起入口，最终结果以列表为准
+        toast({ title: result.message, type: 'warning' });
+        removeEarlySettle(orderId);
+      } else {
+        const step: TEarlySettleStep = result.status === 'settled' ? 'settled' : 'failed';
+        patchEarlySettle(orderId, { step, showPanel: false });
+        toast({
+          title: result.status === 'settled' ? '提前结算成功' : result.message,
+          type: result.status === 'settled' ? 'success' : 'error',
+        });
+        withResultsOrders.current = [
+          ...withResultsOrders.current,
+          { orderId, step, resolvedAt: Date.now() },
+        ];
+        setCleanupEnabled(true);
+      }
+
+      refreshList(true);
+    },
+    [patchEarlySettle, removeEarlySettle, refreshList],
+  );
+
   const submitEarlySettle = useCallback(
     async ({ order, cashOutStake }: { order: TBetHistoryOrderItem; cashOutStake: number }) => {
+      if (activeVenue === EVenue.OB) return submitEarlySettleOb(order.orderId);
       if (activeVenue !== EVenue.FB) return;
       const { orderId, isParlayOrder } = order;
       const earlySettleConfig = EarlySettleConfigMap[orderId];
@@ -640,7 +682,7 @@ const useBetHistory = (type: EBetHistoryType) => {
         toast({ title: '提前结算失败', type: 'error' });
       }
     },
-    [activeVenue, EarlySettleConfigMap, patchEarlySettle, removeEarlySettle],
+    [activeVenue, submitEarlySettleOb, EarlySettleConfigMap, patchEarlySettle, removeEarlySettle],
   );
 
   /** 关闭弹窗（selecting / confirming 阶段可关闭；submitting / polling 不可打断） */
@@ -929,17 +971,42 @@ const useBetHistory = (type: EBetHistoryType) => {
   // #endregion
 
   // #region 初始化 tab
+  /** 已初始化过 queryParams 的场馆，避免下面的 effect 重复覆盖 */
+  const initializedVenuesRef = useRef<Set<EVenue>>(new Set());
+  /** URL 带入的 queryType，留到真正初始化 queryParams 时消费（此前场馆可能还没同步好） */
+  const pendingQueryTypeRef = useRef<EBetHistoryQueryType | null>(null);
+
   useMount(() => {
     const searchQueryType = searchParams.get('queryType');
     if ((type === EBetHistoryType.H5 || type === EBetHistoryType.PC_PAGE) && searchQueryType) {
-      setSearchParams('', { replace: true });
-      changeActiveTab({ activeVenue, queryType: +searchQueryType });
-      return;
-    }
-    if (!queryParams) {
-      changeActiveTab({ activeVenue });
+      pendingQueryTypeRef.current = +searchQueryType;
+      // 只消费掉 queryType，其余参数（弹窗的 venue）要保留
+      const rest = new URLSearchParams(searchParams);
+      rest.delete('queryType');
+      setSearchParams(rest, { replace: true });
     }
   });
+
+  /**
+   * 弹窗（PC_PAGE）是独立窗口、独立 redux，场馆由 URL 带入后再异步同步进 store
+   * （见 useBetHistoryPopupVenue）。同步完成前不初始化，否则会用默认场馆 FB 抢先建好
+   * queryParams 并吃掉 URL 上的 queryType，切到真实场馆后 tab 就回到了未结算。
+   */
+  const urlVenue =
+    type === EBetHistoryType.PC_PAGE ? parseVenueParam(searchParams.get('venue')) : null;
+  const isVenueSynced = !urlVenue || urlVenue === activeVenue;
+
+  /**
+   * 场馆是全局状态，挂载期间也可能被切换；新场馆没有 queryParams 时列表查询会被
+   * enabled 挡住（页面空白且不会自愈），故按场馆补一次初始化，而非只在 mount 时做。
+   */
+  useEffect(() => {
+    if (!isVenueSynced || queryParams || initializedVenuesRef.current.has(activeVenue)) return;
+    initializedVenuesRef.current.add(activeVenue);
+    const queryType = pendingQueryTypeRef.current ?? undefined;
+    pendingQueryTypeRef.current = null;
+    changeActiveTab({ activeVenue, queryType });
+  }, [activeVenue, isVenueSynced, queryParams, changeActiveTab]);
   // #endregion
 
   return {

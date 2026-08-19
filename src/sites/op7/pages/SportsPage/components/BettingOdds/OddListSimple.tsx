@@ -5,12 +5,11 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import _ from 'lodash';
-import { FBCompetitionMap } from '@/apis/fbSports/common/constants';
 import type { TBaseBetItem, MatchMarket, MatchBaseInfo } from '@/apis/commonSports/types';
 import styles from './OddListSimple.module.scss';
 import { OddBtn } from './OddBtn';
-import { LocalHandicapItem } from '@/apis/fbSports/common/types';
 import { EOddsStatus } from '@/apis/commonSports/constants';
+import { findVenueCompetition, type VenueHandicapItem } from '@/apis/commonSports/venueCompetition';
 import { useAllBetItemIds } from '@/common/hooks/bet/useAllBetItemIds';
 import { useAppSelector } from '@/core/store/hooks';
 import Icon from '@/common/components/Icon';
@@ -43,26 +42,22 @@ const SimpleOddList: React.FC<SimpleOddListProps> = ({
   const simpleActiveItem = useAppSelector(
     (state) => state.sport.mainList.settings.simpleActiveItem,
   );
+  const venue = useAppSelector((state) => state.sport.venue);
   const allBetItemIds = useAllBetItemIds(match.matchId);
   const { changeFollowMatchStatus } = useSportsMainListControl();
   const navigate = useNavigateWithLanguage();
   /** 只显示当前简洁版 simpleActiveItem 选中的玩法（无分页，单玩法） */
-  const activeHandicapItem = useMemo<LocalHandicapItem | null>(() => {
+  const activeHandicapItem = useMemo<VenueHandicapItem | null>(() => {
+    const competition = findVenueCompetition(venue, sportId);
     let simpleActiveItemName = simpleActiveItem?.name;
     if (!simpleActiveItemName) {
-      simpleActiveItemName =
-        Object.values(FBCompetitionMap).find((item) => item.id === sportId)?.simpleList[0]?.name ??
-        '';
+      simpleActiveItemName = competition?.simpleList[0]?.name ?? '';
     }
-    return (
-      Object.values(FBCompetitionMap)
-        .find((item) => item.id === sportId)
-        ?.simpleList.find((item) => item.name === simpleActiveItemName) ?? null
-    );
-  }, [sportId, simpleActiveItem?.name]);
+    return competition?.simpleList.find((item) => item.name === simpleActiveItemName) ?? null;
+  }, [venue, sportId, simpleActiveItem?.name]);
 
   /** 根据传入 id 在接口 matchMarket 中找第一个 scoreId/playId 匹配的项 */
-  const getOddsByCode = (id: number, _period: number): MatchMarket | undefined => {
+  const getOddsByCode = (id: string | number, _period: number): MatchMarket | undefined => {
     const idStr = String(id);
     return _.find(matchMarket, (item) => {
       const [type, period] = item.itemType.split('_');
@@ -71,7 +66,7 @@ const SimpleOddList: React.FC<SimpleOddListProps> = ({
   };
 
   /** 渲染当前选中的单行玩法 */
-  const renderRow = (item: LocalHandicapItem) => {
+  const renderRow = (item: VenueHandicapItem) => {
     const odds = getOddsByCode(item.idList[0] ?? 0, item.period ?? 0);
     const list = odds?.children[0]?.lists ?? [];
     return (

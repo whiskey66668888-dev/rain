@@ -36,13 +36,7 @@ export function useSportListByTypeQuery(
 ) {
   return useQueryHook<PopularEventsLiveResponse, Error>({
     queryKey: ['origin', 'sport', 'list', 'by', 'type', params],
-    queryFn: () =>
-      popularEventsLiveReq(params)
-        .then((res) => res.data)
-        .catch(() => ({
-          matchIdList: [],
-          matchIdVsWeekMap: [],
-        })),
+    queryFn: () => popularEventsLiveReq(params).then((res) => res.data),
     staleTime: 10_000,
     retry: false,
     refetchInterval: 600000, // 60秒轮询

@@ -24,7 +24,7 @@ import styles from './MicrosoftTokenBindModal.module.scss';
 const BIND_MICROSOFT_TYPE = '10';
 const GRAPHIC_TUTORIAL_IMAGES = Array.from(
   { length: 9 },
-  (_, index) => `/images/common/securityTutorial/android-${index + 1}.png`,
+  (_, index) => `/images/common/securityTutorial/android-${index + 1}.webp`,
 );
 
 const IconTutorialImage: React.FC<{ className?: string }> = ({ className }) => (

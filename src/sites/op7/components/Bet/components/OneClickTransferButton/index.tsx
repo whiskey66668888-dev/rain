@@ -4,23 +4,25 @@ import {
   useOneClickTransferLoading,
 } from '@/common/hooks/sports/useOneClickTransfer';
 import { useGetVenueBalance } from '@/common/hooks/sports/useVenueBalance';
-import { EVenue } from '@/apis/commonSports/constants';
+import { VENUE_GAME_ID } from '@/apis/commonSports/constants';
+import { useAppSelector } from '@/core/store/hooks';
 import { useCallback } from 'react';
 import Button from '@/common/components/Button';
 
 /**
  * 一键转入按钮，PC/H5 公用。
- * 点击逻辑后续在 useBetMethods 或此处补充。
+ * 转入的是当前场馆钱包（FB / EB），转完立即刷新该场馆余额。
  */
 const OneClickTransferButton = () => {
+  const venue = useAppSelector((state) => state.sport.venue);
   const { oneclickTransfer } = useOneClickTransfer();
   const { getVenueBalance } = useGetVenueBalance();
   const { oneClickTransferLoading } = useOneClickTransferLoading();
 
   const handleClick = useCallback(async () => {
-    await oneclickTransfer({ venue: EVenue.FB, gameId: 89 });
-    await getVenueBalance({ venue: EVenue.FB, isLoading: true });
-  }, [oneclickTransfer, getVenueBalance]);
+    await oneclickTransfer({ venue, gameId: VENUE_GAME_ID[venue] });
+    await getVenueBalance({ venue, isLoading: true });
+  }, [oneclickTransfer, getVenueBalance, venue]);
 
   return (
     <>

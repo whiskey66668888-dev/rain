@@ -38,10 +38,10 @@ import styles from './home.module.scss';
 import reportStyles from './report.module.scss';
 import { toDisplayString } from './stringUtils';
 
-import bannerDark from '@/sites/op7/images/dark/inviteFriends/banner.png';
-import bannerLight from '@/sites/op7/images/light/inviteFriends/banner.png';
-import bannerH5Dark from '@/sites/op7/images/dark/inviteFriends/banner_h5.png';
-import bannerH5Light from '@/sites/op7/images/light/inviteFriends/banner_h5.png';
+import bannerDark from '@/sites/op7/images/dark/inviteFriends/banner.webp';
+import bannerLight from '@/sites/op7/images/light/inviteFriends/banner.webp';
+import bannerH5Dark from '@/sites/op7/images/dark/inviteFriends/banner_h5.webp';
+import bannerH5Light from '@/sites/op7/images/light/inviteFriends/banner_h5.webp';
 import { getSystemTheme } from '@/utils';
 import { PATHS } from '@/sites/op7/routes/paths';
 import { CloseSvg } from '@/sites/op7/components/SvgIcons';

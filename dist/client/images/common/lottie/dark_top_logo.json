@@ -1,0 +1,378 @@
+{
+  "v": "5.12.1",
+  "fr": 24,
+  "ip": 0,
+  "op": 58,
+  "w": 60,
+  "h": 60,
+  "nm": "点击 3",
+  "ddd": 0,
+  "assets": [
+    {
+      "id": "image_0",
+      "w": 120,
+      "h": 120,
+      "u": "",
+      "p": "data:image/png;base64,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",
+      "e": 1
+    },
+    {
+      "id": "image_1",
+      "w": 120,
+      "h": 120,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAEZElEQVR4nO3aT3IaRxjG4d83+rMN3rmMUjU+gckNRiewb2B8gtjLVFKikeLyMtIJhE8Q5wTSDYJP4EmVUbQzWUYS82WhQRokBlDF8gzifXYwTdPUWz3d/Q0gIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiK86qHsCi4ncen5+TuBOb8R2AO/8Q0beIdPCz9aseYx0tRcDNrv/p0JrTLDXjeCOjmwZLv8W4lkFU9QAW4fDHAs1id9pnxqcne96590EtidoFHAePm7t+tBU8Gb+36ewbDBfuJCM0d/3oPsa3bGoVcBw8PjOO3Ek84moWpsGGOG/u0FU6ynh1D0NcOrUJeBwuEAO4kzR3vT2+PgjWA9IFukozZ/u0sA7HwRtfc6zLpDYBn0cckoc75s7EWmpOd043t8Jt/uovzyN+/1rjXDa12EU3g7fdOJx2zYxXgx3rjV9vBU88ooUTYzzDaeQ77Knh+ogegBtv/t6x/fv9JfVTi4CfdP0TN2ZvQXrSsaezPj++BafBrjZixXBzw03nabHNKlivegDN4G0vDxeM43l93AxtSrgAjX8j2sBKzeLKAybiJV5+Ocuu1904eHwekZiRro/oT5uNzbfe8otb4eZfxXNWLOBKb9Fx8MaZ8aW0gdE72bGr405z1w/daV9fZojR94yDk2AfAB4HjyPjU1mXm86jVbpNV7qLvlibXX68OXuL4QI4NNxJiHg+fu80WDqrKHIxv+T5oFQasI/K115zDoo74vwYVdLRrdDSac0APJqx3j9A1a/Bk1KMvjl/jQpr5daeJ1lGMuNzcfGFw0dWbKaWqTrgvjmvgP4GpKVro/PjnH4aj995fPrT5Yw3GM7Yt62USgMeBOsDc5/jXmS8iYwWM45T0cVlsQMAp1+2fXS7w0OLB6A2pcqiOHgjDh6PX58GSzNnmylrq8EQp7s5uj4vD4L18jvD7fajherZD0bllazmW28xogU8c4jzDVMMYGu0B7/Y+3Hb/Ah0BMQGQ3cONmF/1rEnL4N28j6HJx17dK8/qGaqD3jXj9zLN1BTQ4b2vGBvfU9eMTsJFv7fiJdL5QFvBU+yy1lZ6mbIU/vZ88SdTv6frW7xAcUqqzxgmPuwASgPuRBscuNSqqBrEvAisxjgpGNX483r0oezbu+5lQ66Frvoz8GODQ7mNJtYby8iflsgXIDYs9WqXhXVImCADSfYjDOx2eQ194VD66/axqqoNgGnwYYbznZpyM7HyZfzS5FmHG9enp9XVtWlygn5seeHZtf3ncnyZGbXBYo4eOtsTl/mHAw69voehrlUajODiwYde32zErWWXc/s0dqMp1DGceRsD4LChZrN4KL8b7K974O/GBkv1gu37lE2eXvOH/x/sIz3nzt2/I2HWmu1OCbd1ePgydpluTJdv3wKlVY9JhERERERERERERERERERERERERERERERERERERGRb+A/QgOpL8bkoDQAAAAASUVORK5CYII=",
+      "e": 1
+    },
+    {
+      "id": "comp_0",
+      "nm": "点击",
+      "fr": 24,
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 3,
+          "nm": "NULL",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 0, "ix": 11 },
+            "r": {
+              "a": 1,
+              "k": [
+                {
+                  "i": { "x": [0.833], "y": [0.833] },
+                  "o": { "x": [0.167], "y": [0.167] },
+                  "t": 0,
+                  "s": [0]
+                },
+                {
+                  "i": { "x": [0.833], "y": [0.833] },
+                  "o": { "x": [0.167], "y": [0.167] },
+                  "t": 5,
+                  "s": [-59]
+                },
+                { "t": 10, "s": [0] }
+              ],
+              "ix": 10
+            },
+            "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [50, 50, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 2,
+          "ty": 0,
+          "nm": "外圈.png Comp 1",
+          "cl": "png",
+          "refId": "comp_1",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [54, 54, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [60, 60, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [75, 75, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ef": [
+            {
+              "ty": 5,
+              "nm": "Excite - Scale",
+              "np": 8,
+              "mn": "Pseudo/BNCA2506f0b33",
+              "ix": 2,
+              "en": 1,
+              "ef": [
+                {
+                  "ty": 7,
+                  "nm": "启用",
+                  "mn": "Pseudo/BNCA2506f0b33-0001",
+                  "ix": 1,
+                  "v": { "a": 0, "k": 1, "ix": 1 }
+                },
+                { "ty": 6, "nm": "属性", "mn": "Pseudo/BNCA2506f0b33-0002", "ix": 2, "v": 0 },
+                {
+                  "ty": 0,
+                  "nm": "回弹幅度",
+                  "mn": "Pseudo/BNCA2506f0b33-0003",
+                  "ix": 3,
+                  "v": {
+                    "a": 0,
+                    "k": 20,
+                    "ix": 3,
+                    "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);"
+                  }
+                },
+                {
+                  "ty": 0,
+                  "nm": "强度",
+                  "mn": "Pseudo/BNCA2506f0b33-0004",
+                  "ix": 4,
+                  "v": {
+                    "a": 0,
+                    "k": 40,
+                    "ix": 4,
+                    "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);"
+                  }
+                },
+                {
+                  "ty": 0,
+                  "nm": "摩擦力",
+                  "mn": "Pseudo/BNCA2506f0b33-0005",
+                  "ix": 5,
+                  "v": {
+                    "a": 0,
+                    "k": 40,
+                    "ix": 5,
+                    "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);"
+                  }
+                },
+                { "ty": 6, "nm": "", "mn": "Pseudo/BNCA2506f0b33-0006", "ix": 6, "v": 0 }
+              ]
+            }
+          ],
+          "w": 120,
+          "h": 120,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 3,
+          "ty": 0,
+          "nm": "足球.png Comp 1",
+          "cl": "png",
+          "parent": 1,
+          "refId": "comp_2",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": {
+              "a": 1,
+              "k": [
+                {
+                  "i": { "x": 0.667, "y": 1 },
+                  "o": { "x": 0.333, "y": 0 },
+                  "t": 0,
+                  "s": [40.6, 58.75, 0],
+                  "to": [1.5, -1.417, 0],
+                  "ti": [0, 0, 0]
+                },
+                {
+                  "i": { "x": 0.667, "y": 1 },
+                  "o": { "x": 0.333, "y": 0 },
+                  "t": 5,
+                  "s": [49.6, 50.25, 0],
+                  "to": [0, 0, 0],
+                  "ti": [-1.5, 1.417, 0]
+                },
+                { "t": 10, "s": [40.6, 58.75, 0] }
+              ],
+              "ix": 2,
+              "l": 2
+            },
+            "a": { "a": 0, "k": [45.75, 73.75, 0], "ix": 1, "l": 2 },
+            "s": {
+              "a": 1,
+              "k": [
+                {
+                  "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 0,
+                  "s": [83, 83, 100]
+                },
+                {
+                  "i": { "x": [0.833, 0.833, 0.833], "y": [0.833, 0.833, -2.333] },
+                  "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+                  "t": 5,
+                  "s": [160, 160, 100]
+                },
+                { "t": 10, "s": [83, 83, 100] }
+              ],
+              "ix": 6,
+              "l": 2,
+              "x": "var $bm_rt;\nvar enable, amp, freq, decay, n, t, v;\ntry {\n    $bm_rt = enable = effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0001');\n    if (enable == 0) {\n        $bm_rt = value;\n    } else {\n        amp = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0003'), 2.5);\n        freq = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0004'), 20);\n        decay = $bm_div(effect('Excite - Scale')('Pseudo/BNCA2506f0b33-0005'), 20);\n        n = 0, 0 < numKeys && (n = nearestKey(time).index, key(n).time > time && n--), t = 0 === n ? 0 : $bm_sub(time, key(n).time), $bm_rt = 0 < n ? (v = velocityAtTime($bm_sub(key(n).time, $bm_div(thisComp.frameDuration, 10))), $bm_sum(value, $bm_div($bm_mul($bm_mul($bm_div(v, 100), amp), Math.sin($bm_mul($bm_mul($bm_mul(freq, t), 2), Math.PI))), Math.exp($bm_mul(decay, t))))) : value;\n    }\n} catch (err) {\n    $bm_rt = value = value;\n}"
+            }
+          },
+          "ao": 0,
+          "ef": [
+            {
+              "ty": 5,
+              "nm": "Excite - Scale",
+              "np": 8,
+              "mn": "Pseudo/BNCA2506f0b33",
+              "ix": 2,
+              "en": 1,
+              "ef": [
+                {
+                  "ty": 7,
+                  "nm": "启用",
+                  "mn": "Pseudo/BNCA2506f0b33-0001",
+                  "ix": 1,
+                  "v": { "a": 0, "k": 1, "ix": 1 }
+                },
+                { "ty": 6, "nm": "属性", "mn": "Pseudo/BNCA2506f0b33-0002", "ix": 2, "v": 0 },
+                {
+                  "ty": 0,
+                  "nm": "回弹幅度",
+                  "mn": "Pseudo/BNCA2506f0b33-0003",
+                  "ix": 3,
+                  "v": {
+                    "a": 0,
+                    "k": 20,
+                    "ix": 3,
+                    "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);"
+                  }
+                },
+                {
+                  "ty": 0,
+                  "nm": "强度",
+                  "mn": "Pseudo/BNCA2506f0b33-0004",
+                  "ix": 4,
+                  "v": {
+                    "a": 0,
+                    "k": 40,
+                    "ix": 4,
+                    "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);"
+                  }
+                },
+                {
+                  "ty": 0,
+                  "nm": "摩擦力",
+                  "mn": "Pseudo/BNCA2506f0b33-0005",
+                  "ix": 5,
+                  "v": {
+                    "a": 0,
+                    "k": 40,
+                    "ix": 5,
+                    "x": "var $bm_rt;\n$bm_rt = clamp(value, 0, 100);"
+                  }
+                },
+                { "ty": 6, "nm": "", "mn": "Pseudo/BNCA2506f0b33-0006", "ix": 6, "v": 0 }
+              ]
+            }
+          ],
+          "w": 120,
+          "h": 120,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    },
+    {
+      "id": "comp_1",
+      "nm": "外圈.png Comp 1",
+      "fr": 24,
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 2,
+          "nm": "b.png",
+          "cl": "png",
+          "refId": "image_0",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [60, 60, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [60, 60, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    },
+    {
+      "id": "comp_2",
+      "nm": "足球.png Comp 1",
+      "fr": 24,
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 2,
+          "nm": "足球.png",
+          "cl": "png",
+          "refId": "image_1",
+          "sr": 1,
+          "ks": {
+            "o": { "a": 0, "k": 100, "ix": 11 },
+            "r": { "a": 0, "k": 0, "ix": 10 },
+            "p": { "a": 0, "k": [56.5, 63.5, 0], "ix": 2, "l": 2 },
+            "a": { "a": 0, "k": [60, 60, 0], "ix": 1, "l": 2 },
+            "s": { "a": 0, "k": [90, 90, 100], "ix": 6, "l": 2 }
+          },
+          "ao": 0,
+          "ip": 0,
+          "op": 480,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "ddd": 0,
+      "ind": 1,
+      "ty": 3,
+      "nm": "NULL",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 0, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [30, 30, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [50, 50, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [90, 90, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ip": 0,
+      "op": 58,
+      "st": 0,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 3,
+      "ty": 0,
+      "nm": "点击",
+      "parent": 1,
+      "refId": "comp_0",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [50, 50, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [54, 54, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [91.111, 91.111, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "w": 108,
+      "h": 108,
+      "ip": 0,
+      "op": 480,
+      "st": 0,
+      "bm": 0
+    }
+  ],
+  "markers": [],
+  "props": {}
+}

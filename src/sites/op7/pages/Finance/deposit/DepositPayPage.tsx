@@ -44,7 +44,7 @@ const DepositPayPage: React.FC = () => {
         <div className={styles.iframeContainer}>
           {iframeLoading ? (
             <div className={styles.loading}>
-              <img src={`/images/${theme}/loading.webp`} alt="loading" />
+              <img src={`/images/${theme}/loading.png`} alt="loading" />
             </div>
           ) : null}
           <iframe src={payUrl} title="充值" onLoad={() => setIframeLoading(false)} />

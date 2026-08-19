@@ -9,7 +9,9 @@ import { MatchRecord } from './getList';
  * 获取赛事详情请求参数
  */
 export interface GetMatchDetailParams {
-  matchId: number;
+  matchId: string;
+  /** OB 冠军列表用于解析 menuId；FB 详情请求无需传入 */
+  sportId?: number;
 }
 
 /**
@@ -25,7 +27,7 @@ export interface GetMatchDetailResponseData {
 export const getMatchDetailReq = (
   params: GetMatchDetailParams,
 ): Promise<ResponseData<MatchRecord>> => {
-  return requestFB.post<MatchRecord, { matchId: number; oddsType: number }, MatchRecord>(
+  return requestFB.post<MatchRecord, { matchId: string; oddsType: number }, MatchRecord>(
     '/v1/match/getMatchDetail',
     {
       body: {
@@ -51,7 +53,7 @@ export const useGetMatchDetailQuery = (
   return useQueryHook<MatchRecord, Error>({
     queryKey: ['fb', 'match', 'getDetail', params.matchId],
     queryFn: async () => {
-      if (params.matchId <= 0) {
+      if (!params.matchId) {
         return {} as MatchRecord;
       }
       return getMatchDetailReq(params)
@@ -61,7 +63,7 @@ export const useGetMatchDetailQuery = (
           return {} as MatchRecord;
         });
     },
-    enabled: params.matchId > 0,
+    enabled: !!params.matchId,
     staleTime: 0,
     retry: false,
     refetchOnMount: 'always',
@@ -85,7 +87,7 @@ export const useGetMatchChampionDetailQuery = (
           // 返回一个空对象，避免类型错误
           return {} as MatchBaseInfo;
         }),
-    enabled: params.matchId > 0,
+    enabled: !!params.matchId,
     staleTime: 0,
     retry: false,
     refetchOnMount: 'always',

@@ -1,3 +1,5 @@
+import { EVenue } from '@/apis/commonSports/constants';
+
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 export const VERSION = '6.0.7';
@@ -22,4 +24,10 @@ export const THEME_OPTIONS: { value: ThemeMode; label: string }[] = [
   { value: 'system', label: '自动' },
   { value: 'light', label: '白天' },
   { value: 'dark', label: '黑夜' },
+];
+
+/** 开发设置：体育三方场馆切换 */
+export const SPORT_VENUE_OPTIONS: { value: EVenue; label: string }[] = [
+  { value: EVenue.FB, label: 'OP' },
+  { value: EVenue.OB, label: 'EB' },
 ];

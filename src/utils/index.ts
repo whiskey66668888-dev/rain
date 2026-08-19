@@ -221,6 +221,26 @@ export const scrollToTopLayoutMainContent = (behavior: ScrollBehavior = 'auto') 
   }
 };
 
+export const getLayoutMainContentScrollTop = (): number | null => {
+  return document.getElementById('layout-main-content')?.scrollTop ?? null;
+};
+
+export const restoreLayoutMainContentScrollTop = (scrollTop: number | null): void => {
+  if (scrollTop === null) return;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const mainContent = document.getElementById('layout-main-content');
+      if (!mainContent) return;
+
+      mainContent.scrollTop = Math.min(
+        scrollTop,
+        Math.max(0, mainContent.scrollHeight - mainContent.clientHeight),
+      );
+    });
+  });
+};
+
 const SPORTS_PAGE_MAIN_AREA_ID = 'sports-page-main-area';
 const SCROLL_OFFSET_TOP = 40; // 预留header高度
 

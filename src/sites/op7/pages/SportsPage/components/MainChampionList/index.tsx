@@ -12,6 +12,7 @@ import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage'
 import { generatePath } from 'react-router-dom';
 import { PATHS } from '@/sites/op7/routes/paths';
 import { useClickBetItem } from '@/common/hooks/bet/useClickBetItem';
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 import { useMemoizedFn } from 'ahooks';
 import { useAppSelector } from '@/core/store/hooks';
 
@@ -73,8 +74,9 @@ const groupChampionListByLetter = (list: MatchBaseInfo[]): ChampionLetterGroup[]
 const MainChampionList: React.FC = () => {
   const navigate = useNavigateWithLanguage();
   const { clickBetItem } = useClickBetItem();
+  const { getOddsDisplay } = useOddsDisplay();
 
-  const [expandList, setExpandList] = useState<number[]>([]);
+  const [expandList, setExpandList] = useState<string[]>([]);
   const listRef = useRef<HTMLDivElement | null>(null);
   const letterRefs = useRef<Record<string, HTMLElement | null>>({});
 
@@ -95,7 +97,7 @@ const MainChampionList: React.FC = () => {
       return { hotChampionList: [], restChampionList: list };
     }
 
-    const hotMatchIds = new Set<number>();
+    const hotMatchIds = new Set<string>();
     const hotChampionList: MatchBaseInfo[] = [];
 
     // 每个热门名可命中多条列表（如「世界杯」→ 联合式世界杯 2027 + 联盟式世界杯 2026）
@@ -119,7 +121,7 @@ const MainChampionList: React.FC = () => {
 
   useEffect(() => {
     if (!collapsedAll && allMainListData) {
-      const allMatchIds: number[] = allMainListData.map((item: MatchBaseInfo) => item.matchId);
+      const allMatchIds: string[] = allMainListData.map((item: MatchBaseInfo) => item.matchId);
       setExpandList(allMatchIds);
     } else {
       setExpandList([]);
@@ -155,7 +157,7 @@ const MainChampionList: React.FC = () => {
     navigate(generatePath(PATHS.champion, { id: String(item.matchId) }));
   };
 
-  const toggleExpand = (matchId: number): void => {
+  const toggleExpand = (matchId: string): void => {
     let list = [];
     if (expandList.includes(matchId)) {
       list = expandList.filter((id) => id !== matchId);
@@ -232,7 +234,7 @@ const MainChampionList: React.FC = () => {
       <span className={styles.leagueInfo}>
         <LazyImage
           className={styles.leagueIcon}
-          src={item.leagueLogo ?? ''}
+          src={item.leagueLogo?.trim() || '/images/common/logo_small.png'}
           fallback={'/images/common/logo_small.png'}
           placeholder={
             <img className={styles.leagueIcon} src="/images/common/logo_small.png" alt="icon" />
@@ -245,7 +247,7 @@ const MainChampionList: React.FC = () => {
   );
 
   if (isLoading) {
-    return <Skeleton type="sportsMainList" />;
+    return <Skeleton type="sportsChampionList" />;
   }
   if (allMainListData?.length === 0) {
     return <Empty />;
@@ -346,14 +348,21 @@ const MainChampionList: React.FC = () => {
                                 <div className={styles.teamInfo}>
                                   <LazyImage
                                     className={styles.teamIcon}
-                                    src={betItem?.teamIcon ?? ''}
+                                    src={
+                                      betItem?.teamIcon?.trim() || '/images/common/logo_small.png'
+                                    }
                                     alt="icon"
                                     fallback={'/images/common/logo_small.png'}
                                   />
                                   <span className="_tf[14]">{betItem?.betItemShortName}</span>
                                 </div>
                                 <div className={`${styles.oddsText} _tf[14]`}>
-                                  {betItem?.baseOdds}
+                                  {
+                                    getOddsDisplay({
+                                      baseOdds: betItem?.baseOdds,
+                                      isSupportHK: betItem?.isSupportHK,
+                                    }).odds
+                                  }
                                 </div>
                               </div>
                             );

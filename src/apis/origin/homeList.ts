@@ -61,12 +61,7 @@ export const useHomeListQuery = (
 ): ReturnType<typeof useQueryHook<HomeListResponse[], Error>> => {
   return useQueryHook<HomeListResponse[], Error>({
     queryKey: ['origin', 'home', 'list'],
-    queryFn: () =>
-      getHomeListReq()
-        .then((res) => res.data ?? [])
-        .catch(() => {
-          return [];
-        }),
+    queryFn: () => getHomeListReq().then((res) => res.data ?? []),
     staleTime: 5 * 60 * 1000,
     retry: false,
     enabled: config.enabled ?? true,

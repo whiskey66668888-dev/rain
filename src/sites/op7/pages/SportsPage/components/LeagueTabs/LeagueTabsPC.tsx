@@ -9,7 +9,7 @@ import useFixedLeagueTabs from './useFixedLeagueTabs';
 
 const LeagueTabsPC: React.FC = () => {
   const { visible, items, activeId, select } = useFixedLeagueTabs();
-  const itemRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
+  const itemRefs = useRef<Map<string | number, HTMLButtonElement>>(new Map());
 
   // 选中项滚动到可视区域，避免筛选来自「赛事筛选」弹窗时选中项在可视区外
   useEffect(() => {

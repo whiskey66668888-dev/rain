@@ -1,9 +1,4 @@
-import {
-  InfiniteData,
-  keepPreviousData,
-  useInfiniteQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { InfiniteData, keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
 import { useQueryHook } from '@/core/query/hooks';
 import { ResponseData } from '@/core/sdk/request/model';
@@ -54,8 +49,8 @@ export interface MatchListParams {
    */
   type?: number;
 
-  /** 联赛ID集合，可批量查询多个联赛 */
-  leagueIds?: number[];
+  /** 联赛ID集合，可批量查询多个联赛；OB tid 可能为超长字符串 */
+  leagueIds?: Array<number | string>;
 
   /** 联赛阶段集合 */
   leaguePhases?: LeaguePhase[];
@@ -67,7 +62,7 @@ export interface MatchListParams {
   endTime?: number;
 
   /** 赛事ID集合，批量查询指定赛事，matchIds、leagueId、type 三者必传其一 */
-  matchIds?: number[];
+  matchIds?: string[];
 
   /** 当前页码，从 1 开始 */
   current?: number;
@@ -86,6 +81,12 @@ export interface MatchListParams {
 
   /** 组合盘口+阶段集合，个数必须在 0~50 之间 */
   markets?: MarketFilter[];
+
+  /**
+   * OB 列表必传：二级菜单 menuId（接口字段 euid）
+   * FB 忽略；由消费方从 menus[playType].menuId 带入
+   */
+  euid?: string;
 }
 
 export interface MatchRecord {
@@ -144,10 +145,15 @@ export interface GetListResponseData {
 }
 
 export const getListReq = (params: MatchListParams): Promise<ResponseData<MatchBaseInfo[]>> => {
+  const body: MatchListParams = {
+    ...params,
+    // FB 接口要 number[]；兼容上游 string id
+    leagueIds: params.leagueIds?.map((id) => Number(id)).filter((id) => Number.isFinite(id)),
+  };
   return requestFB.post<GetListResponseData, MatchListParams, MatchBaseInfo[]>(
     '/v1/match/getList',
     {
-      body: params,
+      body,
       transformResponse: (data) => {
         return {
           ...data,
@@ -169,7 +175,6 @@ export const useGetListQuery = (
   params: MatchListParams,
   config: { enabled: boolean; keepPreviousData?: boolean } = { enabled: true },
 ) => {
-  const queryClient = useQueryClient();
   // 三方接口有差异化的参数处理在各自的api里面，方便后续直接切换api
 
   const _params = { ...params };
@@ -208,23 +213,8 @@ export const useGetListQuery = (
         current: pageParam,
         isPC: true,
       };
-      try {
-        const result = await getListReq(params);
-        return result.data;
-      } catch {
-        const cache = queryClient.getQueryData<InfiniteData<MatchBaseInfo[]>>(queryKey);
-        if (cache?.pages?.length) {
-          const currentPageData = cache.pages[pageParam - 1];
-          if (currentPageData?.length) {
-            return currentPageData;
-          }
-          const latestPageData = cache.pages[cache.pages.length - 1];
-          if (latestPageData?.length) {
-            return latestPageData;
-          }
-        }
-        return [];
-      }
+      const result = await getListReq(params);
+      return result.data;
     },
     getNextPageParam: (lastPage, allPages) => {
       // 如果最后一页数据少于每页大小，说明没有更多数据了
@@ -254,7 +244,7 @@ export const useGetListByPopularEventsLiveQuery = (params: MatchListParams) => {
       const res = await popularEventsLiveReq();
       const data = res.data;
       const list = await getListReq({
-        matchIds: data.map((item) => Number(item.mid)),
+        matchIds: data.map((item) => item.mid),
         size: 20,
         current: 1,
       });

@@ -1,10 +1,54 @@
-import { EBetOrderStatus } from '@/apis/commonSports/constants';
-import { TBetHistoryOrderItem } from '@/apis/commonSports/types';
+import { EBetOrderStatus, EOddsType, EVenue, ODDS_TYPE_LABEL } from '@/apis/commonSports/constants';
+import { TBetHistoryOrderItem, THistoryBetItem } from '@/apis/commonSports/types';
 import { bigNB } from '@/utils/bet/bigMath';
+import { getDisplayOddsByType } from '@/utils/bet';
+
+/**
+ * 注单赔率的展示值。
+ *
+ * 记录里的 `baseOdds` / `orderOdds` 恒为欧赔，展示要按**该注单下单时的盘口**换算——
+ * 与投注流程不同，这里跟用户当前的盘口设置无关（历史注单的盘口是固定的）。
+ * 串关注单取第一腿的盘口，与盘口标签的取值方式保持一致。
+ */
+export const getOrderDisplayOdds = (
+  odds: number | string | undefined,
+  source: THistoryBetItem | TBetHistoryOrderItem | undefined,
+) =>
+  getDisplayOddsByType(
+    Number(odds) || 0,
+    resolveOrderDetail(source)?.bettingOddsType ?? EOddsType.EU,
+  );
+
+/** 注单盘口文案，如「香港盘」；未下发时按欧洲盘兜底 */
+export const getOrderOddsFormatLabel = (
+  source: THistoryBetItem | TBetHistoryOrderItem | undefined,
+) => ODDS_TYPE_LABEL[resolveOrderDetail(source)?.bettingOddsType ?? EOddsType.EU];
+
+/** 传注单就取第一腿，传投注项就是它自己 */
+const resolveOrderDetail = (source: THistoryBetItem | TBetHistoryOrderItem | undefined) =>
+  source && 'orderDetails' in source ? source.orderDetails?.[0] : source;
 
 /** 是否预约投注单 */
 export const isUnsettledOrder = (order: TBetHistoryOrderItem) => {
   return !!order.isPreBetOrder;
+};
+
+/**
+ * 注单里的赛事区域能否点击跳转详情（H5 / PC / 侧边栏共用）。
+ * - 仅预约中、未结算注单可跳（已结算的赛事详情已无意义）；
+ * - 赛事详情页目前只接了 FB 数据源，EB（OB）等场馆没有详情页，不展示可点样式。
+ */
+export const canGoBetMatchDetail = ({
+  order,
+  detail,
+  venue,
+}: {
+  order: TBetHistoryOrderItem;
+  detail: THistoryBetItem;
+  venue: EVenue;
+}) => {
+  if (venue !== EVenue.FB) return false;
+  return (order.isPreBetOrder || order.isUnsettledOrder) && Number(detail.matchId) > 0;
 };
 
 // orderOdds: isParlay
@@ -173,11 +217,16 @@ export const getEarlySettleDetailItems = (
   const totalPayout = order.earlySettleTotalPayout ?? stats.earlyPayout;
 
   if (order.isSettledOrder) {
+    // 本金已全额提前结算（OB 只有全额结算）时没有自动结算部分，两项都为 0
+    const hasAutoSettle = stats.remainingStake > 0;
     return [
       { label: '提前结算本金', value: bigNB(totalStake).toFixed(2) },
       { label: '提前结算返还', value: bigNB(totalPayout).toFixed(2) },
       { label: '自动结算本金', value: bigNB(stats.remainingStake).toFixed(2) },
-      { label: '自动结算返还', value: bigNB(order.orderSettledBackAmount).toFixed(2) },
+      {
+        label: '自动结算返还',
+        value: hasAutoSettle ? bigNB(order.orderSettledBackAmount).toFixed(2) : '0.00',
+      },
     ];
   }
   return [

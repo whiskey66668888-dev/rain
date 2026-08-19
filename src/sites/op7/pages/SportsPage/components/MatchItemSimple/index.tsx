@@ -19,7 +19,7 @@ import { useAppSelector } from '@/core/store/hooks';
 
 interface MatchItemSimpleProps {
   match: MatchBaseInfo;
-  changePinnedMatchStatus: (matchId: number, type: 'add' | 'remove') => void;
+  changePinnedMatchStatus: (matchId: string, type: 'add' | 'remove') => void;
   /** 强制使用移动端样式，用于弹窗等场景 */
   forceMobile?: boolean;
   /** 三行盘口在 OddBtn 内是否使用纵向布局 */
@@ -28,7 +28,7 @@ interface MatchItemSimpleProps {
   /** 右侧栏等窄容器：左侧信息区 150px */
   compactLeftInfo?: boolean;
   isLast?: boolean;
-  onMatchClick?: (matchId: string | number) => void;
+  onMatchClick?: (matchId: string) => void;
   lotterySportTips?: string; // 竞猜赛事周数
 }
 
@@ -223,11 +223,12 @@ const TeamInfo: React.FC<{
   bold?: boolean;
   sportId: number;
 }> = React.memo(({ logo, name, score, isLive, showScore, redCard, bold, sportId }) => {
+  const teamLogo = logo?.trim() || '/images/common/logo_small.png';
   return (
     <div className={clsx(styles.teamInfo, '_tf[14]')}>
       <div className={styles.team}>
         <LazyImage
-          src={logo}
+          src={teamLogo}
           alt={name}
           width={16}
           height={16}

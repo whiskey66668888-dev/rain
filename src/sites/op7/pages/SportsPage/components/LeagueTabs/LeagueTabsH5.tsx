@@ -13,7 +13,7 @@ const LeagueTabsH5: React.FC = () => {
   // 简洁版那一行已经被玩法 tab 占满，不再挤进联赛（对齐 App 的 pro 模式限制）
   const isSimpleOdds = useAppSelector((state) => state.sport.mainList.settings.isSimpleOdds);
   const { visible, items, activeId, select } = useFixedLeagueTabs({ enabled: !isSimpleOdds });
-  const itemRefs = useRef<Map<number, HTMLSpanElement>>(new Map());
+  const itemRefs = useRef<Map<string | number, HTMLSpanElement>>(new Map());
 
   // 选中项滚动到可视区域，避免筛选来自弹窗时选中项在屏幕外
   useEffect(() => {

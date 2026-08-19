@@ -28,7 +28,17 @@
   height: 52px;
   overflow: visible;
   color: var(--Text-700);
-  transition: color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    opacity 0.16s ease,
+    transform 0.16s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    opacity: 0.82;
+    transform: translateY(1px);
+  }
 }
 
 .tabItemActive {

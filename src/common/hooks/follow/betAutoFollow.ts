@@ -16,24 +16,31 @@ import type { TBetItem, TBetOrderItem } from '@/apis/commonSports/types';
 import { addFollowReq } from '@/apis/origin/follow';
 
 import { betItemToAddParams } from './favoriteMapper';
-
-/** web 体育关注 tab 目前只对接 FB 平台 */
-const FOLLOW_GAME_TYPE = 'FB';
+import type { FollowGameType } from './followGameType';
 
 const isLoggedIn = (): boolean => Cookies.get('isLogin') === '1';
 
 /** 把一组投注项以 source=2 镜像到服务器（按 matchId 去重，仅登录态；冠军项不关注） */
-export const mirrorBetAutoFollowToServer = (details: TBetItem[]): void => {
+export const mirrorBetAutoFollowToServer = (
+  details: TBetItem[],
+  gameType: FollowGameType = 'FB',
+): void => {
   if (!isLoggedIn()) return;
   // 冠军（Outright）投注项不自动关注（后端对 champion+source=2 亦静默跳过，这里前置过滤省一次请求）
   _.uniqBy(
     details.filter((d) => !d.isChampion),
     'matchId',
   ).forEach((detail) => {
-    void addFollowReq(betItemToAddParams(FOLLOW_GAME_TYPE, detail));
+    void addFollowReq(betItemToAddParams(gameType, detail));
   });
 };
 
 /** 把投注订单里的赛事以 source=2 镜像到服务器（仅登录态） */
-export const mirrorOrdersAutoFollowToServer = (orders: TBetOrderItem[]): void =>
-  mirrorBetAutoFollowToServer(orders.flatMap((order) => order.orderDetails));
+export const mirrorOrdersAutoFollowToServer = (
+  orders: TBetOrderItem[],
+  gameType: FollowGameType = 'FB',
+): void =>
+  mirrorBetAutoFollowToServer(
+    orders.flatMap((order) => order.orderDetails),
+    gameType,
+  );

@@ -1,0 +1,9 @@
+{
+  "i18n-ally.localesPaths": [
+    "src/core/i18n",
+    "src/common/resource/locales",
+    "src/sites/demo/locales",
+    "src/sites/op7/locales",
+    "src/sites/op7/pages/SportsDetailsPage/components/discover/DiscoverContent/ChatContent/components/messages"
+  ]
+}

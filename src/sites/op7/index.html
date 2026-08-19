@@ -94,7 +94,7 @@
       html.setAttribute('data-prefers-color-scheme', themeMode);
 
       var bootLoadingHref =
-        themeMode === 'dark' ? '/images/dark/loading.webp' : '/images/light/loading.webp';
+        themeMode === 'dark' ? '/images/dark/loading.png' : '/images/light/loading.png';
       var bootLoadingPreload = document.createElement('link');
       bootLoadingPreload.rel = 'preload';
       bootLoadingPreload.as = 'image';
@@ -109,8 +109,7 @@
           path.indexOf('/sports') === 0 ||
           path.indexOf('/champion') === 0 ||
           path.indexOf('/bet_history_h5') === 0;
-        var isEntertainment =
-          path === '/' || path === '' || path.indexOf('/entertainment') === 0;
+        var isEntertainment = path === '/' || path === '' || path.indexOf('/entertainment') === 0;
         var isDarkTheme = themeMode === 'dark';
         var notchColor;
         if (isSports) {
@@ -194,8 +193,7 @@
         (function () {
           window.__op7BootStart = performance.now();
           var theme = document.documentElement.getAttribute('data-theme') || 'dark';
-          var src =
-            theme === 'dark' ? '/images/dark/loading.webp' : '/images/light/loading.webp';
+          var src = theme === 'dark' ? '/images/dark/loading.png' : '/images/light/loading.png';
           var img = document.getElementById('boot-shield-loading');
           if (img) img.src = src;
         })();

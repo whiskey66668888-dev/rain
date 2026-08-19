@@ -41,7 +41,7 @@ module.exports = [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: './tsconfig.eslint.json',
         tsconfigRootDir: __dirname,
         ecmaFeatures: {
           jsx: true,
@@ -66,7 +66,7 @@ module.exports = [
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-          project: './tsconfig.json',
+          project: './tsconfig.eslint.json',
         },
       },
     },

@@ -16,6 +16,7 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 import { bigNB } from '@/utils/bet/bigMath';
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 
 const BetPanelParlay = () => {
   const {
@@ -37,6 +38,7 @@ const BetPanelParlay = () => {
     hideBetDrawer,
   } = useBetMethods();
   const { switchSportsLeftPanelType } = useSportsMainListControl();
+  const { getOddsDisplay } = useOddsDisplay();
 
   const [firstParlayItem, otherParlayItems] = useMemo(
     () => [parlayList[0], parlayList.slice(1)],
@@ -152,6 +154,12 @@ const BetPanelParlay = () => {
               const isChampion = item.isChampion;
               const oddUp = showBetPanel && item.oddsChange === EOddsChange.Up;
               const oddDown = showBetPanel && item.oddsChange === EOddsChange.Down;
+              // 串关只支持欧洲盘（与下单参数 marketTypeFinally 同口径）
+              const oddsDisplay = getOddsDisplay({
+                baseOdds: item.baseOdds,
+                isSupportHK: item.isSupportHK,
+                isParlay: true,
+              });
               return item ? (
                 <div
                   key={id}
@@ -199,7 +207,9 @@ const BetPanelParlay = () => {
                               (<i className="din-pro not-italic">{item.score}</i>)
                             </span>
                           )}
-                          <span className="ml-2px text-[var(--Text-800)]">[欧洲盘]</span>
+                          <span className="ml-2px text-[var(--Text-800)]">
+                            [{oddsDisplay.label}]
+                          </span>
                         </div>
 
                         {/* 第二行：投注项名称 */}
@@ -217,7 +227,7 @@ const BetPanelParlay = () => {
                             })}
                           >
                             <span>@</span>
-                            <span className="din-pro">{bigNB(item.baseOdds).toFixed(2)}</span>
+                            <span className="din-pro">{oddsDisplay.odds}</span>
                             <OddsChangeArrowSvg
                               className={clsx(
                                 'w-6px absolute right-[-8px] top-1/2 -translate-y-1/2',

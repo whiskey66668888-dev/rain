@@ -103,14 +103,15 @@ const LazyImage: React.FC<LazyImageProps> = ({
   ...restProps
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const safeSrc = (typeof src === 'string' && src.trim()) || fallback || PLACEHOLDER_IMAGE;
   // 是否为 base64
-  const isBase64Url = isBase64(src);
+  const isBase64Url = isBase64(safeSrc);
   const justLoad = !lazy || isBase64Url;
   const [inView, setInView] = useState(justLoad);
   const [isLoaded, setIsLoaded] = useState(justLoad);
   const [hasError, setHasError] = useState(false);
   const [hideErrorImage, setHideErrorImage] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState<string>(src);
+  const [currentSrc, setCurrentSrc] = useState<string>(safeSrc);
 
   // base64 图片或非懒加载，立即标记为已加载
   useEffect(() => {
@@ -120,10 +121,12 @@ const LazyImage: React.FC<LazyImageProps> = ({
   }, [lazy, isBase64Url]);
 
   useEffect(() => {
-    setCurrentSrc(src);
-    const nextLoaded = justLoad || LOADED_IMAGE_SRC_CACHE.has(src);
+    setCurrentSrc(safeSrc);
+    setHasError(false);
+    setHideErrorImage(false);
+    const nextLoaded = justLoad || LOADED_IMAGE_SRC_CACHE.has(safeSrc);
     setIsLoaded((prev) => (prev === nextLoaded ? prev : nextLoaded));
-  }, [src, justLoad]);
+  }, [safeSrc, justLoad]);
 
   // 懒加载逻辑
   useEffect(() => {

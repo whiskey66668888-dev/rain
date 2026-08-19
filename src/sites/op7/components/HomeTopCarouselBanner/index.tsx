@@ -16,6 +16,29 @@ interface HomeTopCarouselBannerProps {
   className?: string;
 }
 
+const renderBannerSkeleton = (key?: React.Key) => (
+  <div
+    key={key}
+    className="relative h-full w-full overflow-hidden rounded-8px bg-[var(--Background-300)] p-18px"
+  >
+    <div className={`${skeletonStyles.skeletonBase} mb-14px h-22px w-42% rounded-4px`} />
+    <div className="flex gap-8px">
+      <div className={`${skeletonStyles.skeletonBase} h-8px w-52px rounded-2px`} />
+      <div className={`${skeletonStyles.skeletonBase} h-8px w-64px rounded-2px`} />
+    </div>
+    <div className="mt-8px flex gap-8px">
+      <div className={`${skeletonStyles.skeletonBase} h-8px w-58px rounded-2px`} />
+      <div className={`${skeletonStyles.skeletonBase} h-8px w-50px rounded-2px`} />
+    </div>
+    <div
+      className={`${skeletonStyles.skeletonBase} absolute right-18px top-24px h-74% w-36% rounded-50%`}
+    />
+    <div
+      className={`${skeletonStyles.skeletonBase} absolute left-1/2 top-54px h-20px w-30px -translate-x-1/2 rounded-6px`}
+    />
+  </div>
+);
+
 const HomeTopCarouselBanner: React.FC<HomeTopCarouselBannerProps> = ({ className }) => {
   const dispatch = useAppDispatch();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
@@ -27,12 +50,7 @@ const HomeTopCarouselBanner: React.FC<HomeTopCarouselBannerProps> = ({ className
     pid: PidType.Home,
     isMobile: true,
   });
-  const skeletonItems = Array.from({ length: 4 }).map((_, index) => (
-    <div
-      key={index}
-      className={clsx(skeletonStyles.skeletonBase, 'w-full h-full object-cover rounded-8px')}
-    />
-  ));
+  const skeletonItems = Array.from({ length: 4 }).map((_, index) => renderBannerSkeleton(index));
   const handleBannerClick = (banner: CarouselItem) => {
     const target = isMobile ? banner.appTargetAddress : banner.webTargetAddress;
     if (banner.jumpType === 0) return;
@@ -63,17 +81,7 @@ const HomeTopCarouselBanner: React.FC<HomeTopCarouselBannerProps> = ({ className
         isLoading
           ? skeletonItems
           : bannerList.map((banner) => (
-              <ClientOnly
-                key={banner.id}
-                fallback={
-                  <div
-                    className={clsx(
-                      skeletonStyles.skeletonBase,
-                      'w-full h-full object-cover rounded-8px',
-                    )}
-                  />
-                }
-              >
+              <ClientOnly key={banner.id} fallback={renderBannerSkeleton()}>
                 <LazyImage
                   src={
                     theme === 'light' ? banner.daytimeMaterialContent : banner.nightMaterialContent

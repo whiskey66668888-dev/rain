@@ -13,6 +13,9 @@ import { EFbOrderStatus } from '@/apis/fbSports/common/constants/enum';
 import { formatBetHistoryParamsFb, formatBetHistoryRespFb } from '@/apis/fbSports/common/fbFormat';
 import { orderBetListFb } from '@/apis/fbSports/betHistory/orderBetListFb';
 import { getListReq } from '@/apis/fbSports/getList';
+import { orderBetListOb } from '@/apis/obSports/betHistory/orderBetListOb';
+import { formatBetHistoryRespOb } from '@/apis/obSports/common/obBetHistoryFormat';
+import { getListByMidsReq } from '@/apis/obSports/getList';
 import Timing from '@/common/components/Timing';
 import { useAppSelector } from '@/core/store/hooks';
 import type { BetShareCard } from '@/core/sdk/IMManager';
@@ -25,6 +28,10 @@ import {
 } from '@/sites/op7/pages/BetHistoryPage/BetHistoryH5/constants';
 import { mapBetHistoryOrderToShareCard } from '../../utils/shareOrderMapper';
 import styles from './ShareOrderDialog.module.scss';
+import { getOrderDisplayOdds, getOrderOddsFormatLabel } from '@/utils/betHistory';
+
+/** 晒单选单已支持的场馆（对齐 Flutter ShareOrderLogic） */
+const SUPPORT_SHARE_ORDER_VENUES = new Set<string>([EVenue.FB, EVenue.OB]);
 
 interface ShareOrderDialogProps {
   minAmount?: number;
@@ -35,10 +42,6 @@ interface ShareOrderDialogProps {
 type TabKey = 'unsettled' | 'settled';
 
 const PAGE_SIZE = 50;
-const ODDS_FORMAT_LABEL: Record<number, string> = {
-  1: '欧洲盘',
-  2: '香港盘',
-};
 
 interface TabState {
   orders: TBetHistoryOrderItem[];
@@ -61,11 +64,6 @@ const EMPTY_TAB_STATE: TabState = {
 };
 
 const formatMoney = (value: string | number | undefined): string => {
-  const number = Number(value);
-  return Number.isFinite(number) ? number.toFixed(2) : String(value ?? '');
-};
-
-const formatOdds = (value: string | number | undefined): string => {
   const number = Number(value);
   return Number.isFinite(number) ? number.toFixed(2) : String(value ?? '');
 };
@@ -172,11 +170,11 @@ const DetailRow: React.FC<{
       <div className={styles.marketBox}>
         <div className={styles.marketTop}>
           <span>{detail.betItemFullName || detail.betItemShortName}</span>
-          <span className={styles.odds}>@{formatOdds(detail.baseOdds)}</span>
+          <span className={styles.odds}>@{getOrderDisplayOdds(detail.baseOdds, detail)}</span>
         </div>
         <div className={styles.marketBottom}>
           <span>
-            {detail.playName} {ODDS_FORMAT_LABEL[Number(detail.fb?.of)] ?? '欧洲盘'}
+            {detail.playName} {getOrderOddsFormatLabel(detail)}
             {detail.scoreWhileBetting ? ` [${detail.scoreWhileBetting}]` : ''}
           </span>
           {settled ? (
@@ -236,7 +234,9 @@ const ShareOrderCard: React.FC<{
                 {order.orderLabel}
                 {order.orderSum ? `*${order.orderSum}` : ''}
               </span>
-              <span className={styles.seriesOdds}>@{formatOdds(order.orderOdds)}</span>
+              <span className={styles.seriesOdds}>
+                @{getOrderDisplayOdds(order.orderOdds, order)}
+              </span>
             </>
           ) : null}
         </div>
@@ -294,7 +294,8 @@ const ShareOrderCard: React.FC<{
       ) : (
         <div className={styles.collapsedSummary}>
           <span>
-            {first?.betItemFullName || first?.betItemShortName} @{formatOdds(first?.baseOdds)}
+            {first?.betItemFullName || first?.betItemShortName} @
+            {getOrderDisplayOdds(first?.baseOdds, first)}
           </span>
           <strong>{formatMoney(order.orderBetAmount)}</strong>
         </div>
@@ -339,7 +340,7 @@ const ShareOrderDialogInner: React.FC<ShareOrderDialogProps> = ({
         },
       }));
       try {
-        if (String(venue) !== String(EVenue.FB)) {
+        if (!SUPPORT_SHARE_ORDER_VENUES.has(String(venue))) {
           setTabState((previous) => ({
             ...previous,
             [nextTab]: {
@@ -356,39 +357,64 @@ const ShareOrderDialogInner: React.FC<ShareOrderDialogProps> = ({
         const endTime = endDate.getTime();
         const queryType =
           nextTab === 'settled' ? EBetHistoryQueryType.SETTLED : EBetHistoryQueryType.UNSETTLED;
-        const params = formatBetHistoryParamsFb({
-          queryType,
-          startTime,
-          endTime,
-          pageNum: page,
-          pageSize: PAGE_SIZE,
-        });
-        // 未结算也带时间范围（对齐 Flutter 近 7 天）
-        const res = await orderBetListFb({
-          ...params,
-          unsettledAllowTimeRange: nextTab === 'unsettled',
-          startTime,
-          endTime,
-        });
-        // 对齐 Flutter getFbBetList：拒单（st=2）不可晒单；取消单保留。
-        const formatted = formatBetHistoryRespFb({
-          data: {
-            ...res.data,
-            records: res.data.records.filter((record) => record.st !== EFbOrderStatus.Rejected),
-          },
-        });
+        const isSettled = nextTab === 'settled';
+
+        let list: TBetHistoryOrderItem[] = [];
+        if (venue === EVenue.FB) {
+          const params = formatBetHistoryParamsFb({
+            queryType,
+            startTime,
+            endTime,
+            pageNum: page,
+            pageSize: PAGE_SIZE,
+          });
+          // 未结算也带时间范围（对齐 Flutter 近 7 天）
+          const res = await orderBetListFb({
+            ...params,
+            unsettledAllowTimeRange: !isSettled,
+            startTime,
+            endTime,
+          });
+          // 对齐 Flutter getFbBetList：拒单（st=2）不可晒单；取消单保留。
+          list = formatBetHistoryRespFb({
+            data: {
+              ...res.data,
+              records: res.data.records.filter((record) => record.st !== EFbOrderStatus.Rejected),
+            },
+          }).list;
+        } else {
+          // OB：已结算 / 未结算均传近 7 天（对齐 Flutter ShareOrderLogic._loadOBData）
+          const res = await orderBetListOb({
+            orderStatus: isSettled ? 1 : 0,
+            beginTime: startTime,
+            endTime: endTime,
+            page,
+            size: PAGE_SIZE,
+          });
+          // formatBetHistoryRespOb 已过滤取消 / 失败单（orderStatus 2、4）
+          list = formatBetHistoryRespOb({
+            data: res.data,
+            params: {
+              queryType,
+              startTime,
+              endTime,
+              pageNum: page,
+              pageSize: PAGE_SIZE,
+            },
+            pageNum: page,
+          }).list;
+        }
+
         if (seq !== requestSeqRef.current[nextTab]) return;
         setTabState((previous) => {
           const previousOrders = append ? previous[nextTab].orders : [];
-          const deduped = new Map(
-            [...previousOrders, ...formatted.list].map((item) => [item.orderId, item]),
-          );
+          const deduped = new Map([...previousOrders, ...list].map((item) => [item.orderId, item]));
           return {
             ...previous,
             [nextTab]: {
               orders: Array.from(deduped.values()),
               page,
-              hasMore: formatted.list.length >= PAGE_SIZE,
+              hasMore: list.length >= PAGE_SIZE,
               loading: false,
               loaded: true,
               error: false,
@@ -422,13 +448,13 @@ const ShareOrderDialogInner: React.FC<ShareOrderDialogProps> = ({
   const orders = currentState.orders;
   const liveMatchIds = useMemo(() => {
     if (tab !== 'unsettled') return [];
-    const ids = new Set<number>();
+    const ids = new Set<string>();
     orders.forEach((order) => {
       order.orderDetails.forEach((detail) => {
-        const matchId = Number(detail.matchId);
+        const matchId = detail.matchId;
         const sportId = Number(detail.sportId);
         const isVirtual = [100, 101, 102, 103].includes(sportId);
-        if (matchId > 0 && !detail.isChampion && !isVirtual) ids.add(matchId);
+        if (matchId && !detail.isChampion && !isVirtual) ids.add(matchId);
       });
     });
     return Array.from(ids);
@@ -439,7 +465,7 @@ const ShareOrderDialogInner: React.FC<ShareOrderDialogProps> = ({
     let disposed = false;
     let requesting = false;
 
-    if (venue !== EVenue.FB || liveMatchIds.length === 0) {
+    if (!SUPPORT_SHARE_ORDER_VENUES.has(String(venue)) || liveMatchIds.length === 0) {
       setLiveMatchList([]);
       setLiveMatchesLoading(false);
       return undefined;
@@ -450,7 +476,10 @@ const ShareOrderDialogInner: React.FC<ShareOrderDialogProps> = ({
       requesting = true;
       setLiveMatchesLoading(true);
       try {
-        const response = await getListReq({ matchIds: liveMatchIds, size: 999 });
+        const response =
+          venue === EVenue.OB
+            ? await getListByMidsReq({ mids: liveMatchIds.join(',') })
+            : await getListReq({ matchIds: liveMatchIds, size: 999 });
         if (!disposed) setLiveMatchList(response.data);
       } catch (error) {
         console.error('load share-order live matches failed', error);
@@ -600,7 +629,7 @@ const ShareOrderDialogInner: React.FC<ShareOrderDialogProps> = ({
               重新加载
             </button>
           </div>
-        ) : String(venue) !== String(EVenue.FB) ? (
+        ) : !SUPPORT_SHARE_ORDER_VENUES.has(String(venue)) ? (
           <div className={styles.empty}>当前场馆暂不支持晒单选单</div>
         ) : orders.length === 0 ? (
           <div className={styles.empty}>暂无可晒注单</div>

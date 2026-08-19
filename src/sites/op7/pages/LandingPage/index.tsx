@@ -19,13 +19,15 @@ import FeatureCards from './components/featureCards';
 import SportsCard from '../../components/SportsCard';
 import MobileDownloadAppBanner from '@/sites/op7/components/home/MobileDownloadAppBanner';
 import { useAppSelector } from '@/core/store/hooks';
+import skeletonStyles from '@/common/components/Skeleton/Skeleton.module.scss';
 
 const LandingPage: React.FC = () => {
-  const { data: popularEventsLiveList = [] } = useVenueService().useGetRecommendMatchQuery({
-    current: 1,
-    type: 1,
-    size: 20,
-  });
+  const { data: popularEventsLiveList = [], isLoading: isPopularEventsLoading } =
+    useVenueService().useGetRecommendMatchQuery({
+      current: 1,
+      type: 1,
+      size: 20,
+    });
   const hasPopularEvents = popularEventsLiveList.length > 0;
   const { t } = useTranslation();
   const navigate = useNavigateWithLanguage();
@@ -49,7 +51,7 @@ const LandingPage: React.FC = () => {
           <BannerSection />
           {/* <HomeHotGamesSection /> */}
 
-          {hasPopularEvents && (
+          {(isPopularEventsLoading || hasPopularEvents) && (
             <HorizontalScrollSection
               listClassName="!gap-12px"
               title={t('common.recommendedEvents')}
@@ -64,11 +66,18 @@ const LandingPage: React.FC = () => {
               viewAllText="全部"
               onViewAll={() => navigate(PATHS.sports)}
             >
-              {popularEventsLiveList.map((matchInfo, index: number) => (
-                <div className="h-154px w-351px" key={index}>
-                  <SportsCard matchInfo={matchInfo} type="bigCard" />
-                </div>
-              ))}
+              {isPopularEventsLoading
+                ? Array.from({ length: 2 }).map((_, index) => (
+                    <div
+                      className={`${skeletonStyles.skeletonBase} h-154px w-351px rounded-10px`}
+                      key={index}
+                    />
+                  ))
+                : popularEventsLiveList.map((matchInfo, index: number) => (
+                    <div className="h-154px w-351px" key={index}>
+                      <SportsCard matchInfo={matchInfo} type="bigCard" />
+                    </div>
+                  ))}
             </HorizontalScrollSection>
           )}
 

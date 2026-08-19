@@ -399,6 +399,7 @@ const LoginPage: React.FC = () => {
         position={overlayPosition}
         maskClickClose
         zIndex={zIndexMap.loginModal}
+        destroyOnClose={false}
       >
         <div className={`${styles.loginModal} ${isMobile ? styles.mobile : styles.desktop}`}>
           {/* 关闭按钮（Pad/Web在右上角，H5在Banner内） */}

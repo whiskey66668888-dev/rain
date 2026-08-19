@@ -12,6 +12,7 @@ import {
   EBetSettleResult,
   EOddsStatus,
   EBetHistoryQueryType,
+  EOddsType,
 } from './constants';
 import { EntityState } from '@reduxjs/toolkit';
 
@@ -207,12 +208,27 @@ export interface THistoryBetItem extends TBaseBetItem {
   /** 结算时比分，如 "1-0"，未结算时为空 */
   resultScore?: string;
   /**
+   * 下注时的盘口类型，展示层据此换算赔率、取盘口文案（`baseOdds` 恒为欧赔）。
+   * @ob marketType（EU/HK/MA/IN）
+   * @fb ops[].of（1 欧洲盘 / 2 香港盘 …）
+   *
+   * 只区分香港盘，马来/印尼/美盘等一律按欧洲盘处理。
+   */
+  bettingOddsType?: EOddsType;
+  /**
    * 子单结算结果，对应接口 sr 字段
    * @fb ops[0].sr see enum: outcome
    */
   orderSettleResult: EBetSettleResult;
   /** 下注时比分 */
   scoreWhileBetting?: string;
+  /**
+   * 联赛 ID（晒单跟单冠军用）
+   * @ob tournamentId
+   */
+  leagueId?: string | number;
+  /** 赛种名称（@ob sportName） */
+  sportName?: string;
 }
 
 export interface TBetHistoryOrderItem {
@@ -327,6 +343,19 @@ export type TFbPreBetLimitItem = {
 };
 
 export type TFbPreBetLimitMap = Record<string, TFbPreBetLimitItem>;
+
+/**
+ * OB 预约投注限额（queryMarketMaxMinPreBetMoney）。
+ * FB 的限额是一整套参数（mis/mly/mms/mod），OB 只有两个值，所以单独一个结构。
+ */
+export type TObPreBetLimit = {
+  /** 所属投注项，切换投注项后旧限额作废 */
+  betItemId: string;
+  /** 最小投注本金 */
+  minBet: number;
+  /** 最大可赢金额，最大本金 = orderMaxPay / 预约赔率 */
+  orderMaxPay: number;
+};
 
 // 比分赔率信息
 export interface OddsItemInfo {
@@ -652,7 +681,7 @@ export interface MatchBaseInfo {
   /** 联赛Logo */
   leagueLogo?: string;
   /** 比赛ID */
-  matchId: number;
+  matchId: string; // 需要改成 string 类型，避免在前端使用时出现精度丢失问题
   /** 分页索引 */
   pageIndex: number;
   /** 比赛编号 */
@@ -817,6 +846,8 @@ export interface MenuInfoItem {
   count: number;
   name: string;
   viewId: number;
+  /** OB 列表请求 euid；FB 无此字段 */
+  menuId?: string;
   matchIds?: string[];
   matchIdVsWeekMap?: PopularEventsLiveResponse['matchIdVsWeekMap']; // 竞猜赛事id与周数映射
 }

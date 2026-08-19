@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
-<rect width="64" height="64" rx="12" fill="#4f46e5"/>
-<text x="50%" y="55%" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui">HOME-ACTIVE</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#4f46e5" rx="12"/><text x="50%" y="55%" fill="#fff" font-family="system-ui" font-size="18" text-anchor="middle">HOME-ACTIVE</text></svg>

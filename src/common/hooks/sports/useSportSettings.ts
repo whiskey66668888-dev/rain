@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useAppDispatch } from '@/core/store/hooks';
-import { setIsSimpleOddsAction } from '@/core/store/slices/sportSlice';
+import { setIsSimpleOddsAction, setCurrentOddsTypeAction } from '@/core/store/slices/sportSlice';
 import { setAcceptOddsPreferAction, setAutoFollowMatchAction } from '@/core/store/slices/userSlice';
-import type { EAcceptOddsPrefer } from '@/apis/commonSports/constants';
+import type { EAcceptOddsPrefer, EOddsType } from '@/apis/commonSports/constants';
 import { useMemoizedFn } from 'ahooks';
 import {
   mapAcceptOddsPreferToBettingSettings,
@@ -10,6 +10,7 @@ import {
   mapBooleanToGoalBell,
   mapBooleanToSynchronousSingleString,
   mapIsSimpleOddsToBettingStyle,
+  mapOddsTypeToBettingOddsSettings,
   useMemberSettingActions,
 } from '../memberSettingsBridge';
 
@@ -41,6 +42,12 @@ export const useSportSettings = () => {
     void updateManagedSetting('bettingStyle', mapIsSimpleOddsToBettingStyle(isSimpleOdds));
   });
 
+  // 更改盘口设置（欧洲盘/香港盘）。FB 场馆只支持欧洲盘，由调用方拦截切换
+  const setCurrentOddsType = useMemoizedFn((oddsType: EOddsType) => {
+    dispatch(setCurrentOddsTypeAction(oddsType));
+    void updateManagedSetting('bettingOddsSettings', mapOddsTypeToBettingOddsSettings(oddsType));
+  });
+
   // 更改进球铃声状态
   const toggleIsOpenGoalSound = useMemoizedFn((isOpenGoalSound: boolean) => {
     void updateManagedSetting('goalBell', mapBooleanToGoalBell(isOpenGoalSound));
@@ -58,5 +65,6 @@ export const useSportSettings = () => {
     toggleIsSimpleOdds,
     toggleIsOpenGoalSound,
     toggleAutoFollowMatch,
+    setCurrentOddsType,
   };
 };

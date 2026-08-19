@@ -39,7 +39,7 @@ import VenueMaintenanceMask from '@/sites/op7/components/VenueMaintenanceMask';
 import GamePage from '../GamePage';
 import HomePartnersSection from '@/sites/op7/components/home/HomePartnersSection';
 import HomeGameProvidersSection from '@/sites/op7/components/home/HomeGameProvidersSection';
-import { scrollToSportsPageMainAreaIfNeeded } from '@/utils';
+import { getLayoutMainContentScrollTop, restoreLayoutMainContentScrollTop } from '@/utils';
 
 const HomePage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -151,6 +151,15 @@ const HomePage: React.FC = () => {
     },
     [isHomeMenu, expandedMenuId],
   );
+  const switchExpandedMenuWithoutScrollJump = useCallback(
+    (homeId: number) => {
+      const scrollTop = getLayoutMainContentScrollTop();
+
+      dispatch(setExpandedMenuId(homeId));
+      restoreLayoutMainContentScrollTop(scrollTop);
+    },
+    [dispatch],
+  );
   useEffect(() => {
     if (
       (prevExpandedMenuIdRef.current === ENTERTAINMENT_MENU_ID &&
@@ -231,7 +240,7 @@ const HomePage: React.FC = () => {
                 )} */}
 
                 {/* 主列表（联动菜单） */}
-                {homeList.map((item) => {
+                {homeList.map((item, sectionIndex) => {
                   const isShowMenuCards = showMenuCards(item);
                   const isCurrentItem = expandedMenuId === item.homeId;
                   return (
@@ -253,10 +262,7 @@ const HomePage: React.FC = () => {
                       key={item.homeId}
                       onViewAll={
                         !isCurrentItem
-                          ? () => {
-                              dispatch(setExpandedMenuId(item.homeId));
-                              scrollToSportsPageMainAreaIfNeeded();
-                            }
+                          ? () => switchExpandedMenuWithoutScrollJump(item.homeId)
                           : undefined
                       }
                     >
@@ -303,7 +309,12 @@ const HomePage: React.FC = () => {
                                   <LazyImage lazy={false} src={'/images/common/play.png'} />
                                 </div>
                               )}
-                              <LazyImage className={clsx(styles.cardImage)} src={child.cardImage} />
+                              <LazyImage
+                                className={clsx(styles.cardImage)}
+                                src={child.cardImage}
+                                lazy={sectionIndex > 1}
+                                rootMargin="240px"
+                              />
                             </div>
                           );
                         })}

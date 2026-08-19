@@ -1,7 +1,20 @@
 .navBarMenuWrapper {
+  position: relative;
   padding: 8px 0;
   background: var(--Background-300);
   border-bottom: 0.5px solid var(--Line-100);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 0;
+    bottom: 8px;
+    width: 28px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--Background-300));
+  }
+
   .navBarMenu {
     display: flex;
     gap: 8px;
@@ -24,6 +37,13 @@
       flex-direction: row;
       flex: 0 0 auto;
       padding: 0 12px;
+      transition:
+        background-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+      &:active {
+        transform: scale(0.98);
+      }
       &.menuItemActive {
         background: var(--ThemeColor-Main);
         color: var(--White-100);

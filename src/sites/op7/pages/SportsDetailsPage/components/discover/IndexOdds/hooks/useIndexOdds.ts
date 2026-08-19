@@ -33,15 +33,20 @@ export const useIndexOdds = (
   const [initialSelected, setInitialSelected] = useState(false);
   const [preMatchSelected, setPreMatchSelected] = useState(false);
   const [selectedCompanyIds, setSelectedCompanyIds] = useState<string[]>(() =>
-    defaultSelectedCompanyIds(),
+    defaultSelectedCompanyIds(venue),
   );
   const [displayEditorVisible, setDisplayEditorVisible] = useState(false);
   const [historyCompanyId, setHistoryCompanyId] = useState<string | null>(null);
 
+  // 切换场馆时按常规默认重选（OB 默认含 EB，避免只勾 OP 导致有数据不展示）
+  useEffect(() => {
+    setSelectedCompanyIds(defaultSelectedCompanyIds(venue));
+  }, [venue]);
+
   const activeTab = tabs[Math.min(activeIndex, tabs.length - 1)] ?? tabs[0]!;
   const matchDataScope: MarketOddsMatchScope = isFullTime ? 'full' : 'half';
   const apiPlatform = venueToApiPlatform(venue);
-  // marketOdds 与 App 一致：使用场馆 matchId，而不是纳米 scheduleId
+  // list 用场馆 matchId（此前用纳米 scheduleId 会导致无数据）；历史再用返回项里的机构 matchId
   const marketMatchId = matchId || scheduleId;
 
   const listParams = useMemo((): MarketOddsListParams | null => {

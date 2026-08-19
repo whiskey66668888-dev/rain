@@ -3,8 +3,8 @@ import { generatePath } from 'react-router-dom';
 import clsx from 'clsx';
 import Icon from '@/common/components/Icon';
 import { useGetSportVideoQuery } from '@/apis/fbSports/getSportVideo';
-import { useGetListQuery } from '@/apis/fbSports/getList';
-import { PlayType, PlayTypeId } from '@/apis/commonSports/constants';
+import { useVenueService } from '@/apis/commonSports';
+import { EVenue, PlayType, PlayTypeId } from '@/apis/commonSports/constants';
 import Timing from '@/common/components/Timing';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
 import { useAppSelector } from '@/core/store/hooks';
@@ -31,17 +31,21 @@ interface VideoPlayerWebProps {
 
 const VideoPlayerWeb: React.FC<VideoPlayerWebProps> = ({ sourceMatch, matchInfo }) => {
   const navigate = useNavigateWithLanguage();
+  const venue = useAppSelector((state) => state.sport.venue);
+  const isOb = venue === EVenue.OB;
+  const { useGetMainListQuery } = useVenueService();
   const [currentMode, setCurrentMode] = useState<MediaMode>('scoreboard');
   const [leagueDropdownOpen, setLeagueDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const userAdjustedRef = useRef(false);
 
-  const handleMatchClick = (matchId: number) => {
+  const handleMatchClick = (matchId: string) => {
     setLeagueDropdownOpen(false);
-    navigate(generatePath(PATHS.sportsDetail, { matchId: String(matchId) }));
+    navigate(generatePath(PATHS.sportsDetail, { matchId }));
   };
 
   const leagueId = matchInfo?.leagueId ?? 0;
+  const sportId = matchInfo?.sportId ?? 0;
   const playType = useAppSelector((state) => state.sport.mainList.settings.playType);
 
   const currentMatchType = (() => {
@@ -54,9 +58,16 @@ const VideoPlayerWeb: React.FC<VideoPlayerWebProps> = ({ sourceMatch, matchInfo 
         return PlayTypeId.Living;
     }
   })();
-  const { data: leagueListData } = useGetListQuery(
-    { leagueIds: [leagueId], type: currentMatchType, size: 50 },
-    { enabled: leagueDropdownOpen && leagueId > 0 },
+
+  // 按当前场馆拉同联赛赛事（OB 需带 sportId 才能解析 euid）
+  const { data: leagueListData } = useGetMainListQuery(
+    {
+      sportId,
+      leagueIds: [leagueId],
+      type: currentMatchType,
+      size: 50,
+    },
+    { enabled: leagueDropdownOpen && leagueId > 0 && sportId > 0 },
   );
 
   const leagueMatches = useMemo<MatchBaseInfo[]>(() => {
@@ -75,25 +86,29 @@ const VideoPlayerWeb: React.FC<VideoPlayerWebProps> = ({ sourceMatch, matchInfo 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [leagueDropdownOpen]);
 
-  const normalizedMatchId = useMemo(() => {
-    const raw = sourceMatch?.id ?? sourceMatch?.matchId;
-    return Number.isFinite(raw) && Number(raw) > 0 ? Number(raw) : 0;
-  }, [sourceMatch]);
+  // OB mid 可能超长，保持字符串，避免 Number 精度丢失
+  const mediaMatchId = useMemo(() => {
+    const raw = sourceMatch?.id ?? sourceMatch?.matchId ?? matchInfo?.matchId;
+    const id = String(raw ?? '').trim();
+    if (!id || id === '0' || id === '-1' || id === 'NaN') return '';
+    return id;
+  }, [sourceMatch, matchInfo?.matchId]);
 
   useEffect(() => {
     userAdjustedRef.current = false;
-  }, [normalizedMatchId]);
+  }, [mediaMatchId]);
 
   const shouldFetchMedia = useMemo(() => {
-    if (!normalizedMatchId) return false;
+    if (!mediaMatchId) return false;
+    // OB 无 FB 的 ms=5 语义，以 isLive 为准
+    if (isOb) return !!matchInfo?.isLive;
     if (sourceMatch?.ms != null) return sourceMatch.ms === 5;
     return !!matchInfo?.isLive;
-  }, [normalizedMatchId, sourceMatch?.ms, matchInfo?.isLive]);
+  }, [mediaMatchId, isOb, sourceMatch?.ms, matchInfo?.isLive]);
 
   const videoParams = useMemo(
-    () =>
-      normalizedMatchId ? { gameType: 'FB' as const, matchId: String(normalizedMatchId) } : null,
-    [normalizedMatchId],
+    () => (mediaMatchId ? { gameType: isOb ? 'OB' : 'FB', matchId: mediaMatchId } : null),
+    [mediaMatchId, isOb],
   );
 
   const { data: videoData } = useGetSportVideoQuery(videoParams, {
@@ -215,7 +230,7 @@ const VideoPlayerWeb: React.FC<VideoPlayerWebProps> = ({ sourceMatch, matchInfo 
                 leagueMatches.map((match) => (
                   <div
                     key={match.matchId}
-                    className={`${styles.leagueDropdownItem}${match.matchId === normalizedMatchId ? ` ${styles.leagueDropdownItemActive}` : ''}`}
+                    className={`${styles.leagueDropdownItem}${String(match.matchId) === mediaMatchId ? ` ${styles.leagueDropdownItemActive}` : ''}`}
                     onClick={() => handleMatchClick(match.matchId)}
                   >
                     <div className={styles.leagueDropdownTeam}>

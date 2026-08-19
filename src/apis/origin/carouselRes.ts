@@ -66,12 +66,7 @@ export const useCarouselResQuery = (
 ): ReturnType<typeof useQueryHook<CarouselResResponse, Error>> => {
   return useQueryHook<CarouselResResponse, Error>({
     queryKey: ['website', 'getCarouselResourceSlots', params],
-    queryFn: () =>
-      getCarouselResReq(params)
-        .then((res) => res.data || [])
-        .catch(() => {
-          return [];
-        }),
+    queryFn: () => getCarouselResReq(params).then((res) => res.data || []),
     staleTime: 5 * 60 * 1000,
     retry: false,
   });

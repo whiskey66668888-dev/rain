@@ -296,6 +296,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           main: path.resolve(siteRoot, 'index.html'),
         },
         output: {
+          // 合并业务侧过小 chunk（如几十~几百字节的 bridge），降低首屏并发请求
+          // 按未 minify 体积估算，20KB 约对应生产态数 KB~十余 KB
+          experimentalMinChunkSize: 20 * 1024,
           // 手动代码分割：避免按包细拆导致首屏并发请求过多
           manualChunks: (id) => {
             if (id.includes('node_modules')) {

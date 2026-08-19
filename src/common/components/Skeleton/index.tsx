@@ -11,13 +11,16 @@ import BaseSkeleton from './BaseSkeleton';
 import SlotListSkeleton from './SlotListSkeleton';
 import BankCardSkeleton from './BankCardSkeleton';
 import DiscoverSkeleton from './DiscoverSkeleton';
+import SportsChampionListSkeleton from './SportsChampionListSkeleton';
 
 interface SkeletonProps {
   type:
     | 'base'
     | 'sportsMainList'
+    | 'sportsChampionList'
     | 'leagueFilter'
     | 'sportsDetails'
+    | 'sportsDetailsMarkets'
     | 'depositMainList'
     | 'withdrawalMainList'
     | 'transferMainList'
@@ -45,10 +48,14 @@ function Skeleton({ type, baseClassName, slotListCount }: SkeletonProps) {
       return <BaseSkeleton className={baseClassName} />;
     case 'sportsMainList':
       return <SportsSkeleton />;
+    case 'sportsChampionList':
+      return <SportsChampionListSkeleton />;
     case 'leagueFilter':
       return <LeagueFilterSkeleton />;
     case 'sportsDetails':
       return <SportsDetailsSkeleton />;
+    case 'sportsDetailsMarkets':
+      return <SportsDetailsSkeleton compact />;
     case 'depositMainList':
       return <DepositMainListSkeleton />;
     case 'withdrawalMainList':

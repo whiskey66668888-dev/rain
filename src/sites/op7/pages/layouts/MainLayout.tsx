@@ -94,6 +94,7 @@ const MainLayout: React.FC = () => {
   );
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
   const [messageCenterLoaded, setMessageCenterLoaded] = useState(false);
+  const [showPwaInstallBanner, setShowPwaInstallBanner] = useState(false);
 
   useEffect(() => {
     if (messageCenterVisible) {
@@ -113,8 +114,22 @@ const MainLayout: React.FC = () => {
   }, [location.pathname, isLogin, queryClient]);
 
   useEffect(() => {
-    scrollToTopLayoutMainContent();
+    const rafId = window.requestAnimationFrame(() => {
+      scrollToTopLayoutMainContent();
+    });
+    return () => window.cancelAnimationFrame(rafId);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMobile || h5NoBottomMenu || !isRouteUnderH5BottomTabs(location.pathname)) {
+      setShowPwaInstallBanner(false);
+      return undefined;
+    }
+
+    setShowPwaInstallBanner(false);
+    const timerId = window.setTimeout(() => setShowPwaInstallBanner(true), 220);
+    return () => window.clearTimeout(timerId);
+  }, [h5NoBottomMenu, isMobile, location.pathname]);
 
   /**
    * 「自动」主题：getSystemTheme() 随本地小时变化，但 html 的 data-theme 仅在首屏脚本 / setTheme 时写入，
@@ -275,7 +290,7 @@ const MainLayout: React.FC = () => {
           </footer>
           <ClientOnly>
             <FloatingButton scrollContainerRef={mainScrollRef} scrollSyncKey={location.pathname} />
-            {isMobile && !h5NoBottomMenu && isRouteUnderH5BottomTabs(location.pathname) ? (
+            {showPwaInstallBanner ? (
               <Suspense fallback={null}>
                 <PwaInstallMobileBanner />
               </Suspense>

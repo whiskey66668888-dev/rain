@@ -13,6 +13,7 @@ import type { MatchBaseInfo } from '@/apis/commonSports/types';
 import type { TBetItem } from '@/apis/commonSports/types';
 import { SportItemInfo } from '@/apis/commonSports/sportItemInfo';
 import { getFBSportNameAndViewId } from '@/apis/fbSports/common/fbFormat';
+import { getOBSportNameAndViewId } from '@/apis/obSports/common/obFormat';
 import type { TFollowMatch } from '@/core/store/slices/sportSlice';
 
 import {
@@ -21,6 +22,8 @@ import {
   type FollowItem,
   type FollowSyncItem,
 } from '@/apis/origin/follow';
+
+import type { FollowGameType } from './followGameType';
 
 /** 兼容 10 位秒 / 13 位毫秒时间戳，统一转毫秒（0 表示无有效时间） */
 const toMillis = (bt?: number): number => {
@@ -127,6 +130,8 @@ export interface FollowSnapshot {
   leagueName: string;
   homeName: string;
   awayName: string;
+  homeLogo: string;
+  awayLogo: string;
 }
 
 /**
@@ -144,6 +149,8 @@ export const getFollowSnapshot = (item: TFollowMatch): FollowSnapshot | null => 
       leagueName: s.leagueName ?? '',
       homeName: s.homeTeamName ?? '',
       awayName: s.awayTeamName ?? '',
+      homeLogo: s.homeTeamIcon ?? '',
+      awayLogo: s.awayTeamIcon ?? '',
     };
   } catch {
     return null;
@@ -158,17 +165,25 @@ export const getFollowSnapshot = (item: TFollowMatch): FollowSnapshot | null => 
  * - source 按后端 source 映射：2（投注自动）→ 'bet'，其余 → 'normal'（登录态手动）。
  * - matchData 原样保留：登录态收藏同样能按 bt+24h 过期、掉出 live 后查赛果/完场占位。
  * - matchData 解析失败或无 matchId 时返回 null，调用方跳过，避免脏数据污染列表。
+ * - gameType=EB 时用 OB 赛种映射 viewId（对齐 Flutter OB 收藏分组）。
  */
-export const serverItemToFollowMatch = (item: FollowItem): TFollowMatch | null => {
+export const serverItemToFollowMatch = (
+  item: FollowItem,
+  gameType: FollowGameType = 'FB',
+): TFollowMatch | null => {
   try {
     const snap = JSON.parse(item.matchData) as Partial<SportItemInfo>;
-    const matchId = Number(snap.matchId ?? item.matchId);
+    const matchId = snap.matchId ?? item.matchId;
     if (!matchId) return null;
 
     // 分组用 viewId：web 存的快照带 viewId 直接用；App 存的快照没有 viewId，
-    // 由其 sportId(=FB sid) 反查 viewId，保证跨端加载后归到正确赛种 tab。
+    // 由其 sportId 反查 viewId（FB sid / OB csid），保证跨端加载后归到正确赛种 tab。
     const rawSportId = Number(snap.sportId ?? 0);
-    const sportId = Number(snap.viewId) || getFBSportNameAndViewId(rawSportId).viewId || rawSportId;
+    const mappedViewId =
+      gameType === 'EB'
+        ? getOBSportNameAndViewId(String(rawSportId)).viewId
+        : getFBSportNameAndViewId(rawSportId).viewId;
+    const sportId = Number(snap.viewId) || mappedViewId || rawSportId;
     return {
       matchId,
       sportId,
@@ -182,9 +197,12 @@ export const serverItemToFollowMatch = (item: FollowItem): TFollowMatch | null =
 };
 
 /** 批量：后端列表 → web TFollowMatch[]（跳过解析失败项） */
-export const serverListToFollowMatches = (list: FollowItem[]): TFollowMatch[] =>
+export const serverListToFollowMatches = (
+  list: FollowItem[],
+  gameType: FollowGameType = 'FB',
+): TFollowMatch[] =>
   list.reduce<TFollowMatch[]>((acc, item) => {
-    const fm = serverItemToFollowMatch(item);
+    const fm = serverItemToFollowMatch(item, gameType);
     if (fm) acc.push(fm);
     return acc;
   }, []);

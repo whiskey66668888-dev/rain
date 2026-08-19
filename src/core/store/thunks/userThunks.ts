@@ -5,6 +5,7 @@ import { checkPlatformStatusReq } from '@/apis/origin/wallet/checkPlatformStatus
 import { API_CODE_ORIGIN_SUCCESS } from '@/utils/constants/apiCodeOrigin';
 import { EVenue } from '@/apis/commonSports/constants';
 import { getUserBaseFb } from '@/apis/fbSports/userBase';
+import { getUserAmountOb } from '@/apis/obSports/userAmount';
 import { sleep } from '@/utils';
 import { getMemberInfoReq } from '@/apis/origin/member/membetInfo';
 import { updateMemberInfoEditReq } from '@/apis/origin/member/membetInfoEdit';
@@ -20,26 +21,33 @@ export const venueBalanceThunk = createAsyncThunk(
   'user/venueBalance',
   async ({ venue, isLoading }: { venue: EVenue; isLoading?: boolean }, { rejectWithValue }) => {
     const start = Date.now();
+    /** 手动刷新时保证 loading 至少展示 MIN_BALANCE_LOADING_MS，避免闪烁 */
+    const waitMinLoading = async () => {
+      if (!isLoading) return;
+      const elapsed = Date.now() - start;
+      if (elapsed < MIN_BALANCE_LOADING_MS) {
+        await sleep(MIN_BALANCE_LOADING_MS - elapsed);
+      }
+    };
+
     try {
       if (venue === EVenue.FB) {
         const res = await getUserBaseFb({});
         const balance = res.data?.bl;
-        if (isLoading) {
-          const elapsed = Date.now() - start;
-          if (elapsed < MIN_BALANCE_LOADING_MS) {
-            await sleep(MIN_BALANCE_LOADING_MS - elapsed);
-          }
-        }
+        await waitMinLoading();
+        return balance;
+      }
+      if (venue === EVenue.OB) {
+        const res = await getUserAmountOb();
+        // OB 返回数字，store 里统一存字符串
+        const amount = res.data?.amount;
+        const balance = amount === undefined || amount === null ? '' : `${amount}`;
+        await waitMinLoading();
         return balance;
       }
       return rejectWithValue('获取场馆余额失败');
     } catch (error: unknown) {
-      if (isLoading) {
-        const elapsed = Date.now() - start;
-        if (elapsed < MIN_BALANCE_LOADING_MS) {
-          await sleep(MIN_BALANCE_LOADING_MS - elapsed);
-        }
-      }
+      await waitMinLoading();
       return rejectWithValue(error instanceof Error ? error.message : '获取场馆余额失败');
     }
   },

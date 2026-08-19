@@ -60,7 +60,7 @@ const AnimationView: React.FC<AnimationViewProps> = ({ url, rounded = false }) =
     <div className={`${styles.container}${rounded ? ` ${styles.containerRounded}` : ''}`}>
       {isLoading && (
         <div className={styles.loading}>
-          <img className={styles.loadingImg} src={`/images/dark/loading.webp`} alt="loading" />
+          <img className={styles.loadingImg} src={`/images/dark/loading.png`} alt="loading" />
         </div>
       )}
       {hasError ? (

@@ -4,7 +4,7 @@ import { useAppSelector } from '@/core/store/hooks';
 import { useBetHistoryMethods } from '@/common/hooks/betHistory/useBetHistoryMethods';
 
 const CancelReserveBetConfirmModal = () => {
-  const activeVenue = useAppSelector((state) => state.betHistory.activeVenue);
+  const activeVenue = useAppSelector((state) => state.sport.venue);
   const entry = useAppSelector((state) => state.betHistory[activeVenue].cancelReserveBetEntry);
   const { closeCancelReserveBetConfirm, submitCancelReserveBet } = useBetHistoryMethods();
 

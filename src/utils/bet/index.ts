@@ -1,8 +1,46 @@
 import { TBetItem, TBetOrderItem, TbetData, TParlayItem } from '@/apis/commonSports/types';
 import _ from 'lodash';
-import { EOddsStatus } from '@/apis/commonSports/constants';
+import { EOddsStatus, EOddsType } from '@/apis/commonSports/constants';
 import type { TFollowMatch } from '@/core/store/slices/sportSlice';
 import { betItemToMatchData } from '@/common/hooks/follow';
+import { bigNB } from './bigMath';
+
+/**
+ * 投注项实际生效的盘口类型，与下单参数 `getObMarketTypeFinally` 同口径：
+ * 需同时满足「用户选了香港盘」+「该投注项支持香港盘」，且串关只支持欧洲盘。
+ */
+export const getEffectiveOddsType = ({
+  isSupportHK,
+  currentOddsType,
+  isParlay = false,
+}: {
+  isSupportHK?: boolean;
+  currentOddsType: EOddsType;
+  isParlay?: boolean;
+}): EOddsType =>
+  !isParlay && isSupportHK && currentOddsType === EOddsType.HK ? EOddsType.HK : EOddsType.EU;
+
+/**
+ * 按已确定的盘口类型换算展示赔率。
+ *
+ * 换算与 Flutter `getOBOdds` 等价：香港盘 = 欧洲盘 − 1。减的是整数，
+ * 不会影响已截断的小数位，所以可以直接在展示层做，不必回到原始赔率重算。
+ */
+export const getDisplayOddsByType = (baseOdds: number, oddsType: EOddsType) =>
+  bigNB(baseOdds || 0)
+    .minus(oddsType === EOddsType.HK ? 1 : 0)
+    .toFixed(2);
+
+/**
+ * 展示用赔率：`baseOdds` 存的恒为欧洲盘，只在「用户选了香港盘」且「该投注项支持香港盘」时才换算。
+ *
+ * 注意：赔率是否存在（空位、是否可点）仍应判断 `baseOdds`——香港盘下 0 是合法赔率（对应欧洲盘 1.00）。
+ */
+export const getDisplayOdds = (
+  baseOdds: number,
+  isSupportHK: boolean,
+  currentOddsType: EOddsType,
+) => getDisplayOddsByType(baseOdds, getEffectiveOddsType({ isSupportHK, currentOddsType }));
 
 /**
  * 投注项 → 关注赛事（乐观渲染用）。
@@ -13,7 +51,7 @@ export const betItemToFollowSnapshot = (
   detail: TBetItem,
   source: TFollowMatch['source'],
 ): TFollowMatch => ({
-  matchId: Number(detail.matchId),
+  matchId: detail.matchId,
   sportId: Number(detail.sportId),
   bt: detail.matchStartTime,
   source,

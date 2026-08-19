@@ -16,7 +16,11 @@ import styles from './NavbarMenu.module.scss';
 import { generatePath, useParams } from 'react-router-dom';
 import { PATHS } from '../../routes/paths';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
-import { scrollToSportsPageMainAreaIfNeeded } from '@/utils';
+import {
+  getLayoutMainContentScrollTop,
+  restoreLayoutMainContentScrollTop,
+  scrollToSportsPageMainAreaIfNeeded,
+} from '@/utils';
 
 /**
  * H5 导航栏菜单组件
@@ -56,6 +60,9 @@ const NavBarMenu: React.FC = () => {
   };
 
   const handleMenuClick = (menuId: number): void => {
+    const shouldReturnToHome = currentMenuId === Number(HomeListId.SLOTS);
+    const currentMainScrollTop = shouldReturnToHome ? null : getLayoutMainContentScrollTop();
+
     if (currentMenuId === Number(HomeListId.SLOTS)) {
       dispatch(setExpandedMenuId(menuId));
       navigate(
@@ -65,7 +72,10 @@ const NavBarMenu: React.FC = () => {
     } else {
       dispatch(setExpandedMenuId(menuId));
     }
-    scrollToSportsPageMainAreaIfNeeded();
+    if (shouldReturnToHome) {
+      scrollToSportsPageMainAreaIfNeeded();
+    }
+    restoreLayoutMainContentScrollTop(currentMainScrollTop);
     scrollToItem(menuId);
   };
 

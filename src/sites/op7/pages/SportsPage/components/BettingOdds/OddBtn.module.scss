@@ -114,3 +114,18 @@
     justify-content: center;
   }
 }
+
+.loadingSpinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--Text-700);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: oddBtnSpin 0.7s linear infinite;
+}
+
+@keyframes oddBtnSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

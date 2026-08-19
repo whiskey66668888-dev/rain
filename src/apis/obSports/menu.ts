@@ -1,44 +1,60 @@
 import { useQueryHook } from '@/core/query';
 import { ResponseData } from '@/core/sdk/request/model';
 import requestOB from '@/core/sdk/requestOB';
+import { PlayType } from '@/apis/commonSports/constants';
+import type { MenuInfo } from '../commonSports/types';
+import { formatMenuList } from './common/obFormat';
+import type { OBMenuListResponse } from './common/types';
 
-export interface OBMenuListResponse {
-  count: number; // 菜单数量
-  field1: string; // 备用字段1，在二级菜单中，是球种ID
-  field2: string; // 是否主菜单显示
-  grade: number; // 菜单等级
-  menuId: number; // 菜单id
-  menuName: string; // 菜单名称
-  menuType: number; // 菜单类型：早盘/串关/滚球/今日等
-  parentId: number; // 父节点id
-  subList: OBMenuListResponse[]; // 子菜单集合
-  topMenuList: OBMenuListResponse[]; // 当为串关或早盘时该对象有值，里面对象属性与subList一致
-}
+export type { OBMenuListResponse } from './common/types';
 
-/**
- *  获取OB 获取体育的菜单列表
- *  接口文档地址： https://api-doc-2.dbsporxxxw1box.com/#/main/detail?type=doc&id=63ff36cff01607bc0128f980
- *
- **/
-export const getMenuListReq = (): Promise<ResponseData<OBMenuListResponse[]>> => {
-  return requestOB.get('/yewu11/pub/v1/m/menu/initPB');
+const EMPTY_MENU_INFO: MenuInfo = {
+  hotSportMatchIds: [],
+  menus: {
+    [PlayType.Living]: [],
+    [PlayType.Today]: [],
+    [PlayType.Early]: [],
+    [PlayType.Champion]: [],
+    [PlayType.Follow]: [],
+  },
+  playTypes: [],
 };
 
 /**
- * 获取 OB 体育菜单列表的 React Query Hook
- * @returns 返回 OB 体育菜单列表
+ * 获取 OB 体育菜单
+ * 对齐 Flutter getOBMenuListReq：GET initPB?sys=7，缓存约 1 分钟
  */
-export function useMenuListQuery() {
-  return useQueryHook<OBMenuListResponse[], Error>({
+export const getMenuListReq = (): Promise<ResponseData<MenuInfo>> => {
+  return requestOB.get<OBMenuListResponse[], object, MenuInfo>(
+    '/yewu11/pub/v1/m/menu/initPB?sys=7',
+    {
+      isErrorToast: false,
+      transformResponse: (data) => {
+        const list = Array.isArray(data.data) ? data.data : [];
+        return {
+          ...data,
+          data: formatMenuList(list),
+        };
+      },
+    },
+  );
+};
+
+/**
+ * OB 菜单 Hook
+ * 参数位仅对齐 VenueService / FB statistical 签名，OB 侧不使用
+ */
+export const useGetMenuListQuery = (_params: object = {}, enabled = true) => {
+  return useQueryHook<MenuInfo, Error>({
+    // Flutter buildCacheOptions 过期 1 分钟
+    refetchInterval: 60_000,
+    staleTime: 60_000,
     queryKey: ['ob', 'menu', 'list', 'initPB'],
     queryFn: () =>
       getMenuListReq()
-        .then((res) => res.data)
-        .catch(() => {
-          return [];
-        }),
-    staleTime: 5 * 60 * 1000,
+        .then((res) => res.data ?? EMPTY_MENU_INFO)
+        .catch(() => EMPTY_MENU_INFO),
+    enabled,
     retry: false,
-    refetchOnMount: 'always',
   });
-}
+};

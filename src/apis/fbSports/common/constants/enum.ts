@@ -1,3 +1,5 @@
+import { EOddsType } from '@/apis/commonSports/constants';
+
 /** 赔率类型，see enum: odds_format_type_enum */
 export enum EFbOddsFormatType {
   /** 欧盘 */
@@ -11,6 +13,15 @@ export enum EFbOddsFormatType {
   /** 美盘 */
   American = 5,
 }
+
+/**
+ * FB 赔率类型 → 通用盘口枚举，马来/印尼/美盘一律按欧洲盘处理。
+ *
+ * 我们自己只用欧洲盘下单，但同一账号在三方站点可以用别的盘口投注，
+ * 那些注单会回到投注记录里，所以记录侧必须认注单自己的 `of`。
+ */
+export const fbOddsFormatToOddsType = (of: EFbOddsFormatType): EOddsType =>
+  of === EFbOddsFormatType.HongKong ? EOddsType.HK : EOddsType.EU;
 
 /** 投注结果，see enum: outcome */
 export enum EFbOutcome {

@@ -15,10 +15,14 @@ import ModalHeader from '@/sites/op7/components/ModalHeader';
 import { useBetHistoryContext } from '@/common/hooks/betHistory/context/BetHistoryContext';
 import { useBetHistoryMethods } from '@/common/hooks/betHistory/useBetHistoryMethods';
 import { useVenueBalance } from '@/common/hooks/sports/useVenueBalance';
-import { EBetHistoryTab, EBetOrderStatus } from '@/apis/commonSports/constants';
+import { EBetHistoryTab, EBetOrderStatus, EVenue } from '@/apis/commonSports/constants';
 import { bigNB } from '@/utils/bet/bigMath';
 import Popover from '@/common/components/Popover';
-import { calcEarlySettleStats, getEarlySettleDetailItems } from '@/utils/betHistory';
+import {
+  calcEarlySettleStats,
+  getEarlySettleDetailItems,
+  getOrderDisplayOdds,
+} from '@/utils/betHistory';
 import { useAppSelector } from '@/core/store/hooks';
 import { openBetShare } from '@/sites/op7/pages/SportsDetailsPage/components/share/betShareStore';
 
@@ -37,12 +41,14 @@ const ReserveEditSection = ({ order }: { order: TBetHistoryOrderItem }) => {
   } = useBetHistoryMethods();
 
   const isReserveEditing = reserveEdit?.orderId === order.orderId;
+  // 目前仅 FB 支持修改预约注单，OB 只保留取消（对齐 App）
+  const canEditReserve = activeVenue === EVenue.FB;
 
   const handleCancelReserve = () => openCancelReserveBetConfirm(activeVenue, order.orderId);
 
   return (
     <div className="px-10px py-6px flex flex-col gap-6px">
-      {isReserveEditing && reserveEdit && (
+      {canEditReserve && isReserveEditing && reserveEdit && (
         <div className="flex gap-6px">
           {/* 本金输入 */}
           <input
@@ -116,7 +122,7 @@ const ReserveEditSection = ({ order }: { order: TBetHistoryOrderItem }) => {
 
       {/* 操作按钮 */}
       <div className="flex gap-10px">
-        {isReserveEditing && reserveEdit ? (
+        {canEditReserve && isReserveEditing && reserveEdit ? (
           <>
             <Button
               type="second"
@@ -151,14 +157,16 @@ const ReserveEditSection = ({ order }: { order: TBetHistoryOrderItem }) => {
             >
               取消
             </Button>
-            <Button
-              type="primary"
-              size="middle"
-              className="flex-1 rounded-[4px]"
-              onClick={() => openReserveEditOrder({ venue: activeVenue, order })}
-            >
-              修改
-            </Button>
+            {canEditReserve && (
+              <Button
+                type="primary"
+                size="middle"
+                className="flex-1 rounded-[4px]"
+                onClick={() => openReserveEditOrder({ venue: activeVenue, order })}
+              >
+                修改
+              </Button>
+            )}
           </>
         )}
       </div>
@@ -199,6 +207,9 @@ const CardFooter = ({ order, collapsed }: { order: TBetHistoryOrderItem; collaps
     earlySettleConfig?.cashOutRate &&
     earlyStats.count < earlySettleMaxCount;
   const showEarlySettleDetail = earlyStats.history.length > 0;
+  // OB（EB 体育）只有全额提前结算，没有预约提前结算（对齐 App）
+  const showReserveEarlySettleBtn = activeVenue === EVenue.FB;
+  const venueLabel = activeVenue === EVenue.OB ? 'EB' : 'FB';
 
   const isDisabled =
     currEarlySettleInfo?.step === 'submitting' ||
@@ -223,7 +234,7 @@ const CardFooter = ({ order, collapsed }: { order: TBetHistoryOrderItem; collaps
               <span>{order.orderDetails[0]?.betItemFullName}</span>
               <span>&nbsp;@</span>
               <span className="din-pro">
-                {bigNB(order.orderDetails[0]?.baseOdds || 0).toFixed(2)}
+                {getOrderDisplayOdds(order.orderDetails[0]?.baseOdds, order)}
               </span>
             </div>
             <div>{bigNB(order.orderBetAmount).toFixed(2)}</div>
@@ -301,7 +312,7 @@ const CardFooter = ({ order, collapsed }: { order: TBetHistoryOrderItem; collaps
         <div className="px-10px py-8px flex gap-10px shadow-[0_0.5px_0_0_var(--Line-100)_inset]">
           <Button
             size="middle"
-            className="w-[220px] rounded-[4px]"
+            className={clsx('rounded-[4px]', showReserveEarlySettleBtn ? 'w-[220px]' : 'flex-1')}
             disabled={isDisabled}
             loading={isPolling}
             onClick={() => {
@@ -321,7 +332,8 @@ const CardFooter = ({ order, collapsed }: { order: TBetHistoryOrderItem; collaps
                   placement="top"
                   content={
                     <p className="_tf[12] leading-[1.5] max-w-[200px]">
-                      提前结算只适用于指定赛事和盘口，如遇到赛事或盘口取消，提前结算注单将会被收回重新结算。FB体育保留赛果最终解释权
+                      提前结算只适用于指定赛事和盘口，如遇到赛事或盘口取消，提前结算注单将会被收回重新结算。
+                      {venueLabel}体育保留赛果最终解释权
                     </p>
                   }
                 >
@@ -336,22 +348,24 @@ const CardFooter = ({ order, collapsed }: { order: TBetHistoryOrderItem; collaps
             )}
           </Button>
 
-          <Button
-            type="second"
-            size="middle"
-            className={clsx('flex-1 rounded-[4px] text-[var(--ThemeColor-Main)]')}
-            disabled={isDisabled}
-            onClick={() => openReserveEarlySettleSheet(order.orderId)}
-          >
-            {activeReserve ? (
-              '预约中'
-            ) : (
-              <div className="flex items-center gap-4px font-medium">
-                <PlusIconSvg className="w-14px h-14px" />
-                <span>预约</span>
-              </div>
-            )}
-          </Button>
+          {showReserveEarlySettleBtn && (
+            <Button
+              type="second"
+              size="middle"
+              className={clsx('flex-1 rounded-[4px] text-[var(--ThemeColor-Main)]')}
+              disabled={isDisabled}
+              onClick={() => openReserveEarlySettleSheet(order.orderId)}
+            >
+              {activeReserve ? (
+                '预约中'
+              ) : (
+                <div className="flex items-center gap-4px font-medium">
+                  <PlusIconSvg className="w-14px h-14px" />
+                  <span>预约</span>
+                </div>
+              )}
+            </Button>
+          )}
         </div>
       )}
 

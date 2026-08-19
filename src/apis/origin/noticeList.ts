@@ -42,12 +42,7 @@ export const useNoticeListQuery = (
 ): ReturnType<typeof useQueryHook<TNoticeListResponse[], Error>> => {
   return useQueryHook<TNoticeListResponse[], Error>({
     queryKey: ['origin', 'notice', 'list', params],
-    queryFn: () =>
-      getNoticeListReq(params)
-        .then((res) => res.data)
-        .catch(() => {
-          return [];
-        }),
+    queryFn: () => getNoticeListReq(params).then((res) => res.data),
     staleTime: 5 * 60 * 1000,
     retry: false,
     // 客户端挂载时始终请求一次，避免仅依赖 SSR 缓存导致 Network 里看不到请求或数据不刷新
@@ -89,12 +84,7 @@ export const getFBNoticeListReq = (params: NoticeListParams) => {
 export const useFBNoticeListQuery = (params: NoticeListParams) => {
   return useQueryHook<TFBNoticeListResponse[], Error>({
     queryKey: ['origin', 'notice', 'fbList', params],
-    queryFn: () =>
-      getFBNoticeListReq(params)
-        .then((res) => res.data)
-        .catch(() => {
-          return [];
-        }),
+    queryFn: () => getFBNoticeListReq(params).then((res) => res.data),
     staleTime: 5 * 60 * 1000,
     retry: false,
   });

@@ -102,11 +102,18 @@ export const normalizeMarketOddsEntryItem = (raw: unknown): MarketOddsEntryItem 
 };
 
 export const normalizeMarketOddsList = (raw: unknown): MarketOddsEntryItem[] => {
-  const list = Array.isArray(raw)
-    ? raw
-    : raw && typeof raw === 'object' && Array.isArray((raw as { data?: unknown }).data)
-      ? ((raw as { data: unknown[] }).data ?? [])
-      : [];
+  let list: unknown[] = [];
+  if (Array.isArray(raw)) {
+    list = raw;
+  } else if (raw && typeof raw === 'object') {
+    const data = (raw as { data?: unknown }).data;
+    if (Array.isArray(data)) {
+      list = data;
+    } else if (data && typeof data === 'object') {
+      // 兼容 data 为 {0: item, 1: item} 的类数组结构
+      list = Object.values(data as Record<string, unknown>);
+    }
+  }
   return list
     .map(normalizeMarketOddsEntryItem)
     .filter((item): item is MarketOddsEntryItem => !!item);
@@ -131,12 +138,21 @@ export const normalizeMarketOddsHistoryItem = (raw: unknown): MarketOddsHistoryI
 };
 
 export const normalizeMarketOddsHistoryPage = (raw: unknown): MarketOddsHistoryPage => {
-  const page =
-    raw && typeof raw === 'object'
-      ? (raw as { data?: unknown }).data && typeof (raw as { data: unknown }).data === 'object'
-        ? ((raw as { data: Record<string, unknown> }).data ?? (raw as Record<string, unknown>))
-        : (raw as Record<string, unknown>)
-      : {};
+  const asRecord = (v: unknown): Record<string, unknown> | null =>
+    v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : null;
+
+  const root = asRecord(raw) ?? {};
+  // 兼容：{ content } / { data: { content } } / EMC 偶发整包再包一层
+  const nested = asRecord(root.data);
+  const deeplyNested = nested ? asRecord(nested.data) : null;
+  const page = Array.isArray(root.content)
+    ? root
+    : nested && Array.isArray(nested.content)
+      ? nested
+      : deeplyNested && Array.isArray(deeplyNested.content)
+        ? deeplyNested
+        : (nested ?? root);
+
   const contentRaw = Array.isArray(page.content) ? page.content : [];
   return {
     content: contentRaw

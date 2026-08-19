@@ -9,6 +9,7 @@ import { i18n, initI18nClientInit } from '@/core/i18n';
 // import { initPwaNotificationTest } from '@/core/pwa/notification-test';
 import { registerServiceWorker } from '@/core/pwa/sw-register';
 import { createClientQueryClient } from '@/core/query/client';
+import { restorePublicQueryCache, subscribePublicQueryCache } from '@/core/query/publicPersistence';
 import { QueryProvider } from '@/core/query/provider';
 import { makeStore } from '@/core/store';
 import { initUmengApm } from '@/core/apm/umeng.client';
@@ -38,7 +39,7 @@ if (__NODE_ENV__ === 'production') {
 /**
  * 客户端入口（纯 SPA，无 SSR hydration）
  */
-(() => {
+(async () => {
   initAntiDebug();
   initBootSplashDismiss();
   persistAppAuthFromUrl();
@@ -50,6 +51,8 @@ if (__NODE_ENV__ === 'production') {
   const store = makeStore();
   setGlobalStoreForApiRequest(store);
   const queryClient = createClientQueryClient();
+  await restorePublicQueryCache(queryClient);
+  subscribePublicQueryCache(queryClient);
 
   const router = createBrowserRouter(appRouteObjects, {
     future: { v7_relativeSplatPath: true },

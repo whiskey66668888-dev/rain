@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { HotSportId, PlayType } from '@/apis/commonSports/constants';
 import { useAppSelector } from '@/core/store/hooks';
@@ -42,6 +42,7 @@ const NavBarMenuH5: React.FC = () => {
   const navRef = useRef<HTMLElement>(null);
   // 每个按钮的 ref Map，key 为 sportId
   const buttonRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
+  const scrollRafRef = useRef<number | null>(null);
   // 当前菜单列表
   const menuList = useMemo(() => {
     const currentMenuList = menus[currentPlayType] || [];
@@ -65,7 +66,7 @@ const NavBarMenuH5: React.FC = () => {
   /**
    * 滚动到指定的菜单项
    */
-  const scrollToItem = (sportId: number): void => {
+  const scrollToItem = useCallback((sportId: number, behavior: ScrollBehavior = 'smooth'): void => {
     const button = buttonRefs.current.get(sportId);
     const container = navRef.current;
 
@@ -87,36 +88,34 @@ const NavBarMenuH5: React.FC = () => {
     // 平滑滚动
     container.scrollTo({
       left: scrollLeft,
-      behavior: 'smooth',
+      behavior,
     });
-  };
+  }, []);
 
-  // 当 currentPlayType 或 currentSportId 变化时，自动滚动到对应位置
+  // 当玩法/赛种变化时，自动滚动到对应位置；合并处理避免玩法切换时触发两次横向滚动
   useEffect(() => {
-    if (currentSportId && menuList.length > 0) {
-      // 确保 DOM 已经更新
-      const timer = setTimeout(() => {
-        scrollToItem(currentSportId);
-      }, 0);
+    if (!menuList.length) return undefined;
 
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-    return () => {};
-  }, [currentPlayType, currentSportId, menuList.length]);
+    const targetSportId = menuList.some((item) => item.sportId === currentSportId)
+      ? currentSportId
+      : (menuList[0]?.sportId ?? HotSportId);
 
-  // 当 currentPlayType 变化时，自动滚动到第一个
-  useEffect(() => {
-    if (menuList.length > 0) {
-      const timer = setTimeout(() => {
-        scrollToItem(menuList[0]?.sportId ?? HotSportId);
-      }, 0);
-      return () => clearTimeout(timer);
+    if (scrollRafRef.current !== null) {
+      window.cancelAnimationFrame(scrollRafRef.current);
     }
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- 仅响应玩法切换，不依赖 menuList 否则每次 menus 更新都会滚到第一项
-  }, [currentPlayType]);
+
+    scrollRafRef.current = window.requestAnimationFrame(() => {
+      scrollToItem(targetSportId, 'auto');
+      scrollRafRef.current = null;
+    });
+
+    return () => {
+      if (scrollRafRef.current !== null) {
+        window.cancelAnimationFrame(scrollRafRef.current);
+        scrollRafRef.current = null;
+      }
+    };
+  }, [currentPlayType, currentSportId, menuList, scrollToItem]);
 
   // 点击处理函数，包含滚动逻辑
   const handleItemClick = (sportId: number) => {

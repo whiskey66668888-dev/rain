@@ -4,7 +4,7 @@ import { useAppSelector } from '@/core/store/hooks';
 import { useBetHistoryMethods } from '@/common/hooks/betHistory/useBetHistoryMethods';
 
 const ReserveEditConfirmModal = () => {
-  const activeVenue = useAppSelector((state) => state.betHistory.activeVenue);
+  const activeVenue = useAppSelector((state) => state.sport.venue);
   const reserveEdit = useAppSelector((state) => state.betHistory[activeVenue].reserveEdit);
   const { closeReserveEditConfirm, submitReserveEditConfirm } = useBetHistoryMethods();
 

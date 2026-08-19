@@ -28,20 +28,16 @@ export const useWebsiteSwitchListQuery = (): ReturnType<
   return useQueryHook<WebsiteSwitchItem[], Error>({
     queryKey: ['origin', 'website', 'switch', 'list'],
     queryFn: () =>
-      getWebsiteSwitchListReq()
-        .then((res) => {
-          const data = res.data;
-          if (Array.isArray(data)) {
-            return data;
-          }
-          if (data && typeof data === 'object') {
-            return Object.values(data);
-          }
-          return [];
-        })
-        .catch(() => {
-          return [];
-        }),
+      getWebsiteSwitchListReq().then((res) => {
+        const data = res.data;
+        if (Array.isArray(data)) {
+          return data;
+        }
+        if (data && typeof data === 'object') {
+          return Object.values(data);
+        }
+        return [];
+      }),
     staleTime: 0,
     refetchOnMount: 'always',
     retry: false,

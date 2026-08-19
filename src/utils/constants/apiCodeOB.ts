@@ -128,3 +128,4 @@ export const API_CODE_OB_MATCH_UNDER_NO_PLAYS = '0408010'; //根据赛事和玩�
 export const API_CODE_OB_PARAM_START_TIME_EXCEPTION = '0408011'; //参数查询时间，结束时间应该大于开始时间
 export const API_CODE_OB_PARAM_TIME_SECTION_EXCEPTION = '0408012'; //参数查询时间，查询时间区间在7天之内
 export const API_CODE_OB_RATE_LIMIT = '0401038'; //网络异常，请稍后再试!
+export const API_CODE_OB_PRE_SETTLE_CONFIRMING = '0400524'; //提前结算已受理，需查询提前结算单状态

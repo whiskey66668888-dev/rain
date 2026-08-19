@@ -13,6 +13,8 @@ import {
   getFBScoreBySportId,
   formatFBSportItem,
 } from '@/apis/fbSports/common/fbFormat';
+import { useGetOBMatchDetailQuery } from '@/apis/obSports/getMatchDetail';
+import { formatOBSportItem, getOBSportNameAndViewId } from '@/apis/obSports/common/obFormat';
 import type { MatchShareInfo } from '@/core/sdk/IMManager';
 import { buildMatchData } from '@/common/hooks/follow';
 import {
@@ -42,11 +44,13 @@ import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage'
 import { NoticeBar } from '@/common/components/NoticeBar';
 import { toast } from '@/common/components/Toast';
 import { useVenueService } from '@/apis/commonSports';
-import { EBetType } from '@/apis/commonSports/constants';
+import { EBetType, EVenue } from '@/apis/commonSports/constants';
+import type { MatchBaseInfo, TBaseBetItem, TBetItem } from '@/apis/commonSports/types';
 import { PATHS } from '@/sites/op7/routes/paths';
 import OptionBarPC from '../SportsPage/components/OptionBarPC';
 
 import BettingMarket, { buildBaseBetItemFromOption } from './components/BettingMarket';
+import OBBettingMarket from './components/OBBettingMarket';
 import BettingTabs from './components/BettingTabs';
 import MatchDetailsHeader from './components/MatchDetailsHeader';
 import MatchInfo from './components/MatchInfo';
@@ -60,13 +64,13 @@ import type { MediaMode } from './hooks/useMedia';
 // import FloatingActionButton from './components/FloatingActionButton';
 
 import { useScrollTop } from './hooks/useScrollContainer';
+import { useRetainedMatchRecord } from './hooks/useRetainedMatchRecord';
 
 import styles from './MatchDetails.module.scss';
 import { useAppSelector } from '@/core/store/hooks';
 import type { RootState } from '@/core/store';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 import type { EntityState } from '@reduxjs/toolkit';
-import type { TBetItem } from '@/apis/commonSports/types';
 import Empty from '@/common/components/Empty';
 import VideoPlayerMobile from './components/VideoPlayerMobile';
 import HeaderWeb from './components/MatchDetailsHeader/headerWeb';
@@ -221,14 +225,33 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
   );
 
   // 获取赛事详情数据（需早于 useScrollTop：骨架屏阶段无 ref，bindKey 就绪后需重绑滚动）
+  const venue = useAppSelector((state: RootState) => state.sport.venue);
+  const isOb = venue === EVenue.OB;
+
   const {
-    data: match,
-    isLoading,
-    refetch,
-    isFetching,
+    data: fbMatch,
+    isLoading: isFbLoading,
+    refetch: refetchFb,
+    isFetching: isFbFetching,
   } = useGetMatchDetailQuery({
-    matchId: matchId ? Number(matchId) : -1,
+    // OB 场馆时传 -1 跳过 FB 详情请求
+    matchId: !isOb && matchId ? matchId : '',
   });
+
+  const {
+    data: obDetail,
+    isLoading: isObLoading,
+    refetch: refetchOb,
+    isFetching: isObFetching,
+  } = useGetOBMatchDetailQuery({
+    matchId: isOb ? matchId : '',
+    enabled: isOb && !!matchId,
+  });
+
+  const isLoading = isOb ? isObLoading : isFbLoading;
+  const isFetching = isOb ? isObFetching : isFbFetching;
+  const refetch = isOb ? refetchOb : refetchFb;
+
   const [isRefreshing, setIsRefreshing] = useState(false);
   useEffect(() => {
     if (!isFetching) {
@@ -236,11 +259,38 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     }
   }, [isFetching]);
 
-  const matchData: MatchRecord | undefined = match;
-  const venue = useAppSelector((state: RootState) => state.sport.venue);
+  // 完赛后接口可能清空比分：停留详情页时本地保留最后一次有效数据，退出页即清理
+  const fbRetainedMatch = useRetainedMatchRecord(matchId ? Number(matchId) : -1, fbMatch);
+  /** FB 原始详情（盘口 mg / 推荐 / 分享仍依赖）；OB 详情走独立结构 */
+  const matchData: MatchRecord | undefined = isOb ? undefined : fbRetainedMatch;
+  /** 统一头部/比分信息（FB format 或 OB format） */
+  const matchInfo: MatchBaseInfo | undefined = useMemo(() => {
+    if (isOb) return obDetail?.matchInfo;
+    if (!fbRetainedMatch?.id) return undefined;
+    return formatFBSportItem(fbRetainedMatch);
+  }, [isOb, obDetail?.matchInfo, fbRetainedMatch]);
+
+  const obTypeList = useMemo(() => obDetail?.typeList ?? [], [obDetail?.typeList]);
 
   /** 聊天室「本场比赛」分享 payload（对齐 Flutter SportItemInfo，类型须可被 fromJson 解析） */
   const chatMatchShareInfo = useMemo<MatchShareInfo | null>(() => {
+    if (isOb && matchInfo) {
+      return {
+        matchId: String(matchInfo.matchId),
+        sportId: String(matchInfo.sportId),
+        leagueName: matchInfo.leagueName ?? '',
+        homeTeamName: matchInfo.homeName ?? '',
+        awayTeamName: matchInfo.awayName ?? '',
+        homeTeamIcon: matchInfo.homeLogo ?? '',
+        awayTeamIcon: matchInfo.awayLogo ?? '',
+        homeScore: String(matchInfo.homeScore ?? 0),
+        awayScore: String(matchInfo.awayScore ?? 0),
+        isLive: !!matchInfo.isLive,
+        matchStatusId: String(matchInfo.matchStatusId ?? ''),
+        homeTeam: matchInfo.homeName ?? '',
+        awayTeam: matchInfo.awayName ?? '',
+      };
+    }
     if (!matchData) return null;
     const score = getFBScoreBySportId({
       sportId: matchData.sid,
@@ -262,7 +312,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       homeTeam: matchData.ts?.[0]?.na ?? '',
       awayTeam: matchData.ts?.[1]?.na ?? '',
     };
-  }, [matchData]);
+  }, [isOb, matchInfo, matchData]);
   const chatMatchShareInfoRef = useRef(chatMatchShareInfo);
   chatMatchShareInfoRef.current = chatMatchShareInfo;
 
@@ -279,7 +329,8 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     clearDiscoverSubTabState,
   } = useDiscoverTab({
     matchId,
-    sportId: matchData?.sid,
+    sportId: matchInfo?.sportId,
+    venue,
   });
 
   const isDiscoverTabActive = activeTab === discoverTabLabel;
@@ -287,7 +338,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
 
   useEffect(() => {
     lastAppliedPickBetKeyRef.current = null;
-  }, [matchData?.id]);
+  }, [matchInfo?.matchId]);
 
   const handleScroll = useCallback(
     (scrollTop: number) => {
@@ -302,7 +353,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
   );
 
   // 监听滚动 设置h5 头部切换和pc matchCardSmall 显示（bindKey：骨架屏阶段 containerRef 未挂载，需数据就绪后重绑）
-  useScrollTop(containerRef, handleScroll, matchData?.id);
+  useScrollTop(containerRef, handleScroll, matchInfo?.matchId);
 
   // PC：主区域不滚动、仅盘口列表滚动时，用列表容器的 scrollTop 驱动小卡/头部态
   useEffect(() => {
@@ -312,7 +363,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     const onScroll = () => handleScroll(el.scrollTop);
     el.addEventListener('scroll', onScroll, { passive: true });
     return () => el.removeEventListener('scroll', onScroll);
-  }, [screenBreakpoint, handleScroll, matchData?.id]);
+  }, [screenBreakpoint, handleScroll, matchInfo?.matchId]);
 
   const syncH5HeaderByScroll = useCallback(() => {
     if (screenBreakpoint !== 'md') return;
@@ -340,7 +391,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       cancelAnimationFrame(rafId);
       scrollEls.forEach((el) => el.removeEventListener('scroll', onScroll));
     };
-  }, [screenBreakpoint, syncH5HeaderByScroll, matchData?.id]);
+  }, [screenBreakpoint, syncH5HeaderByScroll, matchInfo?.matchId]);
 
   // PC 小卡 / headerWeb 固定定位：跟随主内容区宽度（含右侧栏展开时 flex 收窄、Framer 动画过程）
   useEffect(() => {
@@ -398,14 +449,12 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
 
   // 从 Redux 同步本场已加入投注单的选项，用于赔率按钮高亮（与首页列表一致）
   const singleBetData = useAppSelector((state: RootState) => state.bet[venue]?.singleBetData) as
-    | EntityState<TBetItem, string>
-    | undefined;
+    EntityState<TBetItem, string> | undefined;
   const parlayBetData = useAppSelector((state: RootState) => state.bet[venue]?.parlayBetData) as
-    | EntityState<TBetItem, string>
-    | undefined;
+    EntityState<TBetItem, string> | undefined;
   const betType = useAppSelector((state: RootState) => state.bet[venue]?.betType);
   const selectedBets = useMemo(() => {
-    const matchIdStr = matchData?.id?.toString();
+    const matchIdStr = matchInfo?.matchId?.toString();
     if (!matchIdStr) return [];
     const list: Array<{ marketId: string; selectionId: string }> = [];
     const addFrom = (data: EntityState<TBetItem, string> | undefined) => {
@@ -424,7 +473,12 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       addFrom(singleBetData);
     }
     return list;
-  }, [matchData?.id, singleBetData, parlayBetData, betType]);
+  }, [matchInfo?.matchId, singleBetData, parlayBetData, betType]);
+
+  const selectedBetItemIds = useMemo(
+    () => new Set(selectedBets.map((b) => b.selectionId)),
+    [selectedBets],
+  );
 
   const isRecommendOddsSelected = useCallback(
     (item: MatchRecommendItem) => {
@@ -437,17 +491,18 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     [selectedBets],
   );
 
-  // 获取视频数据
+  // 获取视频数据（OB mid 可能超长，必须用路由原始字符串，不能用 Number 截断后的 matchInfo.matchId）
   const videoParams = useMemo(() => {
-    if (!matchData) return null;
+    const id = String(matchId || matchInfo?.matchId || '').trim();
+    if (!id || id === '0' || id === '-1') return null;
     return {
-      gameType: 'FB', // 根据实际场馆类型设置：'FB' | 'OB' | 'BTI'
-      matchId: String(matchData.id),
+      gameType: isOb ? ('OB' as const) : ('FB' as const),
+      matchId: id,
     };
-  }, [matchData]);
+  }, [matchId, matchInfo?.matchId, isOb]);
 
   const { data: videoData } = useGetSportVideoQuery(videoParams, {
-    enabled: !!matchData && matchData.ms === 5, // ms === 5 表示进行中
+    enabled: !!videoParams && !!matchInfo?.isLive,
   });
 
   // 将视频数据转换为 VideoLine 格式
@@ -483,9 +538,9 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     setIsDataBoardVisible((v) => !v);
   }, []);
 
-  // 推荐玩法请求参数（依赖赛事详情）
+  // 推荐玩法请求参数（依赖赛事详情；OB 暂无 tips3）
   const recommendParams = useMemo(() => {
-    if (!matchData) return null;
+    if (isOb || !matchData) return null;
     return {
       matchId: matchData.id,
       upstream: 'FB' as const,
@@ -493,7 +548,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       awayTeamCn: matchData.ts?.[1]?.na ?? '',
       leagueCn: matchData.lg?.na ?? '',
     };
-  }, [matchData]);
+  }, [isOb, matchData]);
 
   const { data: recommendTips = [] } = useGetSportRecommendQuery(recommendParams);
 
@@ -502,8 +557,8 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
 
   // 推荐玩法列表：tips3 结果 + 赛事盘口 mg 解析为展示项
   const recommendList = useMemo(
-    () => mapRecommendToDisplayItems(recommendTips, matchData),
-    [recommendTips, matchData],
+    () => (isOb ? [] : mapRecommendToDisplayItems(recommendTips, matchData)),
+    [isOb, recommendTips, matchData],
   );
 
   // 从存储中加载置顶盘口
@@ -520,22 +575,27 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
 
   // 是否已收藏（与体育首页列表一致，从 Redux followMatch 派生）
   const isFavorite = useMemo(() => {
-    if (!matchData?.id) return false;
-    return followMatch.some((item) => item.matchId === matchData.id);
-  }, [matchData?.id, followMatch]);
+    if (!matchInfo?.matchId) return false;
+    return followMatch.some((item) => item.matchId === matchInfo.matchId);
+  }, [matchInfo?.matchId, followMatch]);
 
   // 处理收藏切换（与体育首页列表一致，调用 changeFollowMatchStatus）
   const handleToggleFavorite = useCallback((): void => {
-    console.log('handleToggleFavorite', matchData);
+    if (!matchInfo?.matchId || matchInfo.sportId == null) return;
 
-    if (!matchData?.id || matchData.sid == null) return;
-    const viewId = getFBSportNameAndViewId(matchData.sid).viewId;
-    // 详情页 match 是原始 MatchRecord，复用列表同一套 formatFBSportItem 转成 MatchBaseInfo 再序列化，
-    // 保证收藏快照与列表口径一致（含 viewId、队伍、联赛等）。
-    const formatted = formatFBSportItem(matchData);
+    const viewId = isOb
+      ? getOBSportNameAndViewId(String(matchInfo.sportId)).viewId
+      : getFBSportNameAndViewId(Number(matchInfo.sportId)).viewId;
+    const formatted = isOb
+      ? obDetail?.raw
+        ? formatOBSportItem(obDetail.raw)
+        : matchInfo
+      : matchData
+        ? formatFBSportItem(matchData)
+        : matchInfo;
     const snapshot = isFavorite ? undefined : buildMatchData(formatted);
     changeFollowMatchStatus(
-      { matchId: matchData.id, sportId: viewId, bt: formatted.bt },
+      { matchId: matchInfo.matchId, sportId: viewId, bt: formatted.bt },
       isFavorite ? 'remove' : 'add',
       snapshot,
     );
@@ -543,7 +603,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       type: isFavorite ? 'info' : 'success',
       description: isFavorite ? '取消关注' : '关注成功',
     });
-  }, [matchData, isFavorite, changeFollowMatchStatus]);
+  }, [matchInfo, matchData, isOb, obDetail?.raw, isFavorite, changeFollowMatchStatus]);
 
   // 处理返回：PC 回体育列表；H5 回上一页（如注单记录进详情）
   const handleBack = (): void => {
@@ -650,27 +710,33 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
 
   // 点击赔率：与首页列表一致，加入投注单并打开投注抽屉
   const handleToggleOdds = useCallback(
-    (betItem: Parameters<typeof clickBetItem>[0]['baseBetItem']) => {
-      if (!matchData) return;
+    (betItem: TBaseBetItem) => {
+      if (!matchInfo) return;
       const baseMatch: TClickBetItemPayload['baseMatch'] = {
-        sportId: matchData.sid,
-        matchId: matchData.id,
-        leagueId: matchData.lg?.id ?? 0,
-        leagueName: matchData.lg?.na ?? '',
-        homeName: matchData.ts?.[0]?.na ?? '',
-        awayName: matchData.ts?.[1]?.na ?? '',
-        isLive: false,
-        isChampion: matchData.ty === 1,
-        bt: matchData.bt,
+        sportId: matchInfo.sportId,
+        matchId: matchInfo.matchId,
+        leagueId: matchInfo.leagueId ?? 0,
+        leagueName: matchInfo.leagueName ?? '',
+        homeName: matchInfo.homeName ?? '',
+        awayName: matchInfo.awayName ?? '',
+        isLive: !!matchInfo.isLive,
+        isChampion: !!matchInfo.isChampion,
+        bt: matchInfo.bt,
       };
       clickBetItem({ baseMatch, baseBetItem: betItem });
     },
-    [matchData, clickBetItem],
+    [matchInfo, clickBetItem],
   );
 
   // 处理全部展开/收起（与 BettingMarket 的 uniqueKey 格式一致）
   const handleToggleAllCollapse = (): void => {
     if (!isAllCollapseToggled) {
+      if (isOb) {
+        const keys = obTypeList.flatMap((tab) => tab.markets.map((m) => m.marketId));
+        setCollapsedMarkets(new Set(keys));
+        setIsAllCollapseToggled(true);
+        return;
+      }
       // 全部收起
       if (!matchData?.mg) return;
       const mg: MarketGroup[] = Array.isArray(matchData.mg) ? matchData.mg : [];
@@ -688,9 +754,27 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     }
   };
 
-  // 过滤和排序盘口
+  // OB 当前 Tab 下盘口
+  const processedObMarkets = useMemo(() => {
+    if (!isOb) return [];
+    const tab =
+      obTypeList.find((item) => item.label === activeTab) ??
+      obTypeList.find((item) => item.label === '全部') ??
+      obTypeList[0];
+    let markets = tab?.markets ?? [];
+    markets = [...markets].sort((a, b) => {
+      const aFixed = fixedTopMarkets.has(a.marketId);
+      const bFixed = fixedTopMarkets.has(b.marketId);
+      if (aFixed && !bFixed) return -1;
+      if (!aFixed && bFixed) return 1;
+      return 0;
+    });
+    return markets;
+  }, [isOb, obTypeList, activeTab, fixedTopMarkets]);
+
+  // 过滤和排序盘口（FB）
   const processedMarkets = useMemo(() => {
-    if (!matchData?.mg) return [];
+    if (isOb || !matchData?.mg) return [];
 
     let markets: MarketGroup[] = Array.isArray(matchData.mg) ? matchData.mg : [];
     const sportId = Number(matchData.sid);
@@ -732,6 +816,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
 
     return markets;
   }, [
+    isOb,
     matchData?.mg,
     matchData?.sid,
     matchData?.mc?.s,
@@ -834,8 +919,11 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     scrollMarketAnchorIntoView,
   ]);
 
-  // 获取所有标签：与 Flutter fb 详情页分类一致
+  // 获取所有标签：FB 走本地分类；OB 走接口 formatObDetailList
   const allTabs = useMemo((): string[] => {
+    if (isOb) {
+      return obTypeList.map((item) => item.label);
+    }
     const mg: MarketGroup[] = Array.isArray(matchData?.mg) ? matchData.mg : [];
     const sportId = Number(matchData?.sid);
     const isFootball = sportId === Number(FBSportIdValue.Football);
@@ -864,7 +952,15 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     });
 
     return tabs;
-  }, [matchData?.mg, matchData?.sid, matchData?.mc?.s, fbCategoryTabs, matchCategoryTab]);
+  }, [
+    isOb,
+    obTypeList,
+    matchData?.mg,
+    matchData?.sid,
+    matchData?.mc?.s,
+    fbCategoryTabs,
+    matchCategoryTab,
+  ]);
 
   const displayTabs = useMemo((): string[] => {
     if (!showDiscoverTab || allTabs.includes(discoverTabLabel)) {
@@ -914,16 +1010,16 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
     }
   };
   const sportBgStyle = {
-    backgroundImage: `url('/images/common/sportsDetails/${getSportBackgroundAsset(matchData?.sid)}')`,
+    backgroundImage: `url('/images/common/sportsDetails/${getSportBackgroundAsset(matchInfo?.sportId)}')`,
     backgroundSize: '100% 234px',
     backgroundPosition: 'left top',
     backgroundRepeat: 'no-repeat',
   };
   if (isLoading) {
-    return <Skeleton type="sportsDetails" />;
+    return <Skeleton type={hideMatchInfo ? 'sportsDetailsMarkets' : 'sportsDetails'} />;
   }
 
-  if (!matchData) {
+  if (!matchInfo) {
     return (
       <div className={styles.matchDetails}>
         <div className={styles.empty}>赛事不存在或已关闭</div>
@@ -943,7 +1039,27 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
           className={clsx(styles.marketsContainer, hideMatchInfo && styles.embeddedSidebar)}
           ref={marketsContainerRef}
         >
-          {processedMarkets.length === 0 ? (
+          {isOb ? (
+            processedObMarkets.length === 0 ? (
+              <div className={`${styles.emptyMarkets} _tf[14]`}>
+                <Empty text="暂无盘口数据" />
+              </div>
+            ) : (
+              processedObMarkets.map((market) => (
+                <OBBettingMarket
+                  key={market.marketId}
+                  market={market}
+                  collapsed={collapsedMarkets.has(market.marketId)}
+                  fixed={fixedTopMarkets.has(market.marketId)}
+                  selectedBetItemIds={selectedBetItemIds}
+                  embeddedInSidebar={hideMatchInfo}
+                  onToggleCollapse={handleToggleCollapse}
+                  onToggleFixed={(marketId) => handleToggleFixed(marketId)}
+                  onToggleOdds={handleToggleOdds}
+                />
+              ))
+            )
+          ) : processedMarkets.length === 0 ? (
             <div className={`${styles.emptyMarkets} _tf[14]`}>
               <Empty text="暂无盘口数据" />
             </div>
@@ -1021,7 +1137,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       )}
       {!hideMatchInfo && (
         <HeaderWeb
-          match={matchData}
+          matchInfo={matchInfo}
           onBack={handleBack}
           isFavorite={isFavorite}
           onToggleFavorite={handleToggleFavorite}
@@ -1040,7 +1156,7 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
         <MatchDetailsHeader
           isVideoVisible={h5VideoVisible}
           isDataBoardVisible={isDataBoardVisible}
-          match={matchData}
+          matchInfo={matchInfo}
           isMatchTeamHeader={isMatchTeamHeader}
           isFavorite={isFavorite}
           isRefreshing={isRefreshing}
@@ -1063,7 +1179,8 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
         {!hideMatchInfo && (
           <div data-match-info>
             <MatchInfo
-              match={matchData}
+              matchInfo={matchInfo}
+              enableWinnerQuery={!isOb}
               recommendList={recommendList}
               videoLines={videoLines}
               animationUrls={animationUrls}
@@ -1122,27 +1239,27 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
         {isDiscoverTabActive ? (
           <DiscoverContent
             loading={isDiscoverBooting}
-            sportId={matchData.sid}
+            sportId={matchInfo.sportId}
             chatConfig={chatConfig}
             enabledSubTabTitles={discoverEnabledSubTabTitles}
             resultMatchId={resultMatchId}
-            venueMatchId={matchData.id}
+            venueMatchId={matchInfo.matchId}
             activeSubTabIndex={discoverSubTabIndex}
             onSubTabChange={onDiscoverSubTabChanged}
             homeTeam={{
-              name: matchData.ts?.[0]?.na,
-              logo: matchData.ts?.[0]?.lurl,
+              name: matchInfo.homeName,
+              logo: matchInfo.homeLogo,
             }}
             awayTeam={{
-              name: matchData.ts?.[1]?.na,
-              logo: matchData.ts?.[1]?.lurl,
+              name: matchInfo.awayName,
+              logo: matchInfo.awayLogo,
             }}
-            homeTeamName={matchData.ts?.[0]?.na}
-            awayTeamName={matchData.ts?.[1]?.na}
-            homeTeamIcon={matchData.ts?.[0]?.lurl}
-            awayTeamIcon={matchData.ts?.[1]?.lurl}
+            homeTeamName={matchInfo.homeName}
+            awayTeamName={matchInfo.awayName}
+            homeTeamIcon={matchInfo.homeLogo}
+            awayTeamIcon={matchInfo.awayLogo}
             matchShareInfo={chatMatchShareInfo}
-            leagueName={matchData.lg?.na ?? ''}
+            leagueName={matchInfo.leagueName ?? ''}
             embeddedInSidebar={hideMatchInfo}
           />
         ) : isMobile && !hideMatchInfo ? (
@@ -1158,9 +1275,9 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       )} */}
         <MatchDrawer
           visible={isDrawerVisible}
-          currentMatchId={matchData.id}
-          currentLeagueId={matchData.lg?.id}
-          leagueName={matchData.lg?.na || ''}
+          currentMatchId={matchInfo.matchId}
+          currentLeagueId={matchInfo.leagueId}
+          leagueName={matchInfo.leagueName || ''}
           onClose={handleDrawerClose}
           onMatchSelect={handleMatchSelect}
         />
@@ -1168,11 +1285,12 @@ const SportDetail: React.FC<SportDetailProps> = ({ id, hideMatchInfo = false }) 
       <ClientOnly>
         <FloatingButton scrollContainerRef={containerRef} />
       </ClientOnly>
-      {isLogin && (
+      {/* 分享面板收统一的 matchInfo，FB / OB 都能用（对齐 Flutter SportShareSheet 收 SportItemInfo） */}
+      {isLogin && matchInfo && (
         <MatchShareSheet
           show={shareSheetOpen}
           onClose={() => setShareSheetOpen(false)}
-          match={matchData}
+          match={matchInfo}
           onShareToChat={handleShareToChat}
         />
       )}

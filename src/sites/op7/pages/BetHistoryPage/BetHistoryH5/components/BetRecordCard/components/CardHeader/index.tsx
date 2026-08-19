@@ -4,7 +4,7 @@ import { EBetOrderStatus, EBetSettleResult } from '@/apis/commonSports/constants
 import { ArrowRightSvg, LeftLine2x16Svg } from '@/sites/op7/components/SvgIcons';
 import { Icon } from '@/common/components/Icon';
 import { SETTLED_RESULT_CONFIG, UNSETTLED_STATUS_CONFIG } from '../../../../constants';
-import { bigNB } from '@/utils/bet/bigMath';
+import { getOrderDisplayOdds } from '@/utils/betHistory';
 
 interface CardHeaderProps {
   order: TBetHistoryOrderItem;
@@ -72,7 +72,7 @@ const CardHeader = ({ order, collapsed, onToggle }: CardHeaderProps) => {
             <p className="_tf[12] text-[var(--Text-800)]">{`${order.orderLabel}*${order.orderSum}`}</p>
             <p className="_tf[16] text-[var(--ThemeColor-Main)]">
               <span>@</span>
-              <span className="din-pro">{bigNB(order.orderOdds).toFixed(2)}</span>
+              <span className="din-pro">{getOrderDisplayOdds(order.orderOdds, order)}</span>
             </p>
           </>
         )}

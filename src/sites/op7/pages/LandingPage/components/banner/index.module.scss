@@ -24,7 +24,7 @@
       rgba(26, 129, 255, 0.74) 45%,
       rgba(26, 129, 255, 0.44) 100%
     ),
-    url('../../../../images/common/home-header.jpg');
+    url('../../../../images/common/home-header.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -163,7 +163,7 @@
   z-index: 1;
   width: 149px;
   height: 220px;
-  background: url('/images/common/landing/cluo2.png') center bottom / contain no-repeat;
+  background: url('/images/common/landing/cluo2.webp') center bottom / contain no-repeat;
 
   @include rwd-min('lg') {
     right: 18px;

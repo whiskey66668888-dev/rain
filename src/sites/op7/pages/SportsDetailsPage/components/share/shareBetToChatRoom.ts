@@ -36,9 +36,7 @@ export const shareBetToChatRoom = async (
         toast({ type: 'error', description: '聊天室连接失败' });
         return false;
       }
-      const { sendCustomMessage } = await import(
-        '@/core/sdk/IMManager/client/conversationService'
-      );
+      const { sendCustomMessage } = await import('@/core/sdk/IMManager/client/conversationService');
       const result = await sendCustomMessage({
         groupId: room.groupId,
         description: EMC_MSG_DESCRIPTION_LABEL.Emc1,

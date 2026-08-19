@@ -2,11 +2,8 @@
  * 简洁版 玩法显示
  */
 import React, { useMemo } from 'react';
-// constants
-import { FBCompetitionMap } from '@/apis/fbSports/common/constants';
-// hooks
+import { findVenueCompetition } from '@/apis/commonSports/venueCompetition';
 import { useAppSelector } from '@/core/store/hooks';
-// styles
 import styles from './index.module.scss';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 import clsx from 'clsx';
@@ -25,15 +22,14 @@ const SimpleTabList: React.FC<SimpleTabListProps> = ({
   bettingCompact = false,
 }) => {
   const sportId = useAppSelector((state) => state.sport.mainList.settings.sportId);
+  const venue = useAppSelector((state) => state.sport.venue);
   const simpleActiveItem = useAppSelector(
     (state) => state.sport.mainList.settings.simpleActiveItem,
   );
   const { changeSimpleActiveItem } = useSportsMainListControl();
   const simpleList = useMemo(() => {
-    const list =
-      Object.values(FBCompetitionMap).find((item) => item.id === sportId)?.simpleList ?? [];
-    return list;
-  }, [sportId]);
+    return findVenueCompetition(venue, sportId)?.simpleList ?? [];
+  }, [venue, sportId]);
   if (simpleList.length == 0) return null;
   return (
     <div
@@ -57,7 +53,7 @@ const SimpleTabList: React.FC<SimpleTabListProps> = ({
             },
             '_tf[14]',
           )}
-          onClick={() => changeSimpleActiveItem(item)}
+          onClick={() => changeSimpleActiveItem(item as never)}
         >
           <span className={styles.simpleItemLabel}>{item.name}</span>
         </span>

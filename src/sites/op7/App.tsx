@@ -85,19 +85,31 @@ const App: React.FC = () => {
   }, [queryClient]);
 
   useEffect(() => {
-    const prefetch = () => prefetchAuthModals();
+    let alive = true;
+    const prefetch = () => {
+      void prefetchAuthModals().then(() => {
+        if (!alive) return;
+        setAuthModalLoaded(true);
+      });
+    };
     if (typeof requestIdleCallback === 'function') {
       const idleId = requestIdleCallback(prefetch, { timeout: 2500 });
-      return () => cancelIdleCallback(idleId);
+      return () => {
+        alive = false;
+        cancelIdleCallback(idleId);
+      };
     }
     const timer = window.setTimeout(prefetch, 1500);
-    return () => window.clearTimeout(timer);
+    return () => {
+      alive = false;
+      window.clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
     if (!authModalType) return;
     setAuthModalLoaded(true);
-    prefetchAuthModals();
+    void prefetchAuthModals();
   }, [authModalType]);
 
   useEffect(() => {

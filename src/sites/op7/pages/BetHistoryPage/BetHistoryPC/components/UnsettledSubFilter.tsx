@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { EBetHistoryQueryType } from '@/apis/commonSports/constants';
+import { EBetHistoryQueryType, EVenue } from '@/apis/commonSports/constants';
 import { useBetHistoryContext } from '@/common/hooks/betHistory/context/BetHistoryContext';
 import { useBetHistoryBaseMethods } from '@/common/hooks/betHistory/useBetHistoryMethods';
 import { unsettledTabs } from '@/common/hooks/betHistory/constants';
@@ -19,6 +19,9 @@ const UnsettledSubFilter = () => {
     },
     [activeVenue, changeQueryType, queryParams?.queryType],
   );
+
+  // 冠军 / 提前结算筛选依赖 FB 接口参数，OB 场馆不提供
+  if (activeVenue !== EVenue.FB) return null;
 
   return (
     <div className="shrink-0 h-32px flex items-center gap-12px">

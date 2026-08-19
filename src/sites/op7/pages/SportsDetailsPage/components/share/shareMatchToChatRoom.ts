@@ -38,9 +38,7 @@ export const shareMatchToChatRoom = async (info: MatchShareInfo | null): Promise
         toast({ type: 'error', description: '聊天室连接失败' });
         return false;
       }
-      const { sendCustomMessage } = await import(
-        '@/core/sdk/IMManager/client/conversationService'
-      );
+      const { sendCustomMessage } = await import('@/core/sdk/IMManager/client/conversationService');
       const result = await sendCustomMessage({
         groupId: room.groupId,
         description: EmcMsgDescription.MatchShare,

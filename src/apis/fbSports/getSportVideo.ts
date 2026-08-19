@@ -48,8 +48,11 @@ export const getSportVideoReq = async (
     gameType,
     matchId: String(matchId),
   });
-  const testUrl = 'https://live-api-sit.test100.cc/api/match/live/get100Refactoring?';
-  const liveUrl = 'https://api.live336.com/api/match/live/get100Refactoring?';
+  // 对齐 App：OB 走 get100；FB 保持 get100Refactoring
+  const liveHost = 'https://api.live336.com/api/match/live';
+  const livePath = gameType === 'OB' ? 'get100Refactoring' : 'get100Refactoring';
+  const liveUrl = `${liveHost}/${livePath}?`;
+  const testUrl = `https://live-api-sit.test100.cc/api/match/live/${livePath}?`;
   try {
     const result = await request.get<SportVideoEntity, undefined, SportVideoEntity>(
       `${true ? liveUrl : testUrl}${query}`,

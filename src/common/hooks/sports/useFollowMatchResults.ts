@@ -9,6 +9,7 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 
+import { EVenue } from '@/apis/commonSports/constants';
 import type { MatchBaseInfo } from '@/apis/commonSports/types';
 import {
   type MatchResultRecordItem,
@@ -53,7 +54,7 @@ const getFinalScore = (record: MatchResultRecordItem, fbSportId: number): [numbe
 const convertResultToMatch = (
   viewId: number,
   fbSportId: number,
-  matchId: number,
+  matchId: string,
   snap: FollowSnapshot,
   record?: MatchResultRecordItem,
 ): MatchBaseInfo => {
@@ -69,7 +70,7 @@ const convertResultToMatch = (
     leagueId: record?.lg?.id ?? snap.leagueId ?? 0,
     leagueName: record?.lg?.na ?? snap.leagueName ?? '',
     leagueLogo: record?.lg?.lurl ?? '',
-    matchId: record?.id ?? matchId,
+    matchId: String(record?.id ?? matchId),
     pageIndex: 1,
     matchNum: record?.fid ?? 0,
     matchPeriod: '',
@@ -85,9 +86,9 @@ const convertResultToMatch = (
     isCountdown: false,
     clockType: 'DESC',
     homeName: home?.na ?? snap.homeName ?? '',
-    homeLogo: home?.lurl ?? '',
+    homeLogo: home?.lurl || snap.homeLogo || '',
     awayName: away?.na ?? snap.awayName ?? '',
-    awayLogo: away?.lurl ?? '',
+    awayLogo: away?.lurl || snap.awayLogo || '',
     // 占位（无赛果）时不展示比分：score 留空 + scorePending=true，避免 0-0 被误显示为真实比分
     score: hasResult ? `${homeScore}-${awayScore}` : '',
     scorePending: !hasResult,
@@ -116,7 +117,9 @@ interface UseFollowMatchResultsParams {
    * 当前 live 列表返回的赛事 id。不参与赛果查询过滤（查询仍按 leagueIds/sportId），
    * 仅用于：① 感知赛事「掉出 live = 完赛」从而触发赛果刷新；② 判定需渲染完场（占位）的赛事。
    */
-  liveMatchIds: number[];
+  liveMatchIds: string[];
+  /** 当前场馆：仅 FB 有赛果接口；OB 只做快照完场占位，避免误打 FB 赛果 */
+  venue: EVenue;
 }
 
 export const useFollowMatchResults = ({
@@ -124,8 +127,10 @@ export const useFollowMatchResults = ({
   sportId,
   enabled,
   liveMatchIds,
+  venue,
 }: UseFollowMatchResultsParams) => {
   const fbSportId = viewIdToFbSportId(sportId);
+  const canFetchFbResults = venue === EVenue.FB;
 
   // 当前赛种下、能解析出快照的关注赛事（手动收藏 + 投注自动关注一视同仁）：统一查赛果
   const followWithSnap = useMemo(() => {
@@ -170,7 +175,7 @@ export const useFollowMatchResults = ({
       size: 300,
     },
     {
-      enabled: enabled && followWithSnap.length > 0,
+      enabled: enabled && canFetchFbResults && followWithSnap.length > 0,
       // 赛果是终值不常变：60s 内反复进/出关注 tab 不重复请求；超 60s 才随挂载刷新。
       staleTime: 60_000,
       refetchOnMount: true,
@@ -185,7 +190,7 @@ export const useFollowMatchResults = ({
     () =>
       endedFollowMatches
         .map((x) => x.item.matchId)
-        .sort((a, b) => a - b)
+        .sort((a, b) => Number(a) - Number(b))
         .join(','),
     [endedFollowMatches],
   );
@@ -193,11 +198,11 @@ export const useFollowMatchResults = ({
   // 但集合未变时不重复请求——避免每次切到关注 tab 都空跑一次赛果查询。
   const prevEndedKeyRef = useRef('');
   useEffect(() => {
-    if (!enabled || !endedKey) return;
+    if (!enabled || !canFetchFbResults || !endedKey) return;
     if (prevEndedKeyRef.current === endedKey) return;
     prevEndedKeyRef.current = endedKey;
     refetchResult();
-  }, [enabled, endedKey, refetchResult]);
+  }, [enabled, canFetchFbResults, endedKey, refetchResult]);
 
   const endedMatches = useMemo<MatchBaseInfo[]>(() => {
     if (!endedFollowMatches.length) return [];
@@ -205,7 +210,7 @@ export const useFollowMatchResults = ({
     resultQuery.data?.pages?.forEach((page) => {
       if (Array.isArray(page?.records)) records.push(...page.records);
     });
-    const recordMap = new Map(records.map((r) => [r.id, r]));
+    const recordMap = new Map(records.map((r) => [String(r.id), r]));
 
     // 2：命中赛果→真实完场态；未命中（赛果尚未返回）→ 用快照渲染完场占位，避免卡片消失
     return endedFollowMatches.map((x) =>

@@ -85,7 +85,7 @@ export const appendBetShareToFilteredLists = (params: {
       .slice(-limit);
   }
 
-  if (isBigBet((message.betInfo ?? {}) as Record<string, unknown>, chatConfig)) {
+  if (isBigBet(message.betInfo ?? {}, chatConfig)) {
     if (!bigMessages.some((m) => m.id === message.id)) {
       bigMessages = [...bigMessages, message].sort((a, b) => a.sendTime - b.sendTime).slice(-limit);
     }

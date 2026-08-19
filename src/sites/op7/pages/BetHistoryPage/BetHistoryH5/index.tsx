@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInViewport } from 'ahooks';
-import { EBetHistoryTab } from '@/apis/commonSports/constants';
+import { EBetHistoryTab, EVenue } from '@/apis/commonSports/constants';
 import TabBar from './components/TabBar';
 import BetRecordCard from './components/BetRecordCard';
 import useBetHistory from '@/common/hooks/betHistory/useBetHistory';
@@ -31,7 +31,7 @@ const LIST_TABS = [EBetHistoryTab.UNSETTLED, EBetHistoryTab.SETTLED, EBetHistory
 
 const BetHistoryH5 = () => {
   const all = useBetHistory(EBetHistoryType.H5);
-  const { activeTab, list, isFetching, fetchNextPage, hasNextPage, isLoading } = all;
+  const { activeTab, activeVenue, list, isFetching, fetchNextPage, hasNextPage, isLoading } = all;
 
   const {
     resultSearchValue,
@@ -146,8 +146,8 @@ const BetHistoryH5 = () => {
           <div className="px-10px">
             {/* 场馆切换 */}
             <VenueTabBar />
-            {/* 公告栏 */}
-            <AnnouncementBar />
+            {/* 公告栏：公告数据源只有 FB 场馆，EB（OB）不展示 */}
+            {activeVenue === EVenue.FB && <AnnouncementBar />}
             {/* Tab 栏 */}
             <TabBar allCollapsed={allCollapsed} onToggleAll={toggleAll} />
           </div>

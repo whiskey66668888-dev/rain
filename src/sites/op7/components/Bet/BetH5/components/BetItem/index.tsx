@@ -6,8 +6,8 @@ import { memo, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import { EOddsStatus } from '@/apis/commonSports/constants';
 import { OddsChangeArrowSvg } from '@/sites/op7/components/SvgIcons';
-import { bigNB } from '@/utils/bet/bigMath';
 import { useGoMatchDetail } from '@/sites/op7/hooks/useGoMatchDetail';
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 interface BetItemProps {
   betItem: TBetItem;
   isFirstOne?: boolean;
@@ -25,7 +25,15 @@ const BetItem = ({ betItem, isFirstOne }: BetItemProps) => {
   } = useBettingData();
   const { removeBetItem, hideBetDrawer } = useBetMethods();
   const goMatchDetail = useGoMatchDetail();
+  const { getOddsDisplay } = useOddsDisplay();
   const canGoMatchDetail = showOrdersPanel && Number(betItem.matchId) > 0;
+
+  // 面板由当前 betType 决定，isParlay 即该投注项所在的口径（串关只支持欧洲盘）
+  const oddsDisplay = getOddsDisplay({
+    baseOdds: betItem.baseOdds,
+    isSupportHK: betItem.isSupportHK,
+    isParlay,
+  });
 
   const betItemClass = useMemo(() => {
     if (showBetPanel) {
@@ -80,7 +88,7 @@ const BetItem = ({ betItem, isFirstOne }: BetItemProps) => {
         <div className={styles.header}>
           <div className={styles.playInfo}>
             <span className={styles.betType}>{betItem.playName}</span>
-            <span className={styles.marketType}>[欧洲盘]</span>
+            <span className={styles.marketType}>[{oddsDisplay.label}]</span>
           </div>
           <div
             className={clsx(
@@ -90,7 +98,7 @@ const BetItem = ({ betItem, isFirstOne }: BetItemProps) => {
           >
             <p className={clsx(styles.atSymbol, '-translate-y-1px')}>@</p>
             <div className={styles.oddValueContainer}>
-              <span className={styles.oddValue}>{bigNB(betItem.baseOdds).toFixed(2)}</span>
+              <span className={styles.oddValue}>{oddsDisplay.odds}</span>
               <OddsChangeArrowSvg className={clsx('w-8px h-10px', styles.oddsChangeArrow)} />
             </div>
           </div>

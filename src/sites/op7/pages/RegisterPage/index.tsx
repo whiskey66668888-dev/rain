@@ -404,6 +404,7 @@ const RegisterPage: React.FC = () => {
         position={overlayPosition}
         maskClickClose
         zIndex={zIndexMap.registerModal}
+        destroyOnClose={false}
       >
         <div className={`${styles.registerModal} ${isMobile ? styles.mobile : styles.desktop}`}>
           {/* 关闭按钮（Pad/Web在右上角，H5在Banner内） */}

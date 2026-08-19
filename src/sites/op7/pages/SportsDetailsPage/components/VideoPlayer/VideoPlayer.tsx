@@ -390,7 +390,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {/* 加载状态 */}
       {isLoading && (
         <div className={styles.loading}>
-          <img className={styles.loadingImg} src={`/images/dark/loading.webp`} alt="loading" />
+          <img className={styles.loadingImg} src={`/images/dark/loading.png`} alt="loading" />
           {currentLineIndex !== initialLineIndex && (
             <div className={styles.loadingText}>
               正在为您切换至{' '}

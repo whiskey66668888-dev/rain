@@ -9,7 +9,7 @@ import { generatePath } from 'react-router-dom';
 import { PATHS } from '@/sites/op7/routes/paths';
 import Popover from '@/common/components/Popover';
 import clsx from 'clsx';
-import { bigNB } from '@/utils/bet/bigMath';
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 
 interface SportsCardProps {
   matchInfo: MatchBaseInfo;
@@ -36,6 +36,7 @@ export const SportsCard: React.FC<SportsCardProps> = ({ matchInfo, type }) => {
     children = [],
   } = matchInfo;
   const navigate = useNavigateWithLanguage();
+  const { getOddsDisplay } = useOddsDisplay();
   const goMatchDetailWithPick = (e: React.MouseEvent, option: TBaseBetItem) => {
     e.stopPropagation();
     const selectionTy =
@@ -174,7 +175,10 @@ export const SportsCard: React.FC<SportsCardProps> = ({ matchInfo, type }) => {
                 {getBetItemDisplayShortName(option)}
               </p>
               <p className="text-center din-pro font-weight-800 text-14px text-[var(--Text-Main-10)] mb-[-2px]">
-                {bigNB(option.baseOdds).toFixed(2)}
+                {
+                  getOddsDisplay({ baseOdds: option.baseOdds, isSupportHK: option.isSupportHK })
+                    .odds
+                }
               </p>
             </div>
           ))}

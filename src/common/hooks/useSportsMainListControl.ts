@@ -12,17 +12,18 @@ import {
   setSportsLeftPanelType,
 } from '@/core/store/slices/sportSlice';
 import { addFollowReq, delFollowReq } from '@/apis/origin/follow';
-
-/** web 体育关注 tab 目前只对接 FB 平台 */
-const FOLLOW_GAME_TYPE = 'FB';
+import { getFollowGameType } from '@/common/hooks/follow';
 import { scrollToSportsPageMainAreaIfNeeded } from '@/utils';
 import { LocalHandicapItem } from '@/apis/fbSports/common/types';
-import { FBCompetitionMap, FBSportIdValue } from '@/apis/fbSports/common/constants';
+import { FBSportIdValue } from '@/apis/fbSports/common/constants';
+import { OBSportIdValue } from '@/apis/obSports/common/constants';
+import { findVenueCompetition } from '@/apis/commonSports/venueCompetition';
 import { setShowBetDrawer } from '@/core/store/slices/betSlice';
 
 const useSportsMainListControl = () => {
   const dispatch = useAppDispatch();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
+  const venue = useAppSelector((state) => state.sport.venue);
 
   // 更改主列表数据显示相关设置
   const setMainListSettings = useMemoizedFn(
@@ -37,7 +38,7 @@ const useSportsMainListControl = () => {
   // 获取当前赛种的简洁版赔率玩法项
   const getCurrentSimpleActiveItem = useMemoizedFn((sportId: number) => {
     return (
-      Object.values(FBCompetitionMap).find((item) => item.id === sportId)?.simpleList[0] ?? null
+      (findVenueCompetition(venue, sportId)?.simpleList[0] as LocalHandicapItem | undefined) ?? null
     );
   });
 
@@ -58,8 +59,8 @@ const useSportsMainListControl = () => {
   const switchPlayType = useMemoizedFn(
     (playType: PlayType, sportId: number, playTypeId: number) => {
       if (sportId === HotSportId) {
-        // 切换赛种类型的时候默认切换到足球赛种
-        sportId = FBSportIdValue.Football;
+        // 切换赛种类型的时候默认切换到足球赛种（场馆各自足球 id）
+        sportId = venue === EVenue.OB ? OBSportIdValue.Football : FBSportIdValue.Football;
       }
       setMainListSettings({
         playType,
@@ -86,7 +87,7 @@ const useSportsMainListControl = () => {
   // 游客态：把完整 TFollowMatch（含 matchData 快照）写进 redux/localStorage，登录时再 sync 上报服务器。
   const changeFollowMatchStatus = useMemoizedFn(
     (
-      base: { matchId: number; sportId: number; bt: number },
+      base: { matchId: string; sportId: number; bt: number },
       type: 'add' | 'remove',
       matchData?: string,
     ) => {
@@ -107,16 +108,17 @@ const useSportsMainListControl = () => {
             }),
           );
 
+        const gameType = getFollowGameType(venue);
         if (type === 'add' && matchData) {
           addFollowReq({
-            gameType: FOLLOW_GAME_TYPE,
+            gameType,
             matchId: String(base.matchId),
             matchData,
             source: 1,
           }).catch(revert);
         } else if (type === 'remove') {
           delFollowReq({
-            gameType: FOLLOW_GAME_TYPE,
+            gameType,
             matchId: String(base.matchId),
           }).catch(revert);
         }
@@ -134,14 +136,14 @@ const useSportsMainListControl = () => {
   });
 
   // 更改置顶比赛状态
-  const changePinnedMatchStatus = useMemoizedFn((matchId: number, type: 'add' | 'remove') => {
+  const changePinnedMatchStatus = useMemoizedFn((matchId: string, type: 'add' | 'remove') => {
     dispatch(setPinnedMatchIds({ type, matchId }));
   });
 
   // 更改过滤联赛id（syncLeaguePicker：是否与筛选 Tab 勾选/再次打开默认 Tab 对齐，热门搜索传 false）
   const changeFilterByLeagueIds = useMemoizedFn(
     (
-      leagueIds: number[],
+      leagueIds: Array<number | string>,
       sportId: number,
       searchText: string,
       options?: { syncLeaguePicker?: boolean },
@@ -180,9 +182,9 @@ const useSportsMainListControl = () => {
   // 更改左侧菜单展示内容
   const switchSportsLeftPanelType = useMemoizedFn((sportsLeftPanelType: ESportsLeftPanelType) => {
     if (sportsLeftPanelType === ESportsLeftPanelType.ORDER_CART) {
-      dispatch(setShowBetDrawer({ venue: EVenue.FB, showBetDrawer: true }));
+      dispatch(setShowBetDrawer({ venue, showBetDrawer: true }));
     } else {
-      dispatch(setShowBetDrawer({ venue: EVenue.FB, showBetDrawer: false }));
+      dispatch(setShowBetDrawer({ venue, showBetDrawer: false }));
     }
     dispatch(setSportsLeftPanelType(sportsLeftPanelType));
   });

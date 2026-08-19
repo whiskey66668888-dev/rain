@@ -1,5 +1,7 @@
 export {
+  DISCOVER_VENUE_TYPE_BTI,
   DISCOVER_VENUE_TYPE_FB,
+  DISCOVER_VENUE_TYPE_OB,
   discoverChatConfigQueryKey,
   discoverCornerKickQueryKey,
   discoverGoalQueryKey,
@@ -40,6 +42,7 @@ export {
 
 export {
   getChatConfigReq,
+  getDiscoverVenueType,
   getMatchDiscoverTabsReq,
   getNmMatchIdReq,
   getDiscoverIndexOddsReq,

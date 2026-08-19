@@ -3,19 +3,28 @@ import React, { useMemo } from 'react';
 
 import { ClientOnly } from '@/common/components/ClientOnly';
 
-import { HotSportId, LotterySportId, PlayType, PlayTypeId } from '@/apis/commonSports/constants';
+import {
+  HotSportId,
+  LotterySportId,
+  PlayType,
+  PlayTypeId,
+  EVenue,
+} from '@/apis/commonSports/constants';
+import { OBSportIdValue } from '@/apis/obSports/common/constants';
 import { useAppSelector } from '@/core/store/hooks';
 
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
 
 import styles from './PlayTypePicker.module.scss';
 import skeletonStyles from '@/common/components/Skeleton/Skeleton.module.scss';
+import _ from 'lodash';
 
 const PlayTypePickerH5: React.FC = () => {
   const { switchPlayType } = useSportsMainListControl();
   const currentPlayType = useAppSelector((state) => state.sport.mainList.settings.playType);
   const followMatch = useAppSelector((state) => state.sport.mainList.settings.followMatch);
   const menuInfo = useAppSelector((state) => state.sport.mainList.datas.menuInfo);
+  const venue = useAppSelector((state) => state.sport.venue);
 
   const playTypeMenuList = useMemo(() => {
     // 在倒数第二个插入关注按钮
@@ -48,7 +57,8 @@ const PlayTypePickerH5: React.FC = () => {
             onClick={() =>
               switchPlayType(
                 item.type,
-                menuInfo?.menus?.[item.type]?.[0]?.sportId ?? HotSportId,
+                menuInfo?.menus?.[item.type]?.[0]?.sportId ??
+                  (venue === EVenue.OB ? OBSportIdValue.Football : HotSportId),
                 item.typeId,
               )
             }

@@ -12,6 +12,9 @@ import type { TBetItem, TParlayItem } from '@/apis/commonSports/types';
 import { getStakeOrderStatus } from '@/apis/fbSports/bet/getStakeOrderStatus';
 import { placeBetFb } from '@/apis/fbSports/bet/placeBetFb';
 import { placePreBetFb } from '@/apis/fbSports/bet/placePreBetFb';
+import { placePreBetOb } from '@/apis/obSports/bet/placePreBet';
+import { getStakeOrderStatusOb } from '@/apis/obSports/bet/getStakeOrderStatus';
+import { placeBetOb } from '@/apis/obSports/bet/placeBet';
 import { toast } from '@/common/components/Toast';
 import {
   takeChatFollowContext,
@@ -42,6 +45,7 @@ import {
   updateBetOrders,
   setPreBetOdds,
   setFbPreBetLimitMap,
+  setObPreBetLimit,
   setQuickAmountInputId,
   setSingleFocusId,
   setDefaultAmount,
@@ -58,7 +62,11 @@ import {
   betItemToFollowSnapshot,
   ordersToFollowMatchInfos,
 } from '@/utils/bet';
-import { mirrorBetAutoFollowToServer, mirrorOrdersAutoFollowToServer } from '@/common/hooks/follow';
+import {
+  getFollowGameType,
+  mirrorBetAutoFollowToServer,
+  mirrorOrdersAutoFollowToServer,
+} from '@/common/hooks/follow';
 import Cookies from 'js-cookie';
 import { TQuickAmountKeys } from '@/sites/op7/components/Bet/BetPC/components/QuickAmount';
 import { setFollowMatchIds, setSportsLeftPanelType } from '@/core/store/slices/sportSlice';
@@ -260,15 +268,17 @@ const useBetMethods = () => {
       if (!preBetInfo) {
         return;
       }
-      const fbPreBetLimit = _.find(
-        fbPreBetLimitMap,
-        (_item, key) => betItem.betItemId === key || _.includes(betItem.relatedIds, key),
-      );
-      if (!fbPreBetLimit) {
+      // FB 的最高预约赔率由限额接口(mod)给出，拿不到就不让改；OB 没有赔率上限，只有「不低于当前赔率」
+      const fbPreBetLimit =
+        venue === EVenue.FB
+          ? _.find(
+              fbPreBetLimitMap,
+              (_item, key) => betItem.betItemId === key || _.includes(betItem.relatedIds, key),
+            )
+          : undefined;
+      if (venue === EVenue.FB && !fbPreBetLimit) {
         return;
       }
-      console.log('js---updatePreBetOdds', venue, betItem, value, type, fbPreBetLimit);
-      // dispatch(setPreBetOdds({ venue, betItem, preBetOdds }));
       let preBetOdds = '';
       if (type === 'plus') {
         preBetOdds = bigMath.add(preBetInfo.preBetOdds, 0.01).toString();
@@ -285,7 +295,7 @@ const useBetMethods = () => {
         preBetOdds = handleAmountInputChange(value);
       }
 
-      if (bigNB(preBetOdds).gt(fbPreBetLimit.mod)) {
+      if (fbPreBetLimit && bigNB(preBetOdds).gt(fbPreBetLimit.mod)) {
         toast({
           type: 'warning',
           title: '已达最大预约投注赔率',
@@ -563,7 +573,7 @@ export const usePlaceBet = () => {
         );
       }
       dispatch(setBetStep({ venue: params.venue, betStep: EBetStep.Fetching }));
-      const res = await placeBetFb(params);
+      const res = params.venue === EVenue.OB ? await placeBetOb(params) : await placeBetFb(params);
       console.log('js---placeBet', JSON.stringify(res));
       if (!res) {
         // 下注接口返回null，说明投注失败
@@ -584,7 +594,7 @@ export const usePlaceBet = () => {
         if (matchInfos.length) {
           dispatch(setFollowMatchIds({ type: 'add', matchInfos }));
           // 登录态镜像到服务器（source=2）；游客态由上面的 redux+localStorage 承接，登录时再 sync
-          mirrorOrdersAutoFollowToServer(successOrders);
+          mirrorOrdersAutoFollowToServer(successOrders, getFollowGameType(params.venue));
         }
       }
       // 下注成功，回调,更新余额
@@ -657,23 +667,33 @@ export const usePlacePreBet = () => {
       if (!betItem) return;
 
       dispatch(setBetStep({ venue, betStep: EBetStep.Fetching }));
-      const res = await placePreBetFb({ betItem });
-      console.log('js---placePreBet', res);
+
+      /** 两个场馆的预约接口返回结构不同，先归一成 { success, orderId } */
+      let result: { success: boolean; orderId: string } | null = null;
+      if (venue === EVenue.OB) {
+        const res = await placePreBetOb({ betItem });
+        result = res;
+      } else {
+        const res = await placePreBetFb({ betItem });
+        result = res?.data
+          ? {
+              success: [
+                EFbReserveOrderStatus.Valid,
+                EFbReserveOrderStatus.Successful,
+                EFbReserveOrderStatus.Confirming,
+              ].includes(res.data.st),
+              orderId: res.data.id,
+            }
+          : null;
+      }
 
       // 接口错误，回到普通态，真实的投注失败，继续到结果页面
-      if (!res) {
+      if (!result) {
         dispatch(setBetStep({ venue, betStep: EBetStep.Normal }));
         return;
       }
 
-      const success =
-        res &&
-        res.data &&
-        [
-          EFbReserveOrderStatus.Valid,
-          EFbReserveOrderStatus.Successful,
-          EFbReserveOrderStatus.Confirming,
-        ].includes(res.data.st);
+      const success = result.success;
 
       // 冠军（Outright）投注项不自动关注
       if (success && autoFollowMatch && !betItem.isChampion) {
@@ -685,8 +705,8 @@ export const usePlacePreBet = () => {
             ],
           }),
         );
-        // 登录态镜像到服务器（source=2）
-        mirrorBetAutoFollowToServer([betItem]);
+        // 登录态镜像到服务器（source=2），gameType 用当前场馆
+        mirrorBetAutoFollowToServer([betItem], getFollowGameType(venue));
       }
 
       // 预约投注结果 toast 提示（点击可跳转预约注单）
@@ -712,11 +732,12 @@ export const usePlacePreBet = () => {
 
       dispatch(setPreBetStatus({ venue, betItemId: betItem.betItemId, enabled: false }));
       dispatch(setFbPreBetLimitMap({ venue, preBetLimitMap: {} }));
+      dispatch(setObPreBetLimit({ venue, preBetLimit: null }));
 
       // 预约投注复用普通订单结果页（OrdersPanel），通过 isPreBetOrder 差异化展示
       const preBetOdds = Number(betItem.preBetInfo?.preBetOdds || betItem.baseOdds || 0);
       const order: TBetOrderItem = {
-        orderId: res.data.id,
+        orderId: result.orderId,
         isPreBetOrder: true,
         orderBetAmount: bigNB(betItem.betAmount || 0).toFixed(2),
         orderMaxWinAmount: bigNB(betItem.betAmount || 0)
@@ -793,7 +814,10 @@ export const useGetConfirmingOrders = () => {
       autoFollowMatch: boolean;
     }) => {
       //   const store = getGlobalStoreForApiRequest();
-      const res = await getStakeOrderStatus({ orders: confirmingOrders });
+      const res =
+        venue === EVenue.OB
+          ? await getStakeOrderStatusOb({ orders: confirmingOrders })
+          : await getStakeOrderStatus({ orders: confirmingOrders });
       console.log('js---getConfirmingOrders', res);
       // 这里的res，状态都不是确认中的
       if (res.length) {
@@ -814,7 +838,7 @@ export const useGetConfirmingOrders = () => {
           if (matchInfos.length) {
             dispatch(setFollowMatchIds({ type: 'add', matchInfos }));
             // 登录态镜像到服务器（source=2）
-            mirrorOrdersAutoFollowToServer(successOrders);
+            mirrorOrdersAutoFollowToServer(successOrders, getFollowGameType(venue));
           }
         }
       }

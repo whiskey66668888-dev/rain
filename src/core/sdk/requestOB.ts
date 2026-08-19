@@ -4,7 +4,12 @@ import { toast } from '@/common/components/Toast';
 
 import { getOBTokenReq } from '@/apis/origin/system';
 import { getGlobalStoreForApiRequest } from '@/core/store/util';
-import { API_CODE_OB_SUCCESS, API_CODE_OB_USER_LOGIN_EXPIRE } from '@/utils/constants/apiCodeOB';
+import {
+  API_CODE_OB_RATE_LIMIT,
+  API_CODE_OB_SUCCESS,
+  API_CODE_OB_USER_LOGIN_EXPIRE,
+} from '@/utils/constants/apiCodeOB';
+
 import { navigateTo } from '@/common/hooks/useGlobalNavigate';
 
 import { i18n } from '../i18n';
@@ -14,6 +19,11 @@ import { createRequest } from './request/index';
 import type { RequestInstance } from './request/index';
 import { type ResponseData, type ResponseError } from './request/model';
 import { encryption } from './request/util';
+
+const logObApi = (tag: string, url: string, payload: unknown): void => {
+  if (0 > 1) return;
+  console.log(`[OB API] ${tag}`, url, payload);
+};
 
 // OB 第三方 API 配置
 const obConfig: RequestConf = {
@@ -56,6 +66,8 @@ const obConfig: RequestConf = {
         }
       }
     }
+    // 解密后再打印，拿到的就是各 format 函数实际消费的原始结构
+    logObApi(`响应 code=${data.code}`, _url ?? '', data.data);
     // 检查成功码
     return data.code === API_CODE_OB_SUCCESS ? data : null;
   },
@@ -71,8 +83,14 @@ const obConfig: RequestConf = {
     if (isErrorToast) {
       switch (error.code) {
         case API_CODE_OB_USER_LOGIN_EXPIRE:
+          // toast({
+          //   title: 'OB体育登录已过期，尝试重新登陆中',
+          //   type: 'warning',
+          // });
+          break;
+        case API_CODE_OB_RATE_LIMIT:
           toast({
-            title: 'OB体育登录已过期，尝试重新登陆中',
+            title: '网络异常，请稍后再试',
             type: 'warning',
           });
           break;

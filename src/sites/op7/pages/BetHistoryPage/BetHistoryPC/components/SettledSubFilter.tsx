@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { EBetHistoryQueryType } from '@/apis/commonSports/constants';
+import { EBetHistoryQueryType, EVenue } from '@/apis/commonSports/constants';
 import { useBetHistoryContext } from '@/common/hooks/betHistory/context/BetHistoryContext';
 import { useBetHistoryBaseMethods } from '@/common/hooks/betHistory/useBetHistoryMethods';
 import { settledTabs } from '@/common/hooks/betHistory/constants';
@@ -94,11 +94,14 @@ const SettledSubFilter = () => {
 
   return (
     <div className="shrink-0 h-32px flex items-center gap-12px">
-      <FilterTypeGroup
-        options={settledTabs}
-        value={queryParams?.queryType}
-        onChange={handleTypeChange}
-      />
+      {/* 冠军 / 提前结算筛选依赖 FB 接口参数，OB 场馆不提供 */}
+      {activeVenue === EVenue.FB && (
+        <FilterTypeGroup
+          options={settledTabs}
+          value={queryParams?.queryType}
+          onChange={handleTypeChange}
+        />
+      )}
       <div className="flex-1 flex justify-between">
         <div className="flex">
           <SegmentedControl

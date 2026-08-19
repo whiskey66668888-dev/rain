@@ -7,5 +7,6 @@
  *  - 投注自动关注的服务器镜像
  */
 export * from './favoriteMapper';
+export * from './followGameType';
 export * from './useFavorites';
 export * from './betAutoFollow';

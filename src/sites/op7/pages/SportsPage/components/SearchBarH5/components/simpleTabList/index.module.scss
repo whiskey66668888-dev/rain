@@ -71,6 +71,11 @@
       color: var(--White-100);
       font-weight: 800;
       background: var(--ThemeColor-Main);
+
+      // 胶囊态用背景高亮，不展示默认下划线（抽屉「所有滚球」等）
+      .simpleItemLabel::after {
+        content: none;
+      }
     }
   }
 }

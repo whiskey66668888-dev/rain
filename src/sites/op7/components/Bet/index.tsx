@@ -5,10 +5,9 @@ import { BettingDataContext } from '@/common/hooks/bet/context/BettingDataContex
 import BetPc from './BetPC';
 import BetH5 from './BetH5';
 import { useQuery } from '@tanstack/react-query';
-import { useGetFbPreBetLimit, useGetLatestBetData } from '@/common/hooks/bet/useGetLatestBetData';
+import { useGetPreBetLimit, useGetLatestBetData } from '@/common/hooks/bet/useGetLatestBetData';
 import FloatingButton from './BetPC/components/FloatingButton';
 import { useGetConfirmingOrders } from '@/common/hooks/bet/useBetMethods';
-import { EVenue } from '@/apis/commonSports/constants';
 import { useBetResultToast } from '@/common/hooks/bet/useBetResultToast';
 import { useCancelOrderPush } from '@/common/hooks/bet/useCancelOrderPush';
 import { useAppSelector } from '@/core/store/hooks';
@@ -17,9 +16,11 @@ import { useHandle } from '../../hooks/useRoute';
 const Bet = () => {
   const isMobile = useAppSelector((state) => state.config.isMobile);
   const autoFollowMatch = useAppSelector((state) => state.user.autoFollowMatch);
+  // 限额是按盘口(marketTypeFinally)问后端的，切盘口要立刻重取，不能等下一次轮询
+  const currentOddsType = useAppSelector((state) => state.sport.currentOddsType);
   const betData = useVenueBetData();
   const { getLatestBetData } = useGetLatestBetData();
-  const { getFbPreBetLimit } = useGetFbPreBetLimit();
+  const { getPreBetLimit } = useGetPreBetLimit();
   const { getConfirmingOrders } = useGetConfirmingOrders();
   const {
     venue,
@@ -41,7 +42,7 @@ const Bet = () => {
   const isParlayDebounced = useDebounce(isParlay, { wait: 300 });
   // #region 轮训投注项
   useQuery({
-    queryKey: ['getLatestBetData', queryCount, isParlayDebounced],
+    queryKey: ['getLatestBetData', queryCount, isParlayDebounced, currentOddsType],
     queryFn: () =>
       getLatestBetData({
         venue,
@@ -57,10 +58,9 @@ const Bet = () => {
 
   // #region 轮训预约投注项限额信息
   useQuery({
-    queryKey: ['getFbPreBetLimit', venue, !!preBetItem?.preBetInfo?.preBetEnabled],
-    queryFn: () => getFbPreBetLimit({ venue, betItem: preBetItem }),
-    enabled:
-      !!isShowBetRouter && showBetDrawer && currStep.normal && !!preBetItem && venue === EVenue.FB,
+    queryKey: ['getPreBetLimit', venue, preBetItem?.betItemId, !!preBetItem, currentOddsType],
+    queryFn: () => getPreBetLimit({ venue, betItem: preBetItem }),
+    enabled: !!isShowBetRouter && showBetDrawer && currStep.normal && !!preBetItem,
     refetchInterval: 10 * 1000,
     staleTime: 0,
   });

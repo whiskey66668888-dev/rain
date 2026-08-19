@@ -4,10 +4,9 @@ import Overlay from '@/common/components/Overlay';
 import { toast } from '@/common/components/Toast';
 import { useAppSelector } from '@/core/store/hooks';
 import { DEFAULT_AVATAR_SRC, resolveEmcAvatarSrc } from '@/common/utils/emcAvatar';
-import { formatFBSportItem, getFBScoreBySportId } from '@/apis/fbSports/common/fbFormat';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
 import { PATHS } from '@/sites/op7/routes/paths';
-import type { MatchRecord } from '@/apis/fbSports/getList';
+import type { MatchBaseInfo } from '@/apis/commonSports/types';
 
 import MatchSharePoster, { type MatchSharePosterData } from './MatchSharePoster';
 import ShareActionButton from '../share/ShareActionButton';
@@ -21,7 +20,11 @@ import ModalHeader from '@/sites/op7/components/ModalHeader';
 export interface MatchShareSheetProps {
   show: boolean;
   onClose: () => void;
-  match: MatchRecord;
+  /**
+   * 已格式化的统一赛事信息（FB 走 formatFBSportItem，OB 走 formatOBSportItem）。
+   * 与 Flutter SportShareSheet 收 SportItemInfo 同口径——分享面板与场馆无关。
+   */
+  match: MatchBaseInfo;
   /** 触发「聊天室」分享（切到发现-聊天并发送本场比赛），仅 H5 提供 */
   onShareToChat?: () => void;
 }
@@ -66,31 +69,30 @@ const MatchShareSheet: React.FC<MatchShareSheetProps> = ({
   }, [show]);
 
   const posterData = useMemo<MatchSharePosterData>(() => {
-    const base = formatFBSportItem(match);
-    const score = getFBScoreBySportId({ sportId: match.sid, list: match.nsg });
-    const period = base.periodName ?? base.matchPeriod ?? '';
+    const period = match.periodName ?? match.matchPeriod ?? '';
     let liveTime = '';
-    const mt = Number(base.matchTime ?? 0);
-    if (base.isLive && mt > 0) {
+    const mt = Number(match.matchTime ?? 0);
+    if (match.isLive && mt > 0) {
       const totalSec = Math.floor(mt);
       liveTime = `${two(Math.floor(totalSec / 60))}:${two(totalSec % 60)}`;
     }
-    // 完场（ms 翻成 0）后 isLive 为 false，需按阶段文案展示「已结束」，不能回退成「未开赛」
-    const isEnded = !!base.isEnded;
-    const statusText = base.isLive
-      ? [period, liveTime].filter(Boolean).join(' ')
-      : isEnded
-        ? period || '已结束'
+    // 完场优先判断：FB 完场后 ms 翻 0（isLive=false，不能回退成「未开赛」），
+    // OB 完场后 mmp 不翻 0（isLive 仍为 true，不能再跟走表时间）
+    const isEnded = !!match.isEnded;
+    const statusText = isEnded
+      ? period || '已结束'
+      : match.isLive
+        ? [period, liveTime].filter(Boolean).join(' ')
         : '未开赛';
     return {
-      leagueName: base.leagueName ?? '',
-      matchTimeText: base.matchDate ?? '',
-      homeName: base.homeName ?? '',
-      awayName: base.awayName ?? '',
-      homeLogo: base.homeLogo ?? '',
-      awayLogo: base.awayLogo ?? '',
-      scoreText: `${score.home} - ${score.away}`,
-      hasStarted: !!base.isLive || isEnded,
+      leagueName: match.leagueName ?? '',
+      matchTimeText: match.matchDate ?? '',
+      homeName: match.homeName ?? '',
+      awayName: match.awayName ?? '',
+      homeLogo: match.homeLogo ?? '',
+      awayLogo: match.awayLogo ?? '',
+      scoreText: `${match.homeScore ?? 0} - ${match.awayScore ?? 0}`,
+      hasStarted: !!match.isLive || isEnded,
       statusText,
     };
   }, [match]);

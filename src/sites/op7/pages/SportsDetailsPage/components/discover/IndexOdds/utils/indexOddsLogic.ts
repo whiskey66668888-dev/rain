@@ -9,8 +9,6 @@ export const companyIdToApiPlatform = (id: string): string => {
       return 'FB';
     case 'EB':
       return 'OB';
-    case 'CME':
-      return 'BTI';
     default:
       return id;
   }
@@ -18,7 +16,6 @@ export const companyIdToApiPlatform = (id: string): string => {
 
 export const venueToApiPlatform = (venue: string): string => {
   if (venue === 'ob') return 'OB';
-  if (venue === 'bti') return 'BTI';
   return 'FB';
 };
 
@@ -115,7 +112,10 @@ export const buildVisibleCompanyRows = ({
   tabKey: OddsTabKey;
 }): EntryCompanyRow[] => {
   const order = COMPANY_ORDER_BY_VENUE[venue] ?? COMPANY_ORDER_BY_VENUE.fb!;
-  const returnedPlatforms = new Set(list.map((item) => item.platform));
+  // 过滤 EMC/BTI，仅保留 OP(FB)、EB(OB)
+  const returnedPlatforms = new Set(
+    list.map((item) => item.platform).filter((platform) => platform === 'FB' || platform === 'OB'),
+  );
   const middleIsOdds = sportId === 1 && tabKey === 'standard';
 
   return order
@@ -152,5 +152,8 @@ export const getOddRowLabel = (type: EntryOddRowType): string => {
   }
 };
 
-/** 暂时只展示 OP体育 */
-export const defaultSelectedCompanyIds = (): CompanyId[] => ['OP'];
+/** 对齐 App：默认选中全部机构；展示顺序由 COMPANY_ORDER_BY_VENUE 决定 */
+export const defaultSelectedCompanyIds = (venue?: string): CompanyId[] => {
+  const order = COMPANY_ORDER_BY_VENUE[venue ?? ''] ?? COMPANY_ORDER_BY_VENUE.fb!;
+  return [...order];
+};

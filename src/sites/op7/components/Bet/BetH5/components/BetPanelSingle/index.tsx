@@ -13,13 +13,7 @@ import { Pagination } from 'swiper/modules';
 import styles from './BetPanelSingle.module.scss';
 import { PlusIconSvgBold } from '@/sites/op7/components/SvgIcons';
 import { useAppSelector } from '@/core/store/hooks';
-
-const formatPreBetOdds = (odds?: string): string => {
-  if (!odds) return '';
-  const numericOdds = Number(odds);
-  if (!Number.isFinite(numericOdds)) return odds;
-  return numericOdds.toFixed(2);
-};
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 
 const BetPanelSingle = () => {
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
@@ -40,6 +34,7 @@ const BetPanelSingle = () => {
     closePreBet,
     onSingleIndexChange,
   } = useBetMethods();
+  const { getOddsDisplay } = useOddsDisplay();
 
   const onKeyboradChangeSingle: TKeyBoardChange = useCallback(
     ({ key, value }) => {
@@ -178,7 +173,12 @@ const BetPanelSingle = () => {
                     <div className="flex-1 flex items-center justify-center gap-2px overflow-hidden ">
                       <span className="_tf[14] font-medium text-[var(--Text-Main-10)]">@</span>
                       <span className="_tf[18] text-[var(--Text-Main-10)] font-medium din-pro tracking-[-1px] min-w-0 p-0 text-center ">
-                        {formatPreBetOdds(currSingleBetItem.preBetInfo?.preBetOdds)}
+                        {
+                          getOddsDisplay({
+                            baseOdds: currSingleBetItem.preBetInfo?.preBetOdds,
+                            isSupportHK: currSingleBetItem.isSupportHK,
+                          }).odds
+                        }
                       </span>
                     </div>
                     <button

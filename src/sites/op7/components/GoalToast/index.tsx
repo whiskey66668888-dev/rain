@@ -31,7 +31,7 @@ interface GoalToastItem {
 
 const GoalToast: React.FC = () => {
   const followMatch = useAppSelector((state) => state.sport.mainList.settings.followMatch);
-  const scoreSnapshotRef = useRef<Map<number, MatchScoreSnapshot>>(new Map());
+  const scoreSnapshotRef = useRef<Map<string, MatchScoreSnapshot>>(new Map());
   const goalAudioRef = useRef<HTMLAudioElement | null>(null);
   const toastQueueRef = useRef<GoalToastItem[]>([]);
   const toastTimerRef = useRef<number | null>(null);
@@ -142,7 +142,7 @@ const GoalToast: React.FC = () => {
         if (cancelled) return;
 
         const latestMatches = result.data ?? [];
-        const nextSnapshot = new Map<number, MatchScoreSnapshot>();
+        const nextSnapshot = new Map<string, MatchScoreSnapshot>();
 
         latestMatches.forEach((match) => {
           const previous = scoreSnapshotRef.current.get(match.matchId);

@@ -1,24 +1,30 @@
 /**
  * 专业版赔率：根据 OddsMap 展示玩法，匹配到接口 scoreId 则渲染该 score 的 list（赔率项），能一页显示完则单页，否则按 maxRows 分页（Swiper）
+ * OB：当前页含半场等「详情列」时才懒加载+5s 轮询；离开该页 / 卸载 / 切赛事则停轮询
+ * FB：不走详情懒加载 / 轮询，分页与原先一致
  */
 
-import React, { useMemo, useRef, useState, useCallback } from 'react';
+import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
-import _ from 'lodash';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import { FBCompetitionMap, FBSportIdValue } from '@/apis/fbSports/common/constants';
+import { FBSportIdValue } from '@/apis/fbSports/common/constants';
 import type { TBaseBetItem, MatchMarket } from '@/apis/commonSports/types';
 import styles from './OddListPro.module.scss';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { OddBtn } from './OddBtn';
-import { LocalHandicapItem } from '@/apis/fbSports/common/types';
 import { EFbPeriod } from '@/apis/fbSports/common/constants/period';
-import { EOddsStatus } from '@/apis/commonSports/constants';
+import { EOddsStatus, EVenue } from '@/apis/commonSports/constants';
+import { findVenueCompetition, type VenueHandicapItem } from '@/apis/commonSports/venueCompetition';
+import { OBSportIdValue } from '@/apis/obSports/common/constants';
+import { fetchOBListDetailMarkets } from '@/apis/obSports/getMatchOddsInfo';
 import LazyImage from '@/common/components/LazyImage';
 import { useAllBetItemIds } from '@/common/hooks/bet/useAllBetItemIds';
 import { useAppSelector } from '@/core/store/hooks';
+
+/** 对齐 Flutter ProOddsBlueSlider 详情轮询间隔 */
+const OB_DETAIL_POLL_MS = 5000;
 
 function chunk<T>(arr: T[], size: number): T[][] {
   if (size <= 0 || !arr.length) return arr.length ? [arr] : [];
@@ -27,6 +33,78 @@ function chunk<T>(arr: T[], size: number): T[][] {
     result.push(arr.slice(i, i + size));
   }
   return result;
+}
+
+function marketHasOpenOdds(market?: MatchMarket): boolean {
+  const lists = market?.children?.[0]?.lists ?? [];
+  return lists.some((o) => !!o?.baseOdds && o.oddsStatus === EOddsStatus.Open);
+}
+
+/** itemType 主键：hpid 或 hpid_period 的前半段 */
+function marketTypeKey(itemType: string) {
+  return itemType.split('_')[0] ?? itemType;
+}
+
+function findMarketByCode(
+  markets: MatchMarket[],
+  id: string | number,
+  period: number,
+): MatchMarket | undefined {
+  const idStr = String(id);
+  return markets.find((item) => {
+    const [type, pe] = item.itemType.split('_');
+    return type === idStr && (!period || Number(pe) === period);
+  });
+}
+
+/** 列表盘口 + 详情盘口按 itemType 合并（详情有开盘数据时覆盖）——仅 OB 使用 */
+function mergeMatchMarkets(
+  listMarkets: MatchMarket[],
+  detailMarkets: MatchMarket[],
+): MatchMarket[] {
+  const map = new Map<string, MatchMarket>();
+  for (const m of listMarkets) {
+    map.set(marketTypeKey(m.itemType), m);
+  }
+  for (const d of detailMarkets) {
+    const key = marketTypeKey(d.itemType);
+    if (marketHasOpenOdds(d) || !map.has(key)) {
+      map.set(key, d);
+    }
+  }
+  return Array.from(map.values());
+}
+
+function isObDetailOnlyCol(item: VenueHandicapItem, sportId?: number) {
+  const name = String(item.name);
+  if (sportId === OBSportIdValue.Football) return name.startsWith('半场');
+  if (sportId === OBSportIdValue.Tennis) return name === '让局' || name === '局大小';
+  return false;
+}
+
+/**
+ * OB 足球/网球：列表玩法与详情玩法分页隔离，详情列永远不进第 0 页
+ * （对齐 Flutter：page0=列表，page1+=规则/详情页）
+ */
+function buildObDetailSplitPages(
+  allOdds: VenueHandicapItem[],
+  colsPerPage: number,
+  sportId?: number,
+): VenueHandicapItem[][] {
+  const listCols: VenueHandicapItem[] = [];
+  const detailCols: VenueHandicapItem[] = [];
+  for (const item of allOdds) {
+    if (item.name === '占位') {
+      listCols.push(item);
+    } else if (isObDetailOnlyCol(item, sportId)) {
+      detailCols.push(item);
+    } else {
+      listCols.push(item);
+    }
+  }
+  const listPages = listCols.length ? chunk(listCols, colsPerPage) : [];
+  const detailPages = detailCols.length ? chunk(detailCols, colsPerPage) : [];
+  return [...listPages, ...detailPages];
 }
 
 export interface ProOddListProps {
@@ -55,69 +133,207 @@ const ProOddList: React.FC<ProOddListProps> = ({
   filterMarketTypes,
 }) => {
   const isMobile = useAppSelector((state) => state.config.isMobile);
+  const venue = useAppSelector((state) => state.sport.venue);
   const allBetItemIds = useAllBetItemIds(matchId);
   const swiperRef = useRef<SwiperRef>(null);
   const [nav, setNav] = useState({ canGoPrev: false, canGoNext: false });
+  const [activePage, setActivePage] = useState(0);
+  const [detailMarkets, setDetailMarkets] = useState<MatchMarket[] | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const detailLoadedRef = useRef(false);
+  const detailPollTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const detailFetchInflightRef = useRef(false);
+  const mountedRef = useRef(true);
   const colsPerPage = Math.max(1, maxRows ?? 2);
+
+  /** 仅 OB 足球/网球需要详情补盘（对齐 Flutter _needDetail）；FB 恒为 false */
+  const needObDetail =
+    venue === EVenue.OB &&
+    (sportId === OBSportIdValue.Football || sportId === OBSportIdValue.Tennis);
+
+  const stopDetailPoll = useCallback(() => {
+    if (detailPollTimerRef.current) {
+      clearInterval(detailPollTimerRef.current);
+      detailPollTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      stopDetailPoll();
+    };
+  }, [stopDetailPoll]);
+
+  // 切赛事 / 场馆：停轮询并重置（FB 下仅清空本地 OB 状态，不发请求）
+  useEffect(() => {
+    stopDetailPoll();
+    setDetailMarkets(null);
+    setDetailLoading(false);
+    detailLoadedRef.current = false;
+    detailFetchInflightRef.current = false;
+    setActivePage(0);
+  }, [matchId, sportId, venue, stopDetailPoll]);
 
   const syncNav = useCallback((swiper: { isBeginning: boolean; isEnd: boolean }) => {
     setNav({ canGoPrev: !swiper.isBeginning, canGoNext: !swiper.isEnd });
   }, []);
-  /** 按当前能显示的总数分页：能全部显示完则返回单页数组，否则按 maxRows 分多页 */
+
+  const mergedMarkets = useMemo(() => {
+    if (!needObDetail || !detailMarkets?.length) return matchMarket;
+    return mergeMatchMarkets(matchMarket, detailMarkets);
+  }, [needObDetail, matchMarket, detailMarkets]);
+
+  /** 按当前能显示的总数分页 */
   const pages = useMemo(() => {
-    let allOdds =
-      Object.values(_.cloneDeep(FBCompetitionMap)).find((item) => item.id === sportId)?.list ?? [];
+    let allOdds = [...(findVenueCompetition(venue, sportId)?.list ?? [])];
     if (!allOdds.length) return [];
-    if (sportId === FBSportIdValue.Football && periodName === '下半场') {
-      // RICO_TODO: 这里参考app暂时写死FB，后续兼容多个三方api做处理
-      // 下半场不显示上半场赔率
-      allOdds = allOdds.filter((item) => item.period !== EFbPeriod.soccerFirstHalf);
+    // 下半场不展示半场盘口（对齐 Flutter odds_blue_slider _footballRulesFiltered）
+    if (periodName === '下半场') {
+      if (venue === EVenue.FB && sportId === FBSportIdValue.Football) {
+        allOdds = allOdds.filter((item) => item.period !== EFbPeriod.soccerFirstHalf);
+      } else if (venue === EVenue.OB && sportId === OBSportIdValue.Football) {
+        allOdds = allOdds.filter((item) => !isObDetailOnlyCol(item, sportId));
+      }
     }
-    // pc端,3列的就不加占位列了
     if (allOdds.length === 3 && isMobile) {
-      // 只有3个盘口的话，这里还原app占位第四个
       allOdds.push({ name: '占位', idList: [99999], period: EFbPeriod.basketballFullTime });
     }
-    // 如果提供了过滤类型，只显示匹配的玩法
     if (filterMarketTypes && filterMarketTypes.length > 0) {
       const filterSet = new Set(filterMarketTypes.map(String));
       allOdds = allOdds.filter((item) => {
         const marketTypeId = item.idList[0];
-        return marketTypeId && filterSet.has(String(marketTypeId));
+        return marketTypeId != null && filterSet.has(String(marketTypeId));
       });
+    }
+    // OB 足球/网球：详情玩法与列表玩法分页隔离（FB / 其他球种保持原 chunk）
+    if (
+      needObDetail &&
+      (sportId === OBSportIdValue.Football || sportId === OBSportIdValue.Tennis)
+    ) {
+      return buildObDetailSplitPages(allOdds, colsPerPage, sportId);
     }
     if (allOdds.length <= colsPerPage) return [allOdds];
     return chunk(allOdds, colsPerPage);
-  }, [sportId, periodName, isMobile, filterMarketTypes, colsPerPage]);
+  }, [venue, sportId, periodName, isMobile, filterMarketTypes, colsPerPage, needObDetail]);
 
-  /** 根据传入 id 在接口 matchMarket 中找第一个 scoreId/playId 匹配的项，匹配则返回该 score，否则返回 undefined */
-  const getOddsByCode = (id: number, _period: number): MatchMarket | undefined => {
-    const idStr = String(id);
-    return _.find(matchMarket, (item) => {
-      const [type, period] = item.itemType.split('_');
-      return type === idStr && (!_period || Number(period) === _period);
+  /** 仅用列表 matchMarket 判断缺数（未合并详情），避免合并后误判 */
+  const pageLacksListOdds = useCallback(
+    (page: VenueHandicapItem[]) =>
+      page.some((item) => {
+        if (item.name === '占位') return false;
+        const market = findMarketByCode(matchMarket, item.idList[0] ?? 0, item.period ?? 0);
+        return !marketHasOpenOdds(market);
+      }),
+    [matchMarket],
+  );
+
+  /** 当前页是否含需详情补盘的列（足球半场* / 网球让局·局大小） */
+  const pageNeedsDetailFetch = useCallback(
+    (page: VenueHandicapItem[] | undefined) => {
+      if (!page?.length) return false;
+      if (sportId === OBSportIdValue.Football || sportId === OBSportIdValue.Tennis) {
+        return page.some((item) => isObDetailOnlyCol(item, sportId));
+      }
+      if (sportId == null) return false;
+      return pageLacksListOdds(page);
+    },
+    [sportId, pageLacksListOdds],
+  );
+
+  const loadObDetail = useCallback(
+    async (opts?: { force?: boolean; showLoading?: boolean }) => {
+      if (!needObDetail || sportId == null) return;
+      if (detailFetchInflightRef.current) return;
+      const showLoading = opts?.showLoading ?? false;
+      const force = opts?.force ?? false;
+      detailFetchInflightRef.current = true;
+      if (showLoading) setDetailLoading(true);
+      try {
+        const markets = await fetchOBListDetailMarkets({ matchId, sportId, force });
+        if (!mountedRef.current) return;
+        // 空结果保留上次有效数据（对齐 Flutter keep last）
+        if (markets.length) {
+          setDetailMarkets(markets);
+        }
+      } catch {
+        // 失败也标记完成，避免滑页死循环重试（对齐 Flutter firstDetailDone）
+      } finally {
+        detailLoadedRef.current = true;
+        detailFetchInflightRef.current = false;
+        if (showLoading && mountedRef.current) setDetailLoading(false);
+      }
+    },
+    [needObDetail, sportId, matchId],
+  );
+
+  /** 停在需详情补盘的页才请求/轮询（按玩法列判断，不按页码）；FB 下恒 false */
+  const shouldPollDetail = useMemo(
+    () => needObDetail && !isEnded && pageNeedsDetailFetch(pages[activePage]),
+    [needObDetail, isEnded, pageNeedsDetailFetch, pages, activePage],
+  );
+
+  // 进入半场等详情页：首拉 + 5s 轮询；离开 / 卸载 / 切走 → 停轮询（仅 OB）
+  useEffect(() => {
+    if (!shouldPollDetail) {
+      stopDetailPoll();
+      return;
+    }
+
+    void loadObDetail({
+      force: detailLoadedRef.current,
+      showLoading: !detailLoadedRef.current,
     });
-  };
 
-  /** 渲染单个玩法：匹配到接口数据则渲染 list（赔率项），否则渲染- */
-  const renderRow = (item: LocalHandicapItem, index: number) => {
+    stopDetailPoll();
+    detailPollTimerRef.current = setInterval(() => {
+      if (document.visibilityState === 'hidden') return;
+      void loadObDetail({ force: true, showLoading: false });
+    }, OB_DETAIL_POLL_MS);
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') return;
+      void loadObDetail({ force: true, showLoading: false });
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      stopDetailPoll();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [shouldPollDetail, loadObDetail, stopDetailPoll]);
+
+  const getOddsByCode = useCallback(
+    (id: string | number, period: number): MatchMarket | undefined =>
+      findMarketByCode(mergedMarkets, id, period),
+    [mergedMarkets],
+  );
+
+  /** OB 详情首拉中：空位显示小 loading（FB 下 needObDetail=false，恒不展示） */
+  const showSlotLoading =
+    needObDetail && detailLoading && !detailLoadedRef.current && shouldPollDetail;
+
+  const renderRow = (item: VenueHandicapItem, index: number) => {
     const odds = getOddsByCode(item.idList[0] ?? 0, item.period ?? 0);
     const title = item.name;
     const list = odds?.children[0]?.lists ?? [];
+    const rowCount = item.row ?? 2;
     return (
       <div className={styles.row} key={`${item.idList[0]}-${index}`}>
         <div className={clsx(styles.title, title === '占位' && 'opacity-0')}>{title}</div>
         <div className={styles.oddBtns}>
           {list.length > 0
             ? list.map((o, idx) => {
-                const isLocked = !o || o.oddsStatus !== EOddsStatus.Open || isEnded;
+                const isEmptySlot = !o?.baseOdds || o.oddsStatus !== EOddsStatus.Open;
+                const isLocked = !o || isEmptySlot || isEnded;
                 const isActive = allBetItemIds.includes(o.betItemId);
-
                 return (
                   <OddBtn
                     key={o.betItemId ?? idx}
                     betItem={o}
                     isLocked={isLocked}
+                    isLoading={showSlotLoading && isEmptySlot && !isEnded}
                     threeLine={item.row === 3}
                     threeLineColumn={threeLineColumn}
                     onClick={onToggleOdds}
@@ -125,15 +341,19 @@ const ProOddList: React.FC<ProOddListProps> = ({
                   />
                 );
               })
-            : Array.from({ length: item.row ?? 2 }, (_, idx) => (
-                <OddBtn key={idx} isLocked={isEnded} />
+            : Array.from({ length: rowCount }, (_, idx) => (
+                <OddBtn
+                  key={idx}
+                  isLocked={isEnded || !showSlotLoading}
+                  isLoading={showSlotLoading && !isEnded}
+                />
               ))}
         </div>
       </div>
     );
   };
 
-  const renderPage = (odds: LocalHandicapItem[]) => (
+  const renderPage = (odds: VenueHandicapItem[]) => (
     <div className={styles.pageBlock}>{odds.map((item, index) => renderRow(item, index))}</div>
   );
 
@@ -151,8 +371,14 @@ const ProOddList: React.FC<ProOddListProps> = ({
             pagination={{ clickable: true }}
             className={styles.swiper}
             ref={swiperRef}
-            onSwiper={syncNav}
-            onSlideChange={syncNav}
+            onSwiper={(swiper) => {
+              syncNav(swiper);
+              setActivePage(swiper.activeIndex);
+            }}
+            onSlideChange={(swiper) => {
+              syncNav(swiper);
+              setActivePage(swiper.activeIndex);
+            }}
           >
             {pages.map((page, i) => (
               <SwiperSlide key={i}>{renderPage(page)}</SwiperSlide>

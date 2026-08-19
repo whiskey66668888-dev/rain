@@ -15,6 +15,9 @@ import { PATHS } from '@/sites/op7/routes/paths';
 
 import styles from './Header.module.scss';
 import { bigNB } from '@/utils/bet/bigMath';
+import SegmentedControl from '@/common/components/SegmentedControl';
+import { setVenue } from '@/core/store/slices/sportSlice';
+import { SPORT_VENUE_OPTIONS } from '@/utils/constants/system';
 
 const LogoLottie = lazy(() => import('./LogoLottie'));
 const FastSettingsModal = lazy(() => import('../../pages/FastSettingsPage'));
@@ -40,6 +43,7 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
     }
   }, [fastSettingsModalShow]);
 
+  const venue = useAppSelector((state) => state.sport.venue);
   const pathWithoutLang = useMemo(
     () => location.pathname.replace(/^\/[a-z]{2}/, '') || PATHS.home,
     [location.pathname],
@@ -53,6 +57,10 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
 
   const handleRegisterClick = (): void => {
     dispatch(openRegisterModal());
+  };
+
+  const handleAuthPointerEnter = (): void => {
+    void prefetchAuthModals();
   };
 
   const handleDeposit = (): void => {
@@ -90,6 +98,13 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
                 isDark={theme === 'dark'}
                 playKey={isSportsPath ? pathWithoutLang : 'default'}
                 onClick={handleLogoClick}
+              />
+              <SegmentedControl
+                options={SPORT_VENUE_OPTIONS}
+                className="bg-[var(--Background-500)]"
+                height={28}
+                value={venue}
+                onChange={(value) => dispatch(setVenue(value))}
               />
             </Suspense>
           ) : (
@@ -144,7 +159,7 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
                 <button
                   type="button"
                   className={clsx(styles.mobileAuthButton, styles.mobileAuthButtonSecondary)}
-                  onPointerEnter={prefetchAuthModals}
+                  onPointerEnter={handleAuthPointerEnter}
                   onClick={handleLoginClick}
                 >
                   {t('header.login')}
@@ -152,7 +167,7 @@ const HeaderH5: React.FC<HeaderH5Props> = ({ theme }) => {
                 <button
                   type="button"
                   className={clsx(styles.mobileAuthButton, styles.mobileAuthButtonPrimary)}
-                  onPointerEnter={prefetchAuthModals}
+                  onPointerEnter={handleAuthPointerEnter}
                   onClick={handleRegisterClick}
                 >
                   {t('header.register')}

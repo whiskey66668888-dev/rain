@@ -232,19 +232,20 @@ export const useHomeList = (
             cardImage: '/images/common/menu/slots/eb.png',
             icon: '/images/common/menu/slots/eb.svg',
           },
-          {
-            name: 'MG电子',
-            label: 'MG SOFT',
-            gameId: 117,
-            cardImage: '/images/common/menu/slots/mg.png',
-            icon: '/images/common/menu/slots/mg.svg',
-          },
+
           {
             name: 'JDB电子',
             label: 'JDB SOFT',
             gameId: 116,
             cardImage: '/images/common/menu/slots/jdb.png',
             icon: '/images/common/menu/slots/jdb.svg',
+          },
+          {
+            name: 'MG电子',
+            label: 'MG SOFT',
+            gameId: 117,
+            cardImage: '/images/common/menu/slots/mg.png',
+            icon: '/images/common/menu/slots/mg.svg',
           },
           {
             name: 'MW电子',
@@ -414,6 +415,7 @@ export const useHomeList = (
  * 过滤并合并数据
  * - 以接口 `/api/website/home/list` 的 childList 为准：接口未返回的场馆不展示
  * - 本地 baseList 仅补充展示用字段（icon / cardImage / path / 文案名）
+ * - 试玩场馆（gameId: -1）为前端维护项，接口未返回时仍保留
  * @param data 原始数据（HomeListResponse[]）
  * @param data1 需要过滤的数据（BaseList[]）
  * @returns 合并后的 BaseList 数组（children 中包含了 HomeListResponse 的 childList 属性）
@@ -437,9 +439,9 @@ const filterListData = (
           const mat = apiChildren.find(
             (k2: HomeListResponse['childList'][number]) => k.gameId === k2.gameId,
           );
-          // 接口未返回该场馆 → 不展示
-          if (!mat) return null;
-          mat.name = k.name;
+          // 接口未返回该场馆 → 不展示（试玩为前端维护项除外）
+          if (!mat && !k.isTryPlay) return null;
+          if (mat) mat.name = k.name;
           return Object.assign({}, k, mat);
         })
         .filter((item): item is NonNullable<typeof item> => item != null);

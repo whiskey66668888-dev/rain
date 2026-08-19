@@ -1,7 +1,9 @@
-import { EVenue } from '@/apis/commonSports/constants';
+import { EOddsType, EVenue } from '@/apis/commonSports/constants';
 import type { TBetHistoryOrderItem, THistoryBetItem } from '@/apis/commonSports/types';
 import { getFBTime } from '@/apis/fbSports/common/fbFormat';
 import type { BetShareCard, BetShareTeamItem } from '@/core/sdk/IMManager';
+import { getDisplayOddsByType } from '@/utils/bet';
+import { getOrderDisplayOdds, getOrderOddsFormatLabel } from '@/utils/betHistory';
 
 const asStr = (value: unknown, fallback = ''): string => {
   if (typeof value === 'string') return value;
@@ -18,10 +20,7 @@ const asMoney = (value: unknown): string => {
   return n.toFixed(2);
 };
 
-const FB_ODDS_FORMAT_LABEL: Record<string, string> = {
-  '1': '欧洲盘',
-  '2': '香港',
-};
+const isObVenue = (venueId: string) => String(venueId) === String(EVenue.OB);
 
 /**
  * 投注历史 → 晒单 teamList（对齐 emc ShareOrderLogic + TeamItem.toJson）
@@ -29,28 +28,39 @@ const FB_ODDS_FORMAT_LABEL: Record<string, string> = {
  */
 const mapHistoryDetailToTeam = (
   detail: THistoryBetItem,
-  options: { orderSettled: boolean },
+  options: { orderSettled: boolean; venueId: string },
 ): BetShareTeamItem => {
   const marketId = asStr(detail.marketId);
   const ty = asStr(detail.fb?.ty);
-  const playOptionsId = ty ? `${marketId}_${ty}` : asStr(detail.betItemId || marketId);
+  // OB：playOptionsId 为投注项 id；FB：marketId_ty
+  const playOptionsId = isObVenue(options.venueId)
+    ? asStr(detail.betItemId || marketId)
+    : ty
+      ? `${marketId}_${ty}`
+      : asStr(detail.betItemId || marketId);
   const matchInfo =
     detail.homeName && detail.awayName
       ? `${detail.homeName} VS ${detail.awayName}`
       : asStr(detail.leagueName);
   const leagueName = asStr(detail.leagueName);
-  const handicap = FB_ODDS_FORMAT_LABEL[asStr(detail.fb?.of, '1')] ?? FB_ODDS_FORMAT_LABEL['1'];
+  // 盘口文案按注单自己的盘口取（两个场馆已统一到 bettingOddsType）
+  const handicap = getOrderOddsFormatLabel(detail);
   const bt = typeof detail.matchStartTime === 'number' ? detail.matchStartTime : 0;
   const startTime = bt > 0 ? getFBTime(bt) : '';
   // 对齐 Flutter isSingleSettled: (sr ?? 0) > 0 —— 未结算注单不因提前结算 crl 误标已结
   const isSingleSettled = options.orderSettled && Number(detail.orderSettleResult) > 0;
   // 赛果比分：仅已结算携带（未结算 rs 可能有滚球比分，会导致跟单按钮被隐藏）
   const score = options.orderSettled ? asStr(detail.resultScore) : '';
+  // OB Flutter type 存 playOptionName；FB 存 ty
+  const type = isObVenue(options.venueId)
+    ? asStr(detail.betItemFullName || detail.betItemShortName)
+    : ty;
 
   return {
     matchName: leagueName,
     marketValue: asStr(detail.betItemFullName || detail.betItemShortName || detail.marketValue),
-    oddFinally: asStr(detail.baseOdds),
+    // oddFinally 是按注单盘口展示的赔率，decimalOdds 是欧赔（跟单下注用）
+    oddFinally: getDisplayOddsByType(detail.baseOdds, detail.bettingOddsType ?? EOddsType.EU),
     playName: asStr(detail.playName),
     matchInfo,
     matchId: asStr(detail.matchId),
@@ -68,14 +78,14 @@ const mapHistoryDetailToTeam = (
     matchDate: startTime,
     bt,
     oddsId: playOptionsId,
-    oddsType: ty,
+    oddsType: type,
     playId: asStr(detail.playId),
     placeNum: 1,
     leagueName,
     scoreName: asStr(detail.playName),
-    type: ty,
-    leagueId: '',
-    sportName: '',
+    type,
+    leagueId: asStr(detail.leagueId),
+    sportName: asStr(detail.sportName),
     decimalOdds: asStr(detail.baseOdds),
     selectionClientOdds: '',
     homeName: asStr(detail.homeName),
@@ -115,7 +125,7 @@ export const serializeBetShareForFlutter = (card: BetShareCard): Record<string, 
     scoreName: asStr(team.scoreName || team.playName),
     type: asStr(team.type),
     leagueId: asStr(team.leagueId),
-    sportName: '',
+    sportName: asStr(team.sportName),
     decimalOdds: asStr(team.decimalOdds ?? team.oddFinally),
     selectionClientOdds: '',
     // 冠军跟单拼单需要主客队名
@@ -124,6 +134,7 @@ export const serializeBetShareForFlutter = (card: BetShareCard): Record<string, 
   }));
 
   const isSingle = card.isSingle !== false && Number(card.seriesType ?? 0) <= 1;
+  const venueId = asStr(card.venueId);
 
   return {
     id: asStr(card.id || card.orderNo),
@@ -137,7 +148,8 @@ export const serializeBetShareForFlutter = (card: BetShareCard): Record<string, 
     settlementPrice: '',
     betResult: asStr(card.betResult),
     isSingle,
-    settlementTip: 'FB',
+    // 对齐 Flutter：FB=易倍文案现网用 FB；OB=EB
+    settlementTip: isObVenue(venueId) ? 'EB' : 'FB',
     showSettlement: false,
     isSettlement: Boolean(card.isSettlement),
     showPreSettlement: false,
@@ -151,7 +163,7 @@ export const serializeBetShareForFlutter = (card: BetShareCard): Record<string, 
     // 串关默认收起（对齐 Flutter 晒单选择页）
     isExpand: isSingle,
     oddFinally: asStr(card.oddFinally),
-    venueId: asStr(card.venueId),
+    venueId,
     orderNo: asStr(card.orderNo || card.id),
     // 不发送 showFollowBetBtn（对齐 Flutter remove）
   };
@@ -165,8 +177,9 @@ export const mapBetHistoryOrderToShareCard = (
   venueId: string = EVenue.FB,
 ): BetShareCard => {
   const orderSettled = !!order.isSettledOrder;
+  const venue = asStr(venueId, EVenue.FB);
   const teamList = (order.orderDetails ?? []).map((detail) =>
-    mapHistoryDetailToTeam(detail, { orderSettled }),
+    mapHistoryDetailToTeam(detail, { orderSettled, venueId: venue }),
   );
   const first = teamList[0];
   const title = order.isParlayOrder
@@ -185,9 +198,9 @@ export const mapBetHistoryOrderToShareCard = (
     amount: asMoney(order.orderBetAmount) || asStr(order.orderBetAmount),
     backAmount,
     remainingAmt: '',
-    // 串关总赔率（对齐 OddsUtil / 历史 orderOdds）
-    oddFinally: order.isParlayOrder ? asStr(order.orderOdds) : '',
-    venueId: asStr(venueId, EVenue.FB),
+    // 串关总赔率（orderOdds 恒为欧赔，按注单盘口换算后再发出，与每一腿口径一致）
+    oddFinally: order.isParlayOrder ? getOrderDisplayOdds(order.orderOdds, order) : '',
+    venueId: venue,
     matchId: first?.matchId,
     isSingle: !order.isParlayOrder,
     isSettled: orderSettled,
@@ -196,7 +209,7 @@ export const mapBetHistoryOrderToShareCard = (
     // 提前结算 → header 展示 advance 图标
     isSettlement: !!(order.isEarlySettleOrder || Number(order.orderSettleResult) === 9),
     seriesType: order.isParlayOrder ? Number(order.orderSum || 0) : 1,
-    handicap: first?.handicap || FB_ODDS_FORMAT_LABEL['1'],
+    handicap: first?.handicap || getOrderOddsFormatLabel(order),
     createTime: order.orderConfirmTime > 0 ? getFBTime(order.orderConfirmTime) : '',
     teamList,
   };

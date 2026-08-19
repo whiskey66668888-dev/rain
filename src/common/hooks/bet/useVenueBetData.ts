@@ -112,8 +112,35 @@ export const useVenueBetData = () => {
         };
       }
     }
+
+    if (venue === EVenue.OB && _preBetItem && _preBetItem.preBetInfo) {
+      const obPreBetLimit = venueBetStore.obPreBetLimit;
+      // 限额是跟着投注项走的，切换投注项后旧限额作废
+      if (obPreBetLimit && obPreBetLimit.betItemId === _preBetItem.betItemId) {
+        // 对齐 Flutter：接口的 orderMaxPay 是最大可赢金额，最大本金 = orderMaxPay / 预约赔率，向下取整
+        const preBetOdds = bigNB(_preBetItem.preBetInfo.preBetOdds);
+        const maxAmount = preBetOdds.lte(1)
+          ? Math.floor(obPreBetLimit.orderMaxPay)
+          : Math.floor(+bigNB(obPreBetLimit.orderMaxPay).div(preBetOdds).toFixed(2));
+
+        _preBetItem = {
+          ..._preBetItem,
+          preBetInfo: {
+            ..._preBetItem.preBetInfo,
+            preBetMaxAmount: Math.max(maxAmount, 0),
+            preBetMinAmount: obPreBetLimit.minBet,
+          },
+        };
+      }
+    }
     return _preBetItem;
-  }, [isParlay, venueBetStore.singleBetData.entities, venueBetStore.fbPreBetLimitMap, venue]);
+  }, [
+    isParlay,
+    venueBetStore.singleBetData.entities,
+    venueBetStore.fbPreBetLimitMap,
+    venueBetStore.obPreBetLimit,
+    venue,
+  ]);
 
   const [
     totalBetAmount,

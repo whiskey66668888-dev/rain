@@ -1,11 +1,9 @@
 import React from 'react';
-// components
 import HeaderMobile from './headerMobile';
-
-import type { MatchRecord } from '@/apis/fbSports/getList';
+import type { MatchBaseInfo } from '@/apis/commonSports/types';
 
 interface MatchDetailsHeaderProps {
-  match: MatchRecord;
+  matchInfo: MatchBaseInfo;
   isFavorite: boolean;
   isMatchTeamHeader: boolean;
   isVideoVisible: boolean;
@@ -27,7 +25,7 @@ interface MatchDetailsHeaderProps {
  * 赛事详情页头部组件
  */
 const MatchDetailsHeader: React.FC<MatchDetailsHeaderProps> = ({
-  match,
+  matchInfo,
   isFavorite,
   isMatchTeamHeader,
   isVideoVisible,
@@ -39,7 +37,7 @@ const MatchDetailsHeader: React.FC<MatchDetailsHeaderProps> = ({
   return (
     <>
       <HeaderMobile
-        match={match}
+        matchInfo={matchInfo}
         isFavorite={isFavorite}
         onBack={onBack}
         onToggleFavorite={onToggleFavorite}

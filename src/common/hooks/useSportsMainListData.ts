@@ -7,12 +7,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MatchListParams } from '@/apis/fbSports/getList';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import _ from 'lodash';
-import { HotSportId, LotterySportId, PlayType } from '@/apis/commonSports/constants';
+import { HotSportId, LotterySportId, PlayType, EVenue } from '@/apis/commonSports/constants';
 
 import { useVenueService } from '@/apis/commonSports';
 import { MatchBaseInfo } from '@/apis/commonSports/types';
 import { useMatchWinnersQuery } from '@/apis/fbSports/getMatchWinner';
 import { FBSportIdValue } from '@/apis/fbSports/common/constants';
+import { OBSportIdValue } from '@/apis/obSports/common/constants';
 import {
   cleanExpiredFollowMatch,
   getExpiredFollowMatches,
@@ -20,11 +21,8 @@ import {
   setPinnedMatchIds,
 } from '@/core/store/slices/sportSlice';
 import { delFollowReq } from '@/apis/origin/follow';
-import { getFollowSnapshot } from '@/common/hooks/follow';
+import { getFollowGameType, getFollowSnapshot } from '@/common/hooks/follow';
 import { useFollowMatchResults } from '@/common/hooks/sports/useFollowMatchResults';
-
-/** web 体育关注 tab 目前只对接 FB 平台 */
-const FOLLOW_GAME_TYPE = 'FB';
 
 type MatchStatus = 'pinned' | 'normal';
 type LeagueGroupList = Array<{
@@ -52,7 +50,7 @@ export type TMatchTypeGroupList = Array<{
  * 与 /sports 首页 MainList 渲染顺序一致：先置顶分组（pinned），再常规（normal）；
  * 每组内按 sportGroup → leagueGroup → matches[0] 取第一场。
  */
-export function getFirstMatchIdFromListData(listData: TMatchTypeGroupList): number | undefined {
+export function getFirstMatchIdFromListData(listData: TMatchTypeGroupList): string | undefined {
   for (const statusGroup of listData) {
     for (const sportGroup of statusGroup.sportGroup) {
       for (const leagueGroup of sportGroup.leagueGroup) {
@@ -83,6 +81,7 @@ export const useSportsMainListData = () => {
   const { sportId, playTypeId, playType } = useAppSelector(
     (state) => state.sport.mainList.settings,
   );
+  const venue = useAppSelector((state) => state.sport.venue);
   const pinnedSportIds = useAppSelector((state) => state.sport.mainList.datas.pinnedSportIds);
   const pinnedMatchs = useAppSelector((state) => state.sport.mainList.datas.pinnedMatchs);
   const followMatch = useAppSelector((state) => state.sport.mainList.settings.followMatch);
@@ -101,23 +100,40 @@ export const useSportsMainListData = () => {
    */
   const [followListReadyForPlaceholder, setFollowListReadyForPlaceholder] = useState(false);
   const { useGetMainListQuery } = useVenueService();
+
+  /** 当前球种在菜单里的项（OB 用其 menuId 作为列表 euid） */
+  const currentSportMenu = useMemo(
+    () => menus[playType]?.find((item) => item.sportId === sportId),
+    [menus, playType, sportId],
+  );
+
   const queryParams = useMemo(() => {
     const params: MatchListParams = {
       size: 50,
       sportId,
       type: playTypeId ?? undefined,
     };
+    // OB：二级菜单 menuId → 接口 euid（缺了会 0408006）
+    if (currentSportMenu?.menuId) {
+      params.euid = currentSportMenu.menuId;
+    }
     if (playType === PlayType.Follow) {
       params.matchIds = followMatch.map((item) => item.matchId);
       params.sportId = undefined;
+      params.euid = undefined;
     }
     if (sportId === LotterySportId) {
       // 竞彩赛事id，从菜单中获取赛事id(额外的接口获取的赛事id)
       params.matchIds =
         _.filter(menus[playType], (item) => item.sportId === LotterySportId)?.[0]?.matchIds?.map(
-          (item) => Number(item),
+          (item) => item,
         ) || [];
-      params.sportIds = [FBSportIdValue.Football, FBSportIdValue.Basketball];
+      // FB getList 可带 sportIds；OB by-mids 忽略该字段。按当前场馆填足篮 id
+      params.sportIds =
+        venue === EVenue.OB
+          ? [OBSportIdValue.Football, OBSportIdValue.Basketball]
+          : [FBSportIdValue.Football, FBSportIdValue.Basketball];
+      params.euid = undefined;
     }
     if (filterByLeagueIds.length > 0) {
       params.leagueIds = filterByLeagueIds;
@@ -132,11 +148,34 @@ export const useSportsMainListData = () => {
     }
 
     return params;
-  }, [sportId, playTypeId, playType, menus, filterByLeagueIds, orderBy, filterTime, followMatch]);
+  }, [
+    sportId,
+    playTypeId,
+    playType,
+    menus,
+    filterByLeagueIds,
+    orderBy,
+    filterTime,
+    followMatch,
+    currentSportMenu?.menuId,
+    venue,
+  ]);
+
+  /**
+   * OB 非关注/非竞彩：必须等菜单带出 euid 再请求
+   * （切场馆后菜单先清空，避免空 euid 打 matchesPagePB）
+   */
+  const canFetchMainList = useMemo(() => {
+    if (playType === PlayType.Follow) return followMatch.length > 0;
+    if (sportId === LotterySportId) return (queryParams.matchIds?.length ?? 0) > 0;
+    if (sportId === HotSportId) return venue !== EVenue.OB;
+    if (venue === EVenue.OB) return !!queryParams.euid;
+    return true;
+  }, [playType, followMatch.length, sportId, queryParams.matchIds, queryParams.euid, venue]);
 
   // 主列表数据查询(关注列表没有数据时不查询)
   const mainListQuery = useGetMainListQuery(queryParams, {
-    enabled: playType !== PlayType.Follow || followMatch.length > 0,
+    enabled: canFetchMainList,
     keepPreviousData: playType === PlayType.Follow && followListReadyForPlaceholder,
   });
 
@@ -171,7 +210,8 @@ export const useSportsMainListData = () => {
 
   // 队名加粗：与 App 对齐，改用后端「初盘」winner（不随实时赔率变动）。
   // 后端给不到时，保留 formatFBSportItem 用 mg 算出的本地结果（其自身已含规则 3 兜底）。
-  const matchWinners = useMatchWinnersQuery(liveMatchIds);
+  // 对齐 Flutter：winner 接口 gameType 为大写 FB/OB
+  const matchWinners = useMatchWinnersQuery(liveMatchIds, venue === EVenue.OB ? 'OB' : 'FB');
   const applyNameBold = useMemo(
     () =>
       <T extends MatchBaseInfo>(m: T): T => {
@@ -188,6 +228,7 @@ export const useSportsMainListData = () => {
     sportId,
     enabled: playType === PlayType.Follow,
     liveMatchIds,
+    venue,
   });
 
   // 定时清理「开赛 + 24h」已过期的关注赛事：本地移除；登录态额外调删除接口清理服务器
@@ -197,13 +238,16 @@ export const useSportsMainListData = () => {
   followMatchRef.current = followMatch;
   const isLoginRef = useRef(isLogin);
   isLoginRef.current = isLogin;
+  const venueRef = useRef(venue);
+  venueRef.current = venue;
   useEffect(() => {
     const runClean = () => {
       const expired = getExpiredFollowMatches(followMatchRef.current);
       if (expired.length > 0 && isLoginRef.current) {
+        const gameType = getFollowGameType(venueRef.current);
         expired.forEach((m) => {
           void delFollowReq({
-            gameType: FOLLOW_GAME_TYPE,
+            gameType,
             matchId: String(m.matchId),
           }).catch(() => void 0);
         });
@@ -213,7 +257,7 @@ export const useSportsMainListData = () => {
     runClean();
     const timer = setInterval(runClean, 60 * 1000);
     return () => clearInterval(timer);
-  }, [dispatch]);
+  }, [dispatch, venue]);
 
   const listData: TMatchTypeGroupList = useMemo(() => {
     const result: TMatchTypeGroupList = [];
@@ -334,8 +378,21 @@ export const useSportsMainListData = () => {
     }
   }, [pinnedMatchs, pinnedSportQuery.data, dispatch, pinnedMatchIds.length]);
 
+  /**
+   * 切场馆后 OB 会先清空菜单，列表因缺 euid 而 enabled=false。
+   * 此时 RQ 的 isLoading 为 false，若直接当空列表会闪「暂无数据」。
+   * 等待 euid 就绪期间按 loading 处理（关注/竞彩/热门除外）。
+   */
+  const isWaitingForObEuid =
+    venue === EVenue.OB &&
+    playType !== PlayType.Follow &&
+    sportId !== LotterySportId &&
+    sportId !== HotSportId &&
+    !queryParams.euid;
+
   return {
     ...mainListQuery,
+    isLoading: mainListQuery.isLoading || isWaitingForObEuid,
     listData,
     sportId,
   };
@@ -345,8 +402,8 @@ const formatSportGroup = (
   matches: MatchBaseInfo[],
   isHotSport: boolean,
   pinnedSportIds: number[],
-  pinnedMatchIds: number[],
-  followMatchIds: number[],
+  pinnedMatchIds: string[],
+  followMatchIds: string[],
 ) => {
   // 按 sportId 分组，同时保持原始顺序
   const sportGroups = _.groupBy(matches, 'sportId');

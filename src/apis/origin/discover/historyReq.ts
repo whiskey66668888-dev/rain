@@ -14,18 +14,17 @@ export const getDiscoverMatchAnalysisReq = (params: {
   sportType: number;
 }): Promise<MatchAnalysisData | null> =>
   requestOpenIm
-    .post<
-      Record<string, unknown>,
-      { schedule_id: string; sport_type: number },
-      MatchAnalysisData
-    >('/v2/sport/sd/match/analysis', {
-      body: { schedule_id: params.scheduleId, sport_type: params.sportType },
-      isErrorToast: false,
-      transformResponse: (res) => ({
-        ...res,
-        data: normalizeMatchAnalysis(res.data ?? {}),
-      }),
-    })
+    .post<Record<string, unknown>, { schedule_id: string; sport_type: number }, MatchAnalysisData>(
+      '/v2/sport/sd/match/analysis',
+      {
+        body: { schedule_id: params.scheduleId, sport_type: params.sportType },
+        isErrorToast: false,
+        transformResponse: (res) => ({
+          ...res,
+          data: normalizeMatchAnalysis(res.data ?? {}),
+        }),
+      },
+    )
     .then((res) => res.data ?? null)
     .catch(() => null);
 

@@ -10,8 +10,12 @@ import { EBetSettleResult } from '@/apis/commonSports/constants';
 import { useBetHistoryContext } from '@/common/hooks/betHistory/context/BetHistoryContext';
 import Timing from '@/common/components/Timing';
 import { useMemo } from 'react';
-import { bigNB } from '@/utils/bet/bigMath';
 import { LoadingIcon } from '@/sites/op7/components/SvgIcons';
+import {
+  canGoBetMatchDetail,
+  getOrderDisplayOdds,
+  getOrderOddsFormatLabel,
+} from '@/utils/betHistory';
 
 function LiveStageInfo({ match }: { match: MatchBaseInfo }) {
   const score = useMemo(() => {
@@ -48,13 +52,12 @@ const MatchDetail = ({
   detail: THistoryBetItem;
   collapsed: boolean;
 }) => {
-  const { liveMatchMap, tryGoMatchDetail, checkingMatchId } = useBetHistoryContext();
+  const { activeVenue, liveMatchMap, tryGoMatchDetail, checkingMatchId } = useBetHistoryContext();
 
   // #region 派生计算
   const canShowLive = !order.isSettledOrder && detail.isLive && !detail.isChampion;
   const liveMatch = canShowLive ? liveMatchMap[detail.matchId] : undefined;
-  const canGoMatchDetail =
-    (order.isPreBetOrder || order.isUnsettledOrder) && Number(detail.matchId) > 0;
+  const canGoMatchDetail = canGoBetMatchDetail({ order, detail, venue: activeVenue });
   // #endregion
 
   const handleMatchDetailClick = () => {
@@ -96,12 +99,12 @@ const MatchDetail = ({
               !order.isParlayOrder ? 'text-[var(--ThemeColor-Main)]' : 'text-[var(--Text-Main-10)]',
             )}
           >
-            @{bigNB(detail.baseOdds).toFixed(2)}
+            @{getOrderDisplayOdds(detail.baseOdds, detail)}
           </p>
         </div>
         <div className="flex items-center justify-between _tf[12] leading-[1.33] text-[var(--Text-800)]">
           <p className="truncate">
-            {detail.playName} 欧洲盘
+            {detail.playName} {getOrderOddsFormatLabel(detail)}
             {detail.scoreWhileBetting && <span>[{detail.scoreWhileBetting}]</span>}
           </p>
           {order.isSettledOrder && <p>赛果 {detail.resultScore ?? '- -'}</p>}
@@ -145,7 +148,7 @@ const MatchDetail = ({
         <div className="flex items-center">
           <p className="truncate">{detail.betItemFullName}&nbsp;&nbsp;</p>
           <p>
-            @<span className="din-pro">{bigNB(detail.baseOdds).toFixed(2)}</span>
+            @<span className="din-pro">{getOrderDisplayOdds(detail.baseOdds, detail)}</span>
           </p>
         </div>
       </div>

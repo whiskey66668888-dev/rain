@@ -16,7 +16,12 @@ import { useSportSettings } from '@/common/hooks/sports/useSportSettings';
 import Icon from '@/common/components/Icon';
 import CircleCheck from '@/common/components/CircleCheck';
 import clsx from 'clsx';
-import { ACCEPT_ODDS_PREFER_VALUE_MAP, EAcceptOddsPrefer } from '@/apis/commonSports/constants';
+import {
+  ACCEPT_ODDS_PREFER_VALUE_MAP,
+  EAcceptOddsPrefer,
+  EOddsType,
+  EVenue,
+} from '@/apis/commonSports/constants';
 import { FONT_SIZE_OPTIONS, FontScaleType, THEME_OPTIONS } from '@/utils/constants/system';
 import { useSystem } from '@/common/hooks/useSystem';
 import Popover from '@/common/components/Popover';
@@ -27,6 +32,17 @@ import { PATHS } from '@/sites/op7/routes/paths';
 const PLATE_STYLE_OPTIONS: { value: string; label: string }[] = [
   { value: 'pro', label: '专业版' },
   { value: 'simple', label: '简洁版' },
+];
+
+const ODDS_TYPE_OPTIONS: { value: EOddsType; label: string }[] = [
+  { value: EOddsType.EU, label: '欧洲盘' },
+  { value: EOddsType.HK, label: '香港盘' },
+];
+
+// FB 场馆不支持香港盘，占位为 '--' 且不可切换（与 App 一致）
+const ODDS_TYPE_OPTIONS_FB: { value: EOddsType; label: string }[] = [
+  { value: EOddsType.EU, label: '欧洲盘' },
+  { value: EOddsType.HK, label: '--' },
 ];
 
 const ACCEPT_ODDS_PREFER_OPTIONS = [
@@ -59,6 +75,8 @@ const FastSettingsModal: React.FC<FastSettingsModalProps> = ({ show, handleClose
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
   const isSimpleOdds = useAppSelector((state) => state.sport.mainList.settings.isSimpleOdds);
   const isOpenGoalSound = useAppSelector((state) => state.sport.isOpenGoalSound);
+  const venue = useAppSelector((state) => state.sport.venue);
+  const currentOddsType = useAppSelector((state) => state.sport.currentOddsType);
   const syncSingleParlay = useAppSelector((state) => state.sport.syncSingleParlay);
   const acceptOddsPrefer = useAppSelector((state) => state.user.acceptOddsPrefer);
   const autoFollowMatch = useAppSelector((state) => state.user.autoFollowMatch);
@@ -80,7 +98,18 @@ const FastSettingsModal: React.FC<FastSettingsModalProps> = ({ show, handleClose
     toggleIsOpenGoalSound,
     setAcceptOddsPrefer,
     toggleAutoFollowMatch,
+    setCurrentOddsType,
   } = useSportSettings();
+
+  // FB 场馆只支持欧洲盘：展示强制回落为欧洲盘，且禁止切换
+  const isFbVenue = useMemo(() => venue === EVenue.FB, [venue]);
+  const handleOddsTypeChange = useCallback(
+    (value: EOddsType) => {
+      if (isFbVenue) return;
+      setCurrentOddsType(value);
+    },
+    [isFbVenue, setCurrentOddsType],
+  );
 
   const { data: questionsData } = useQuestions();
 
@@ -175,6 +204,30 @@ const FastSettingsModal: React.FC<FastSettingsModalProps> = ({ show, handleClose
                 />
               </li>
             )}
+            <li>
+              <section>
+                盘口设置
+                {isFbVenue && (
+                  <Popover
+                    content={<div className="_tf[12]">OP体育暂不支持「香港盘」</div>}
+                    trigger="click"
+                    placement="top"
+                  >
+                    <Icon
+                      src="/images/common/question.svg"
+                      size="16px"
+                      color="var(--ThemeColor-Main)"
+                    />
+                  </Popover>
+                )}
+              </section>
+              <SegmentedControl
+                options={isFbVenue ? ODDS_TYPE_OPTIONS_FB : ODDS_TYPE_OPTIONS}
+                height={28}
+                value={currentOddsType}
+                onChange={handleOddsTypeChange}
+              />
+            </li>
             <li>
               <section>
                 同步单串

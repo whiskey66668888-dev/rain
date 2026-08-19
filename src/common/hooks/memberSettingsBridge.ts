@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { EAcceptOddsPrefer } from '@/apis/commonSports/constants';
+import {
+  BETTING_ODDS_SETTINGS_TO_ODDS_TYPE,
+  EAcceptOddsPrefer,
+  EOddsType,
+  ODDS_TYPE_TO_BETTING_ODDS_SETTINGS,
+} from '@/apis/commonSports/constants';
 import { editMemberSet } from '@/apis/origin/finance/transfer';
 import { MemberSettingVo, memberSettingInitializeReq } from '@/apis/origin/member/memberSetting';
 import type { TMemberInfoResp } from '@/apis/origin/member/membetInfo';
@@ -16,6 +21,7 @@ import {
   setSyncSingleParlayAction,
   setIsSimpleOddsAction,
   setIsOpenGoalSoundAction,
+  setCurrentOddsTypeAction,
 } from '@/core/store/slices/sportSlice';
 import {
   setAcceptOddsPreferAction,
@@ -182,6 +188,18 @@ export const mapAcceptOddsPreferToBettingSettings = (
   }
 };
 
+/**
+ * 后端盘口设置（1 欧洲盘 / 2 香港盘）→ 前端盘口枚举，脏值一律回落欧洲盘。
+ */
+export const mapBettingOddsSettingsToOddsType = (value?: number | null): EOddsType =>
+  BETTING_ODDS_SETTINGS_TO_ODDS_TYPE[Number(value)] ?? EOddsType.EU;
+
+/**
+ * 前端盘口枚举 → 后端盘口设置值。
+ */
+export const mapOddsTypeToBettingOddsSettings = (oddsType: EOddsType): number =>
+  ODDS_TYPE_TO_BETTING_ODDS_SETTINGS[oddsType];
+
 export const mapBooleanToGoalBell = (checked: boolean): number => (checked ? 1 : 0);
 export const mapGoalBellToBoolean = (goalBell?: number | null): boolean => goalBell === 1;
 export const mapBooleanToAutomaticFollow = (checked: boolean): number => (checked ? 1 : 0);
@@ -297,6 +315,13 @@ export const applyMemberSettingToRuntime = (
     case 'bettingStyle':
       dispatch(
         setIsSimpleOddsAction(mapBettingStyleToIsSimpleOdds(value as number | null | undefined)),
+      );
+      return;
+    case 'bettingOddsSettings':
+      dispatch(
+        setCurrentOddsTypeAction(
+          mapBettingOddsSettingsToOddsType(value as number | null | undefined),
+        ),
       );
       return;
     case 'synchronousSingleString':

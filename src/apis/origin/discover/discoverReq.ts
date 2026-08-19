@@ -2,7 +2,9 @@ import { useQueryHook } from '@/core/query/hooks';
 import requestOpenIm from '@/core/sdk/requestOpenIm';
 
 import {
+  DISCOVER_VENUE_TYPE_BTI,
   DISCOVER_VENUE_TYPE_FB,
+  DISCOVER_VENUE_TYPE_OB,
   discoverChatConfigQueryKey,
   discoverMatchTabsQueryKey,
   discoverNmMatchIdQueryKey,
@@ -55,9 +57,18 @@ export const getChatConfigReq = (sportType: number): Promise<ChatConfigInfo | nu
     .then((res) => res.data ?? null)
     .catch(() => null);
 
+/** 场馆 → nm_match_id type：1=OB 2=FB 3=BTI */
+export const getDiscoverVenueType = (venue?: string | null): number => {
+  const normalized = String(venue ?? '').toLowerCase();
+  if (normalized === 'ob') return DISCOVER_VENUE_TYPE_OB;
+  if (normalized === 'bti' || normalized === 'btizx') return DISCOVER_VENUE_TYPE_BTI;
+  return DISCOVER_VENUE_TYPE_FB;
+};
+
 /**
- * 通过 FB matchId 换取纳米 schedule_id
+ * 通过场馆 matchId 换取纳米 schedule_id
  * 接口：POST /v1/game/search/nm_match_id
+ * type: 1=OB(eb) 2=FB 3=BTI
  */
 export const getNmMatchIdReq = (
   matchId: string,
@@ -120,12 +131,13 @@ export const useDiscoverChatConfigQuery = (
 /** 纳米 schedule_id */
 export const useDiscoverNmMatchIdQuery = (
   matchId: string,
+  venueType: number,
   enabled: boolean,
 ): ReturnType<typeof useQueryHook<string | null, Error>> =>
   useQueryHook<string | null, Error>({
-    queryKey: [...discoverNmMatchIdQueryKey(matchId)],
+    queryKey: [...discoverNmMatchIdQueryKey(matchId, venueType)],
     enabled: enabled && !!matchId && !!getOpenImConfig()?.reqApiUrl,
-    queryFn: () => getNmMatchIdReq(matchId),
+    queryFn: () => getNmMatchIdReq(matchId, venueType),
     staleTime: 5 * 60 * 1000,
     retry: false,
   });

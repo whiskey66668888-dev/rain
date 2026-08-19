@@ -1,14 +1,13 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import Icon from '@/common/components/Icon';
-import type { MatchRecord } from '@/apis/fbSports/getList';
-import { formatFBSportItem } from '@/apis/fbSports/common/fbFormat';
+import type { MatchBaseInfo } from '@/apis/commonSports/types';
 
 import styles from './headerWeb.module.scss';
 
 interface HeaderWebProps {
-  match: MatchRecord;
+  matchInfo: MatchBaseInfo;
   onBack: () => void;
   isFavorite: boolean;
   onToggleFavorite: () => void;
@@ -26,7 +25,7 @@ interface HeaderWebProps {
  * PC 赛事详情顶栏：白底、联赛名居中、隐藏/刷新/收藏（仅 lg+）
  */
 const HeaderWeb: React.FC<HeaderWebProps> = ({
-  match,
+  matchInfo,
   onBack,
   isFavorite,
   onToggleFavorite,
@@ -37,11 +36,7 @@ const HeaderWeb: React.FC<HeaderWebProps> = ({
   fixedStyle,
   onShare,
 }) => {
-  const leagueName = useMemo(() => {
-    const base = formatFBSportItem(match);
-    return base.leagueName ?? '';
-  }, [match]);
-
+  const leagueName = matchInfo.leagueName ?? '';
   const dataBoardLabel = isDataBoardVisible ? '隐藏' : '显示';
   const mergedFixedStyle = fixedStyle ? { ...fixedStyle, right: 'auto' } : undefined;
 

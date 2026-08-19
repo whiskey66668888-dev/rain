@@ -12,9 +12,8 @@ import { useMedia } from '../../hooks/useMedia';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import { formatFBSportItem } from '@/apis/fbSports/common/fbFormat';
 import { useMatchWinnersQuery } from '@/apis/fbSports/getMatchWinner';
-import type { MatchRecord } from '@/apis/fbSports/getList';
+import type { MatchBaseInfo } from '@/apis/commonSports/types';
 import type { VideoLine, MatchRecommendItem } from '../../type';
 import type { MediaMode } from '../../hooks/useMedia';
 import { useAppSelector } from '@/core/store/hooks';
@@ -24,7 +23,10 @@ import clsx from 'clsx';
 /** 轮播单页高度（与首页 smallCard 一致） */
 
 interface MatchInfoProps {
-  match: MatchRecord;
+  /** 已格式化为统一 MatchBaseInfo（FB/OB 均可） */
+  matchInfo: MatchBaseInfo;
+  /** FB 初盘 winner 查询用；不传则跳过 */
+  enableWinnerQuery?: boolean;
   /** 推荐列表，每项一页轮播（统计文案 + 快速投注标签） */
   recommendList?: MatchRecommendItem[];
   /** 视频线路列表 */
@@ -57,7 +59,8 @@ interface MatchInfoProps {
  * 赛事信息组件：头部轮播，第一页用 SportsCard（smallCard）；H5 后续页为推荐+快速投注，PC 仅首屏
  */
 const MatchInfo: React.FC<MatchInfoProps> = ({
-  match,
+  matchInfo,
+  enableWinnerQuery = false,
   recommendList = [],
   videoLines = [],
   animationUrls = [],
@@ -74,20 +77,21 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   onMediaPlay,
   bannerRef,
 }) => {
-  // 队名加粗：与 App 对齐，改用后端「初盘」winner；后端给不到时回退本地 mg 结果。
-  const matchIds = useMemo(() => (match?.id != null ? [match.id] : []), [match?.id]);
+  // 队名加粗：与 App 对齐，改用后端「初盘」winner；后端给不到时回退本地结果。
+  const matchIds = useMemo(
+    () => (enableWinnerQuery && matchInfo?.matchId != null ? [matchInfo.matchId] : []),
+    [enableWinnerQuery, matchInfo?.matchId],
+  );
   const matchWinners = useMatchWinnersQuery(matchIds);
 
   const formattedMatch = useMemo(() => {
-    const base = formatFBSportItem(match);
-    const winner = matchWinners[String(match?.id)];
-
+    const winner = matchWinners[String(matchInfo?.matchId)];
     return {
-      ...base,
-      nameBold: winner ?? base.nameBold,
-      matchPeriod: base.periodName ?? base.matchPeriod ?? '',
+      ...matchInfo,
+      nameBold: winner ?? matchInfo.nameBold,
+      matchPeriod: matchInfo.periodName ?? matchInfo.matchPeriod ?? '',
     };
-  }, [match, matchWinners]);
+  }, [matchInfo, matchWinners]);
 
   const { hasAnimation, hasVideo } = useMedia({
     videoLines,

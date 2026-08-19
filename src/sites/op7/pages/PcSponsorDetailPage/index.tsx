@@ -45,7 +45,7 @@ const SponsorDetailPage: React.FC = () => {
         <div className={styles.iframeContainer}>
           {gameInitLoading && (
             <div className={styles.gameInitLoading}>
-              <img src={`/images/${theme}/loading.webp`} alt="loading" />
+              <img src={`/images/${theme}/loading.png`} alt="loading" />
             </div>
           )}
           <iframe

@@ -1,0 +1,1475 @@
+{
+  "../../../node_modules/@fingerprintjs/fingerprintjs-pro/dist/fp.esm.min.js": {
+    "file": "resource/vendor-fingerprint-DNTug10-.js",
+    "name": "vendor-fingerprint",
+    "src": "../../../node_modules/@fingerprintjs/fingerprintjs-pro/dist/fp.esm.min.js",
+    "isDynamicEntry": true
+  },
+  "../../../node_modules/@front-openim/wasm-client-sdk/lib/worker-legacy.js": {
+    "file": "resource/worker-legacy-CK4cquZN.js",
+    "src": "../../../node_modules/@front-openim/wasm-client-sdk/lib/worker-legacy.js"
+  },
+  "../../../node_modules/@front-openim/wasm-client-sdk/lib/worker.js": {
+    "file": "resource/worker-UXqevJhr.js",
+    "src": "../../../node_modules/@front-openim/wasm-client-sdk/lib/worker.js"
+  },
+  "../../../node_modules/html2canvas/dist/html2canvas.esm.js": {
+    "file": "resource/vendor-html2canvas-C_06CvbK.js",
+    "name": "vendor-html2canvas",
+    "src": "../../../node_modules/html2canvas/dist/html2canvas.esm.js",
+    "isDynamicEntry": true
+  },
+  "_BetPC-4nCwgjRw.css": {
+    "file": "resource/BetPC-4nCwgjRw.css",
+    "src": "_BetPC-4nCwgjRw.css"
+  },
+  "_BonusReportPage-CPTfumAs.css": {
+    "file": "resource/BonusReportPage-CPTfumAs.css",
+    "src": "_BonusReportPage-CPTfumAs.css"
+  },
+  "_BonusReportPage-DtDs3eJn.js": {
+    "file": "resource/BonusReportPage-DtDs3eJn.js",
+    "name": "BonusReportPage",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_index-DaNWs7IN.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_wode-GPNJvnLX.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/BonusReportPage-CPTfumAs.css"
+    ]
+  },
+  "_HistoryReportPage-DHEZA836.css": {
+    "file": "resource/HistoryReportPage-DHEZA836.css",
+    "src": "_HistoryReportPage-DHEZA836.css"
+  },
+  "_HistoryReportPage-cgLHoeYR.js": {
+    "file": "resource/HistoryReportPage-cgLHoeYR.js",
+    "name": "HistoryReportPage",
+    "isDynamicEntry": true,
+    "imports": [
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-react-BooNg6yh.js",
+      "index.html",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/HistoryReportPage-DHEZA836.css"
+    ]
+  },
+  "_InviteSubPage-BveIypaT.css": {
+    "file": "resource/InviteSubPage-BveIypaT.css",
+    "src": "_InviteSubPage-BveIypaT.css"
+  },
+  "_InviteSubPage-W67_BPHC.js": {
+    "file": "resource/InviteSubPage-W67_BPHC.js",
+    "name": "InviteSubPage",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_index-DaNWs7IN.js",
+      "_RebateReportPage-8kL-HM3E.js",
+      "_wode-GPNJvnLX.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_tiyu-CCuYXYxI.js",
+      "_BonusReportPage-DtDs3eJn.js"
+    ],
+    "dynamicImports": [
+      "../../../node_modules/html2canvas/dist/html2canvas.esm.js"
+    ],
+    "css": [
+      "resource/InviteSubPage-BveIypaT.css"
+    ],
+    "assets": [
+      "resource/register-f03mYbAg.png",
+      "resource/register-DBCO8qTy.png"
+    ]
+  },
+  "_RebateReportPage-8kL-HM3E.js": {
+    "file": "resource/RebateReportPage-8kL-HM3E.js",
+    "name": "RebateReportPage",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_index-DaNWs7IN.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/RebateReportPage-BOM0sghp.css"
+    ]
+  },
+  "_RebateReportPage-BOM0sghp.css": {
+    "file": "resource/RebateReportPage-BOM0sghp.css",
+    "src": "_RebateReportPage-BOM0sghp.css"
+  },
+  "_chatFollowContext-15hy784G.js": {
+    "file": "resource/chatFollowContext-15hy784G.js",
+    "name": "chatFollowContext",
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "index.html",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_sdk-DGDCQnky.js",
+      "_index-DaNWs7IN.js"
+    ],
+    "dynamicImports": [
+      "../../../node_modules/html2canvas/dist/html2canvas.esm.js",
+      "_vendor-openim-Bsln6d1-.js"
+    ]
+  },
+  "_index-BuuoV-ra.js": {
+    "file": "resource/index-BuuoV-ra.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_sdk-DGDCQnky.js",
+      "_index-DaNWs7IN.js",
+      "index.html"
+    ],
+    "css": [
+      "resource/index-D4GAk9pe.css"
+    ]
+  },
+  "_index-D4GAk9pe.css": {
+    "file": "resource/index-D4GAk9pe.css",
+    "src": "_index-D4GAk9pe.css"
+  },
+  "_index-DPEnp10V.js": {
+    "file": "resource/index-DPEnp10V.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/index-Ooy76vBj.css"
+    ],
+    "assets": [
+      "resource/topBg-oDdcacVP.webp"
+    ]
+  },
+  "_index-DaNWs7IN.js": {
+    "file": "resource/index-DaNWs7IN.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js"
+    ],
+    "css": [
+      "resource/index-DcSmnu1q.css"
+    ],
+    "assets": [
+      "resource/bg-DHeFouuc.webp",
+      "resource/bg_dark-C1Y9yE1r.webp",
+      "resource/circle_bg-SA7mAb6Q.webp",
+      "resource/circle_bg_dark-F-G_9kKF.webp",
+      "resource/modal_bg-fO7GqZiU.png",
+      "resource/modal_bg-D1Ej-aiV.png"
+    ]
+  },
+  "_index-DbytaDad.js": {
+    "file": "resource/index-DbytaDad.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js"
+    ],
+    "css": [
+      "resource/index-G1xX2TNO.css"
+    ]
+  },
+  "_index-DcSmnu1q.css": {
+    "file": "resource/index-DcSmnu1q.css",
+    "src": "_index-DcSmnu1q.css"
+  },
+  "_index-DzVbf-38.js": {
+    "file": "resource/index-DzVbf-38.js",
+    "name": "index",
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_obBetHistoryFormat-DTOo8kye.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_zhudan-BhXY1tSE.js"
+    ]
+  },
+  "_index-DzlWOOdh.css": {
+    "file": "resource/index-DzlWOOdh.css",
+    "src": "_index-DzlWOOdh.css"
+  },
+  "_index-G1xX2TNO.css": {
+    "file": "resource/index-G1xX2TNO.css",
+    "src": "_index-G1xX2TNO.css"
+  },
+  "_index-Ooy76vBj.css": {
+    "file": "resource/index-Ooy76vBj.css",
+    "src": "_index-Ooy76vBj.css"
+  },
+  "_index-UG6-rdO-.js": {
+    "file": "resource/index-UG6-rdO-.js",
+    "name": "index",
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js"
+    ],
+    "css": [
+      "resource/index-DzlWOOdh.css"
+    ]
+  },
+  "_index-Zyo03JyL.css": {
+    "file": "resource/index-Zyo03JyL.css",
+    "src": "_index-Zyo03JyL.css"
+  },
+  "_index-yfP85EVd.js": {
+    "file": "resource/index-yfP85EVd.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_zhudan-BhXY1tSE.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/index-Zyo03JyL.css"
+    ]
+  },
+  "_obBetHistoryFormat-DTOo8kye.js": {
+    "file": "resource/obBetHistoryFormat-DTOo8kye.js",
+    "name": "obBetHistoryFormat",
+    "imports": [
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html"
+    ]
+  },
+  "_sdk-BHHi02eQ.css": {
+    "file": "resource/sdk-BHHi02eQ.css",
+    "src": "_sdk-BHHi02eQ.css"
+  },
+  "_sdk-DGDCQnky.js": {
+    "file": "resource/sdk-DGDCQnky.js",
+    "name": "sdk",
+    "imports": [
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-motion-DVzRkteW.js"
+    ],
+    "css": [
+      "resource/sdk-BHHi02eQ.css"
+    ]
+  },
+  "_shareMatchToChatRoom-BVDjfnl-.js": {
+    "file": "resource/shareMatchToChatRoom-BVDjfnl-.js",
+    "name": "shareMatchToChatRoom",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-react-BooNg6yh.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_index-DbytaDad.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_chatFollowContext-15hy784G.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_vendor-echarts-CliOk7_o.js",
+      "_index-DaNWs7IN.js",
+      "_index-yfP85EVd.js"
+    ],
+    "dynamicImports": [
+      "../../../node_modules/html2canvas/dist/html2canvas.esm.js",
+      "pages/SportsDetailsPage/components/discover/DiscoverContent/ChatContent/index.tsx",
+      "_vendor-openim-Bsln6d1-.js"
+    ],
+    "css": [
+      "resource/shareMatchToChatRoom-CLA4__GW.css"
+    ],
+    "assets": [
+      "resource/ic_shot_dark.png-Dnmfuxb1.webp",
+      "resource/ic_shot_light.png-CxRyAGrw.webp",
+      "resource/football_bg-BNpGFqcH.webp",
+      "resource/bg-tI_Bknts.png"
+    ]
+  },
+  "_shareMatchToChatRoom-CLA4__GW.css": {
+    "file": "resource/shareMatchToChatRoom-CLA4__GW.css",
+    "src": "_shareMatchToChatRoom-CLA4__GW.css"
+  },
+  "_tiyu-CCuYXYxI.js": {
+    "file": "resource/tiyu-CCuYXYxI.js",
+    "name": "tiyu",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-motion-DVzRkteW.js",
+      "index.html",
+      "_index-DaNWs7IN.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_wode-GPNJvnLX.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ],
+    "css": [
+      "resource/tiyu-DZT1mDuX.css"
+    ]
+  },
+  "_tiyu-DZT1mDuX.css": {
+    "file": "resource/tiyu-DZT1mDuX.css",
+    "src": "_tiyu-DZT1mDuX.css"
+  },
+  "_vendor-echarts-CliOk7_o.js": {
+    "file": "resource/vendor-echarts-CliOk7_o.js",
+    "name": "vendor-echarts",
+    "imports": [
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-react-BooNg6yh.js"
+    ]
+  },
+  "_vendor-emoji-BHKX2zKW.js": {
+    "file": "resource/vendor-emoji-BHKX2zKW.js",
+    "name": "vendor-emoji"
+  },
+  "_vendor-lottie-CXXvERQM.js": {
+    "file": "resource/vendor-lottie-CXXvERQM.js",
+    "name": "vendor-lottie",
+    "imports": [
+      "_vendor-react-BooNg6yh.js"
+    ]
+  },
+  "_vendor-motion-DVzRkteW.js": {
+    "file": "resource/vendor-motion-DVzRkteW.js",
+    "name": "vendor-motion",
+    "imports": [
+      "_vendor-react-BooNg6yh.js"
+    ]
+  },
+  "_vendor-openim-Bsln6d1-.js": {
+    "file": "resource/vendor-openim-Bsln6d1-.js",
+    "name": "vendor-openim",
+    "isDynamicEntry": true,
+    "imports": [
+      "_sdk-DGDCQnky.js"
+    ],
+    "assets": [
+      "resource/worker-UXqevJhr.js",
+      "resource/worker-legacy-CK4cquZN.js"
+    ]
+  },
+  "_vendor-react-BooNg6yh.js": {
+    "file": "resource/vendor-react-BooNg6yh.js",
+    "name": "vendor-react"
+  },
+  "_vendor-ui-D5Jqnnao.js": {
+    "file": "resource/vendor-ui-D5Jqnnao.js",
+    "name": "vendor-ui",
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js"
+    ],
+    "css": [
+      "resource/vendor-ui-Dgn1Wh5U.css"
+    ]
+  },
+  "_vendor-ui-Dgn1Wh5U.css": {
+    "file": "resource/vendor-ui-Dgn1Wh5U.css",
+    "src": "_vendor-ui-Dgn1Wh5U.css"
+  },
+  "_vendor-utils-DWkDgPC3.js": {
+    "file": "resource/vendor-utils-DWkDgPC3.js",
+    "name": "vendor-utils",
+    "imports": [
+      "_vendor-react-BooNg6yh.js"
+    ]
+  },
+  "_wode-By_5t9MG.css": {
+    "file": "resource/wode-By_5t9MG.css",
+    "src": "_wode-By_5t9MG.css"
+  },
+  "_wode-GPNJvnLX.js": {
+    "file": "resource/wode-GPNJvnLX.js",
+    "name": "wode",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js"
+    ],
+    "css": [
+      "resource/wode-By_5t9MG.css"
+    ]
+  },
+  "_zhudan-BhXY1tSE.js": {
+    "file": "resource/zhudan-BhXY1tSE.js",
+    "name": "zhudan",
+    "isDynamicEntry": true,
+    "imports": [
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_tiyu-CCuYXYxI.js"
+    ]
+  },
+  "components/Bet/index.tsx": {
+    "file": "resource/index-_206_Vln.js",
+    "name": "index",
+    "src": "components/Bet/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_index-DaNWs7IN.js",
+      "_chatFollowContext-15hy784G.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/index-CJ5fZdUK.css",
+      "resource/BetPC-4nCwgjRw.css"
+    ]
+  },
+  "components/GlobalCustomerServiceHost.tsx": {
+    "file": "resource/GlobalCustomerServiceHost-BGiJHrQG.js",
+    "name": "GlobalCustomerServiceHost",
+    "src": "components/GlobalCustomerServiceHost.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_index-DaNWs7IN.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "dynamicImports": [
+      "../../../node_modules/html2canvas/dist/html2canvas.esm.js"
+    ],
+    "css": [
+      "resource/GlobalCustomerServiceHost-42HLziVp.css"
+    ]
+  },
+  "components/NotificationWsHost.tsx": {
+    "file": "resource/NotificationWsHost-Bw5FTgBN.js",
+    "name": "NotificationWsHost",
+    "src": "components/NotificationWsHost.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ]
+  },
+  "images/common/chat/ic_emoji-56586a.png": {
+    "file": "resource/ic_emoji-56586a-BCVUGHay.png",
+    "src": "images/common/chat/ic_emoji-56586a.png"
+  },
+  "images/common/discover/lineup/football_bg.webp": {
+    "file": "resource/football_bg-BNpGFqcH.webp",
+    "src": "images/common/discover/lineup/football_bg.webp"
+  },
+  "images/common/discover/liveSituation/ic_shot_dark.png.webp": {
+    "file": "resource/ic_shot_dark.png-Dnmfuxb1.webp",
+    "src": "images/common/discover/liveSituation/ic_shot_dark.png.webp"
+  },
+  "images/common/discover/liveSituation/ic_shot_light.png.webp": {
+    "file": "resource/ic_shot_light.png-CxRyAGrw.webp",
+    "src": "images/common/discover/liveSituation/ic_shot_light.png.webp"
+  },
+  "images/common/discover/weather/bg.png": {
+    "file": "resource/bg-tI_Bknts.png",
+    "src": "images/common/discover/weather/bg.png"
+  },
+  "images/common/helpCenter/kf.png": {
+    "file": "resource/kf-CBVj0WJi.png",
+    "src": "images/common/helpCenter/kf.png"
+  },
+  "images/common/home-header.webp": {
+    "file": "resource/home-header-DSqch3nr.webp",
+    "src": "images/common/home-header.webp"
+  },
+  "images/common/landing/cluo2.webp": {
+    "file": "resource/cluo2-KUWcCD-_.webp",
+    "src": "images/common/landing/cluo2.webp"
+  },
+  "images/common/menu/main_tab/entertainment_bg.png": {
+    "file": "resource/entertainment_bg-BZkywY83.png",
+    "src": "images/common/menu/main_tab/entertainment_bg.png"
+  },
+  "images/common/menu/main_tab/sport_bg.png": {
+    "file": "resource/sport_bg-DVFZGT9G.png",
+    "src": "images/common/menu/main_tab/sport_bg.png"
+  },
+  "images/common/mine/avatar/basketball/adetuo.webp": {
+    "file": "resource/adetuo-DneKxsHS.webp",
+    "src": "images/common/mine/avatar/basketball/adetuo.webp"
+  },
+  "images/common/mine/avatar/basketball/aidehuazi.webp": {
+    "file": "resource/aidehuazi-B-GpvU6X.webp",
+    "src": "images/common/mine/avatar/basketball/aidehuazi.webp"
+  },
+  "images/common/mine/avatar/basketball/dongqiqi.webp": {
+    "file": "resource/dongqiqi-N7ybw0WO.webp",
+    "src": "images/common/mine/avatar/basketball/dongqiqi.webp"
+  },
+  "images/common/mine/avatar/basketball/duante.webp": {
+    "file": "resource/duante-CEEKInkT.webp",
+    "src": "images/common/mine/avatar/basketball/duante.webp"
+  },
+  "images/common/mine/avatar/basketball/kebi.webp": {
+    "file": "resource/kebi-DN4Ceajo.webp",
+    "src": "images/common/mine/avatar/basketball/kebi.webp"
+  },
+  "images/common/mine/avatar/basketball/kelake.webp": {
+    "file": "resource/kelake-Cd4zzO5C.webp",
+    "src": "images/common/mine/avatar/basketball/kelake.webp"
+  },
+  "images/common/mine/avatar/basketball/kuli.webp": {
+    "file": "resource/kuli-CywVHe5c.webp",
+    "src": "images/common/mine/avatar/basketball/kuli.webp"
+  },
+  "images/common/mine/avatar/basketball/liyueru.webp": {
+    "file": "resource/liyueru-IK6S8lPG.webp",
+    "src": "images/common/mine/avatar/basketball/liyueru.webp"
+  },
+  "images/common/mine/avatar/basketball/yalishanda.webp": {
+    "file": "resource/yalishanda-DrnBV09A.webp",
+    "src": "images/common/mine/avatar/basketball/yalishanda.webp"
+  },
+  "images/common/mine/avatar/basketball/yanghansen.webp": {
+    "file": "resource/yanghansen-DRxyDctI.webp",
+    "src": "images/common/mine/avatar/basketball/yanghansen.webp"
+  },
+  "images/common/mine/avatar/basketball/yaoming.webp": {
+    "file": "resource/yaoming-SYmrnnYb.webp",
+    "src": "images/common/mine/avatar/basketball/yaoming.webp"
+  },
+  "images/common/mine/avatar/basketball/zhanmusi.webp": {
+    "file": "resource/zhanmusi-CHhQNvmc.webp",
+    "src": "images/common/mine/avatar/basketball/zhanmusi.webp"
+  },
+  "images/common/mine/avatar/football/aitana.webp": {
+    "file": "resource/aitana-D3fng54r.webp",
+    "src": "images/common/mine/avatar/football/aitana.webp"
+  },
+  "images/common/mine/avatar/football/beilinemu.webp": {
+    "file": "resource/beilinemu-DfghN0Ty.webp",
+    "src": "images/common/mine/avatar/football/beilinemu.webp"
+  },
+  "images/common/mine/avatar/football/cluo1.webp": {
+    "file": "resource/cluo1-DtxOPI6h.webp",
+    "src": "images/common/mine/avatar/football/cluo1.webp"
+  },
+  "images/common/mine/avatar/football/dengbeilai.webp": {
+    "file": "resource/dengbeilai-B1F65q75.webp",
+    "src": "images/common/mine/avatar/football/dengbeilai.webp"
+  },
+  "images/common/mine/avatar/football/halande.webp": {
+    "file": "resource/halande-CZpQmnPJ.webp",
+    "src": "images/common/mine/avatar/football/halande.webp"
+  },
+  "images/common/mine/avatar/football/meixi.webp": {
+    "file": "resource/meixi-DRTlfsld.webp",
+    "src": "images/common/mine/avatar/football/meixi.webp"
+  },
+  "images/common/mine/avatar/football/mubapei.webp": {
+    "file": "resource/mubapei-CVlqHcJR.webp",
+    "src": "images/common/mine/avatar/football/mubapei.webp"
+  },
+  "images/common/mine/avatar/football/muxiyala.webp": {
+    "file": "resource/muxiyala-CtHM-JwO.webp",
+    "src": "images/common/mine/avatar/football/muxiyala.webp"
+  },
+  "images/common/mine/avatar/football/weinixiusi.webp": {
+    "file": "resource/weinixiusi-CuoIgSWZ.webp",
+    "src": "images/common/mine/avatar/football/weinixiusi.webp"
+  },
+  "images/common/mine/avatar/football/yamaer.webp": {
+    "file": "resource/yamaer-CNr6V4sG.webp",
+    "src": "images/common/mine/avatar/football/yamaer.webp"
+  },
+  "images/common/mine/avatar/others/aerkalasi.webp": {
+    "file": "resource/aerkalasi-CwMd-tpC.webp",
+    "src": "images/common/mine/avatar/others/aerkalasi.webp"
+  },
+  "images/common/mine/avatar/others/alina.webp": {
+    "file": "resource/alina-D3268l7H.webp",
+    "src": "images/common/mine/avatar/others/alina.webp"
+  },
+  "images/common/mine/avatar/others/alongsuo.webp": {
+    "file": "resource/alongsuo-betI0mnW.webp",
+    "src": "images/common/mine/avatar/others/alongsuo.webp"
+  },
+  "images/common/mine/avatar/others/andelieyewa.webp": {
+    "file": "resource/andelieyewa-DHsQHBqu.webp",
+    "src": "images/common/mine/avatar/others/andelieyewa.webp"
+  },
+  "images/common/mine/avatar/others/biergaizi.webp": {
+    "file": "resource/biergaizi-BbF8kpnR.webp",
+    "src": "images/common/mine/avatar/others/biergaizi.webp"
+  },
+  "images/common/mine/avatar/others/chuanpu.webp": {
+    "file": "resource/chuanpu-D8-5zejH.webp",
+    "src": "images/common/mine/avatar/others/chuanpu.webp"
+  },
+  "images/common/mine/avatar/others/daguxiangping.webp": {
+    "file": "resource/daguxiangping-BZH9CJXM.webp",
+    "src": "images/common/mine/avatar/others/daguxiangping.webp"
+  },
+  "images/common/mine/avatar/others/guailing.webp": {
+    "file": "resource/guailing-DgWA2UNI.webp",
+    "src": "images/common/mine/avatar/others/guailing.webp"
+  },
+  "images/common/mine/avatar/others/liming.webp": {
+    "file": "resource/liming-inWe-pgf.webp",
+    "src": "images/common/mine/avatar/others/liming.webp"
+  },
+  "images/common/mine/avatar/others/lindan.webp": {
+    "file": "resource/lindan-CzYijc7F.webp",
+    "src": "images/common/mine/avatar/others/lindan.webp"
+  },
+  "images/common/mine/avatar/others/liudehua.webp": {
+    "file": "resource/liudehua-CgxmSFZW.webp",
+    "src": "images/common/mine/avatar/others/liudehua.webp"
+  },
+  "images/common/mine/avatar/others/luoyonghao.webp": {
+    "file": "resource/luoyonghao-Bccbwv4y.webp",
+    "src": "images/common/mine/avatar/others/luoyonghao.webp"
+  },
+  "images/common/mine/avatar/others/mahuateng.webp": {
+    "file": "resource/mahuateng-R1iH2iin.webp",
+    "src": "images/common/mine/avatar/others/mahuateng.webp"
+  },
+  "images/common/mine/avatar/others/masike.webp": {
+    "file": "resource/masike-qpW_QPTk.webp",
+    "src": "images/common/mine/avatar/others/masike.webp"
+  },
+  "images/common/mine/avatar/others/mayun.webp": {
+    "file": "resource/mayun-gjNWILGf.webp",
+    "src": "images/common/mine/avatar/others/mayun.webp"
+  },
+  "images/common/mine/avatar/others/muliniao.webp": {
+    "file": "resource/muliniao-CptdIwkD.webp",
+    "src": "images/common/mine/avatar/others/muliniao.webp"
+  },
+  "images/common/mine/avatar/others/sunyang.webp": {
+    "file": "resource/sunyang-DTz2HunL.webp",
+    "src": "images/common/mine/avatar/others/sunyang.webp"
+  },
+  "images/common/mine/avatar/others/sunyingsha.webp": {
+    "file": "resource/sunyingsha-2WJ5EX6L.webp",
+    "src": "images/common/mine/avatar/others/sunyingsha.webp"
+  },
+  "images/common/mine/avatar/others/sunyuchen.webp": {
+    "file": "resource/sunyuchen-Dtc-LRUu.webp",
+    "src": "images/common/mine/avatar/others/sunyuchen.webp"
+  },
+  "images/common/mine/avatar/others/wangchuqin.webp": {
+    "file": "resource/wangchuqin-Bc7wlCPw.webp",
+    "src": "images/common/mine/avatar/others/wangchuqin.webp"
+  },
+  "images/common/mine/avatar/others/wuyanni.webp": {
+    "file": "resource/wuyanni--TH1cgEr.webp",
+    "src": "images/common/mine/avatar/others/wuyanni.webp"
+  },
+  "images/common/mine/avatar/others/xinna.webp": {
+    "file": "resource/xinna-CmFm_OLV.webp",
+    "src": "images/common/mine/avatar/others/xinna.webp"
+  },
+  "images/common/mine/avatar/others/zhangchangning.webp": {
+    "file": "resource/zhangchangning-C5w_5Cp9.webp",
+    "src": "images/common/mine/avatar/others/zhangchangning.webp"
+  },
+  "images/common/mine/avatar/others/zhangjiahui.webp": {
+    "file": "resource/zhangjiahui-CDC-Nhag.webp",
+    "src": "images/common/mine/avatar/others/zhangjiahui.webp"
+  },
+  "images/common/mine/avatar/others/zhangyufei.webp": {
+    "file": "resource/zhangyufei-D09WF4W3.webp",
+    "src": "images/common/mine/avatar/others/zhangyufei.webp"
+  },
+  "images/common/mine/avatar/others/zhaochangpeng.webp": {
+    "file": "resource/zhaochangpeng-aSakMUOo.webp",
+    "src": "images/common/mine/avatar/others/zhaochangpeng.webp"
+  },
+  "images/common/mine/avatar/others/zhengqinwen.webp": {
+    "file": "resource/zhengqinwen-DAa8l4tE.webp",
+    "src": "images/common/mine/avatar/others/zhengqinwen.webp"
+  },
+  "images/common/mine/avatar/others/zhourunfa.webp": {
+    "file": "resource/zhourunfa-BeCg-qG6.webp",
+    "src": "images/common/mine/avatar/others/zhourunfa.webp"
+  },
+  "images/common/mine/avatar/others/zhouxingchi.webp": {
+    "file": "resource/zhouxingchi-B-KKvIml.webp",
+    "src": "images/common/mine/avatar/others/zhouxingchi.webp"
+  },
+  "images/common/mine/mine_balance_bg.png": {
+    "file": "resource/mine_balance_bg-ZTeio3jS.png",
+    "src": "images/common/mine/mine_balance_bg.png"
+  },
+  "images/common/promotion/question/img_qa.png": {
+    "file": "resource/img_qa-DXfZ4UnK.png",
+    "src": "images/common/promotion/question/img_qa.png"
+  },
+  "images/common/promotion/question/wenjuan.png": {
+    "file": "resource/wenjuan-CnDzCwEq.png",
+    "src": "images/common/promotion/question/wenjuan.png"
+  },
+  "images/common/pwa/topBg.webp": {
+    "file": "resource/topBg-oDdcacVP.webp",
+    "src": "images/common/pwa/topBg.webp"
+  },
+  "images/common/realtimeRebate/bg.webp": {
+    "file": "resource/bg-DHeFouuc.webp",
+    "src": "images/common/realtimeRebate/bg.webp"
+  },
+  "images/common/realtimeRebate/bg_dark.webp": {
+    "file": "resource/bg_dark-C1Y9yE1r.webp",
+    "src": "images/common/realtimeRebate/bg_dark.webp"
+  },
+  "images/common/realtimeRebate/circle_bg.webp": {
+    "file": "resource/circle_bg-SA7mAb6Q.webp",
+    "src": "images/common/realtimeRebate/circle_bg.webp"
+  },
+  "images/common/realtimeRebate/circle_bg_dark.webp": {
+    "file": "resource/circle_bg_dark-F-G_9kKF.webp",
+    "src": "images/common/realtimeRebate/circle_bg_dark.webp"
+  },
+  "images/dark/bank/card.png": {
+    "file": "resource/card-DaqH3q4p.png",
+    "src": "images/dark/bank/card.png"
+  },
+  "images/dark/bg_top.webp": {
+    "file": "resource/bg_top-Byg73lj4.webp",
+    "src": "images/dark/bg_top.webp"
+  },
+  "images/dark/gesture_bg.png": {
+    "file": "resource/gesture_bg-zd1LBjUX.png",
+    "src": "images/dark/gesture_bg.png"
+  },
+  "images/dark/inviteFriends/banner.webp": {
+    "file": "resource/banner-CxC7ggox.webp",
+    "src": "images/dark/inviteFriends/banner.webp"
+  },
+  "images/dark/inviteFriends/banner_h5.webp": {
+    "file": "resource/banner_h5-BxYCp-iF.webp",
+    "src": "images/dark/inviteFriends/banner_h5.webp"
+  },
+  "images/dark/inviteFriends/register.png": {
+    "file": "resource/register-f03mYbAg.png",
+    "src": "images/dark/inviteFriends/register.png"
+  },
+  "images/dark/mine/mine_top.png": {
+    "file": "resource/mine_top-BrXvJAmr.png",
+    "src": "images/dark/mine/mine_top.png"
+  },
+  "images/dark/mine/modal_bg.png": {
+    "file": "resource/modal_bg-D1Ej-aiV.png",
+    "src": "images/dark/mine/modal_bg.png"
+  },
+  "images/light/bank/card.png": {
+    "file": "resource/card-DfFcyBM7.png",
+    "src": "images/light/bank/card.png"
+  },
+  "images/light/bg_top.webp": {
+    "file": "resource/bg_top-1yRsyMwy.webp",
+    "src": "images/light/bg_top.webp"
+  },
+  "images/light/gesture_bg.png": {
+    "file": "resource/gesture_bg-xYUg0gRy.png",
+    "src": "images/light/gesture_bg.png"
+  },
+  "images/light/hotEvent/info-bg.png": {
+    "file": "resource/info-bg--BShrN2d.png",
+    "src": "images/light/hotEvent/info-bg.png"
+  },
+  "images/light/inviteFriends/banner.webp": {
+    "file": "resource/banner-CKPglyaj.webp",
+    "src": "images/light/inviteFriends/banner.webp"
+  },
+  "images/light/inviteFriends/banner_h5.webp": {
+    "file": "resource/banner_h5-DshX_6S_.webp",
+    "src": "images/light/inviteFriends/banner_h5.webp"
+  },
+  "images/light/inviteFriends/register.png": {
+    "file": "resource/register-DBCO8qTy.png",
+    "src": "images/light/inviteFriends/register.png"
+  },
+  "images/light/mine/mine_top.png": {
+    "file": "resource/mine_top-COnY7dGi.png",
+    "src": "images/light/mine/mine_top.png"
+  },
+  "images/light/mine/modal_bg.png": {
+    "file": "resource/modal_bg-fO7GqZiU.png",
+    "src": "images/light/mine/modal_bg.png"
+  },
+  "index.html": {
+    "file": "resource/main-CT5wa23j.js",
+    "name": "main",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "dynamicImports": [
+      "../../../node_modules/@fingerprintjs/fingerprintjs-pro/dist/fp.esm.min.js",
+      "_RebateReportPage-8kL-HM3E.js",
+      "components/GlobalCustomerServiceHost.tsx",
+      "pages/SportsDetailsPage/components/BetShareSheet/BetShareSheetHost.tsx",
+      "_index-yfP85EVd.js",
+      "components/NotificationWsHost.tsx",
+      "_zhudan-BhXY1tSE.js",
+      "_wode-GPNJvnLX.js",
+      "pages/HomePage/index.tsx",
+      "pages/SportsPage/index.tsx",
+      "_tiyu-CCuYXYxI.js",
+      "_index-DaNWs7IN.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "pages/BetHistoryPage/BetHistoryH5/index.tsx",
+      "pages/MinePage/MinePageH5/index.tsx",
+      "_index-DaNWs7IN.js",
+      "_index-yfP85EVd.js",
+      "_index-DbytaDad.js",
+      "../../../node_modules/html2canvas/dist/html2canvas.esm.js",
+      "components/Bet/index.tsx",
+      "pages/BetHistoryPage/BetHistorySidebar/index.tsx",
+      "_index-DPEnp10V.js",
+      "_shareMatchToChatRoom-BVDjfnl-.js",
+      "pages/MessageCenter/index.tsx",
+      "pages/MessageCenter/index.tsx",
+      "_index-DPEnp10V.js",
+      "_index-DPEnp10V.js",
+      "pages/HomePage/index.tsx",
+      "_index-DaNWs7IN.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "pages/PromotionPage/HotEventPage/index.tsx",
+      "_index-DPEnp10V.js",
+      "_index-DPEnp10V.js",
+      "_wode-GPNJvnLX.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_RebateReportPage-8kL-HM3E.js",
+      "pages/SportsPage/index.tsx",
+      "_shareMatchToChatRoom-BVDjfnl-.js",
+      "pages/BetHistoryPage/BetHistoryH5/index.tsx",
+      "_index-DPEnp10V.js",
+      "_tiyu-CCuYXYxI.js",
+      "pages/MinePage/MinePageH5/index.tsx",
+      "pages/MinePage/ProfilePage/index.tsx",
+      "pages/MinePage/SecurityCenterPage/index.tsx",
+      "pages/MinePage/WelfareCenterPage/index.tsx",
+      "_tiyu-CCuYXYxI.js",
+      "_index-yfP85EVd.js",
+      "pages/MinePage/TransactionRecordPage/index.tsx",
+      "_index-DaNWs7IN.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_index-DaNWs7IN.js",
+      "_index-DaNWs7IN.js",
+      "pages/MinePage/InviteFriendsPage/HomePage.tsx",
+      "_InviteSubPage-W67_BPHC.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_tiyu-CCuYXYxI.js",
+      "_RebateReportPage-8kL-HM3E.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_index-DPEnp10V.js",
+      "pages/VIPCenterPage/index.tsx",
+      "_tiyu-CCuYXYxI.js",
+      "_index-BuuoV-ra.js",
+      "pages/HelpCenterPage/index.tsx",
+      "_index-BuuoV-ra.js",
+      "_wode-GPNJvnLX.js",
+      "pages/AllBettingRecordPage/DetailPage.tsx",
+      "pages/SystemSettingsPage/index.tsx",
+      "_index-yfP85EVd.js",
+      "_index-DaNWs7IN.js",
+      "pages/PromotionPage/HotEventPage/index.tsx",
+      "_wode-GPNJvnLX.js",
+      "_index-BuuoV-ra.js",
+      "_index-BuuoV-ra.js",
+      "_wode-GPNJvnLX.js",
+      "_index-DaNWs7IN.js",
+      "pages/BetHistoryPage/BetHistoryPC/index.tsx",
+      "_zhudan-BhXY1tSE.js",
+      "_tiyu-CCuYXYxI.js",
+      "_zhudan-BhXY1tSE.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/main-BIRJWqpg.css"
+    ],
+    "assets": [
+      "resource/bg_top-1yRsyMwy.webp",
+      "resource/bg_top-Byg73lj4.webp",
+      "resource/card-DfFcyBM7.png",
+      "resource/card-DaqH3q4p.png",
+      "resource/home-header-DSqch3nr.webp",
+      "resource/cluo2-KUWcCD-_.webp",
+      "resource/entertainment_bg-BZkywY83.png",
+      "resource/sport_bg-DVFZGT9G.png"
+    ]
+  },
+  "pages/AllBettingRecordPage/DetailPage.tsx": {
+    "file": "resource/DetailPage-CN0XBlGS.js",
+    "name": "DetailPage",
+    "src": "pages/AllBettingRecordPage/DetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ]
+  },
+  "pages/BetHistoryPage/BetHistoryH5/index.tsx": {
+    "file": "resource/index-Cplsms7A.js",
+    "name": "index",
+    "src": "pages/BetHistoryPage/BetHistoryH5/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_index-DzVbf-38.js",
+      "_obBetHistoryFormat-DTOo8kye.js",
+      "_zhudan-BhXY1tSE.js",
+      "_index-DaNWs7IN.js",
+      "_wode-GPNJvnLX.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_tiyu-CCuYXYxI.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ],
+    "css": [
+      "resource/index-BdD7RJrI.css"
+    ]
+  },
+  "pages/BetHistoryPage/BetHistoryPC/index.tsx": {
+    "file": "resource/index-CdyY2QG-.js",
+    "name": "index",
+    "src": "pages/BetHistoryPage/BetHistoryPC/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_index-DzVbf-38.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_obBetHistoryFormat-DTOo8kye.js",
+      "_index-DaNWs7IN.js",
+      "_zhudan-BhXY1tSE.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_tiyu-CCuYXYxI.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ],
+    "css": [
+      "resource/index-CGbGGNqc.css",
+      "resource/BetPC-4nCwgjRw.css"
+    ]
+  },
+  "pages/BetHistoryPage/BetHistorySidebar/index.tsx": {
+    "file": "resource/index-B4WZoXC1.js",
+    "name": "index",
+    "src": "pages/BetHistoryPage/BetHistorySidebar/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "_index-DzVbf-38.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_index-DaNWs7IN.js",
+      "_obBetHistoryFormat-DTOo8kye.js",
+      "_zhudan-BhXY1tSE.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_tiyu-CCuYXYxI.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ]
+  },
+  "pages/HelpCenterPage/index.tsx": {
+    "file": "resource/index-D-q00Ojd.js",
+    "name": "index",
+    "src": "pages/HelpCenterPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_sdk-DGDCQnky.js",
+      "_index-UG6-rdO-.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/index-DmIWijfQ.css"
+    ],
+    "assets": [
+      "resource/kf-CBVj0WJi.png"
+    ]
+  },
+  "pages/HomePage/index.tsx": {
+    "file": "resource/index-DAj9nDTr.js",
+    "name": "index",
+    "src": "pages/HomePage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/index-CReATxZT.css"
+    ]
+  },
+  "pages/MessageCenter/index.tsx": {
+    "file": "resource/index-FyNLEAEA.js",
+    "name": "index",
+    "src": "pages/MessageCenter/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/index-B1FIkuaW.css"
+    ]
+  },
+  "pages/MinePage/InviteFriendsPage/HomePage.tsx": {
+    "file": "resource/HomePage-DNYJ5uv3.js",
+    "name": "HomePage",
+    "src": "pages/MinePage/InviteFriendsPage/HomePage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_InviteSubPage-W67_BPHC.js",
+      "_RebateReportPage-8kL-HM3E.js",
+      "_wode-GPNJvnLX.js",
+      "_index-DaNWs7IN.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_tiyu-CCuYXYxI.js"
+    ],
+    "css": [
+      "resource/HomePage-BSW-JTPm.css"
+    ],
+    "assets": [
+      "resource/banner-CxC7ggox.webp",
+      "resource/banner-CKPglyaj.webp",
+      "resource/banner_h5-BxYCp-iF.webp",
+      "resource/banner_h5-DshX_6S_.webp"
+    ]
+  },
+  "pages/MinePage/MinePageH5/index.tsx": {
+    "file": "resource/index-B2FmLrLg.js",
+    "name": "index",
+    "src": "pages/MinePage/MinePageH5/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_vendor-motion-DVzRkteW.js"
+    ],
+    "css": [
+      "resource/index-CGTBicy3.css"
+    ],
+    "assets": [
+      "resource/mine_top-COnY7dGi.png",
+      "resource/mine_top-BrXvJAmr.png",
+      "resource/mine_balance_bg-ZTeio3jS.png"
+    ]
+  },
+  "pages/MinePage/ProfilePage/index.tsx": {
+    "file": "resource/index-BcIf2_VV.js",
+    "name": "index",
+    "src": "pages/MinePage/ProfilePage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_tiyu-CCuYXYxI.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ]
+  },
+  "pages/MinePage/SecurityCenterPage/index.tsx": {
+    "file": "resource/index-heu-FA38.js",
+    "name": "index",
+    "src": "pages/MinePage/SecurityCenterPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_index-UG6-rdO-.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-ui-D5Jqnnao.js"
+    ],
+    "css": [
+      "resource/index-4YuO8sUi.css"
+    ],
+    "assets": [
+      "resource/gesture_bg-xYUg0gRy.png",
+      "resource/gesture_bg-zd1LBjUX.png"
+    ]
+  },
+  "pages/MinePage/TransactionRecordPage/index.tsx": {
+    "file": "resource/index-6U2Xz0HQ.js",
+    "name": "index",
+    "src": "pages/MinePage/TransactionRecordPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/index-B7376LWD.css"
+    ]
+  },
+  "pages/MinePage/WelfareCenterPage/index.tsx": {
+    "file": "resource/index--u8IKtYX.js",
+    "name": "index",
+    "src": "pages/MinePage/WelfareCenterPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-lottie-CXXvERQM.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js"
+    ],
+    "css": [
+      "resource/index-MgA7pNVm.css"
+    ]
+  },
+  "pages/PromotionPage/HotEventPage/index.tsx": {
+    "file": "resource/index-BS42UFRT.js",
+    "name": "index",
+    "src": "pages/PromotionPage/HotEventPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_RebateReportPage-8kL-HM3E.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/index-D7uIDf5P.css"
+    ],
+    "assets": [
+      "resource/mubapei-CVlqHcJR.webp",
+      "resource/meixi-DRTlfsld.webp",
+      "resource/cluo1-DtxOPI6h.webp",
+      "resource/beilinemu-DfghN0Ty.webp",
+      "resource/halande-CZpQmnPJ.webp",
+      "resource/yamaer-CNr6V4sG.webp",
+      "resource/weinixiusi-CuoIgSWZ.webp",
+      "resource/dengbeilai-B1F65q75.webp",
+      "resource/aitana-D3fng54r.webp",
+      "resource/muxiyala-CtHM-JwO.webp",
+      "resource/kebi-DN4Ceajo.webp",
+      "resource/kuli-CywVHe5c.webp",
+      "resource/yaoming-SYmrnnYb.webp",
+      "resource/liyueru-IK6S8lPG.webp",
+      "resource/yanghansen-DRxyDctI.webp",
+      "resource/duante-CEEKInkT.webp",
+      "resource/zhanmusi-CHhQNvmc.webp",
+      "resource/dongqiqi-N7ybw0WO.webp",
+      "resource/aidehuazi-B-GpvU6X.webp",
+      "resource/kelake-Cd4zzO5C.webp",
+      "resource/adetuo-DneKxsHS.webp",
+      "resource/yalishanda-DrnBV09A.webp",
+      "resource/liudehua-CgxmSFZW.webp",
+      "resource/wuyanni--TH1cgEr.webp",
+      "resource/zhouxingchi-B-KKvIml.webp",
+      "resource/zhourunfa-BeCg-qG6.webp",
+      "resource/masike-qpW_QPTk.webp",
+      "resource/daguxiangping-BZH9CJXM.webp",
+      "resource/sunyuchen-Dtc-LRUu.webp",
+      "resource/sunyang-DTz2HunL.webp",
+      "resource/sunyingsha-2WJ5EX6L.webp",
+      "resource/chuanpu-D8-5zejH.webp",
+      "resource/zhangjiahui-CDC-Nhag.webp",
+      "resource/zhangchangning-C5w_5Cp9.webp",
+      "resource/zhangyufei-D09WF4W3.webp",
+      "resource/xinna-CmFm_OLV.webp",
+      "resource/lindan-CzYijc7F.webp",
+      "resource/biergaizi-BbF8kpnR.webp",
+      "resource/wangchuqin-Bc7wlCPw.webp",
+      "resource/muliniao-CptdIwkD.webp",
+      "resource/andelieyewa-DHsQHBqu.webp",
+      "resource/luoyonghao-Bccbwv4y.webp",
+      "resource/guailing-DgWA2UNI.webp",
+      "resource/zhaochangpeng-aSakMUOo.webp",
+      "resource/zhengqinwen-DAa8l4tE.webp",
+      "resource/alina-D3268l7H.webp",
+      "resource/alongsuo-betI0mnW.webp",
+      "resource/mayun-gjNWILGf.webp",
+      "resource/mahuateng-R1iH2iin.webp",
+      "resource/liming-inWe-pgf.webp",
+      "resource/aerkalasi-CwMd-tpC.webp",
+      "resource/info-bg--BShrN2d.png",
+      "resource/wenjuan-CnDzCwEq.png",
+      "resource/img_qa-DXfZ4UnK.png"
+    ]
+  },
+  "pages/SportsDetailsPage/components/BetShareSheet/BetShareSheetHost.tsx": {
+    "file": "resource/BetShareSheetHost-BLwfPnHG.js",
+    "name": "BetShareSheetHost",
+    "src": "pages/SportsDetailsPage/components/BetShareSheet/BetShareSheetHost.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_vendor-utils-DWkDgPC3.js",
+      "_chatFollowContext-15hy784G.js",
+      "_zhudan-BhXY1tSE.js",
+      "_index-yfP85EVd.js",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_tiyu-CCuYXYxI.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ],
+    "dynamicImports": [
+      "_vendor-openim-Bsln6d1-.js"
+    ]
+  },
+  "pages/SportsDetailsPage/components/discover/DiscoverContent/ChatContent/index.tsx": {
+    "file": "resource/index-R2lBDkZ-.js",
+    "name": "index",
+    "src": "pages/SportsDetailsPage/components/discover/DiscoverContent/ChatContent/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_vendor-openim-Bsln6d1-.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "_chatFollowContext-15hy784G.js",
+      "_index-yfP85EVd.js",
+      "_index-DaNWs7IN.js",
+      "_shareMatchToChatRoom-BVDjfnl-.js",
+      "_obBetHistoryFormat-DTOo8kye.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_zhudan-BhXY1tSE.js",
+      "_vendor-emoji-BHKX2zKW.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_index-DbytaDad.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js",
+      "_vendor-echarts-CliOk7_o.js",
+      "_tiyu-CCuYXYxI.js",
+      "_RebateReportPage-8kL-HM3E.js"
+    ],
+    "css": [
+      "resource/index-BrhGXYEN.css"
+    ],
+    "assets": [
+      "resource/ic_emoji-56586a-BCVUGHay.png"
+    ]
+  },
+  "pages/SportsPage/index.tsx": {
+    "file": "resource/index-BbJbx7fN.js",
+    "name": "index",
+    "src": "pages/SportsPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_index-DbytaDad.js",
+      "_sdk-DGDCQnky.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_index-DaNWs7IN.js",
+      "_BonusReportPage-DtDs3eJn.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js",
+      "_HistoryReportPage-cgLHoeYR.js",
+      "_wode-GPNJvnLX.js"
+    ],
+    "css": [
+      "resource/index-BM8mN5PJ.css"
+    ]
+  },
+  "pages/SystemSettingsPage/index.tsx": {
+    "file": "resource/index-DfHz55WS.js",
+    "name": "index",
+    "src": "pages/SystemSettingsPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-utils-DWkDgPC3.js",
+      "index.html",
+      "_sdk-DGDCQnky.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "css": [
+      "resource/index-ClTQOjcD.css"
+    ]
+  },
+  "pages/VIPCenterPage/index.tsx": {
+    "file": "resource/index-KDaDAvp6.js",
+    "name": "index",
+    "src": "pages/VIPCenterPage/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-utils-DWkDgPC3.js",
+      "_vendor-react-BooNg6yh.js",
+      "_vendor-ui-D5Jqnnao.js",
+      "_sdk-DGDCQnky.js",
+      "index.html",
+      "_index-DaNWs7IN.js",
+      "_vendor-motion-DVzRkteW.js",
+      "_vendor-lottie-CXXvERQM.js"
+    ],
+    "dynamicImports": [
+      "../../../node_modules/html2canvas/dist/html2canvas.esm.js"
+    ],
+    "css": [
+      "resource/index-BNuDgwqa.css"
+    ]
+  }
+}

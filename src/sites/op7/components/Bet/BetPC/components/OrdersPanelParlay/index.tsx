@@ -7,10 +7,12 @@ import { bigNB } from '@/utils/bet/bigMath';
 import { EBetOrderStatus } from '@/apis/commonSports/constants';
 import dayjs from 'dayjs';
 import { useGoMatchDetail } from '@/sites/op7/hooks/useGoMatchDetail';
+import { useOddsDisplay } from '@/common/hooks/sports/useOddsDisplay';
 
 const OrdersPanelParlay = () => {
   const { betOrders, totalOrdersStatus } = useBettingData();
   const goMatchDetail = useGoMatchDetail();
+  const { getOddsDisplay } = useOddsDisplay();
 
   const { totalBetAmount, totalCanWinAmount } = useMemo(() => {
     return {
@@ -95,6 +97,12 @@ const OrdersPanelParlay = () => {
             const handleGoMatchDetail = () => {
               goMatchDetail(detail.matchId, { isChampion: detail.isChampion });
             };
+            // 串关只支持欧洲盘（与下单参数 marketTypeFinally 同口径）
+            const oddsDisplay = getOddsDisplay({
+              baseOdds: detail.baseOdds,
+              isSupportHK: detail.isSupportHK,
+              isParlay: true,
+            });
 
             return (
               <div key={detail.betItemId} className="bg-[var(--Background-500)] rounded-6px">
@@ -130,7 +138,7 @@ const OrdersPanelParlay = () => {
                     <div className="_tf[12] leading-[1.33] text-[var(--Text-Main-10)]">
                       {detail.isLive && <span className="mr-2px">滚球</span>}
                       <span className="">{detail.playName}</span>
-                      <span className="ml-2px text-[var(--Text-800)]">[欧洲盘]</span>
+                      <span className="ml-2px text-[var(--Text-800)]">[{oddsDisplay.label}]</span>
                     </div>
 
                     {/* 第二行：投注项名称 + 赔率 */}
@@ -146,7 +154,7 @@ const OrdersPanelParlay = () => {
                       </div>
                       <div>
                         <span>@</span>
-                        <span>{bigNB(detail.baseOdds).toFixed(2)}</span>
+                        <span>{oddsDisplay.odds}</span>
                       </div>
                     </div>
                   </div>

@@ -18,6 +18,16 @@ import { cancelReserveBetFb } from '@/apis/fbSports/betHistory/cancelReserveBetF
 import { toast } from '@/common/components/Toast';
 import { useQueryHook } from '@/core/query';
 import { getListReq } from '@/apis/fbSports/getList';
+import { orderBetListOb } from '@/apis/obSports/betHistory/orderBetListOb';
+import { reserveBetListOb } from '@/apis/obSports/betHistory/reserveBetListOb';
+import { cancelPreBetOrderOb } from '@/apis/obSports/betHistory/cancelPreBetOrderOb';
+import {
+  formatBetHistoryParamsOb,
+  formatBetHistoryParamsReserveOb,
+  formatBetHistoryRespOb,
+  formatBetHistoryRespReserveOb,
+} from '@/apis/obSports/common/obBetHistoryFormat';
+import { getListByMidsReq } from '@/apis/obSports/getList';
 import { EBetHistoryType } from './constants';
 
 // ─── 公共类型 ──────────────────────────────────────────────────────────────────
@@ -59,6 +69,14 @@ const fetchBetPage = async (
       }
       const res = await orderBetListFb(formatBetHistoryParamsFb({ ...params, pageNum }));
       return formatBetHistoryRespFb({ data: res.data });
+    }
+    if (venue === EVenue.OB) {
+      if (isReserveQuery(params.queryType)) {
+        const res = await reserveBetListOb(formatBetHistoryParamsReserveOb(params, pageNum));
+        return formatBetHistoryRespReserveOb({ data: res.data, params, pageNum });
+      }
+      const res = await orderBetListOb(formatBetHistoryParamsOb(params, pageNum));
+      return formatBetHistoryRespOb({ data: res.data, params, pageNum });
     }
     return null;
   } catch (error) {
@@ -149,6 +167,11 @@ export const useCancelReserveBet = () => {
           const res = await cancelReserveBetFb({ reserveId });
           success = res.data;
         }
+        if (activeVenue === EVenue.OB) {
+          // OB 接口无返回体，未抛异常即成功
+          await cancelPreBetOrderOb({ orderNo: reserveId });
+          success = true;
+        }
         if (success) {
           toast({ title: '取消预约成功', type: 'success' });
           queryClient.invalidateQueries({ queryKey: ['betHistorylist'] });
@@ -168,7 +191,7 @@ export const useCancelReserveBet = () => {
 // ─── useGetListByMatchIds ──────────────────────────────────────────────────────
 
 /** 注单历史页面，未结算 tab，通过 matchIds 获取比赛进度信息 */
-export const useGetListByMatchIds = (params: { venue: EVenue; ids: number[] }) => {
+export const useGetListByMatchIds = (params: { venue: EVenue; ids: string[] }) => {
   return useQueryHook({
     queryKey: ['useGetListByMatchIds', params],
     queryFn: async () => {
@@ -176,6 +199,10 @@ export const useGetListByMatchIds = (params: { venue: EVenue; ids: number[] }) =
       try {
         if (params.venue === EVenue.FB) {
           const list = await getListReq({ matchIds: params.ids, size: 999 });
+          return list.data;
+        }
+        if (params.venue === EVenue.OB) {
+          const list = await getListByMidsReq({ mids: params.ids.join(',') });
           return list.data;
         }
         return [];

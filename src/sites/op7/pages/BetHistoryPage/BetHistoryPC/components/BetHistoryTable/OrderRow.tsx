@@ -19,7 +19,13 @@ import { UnsettledStatusCell, SettledResultCell, ReserveStatusCell } from './Sta
 import { useBetHistoryContext } from '@/common/hooks/betHistory/context/BetHistoryContext';
 import Timing from '@/common/components/Timing';
 import clsx from 'clsx';
-import { calcEarlySettleStats, getEarlySettleDetailItems } from '@/utils/betHistory';
+import {
+  calcEarlySettleStats,
+  canGoBetMatchDetail,
+  getEarlySettleDetailItems,
+  getOrderDisplayOdds,
+  getOrderOddsFormatLabel,
+} from '@/utils/betHistory';
 
 const tdClass = 'px-12px py-12px align-middle';
 
@@ -45,11 +51,10 @@ const LiveStageInfo = ({ match }: { match: MatchBaseInfo }) => {
 };
 
 const MatchCell = ({ detail, order }: { detail: THistoryBetItem; order: TBetHistoryOrderItem }) => {
-  const { liveMatchMap, tryGoMatchDetail, checkingMatchId } = useBetHistoryContext();
+  const { activeVenue, liveMatchMap, tryGoMatchDetail, checkingMatchId } = useBetHistoryContext();
   const canShowLive = !order.isSettledOrder && detail.isLive && !detail.isChampion;
   const liveMatch = canShowLive ? liveMatchMap[detail.matchId] : undefined;
-  const canGoMatchDetail =
-    (order.isPreBetOrder || order.isUnsettledOrder) && Number(detail.matchId) > 0;
+  const canGoMatchDetail = canGoBetMatchDetail({ order, detail, venue: activeVenue });
   const isChecking = checkingMatchId === detail.matchId;
 
   const handleMatchDetailClick = () => {
@@ -133,7 +138,8 @@ const renderSpanContent = (
           <p>
             {order.isParlayOrder ? `串关 ${order.orderLabel}×${order.orderSum}` : order.orderLabel}
           </p>
-          <p>欧洲盘</p>
+          {/* 注单下单时的盘口（欧洲盘/香港盘/…），未下发按欧洲盘兜底 */}
+          <p>{getOrderOddsFormatLabel(order)}</p>
         </>
       );
     case EColTitle.BET_AMOUNT:
@@ -192,7 +198,10 @@ const renderPerLegContent = (col: ColDef, detail: THistoryBetItem, order: TBetHi
             <span>{detail.betItemFullName}</span>
 
             <p className="inline ml-8px text-[var(--ThemeColor-Main)]">
-              @<span className="din-pro font-medium">{bigNB(detail.baseOdds).toFixed(2)}</span>
+              @
+              <span className="din-pro font-medium">
+                {getOrderDisplayOdds(detail.baseOdds, detail)}
+              </span>
             </p>
           </div>
         </div>

@@ -179,7 +179,9 @@ export const ReserveStatusCell = ({ order }: { order: TBetHistoryOrderItem }) =>
   const { openReserveEditOrder, closeReserveEditOrder, openCancelReserveBetConfirm } =
     useBetHistoryMethods();
 
-  const isReserveEditing = reserveEdit?.orderId === order.orderId;
+  // 目前仅 FB 支持修改预约注单，OB（EB）只保留取消（对齐 App）
+  const canEditReserve = activeVenue === EVenue.FB;
+  const isReserveEditing = canEditReserve && reserveEdit?.orderId === order.orderId;
 
   const handleCancelClick = () => {
     if (isReserveEditing) {
@@ -201,35 +203,37 @@ export const ReserveStatusCell = ({ order }: { order: TBetHistoryOrderItem }) =>
         >
           取消
         </Button>
-        <Popover
-          visible={isReserveEditing}
-          content={
-            isReserveEditing && reserveEdit ? (
-              <ReserveEditPopoverContent
-                order={order}
-                reserveEdit={reserveEdit}
-                activeVenue={activeVenue}
-              />
-            ) : null
-          }
-          placement="bottom-end"
-          onVisibleChange={(v) => {
-            if (!v && isReserveEditing) closeReserveEditOrder({ venue: activeVenue });
-          }}
-          className={clsx(
-            '[--arrow-size:0px] [--z-index:var(--z-bet-history-popover)]',
-            'bet-history-table-popover',
-          )}
-        >
-          <Button
-            className="text-nowrap rounded-[4px]"
-            size="small"
-            disabled={!!reserveEdit}
-            onClick={() => openReserveEditOrder({ venue: activeVenue, order })}
+        {canEditReserve && (
+          <Popover
+            visible={isReserveEditing}
+            content={
+              isReserveEditing && reserveEdit ? (
+                <ReserveEditPopoverContent
+                  order={order}
+                  reserveEdit={reserveEdit}
+                  activeVenue={activeVenue}
+                />
+              ) : null
+            }
+            placement="bottom-end"
+            onVisibleChange={(v) => {
+              if (!v && isReserveEditing) closeReserveEditOrder({ venue: activeVenue });
+            }}
+            className={clsx(
+              '[--arrow-size:0px] [--z-index:var(--z-bet-history-popover)]',
+              'bet-history-table-popover',
+            )}
           >
-            修改
-          </Button>
-        </Popover>
+            <Button
+              className="text-nowrap rounded-[4px]"
+              size="small"
+              disabled={!!reserveEdit}
+              onClick={() => openReserveEditOrder({ venue: activeVenue, order })}
+            >
+              修改
+            </Button>
+          </Popover>
+        )}
       </div>
     );
   }
@@ -468,6 +472,7 @@ const ReserveSettlePopoverContent = ({
 const EarlySettleButtons = ({ order }: { order: TBetHistoryOrderItem }) => {
   const {
     activeTab,
+    activeVenue,
     EarlySettleConfigMap,
     earlySettleMaxCount,
     earlySettleMap,
@@ -509,6 +514,8 @@ const EarlySettleButtons = ({ order }: { order: TBetHistoryOrderItem }) => {
     order.supportEarlySettle &&
     earlySettleConfig?.cashOutRate &&
     earlySettleCount < earlySettleMaxCount;
+  // OB（EB 体育）只有全额提前结算，没有预约提前结算（对齐 App）
+  const showReserveEarlySettle = activeVenue === EVenue.FB;
 
   // 金额面板显隐统一由各自 entry 的 showPanel 控制（与 step 解耦）：
   // 贯穿 selecting/confirming/submitting，使确认弹窗弹出/提交 loading 期间面板不隐藏；仅关闭或提交成功移除 entry 时消失。
@@ -601,62 +608,64 @@ const EarlySettleButtons = ({ order }: { order: TBetHistoryOrderItem }) => {
       </Popover>
 
       {/* 预约 / 返回 */}
-      <Popover
-        visible={showReserveSlider}
-        content={
-          showReserveSlider ? (
-            <ReserveSettlePopoverContent
-              order={order}
-              canAdjustReserveStake={canAdjustReserveStake}
-              reserveMinStake={reserveMinStake}
-              maxStake={maxStake}
-              reserveStakeRange={reserveStakeRange}
-              reserveStakePercent={reserveStakePercent}
-              reserveStakeNum={reserveStakeNum}
-              reserveMinPayout={reserveMinPayout}
-              reserveMaxPayout={reserveMaxPayout}
-              reservePayoutRange={reservePayoutRange}
-              reservePayoutPercent={reservePayoutPercent}
-              reservePayoutNum={reservePayoutNum}
-            />
-          ) : null
-        }
-        placement="bottom-end"
-        onVisibleChange={(v) => {
-          // viewing/selecting/editing 阶段允许点外部关闭；confirming/submitting 由二次确认弹窗接管
-          const closeable =
-            reserveEntry?.step === 'selecting' ||
-            reserveEntry?.step === 'editing' ||
-            reserveEntry?.step === 'viewing';
-          if (!v && closeable) closeReserveEarlySettleSheet(order.orderId);
-        }}
-        className="[--arrow-size:0px] [--z-index:var(--z-bet-history-popover)] bet-history-table-popover"
-      >
-        {isPopoverOpen ? (
-          <Button
-            type="primary"
-            size="small"
-            className="rounded-[4px] h-[32px]"
-            onClick={() =>
-              showEarlySettleSlider
-                ? closeEarlySettle(order.orderId)
-                : closeReserveEarlySettleSheet(order.orderId)
-            }
-          >
-            返回
-          </Button>
-        ) : (
-          <Button
-            type="outline"
-            size="small"
-            className="rounded-[4px] w-[54px] px-[1px]  h-[32px]"
-            disabled={isEarlySettleDisabled}
-            onClick={() => openReserveEarlySettleSheet(order.orderId)}
-          >
-            {activeReserveEarlySettle ? '预约中' : '预约'}
-          </Button>
-        )}
-      </Popover>
+      {showReserveEarlySettle && (
+        <Popover
+          visible={showReserveSlider}
+          content={
+            showReserveSlider ? (
+              <ReserveSettlePopoverContent
+                order={order}
+                canAdjustReserveStake={canAdjustReserveStake}
+                reserveMinStake={reserveMinStake}
+                maxStake={maxStake}
+                reserveStakeRange={reserveStakeRange}
+                reserveStakePercent={reserveStakePercent}
+                reserveStakeNum={reserveStakeNum}
+                reserveMinPayout={reserveMinPayout}
+                reserveMaxPayout={reserveMaxPayout}
+                reservePayoutRange={reservePayoutRange}
+                reservePayoutPercent={reservePayoutPercent}
+                reservePayoutNum={reservePayoutNum}
+              />
+            ) : null
+          }
+          placement="bottom-end"
+          onVisibleChange={(v) => {
+            // viewing/selecting/editing 阶段允许点外部关闭；confirming/submitting 由二次确认弹窗接管
+            const closeable =
+              reserveEntry?.step === 'selecting' ||
+              reserveEntry?.step === 'editing' ||
+              reserveEntry?.step === 'viewing';
+            if (!v && closeable) closeReserveEarlySettleSheet(order.orderId);
+          }}
+          className="[--arrow-size:0px] [--z-index:var(--z-bet-history-popover)] bet-history-table-popover"
+        >
+          {isPopoverOpen ? (
+            <Button
+              type="primary"
+              size="small"
+              className="rounded-[4px] h-[32px]"
+              onClick={() =>
+                showEarlySettleSlider
+                  ? closeEarlySettle(order.orderId)
+                  : closeReserveEarlySettleSheet(order.orderId)
+              }
+            >
+              返回
+            </Button>
+          ) : (
+            <Button
+              type="outline"
+              size="small"
+              className="rounded-[4px] w-[54px] px-[1px]  h-[32px]"
+              disabled={isEarlySettleDisabled}
+              onClick={() => openReserveEarlySettleSheet(order.orderId)}
+            >
+              {activeReserveEarlySettle ? '预约中' : '预约'}
+            </Button>
+          )}
+        </Popover>
+      )}
     </div>
   );
 };

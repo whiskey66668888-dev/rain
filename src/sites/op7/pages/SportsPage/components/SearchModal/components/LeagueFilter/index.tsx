@@ -1,5 +1,6 @@
 import { LeagueGroup, LeagueItem } from '@/apis/fbSports/common/types';
-import { useGetLeaguesQuery } from '@/apis/fbSports/getLeagues';
+import { EVenue } from '@/apis/commonSports/constants';
+import { useVenueService } from '@/apis/commonSports';
 import Skeleton from '@/common/components/Skeleton';
 import Empty from '@/common/components/Empty';
 import LazyImage from '@/common/components/LazyImage';
@@ -12,151 +13,150 @@ import styles from './index.module.scss';
 import CheckBox from '@/common/components/CheckBox';
 import { useEffect, useMemo, useState } from 'react';
 
+const HOT_LEAGUE_GROUP_NAME = '热门联赛';
+
+type LeagueId = number | string;
+
+const sameLeagueId = (a: LeagueId, b: LeagueId) => String(a) === String(b);
+
+/** 按搜索文案过滤分组（地区名命中则整组保留） */
+function filterGroupsBySearch(groups: LeagueGroup[], searchText: string): LeagueGroup[] {
+  if (!searchText) return groups;
+
+  const result: LeagueGroup[] = [];
+  for (const leagueGroup of groups) {
+    if (leagueGroup.name.includes(searchText)) {
+      result.push(leagueGroup);
+      continue;
+    }
+    const itemList = leagueGroup.list.filter((obj) => obj.name.includes(searchText));
+    if (itemList.length) {
+      result.push({ ...leagueGroup, list: itemList });
+    }
+  }
+  return result;
+}
+
+/** FB：从 hot 标记重建「热门联赛」组并按拼音排序（OB 接口已含热门组，勿走此逻辑） */
+function buildFbDisplayGroups(groups: LeagueGroup[]): LeagueGroup[] {
+  const hotLeagueList = groups.flatMap((leagueGroup) =>
+    leagueGroup.list.filter((league) => league.hot),
+  );
+  const hotGroupList: LeagueGroup[] = hotLeagueList.length
+    ? [
+        {
+          spell: '热',
+          name: HOT_LEAGUE_GROUP_NAME,
+          isCollapsed: false,
+          list: Array.from(
+            new Map(hotLeagueList.map((league) => [String(league.id), league])).values(),
+          ),
+        },
+      ]
+    : [];
+
+  const sortedGroupList = [...groups].sort((a, b) => {
+    if (a.spell < b.spell) return -1;
+    if (a.spell > b.spell) return 1;
+    return 0;
+  });
+
+  return [...hotGroupList, ...sortedGroupList];
+}
+
 const LeagueFilter: React.FC<{
   sportId: number;
   /** 与列表已生效的筛选同步，用于再次打开弹窗时恢复勾选高亮 */
-  initialSelectedLeagueIds?: number[];
-  onLeagueFilter: (sportId: number, leagueIds: number[], text?: string) => void;
+  initialSelectedLeagueIds?: LeagueId[];
+  onLeagueFilter: (sportId: number, leagueIds: LeagueId[], text?: string) => void;
   defaultText?: string;
   changeText?: (val: string) => void;
 }> = ({ sportId, initialSelectedLeagueIds, onLeagueFilter, defaultText, changeText }) => {
-  const hotLeagueGroupName = '热门联赛';
   const [collapseList, setCollapseList] = useState<string[]>([]);
-  const [selectedList, setSelectedList] = useState<number[]>(() => [
+  const [selectedList, setSelectedList] = useState<LeagueId[]>(() => [
     ...(initialSelectedLeagueIds ?? []),
   ]);
   const [searchText, setSearchText] = useState<string>(defaultText ?? '');
 
-  const syncedLeagueIdsKey = [...(initialSelectedLeagueIds ?? [])].sort((a, b) => a - b).join(',');
+  const syncedLeagueIdsKey = [...(initialSelectedLeagueIds ?? [])].map(String).sort().join(',');
   useEffect(() => {
     setSelectedList([...(initialSelectedLeagueIds ?? [])]);
     // syncedLeagueIdsKey：按联赛 id 集合变化同步，忽略 Redux 数组引用更替
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [syncedLeagueIdsKey]);
+
+  const venue = useAppSelector((state) => state.sport.venue);
   const { playTypeId } = useAppSelector((state) => state.sport.mainList.settings);
-  const { data, isLoading } = useGetLeaguesQuery({ type: playTypeId ?? 0, sportId });
+  const { useGetLeaguesQuery } = useVenueService();
+  const isOb = venue === EVenue.OB;
+  const leagueParams = { type: playTypeId ?? 0, sportId };
+
+  const { data, isLoading } = useGetLeaguesQuery(leagueParams);
 
   const leagueGroupList: LeagueGroup[] | undefined = data;
+  const selectedSet = useMemo(() => new Set(selectedList.map(String)), [selectedList]);
 
   const filterList = useMemo(() => {
     if (leagueGroupList === undefined) return [];
 
-    let groupList: LeagueGroup[] = [];
-    if (!searchText) {
-      groupList = [...leagueGroupList];
-    } else {
-      leagueGroupList.forEach((leagueGroup) => {
-        if (leagueGroup.name.includes(searchText)) {
-          groupList.push(leagueGroup);
-          return;
-        }
+    const searched = filterGroupsBySearch(leagueGroupList, searchText);
+    // OB：接口已返回热门分组（spell=热）并排序；FB：本地拼热门组
+    const displayGroups = isOb ? searched : buildFbDisplayGroups(searched);
 
-        const itemList: LeagueItem[] = leagueGroup.list.filter((obj) =>
-          obj.name.includes(searchText),
-        );
-        if (itemList.length) {
-          groupList.push({
-            ...leagueGroup,
-            list: itemList,
-          });
-        }
-      });
-    }
-
-    const hotLeagueList = groupList.flatMap((leagueGroup) =>
-      leagueGroup.list.filter((league) => league.hot),
-    );
-    const hotGroupList: LeagueGroup[] = hotLeagueList.length
-      ? [
-          {
-            spell: '热',
-            name: hotLeagueGroupName,
-            isCollapsed: false,
-            list: Array.from(new Map(hotLeagueList.map((league) => [league.id, league])).values()),
-          },
-        ]
-      : [];
-
-    const sortedGroupList = [...groupList].sort((a, b) => {
-      if (a.spell < b.spell) {
-        return -1;
-      }
-      if (a.spell > b.spell) {
-        return 1;
-      }
-      return 0;
-    });
-
-    return [...hotGroupList, ...sortedGroupList].map((obj) => ({
+    return displayGroups.map((obj) => ({
       ...obj,
       isCollapsed: collapseList.includes(obj.name),
     }));
-  }, [searchText, collapseList, leagueGroupList, hotLeagueGroupName]);
+  }, [searchText, collapseList, leagueGroupList, isOb]);
 
   const indexList = useMemo(() => {
     const groupList: { index: string; list: LeagueGroup[] }[] = [];
 
-    filterList.forEach((leagueGroup) => {
-      const index = leagueGroup.name === hotLeagueGroupName ? '热' : leagueGroup.spell;
+    for (const leagueGroup of filterList) {
+      const index = leagueGroup.name === HOT_LEAGUE_GROUP_NAME ? '热' : leagueGroup.spell;
       const currentGroup = groupList.find((item) => item.index === index);
 
       if (currentGroup) {
         currentGroup.list.push(leagueGroup);
-        return;
+        continue;
       }
 
       groupList.push({
         index,
         list: [leagueGroup],
       });
-    });
+    }
 
     return groupList;
-  }, [filterList, hotLeagueGroupName]);
+  }, [filterList]);
 
   const onCollapse = (name: string) => {
-    if (collapseList.includes(name)) {
-      setCollapseList(collapseList.filter((obj) => obj !== name));
-      return;
-    }
-
-    setCollapseList([...collapseList, name]);
+    setCollapseList((prev) =>
+      prev.includes(name) ? prev.filter((obj) => obj !== name) : [...prev, name],
+    );
   };
 
-  const onLeagueCheckedChange = (id: number) => {
-    if (selectedList.includes(id)) {
-      setSelectedList(selectedList.filter((obj) => obj !== id));
-      return;
-    }
-
-    setSelectedList([...selectedList, id]);
+  const onLeagueCheckedChange = (id: LeagueId) => {
+    setSelectedList((prev) =>
+      prev.some((item) => sameLeagueId(item, id))
+        ? prev.filter((item) => !sameLeagueId(item, id))
+        : [...prev, id],
+    );
   };
 
   const onGroupCheckedChange = (isChecked: boolean, leagueGroup: LeagueGroup) => {
-    if (isChecked) {
-      const addList: number[] = [];
-      leagueGroup.list.forEach((league) => {
-        if (!selectedList.includes(league.id)) {
-          addList.push(league.id);
+    setSelectedList((prev) => {
+      const prevSet = new Set(prev.map(String));
+      if (isChecked) {
+        const next = [...prev];
+        for (const league of leagueGroup.list) {
+          if (!prevSet.has(String(league.id))) next.push(league.id);
         }
-      });
-
-      if (addList.length) {
-        setSelectedList([...selectedList, ...addList]);
+        return next;
       }
-      return;
-    }
-
-    const removeList: number[] = [];
-    leagueGroup.list.forEach((league) => {
-      if (selectedList.includes(league.id)) {
-        removeList.push(league.id);
-      }
+      const removeSet = new Set(leagueGroup.list.map((league) => String(league.id)));
+      return prev.filter((id) => !removeSet.has(String(id)));
     });
-
-    if (removeList.length) {
-      setSelectedList(selectedList.filter((obj) => !removeList.includes(obj)));
-    }
   };
 
   const onChangeSelectedAll = (isChecked: boolean) => {
@@ -165,56 +165,39 @@ const LeagueFilter: React.FC<{
       return;
     }
 
-    const list = new Set<number>();
-    filterList.forEach((leagueGroup) => {
-      leagueGroup.list.forEach((league) => {
-        list.add(league.id);
-      });
-    });
-
-    setSelectedList([...list]);
+    const list = new Map<string, LeagueId>();
+    for (const leagueGroup of filterList) {
+      for (const league of leagueGroup.list) {
+        list.set(String(league.id), league.id);
+      }
+    }
+    setSelectedList([...list.values()]);
   };
 
   const checkIsGroup = (leagueGroup: LeagueGroup) => {
-    let result = true;
-    leagueGroup.list.forEach((league) => {
-      if (!selectedList.includes(league.id)) {
-        result = false;
-      }
-    });
-
-    return result;
+    if (!leagueGroup.list.length) return false;
+    return leagueGroup.list.every((league) => selectedSet.has(String(league.id)));
   };
 
   const isCheckedAll = useMemo(() => {
     if (filterList.length === 0) return false;
-
-    let selectAll = true;
-    filterList.forEach((leagueGroup) => {
-      leagueGroup.list.forEach((league) => {
-        if (!selectedList.includes(league.id)) {
-          selectAll = false;
-        }
-      });
-    });
-
-    return selectAll;
-  }, [filterList, selectedList]);
+    for (const leagueGroup of filterList) {
+      for (const league of leagueGroup.list) {
+        if (!selectedSet.has(String(league.id))) return false;
+      }
+    }
+    return true;
+  }, [filterList, selectedSet]);
 
   const isAllChecked = useMemo(() => {
     if (leagueGroupList === undefined) return true;
-
-    let selectAll = true;
-    leagueGroupList.forEach((leagueGroup) => {
-      leagueGroup.list.forEach((league) => {
-        if (!selectedList.includes(league.id)) {
-          selectAll = false;
-        }
-      });
-    });
-
-    return selectAll;
-  }, [leagueGroupList, selectedList]);
+    for (const leagueGroup of leagueGroupList) {
+      for (const league of leagueGroup.list) {
+        if (!selectedSet.has(String(league.id))) return false;
+      }
+    }
+    return true;
+  }, [leagueGroupList, selectedSet]);
 
   const onChangeText = (val: string) => {
     setSearchText(val);
@@ -222,7 +205,8 @@ const LeagueFilter: React.FC<{
   };
 
   const onSubmit = () => {
-    const leagueIds = isAllChecked ? [] : [...selectedList];
+    // OB 对齐 Flutter：始终提交勾选 id（含全选）；FB 全选传 [] 表示不筛选
+    const leagueIds = isOb ? [...selectedList] : isAllChecked ? [] : [...selectedList];
     onLeagueFilter(sportId, leagueIds, searchText);
   };
 
@@ -259,8 +243,8 @@ const LeagueFilter: React.FC<{
         </div>
 
         <div className={`${styles.leagueList} ${item.isCollapsed ? styles.hide : ''}`}>
-          {item.list.map((league) => {
-            const isChecked = selectedList.includes(league.id);
+          {item.list.map((league: LeagueItem) => {
+            const isChecked = selectedSet.has(String(league.id));
 
             return (
               <div
@@ -273,7 +257,6 @@ const LeagueFilter: React.FC<{
                   <span>{league.name}</span>
                 </div>
                 <div className={styles.right}>
-                  {/* <span className={styles.leagueCount}>({league.mt})</span> */}
                   {!isChecked ? (
                     <span className={styles.selectionIcon} />
                   ) : (

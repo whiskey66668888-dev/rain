@@ -7,7 +7,7 @@ import type {
   THistoryBetItem,
 } from '@/apis/commonSports/types';
 import Timing from '@/common/components/Timing';
-import { EBetHistoryTab, EBetOrderStatus } from '@/apis/commonSports/constants';
+import { EBetHistoryTab, EBetOrderStatus, EVenue } from '@/apis/commonSports/constants';
 import {
   ArrowRightSvg,
   BetConfirmingSvg,
@@ -30,6 +30,10 @@ import {
   calcEarlySettleStats,
   calcReserveSliderValues,
   calcReserveStepState,
+  canGoBetMatchDetail,
+  getEarlySettleDetailItems,
+  getOrderDisplayOdds,
+  getOrderOddsFormatLabel,
 } from '@/utils/betHistory';
 
 interface Props {
@@ -65,11 +69,10 @@ const MatchDetailBlock = ({
   order: TBetHistoryOrderItem;
   detail: THistoryBetItem;
 }) => {
-  const { liveMatchMap, tryGoMatchDetail } = useBetHistoryContext();
+  const { activeVenue, liveMatchMap, tryGoMatchDetail } = useBetHistoryContext();
   const canShowLive = !order.isSettledOrder && detail.isLive && !detail.isChampion;
   const liveMatch = canShowLive ? liveMatchMap[detail.matchId] : undefined;
-  const canGoMatchDetail =
-    (order.isPreBetOrder || order.isUnsettledOrder) && Number(detail.matchId) > 0;
+  const canGoMatchDetail = canGoBetMatchDetail({ order, detail, venue: activeVenue });
 
   const handleMatchDetailClick = () => {
     if (!canGoMatchDetail) return;
@@ -107,7 +110,10 @@ const MatchDetailBlock = ({
               {detail.scoreWhileBetting && (
                 <span className="ml-2px">({detail.scoreWhileBetting})</span>
               )}
-              <span className="ml-2px text-[var(--Text-800)]">[欧洲盘]</span>
+              {/* 注单下单时的盘口（欧洲盘/香港盘/…），未下发按欧洲盘兜底 */}
+              <span className="ml-2px text-[var(--Text-800)]">
+                [{getOrderOddsFormatLabel(detail)}]
+              </span>
             </p>
           </div>
           <div className="_tf[12] leading-[1.33] font-medium text-[var(--Text-Main-10)] flex justify-between gap-8px">
@@ -120,7 +126,7 @@ const MatchDetailBlock = ({
               )}
             >
               <span>@</span>
-              <span className="din-pro">{bigNB(detail.baseOdds).toFixed(2)}</span>
+              <span className="din-pro">{getOrderDisplayOdds(detail.baseOdds, detail)}</span>
             </p>
           </div>
           {liveMatch && <LiveStageInfo match={liveMatch} />}
@@ -165,7 +171,9 @@ const SidebarBetCard = ({ order }: Props) => {
     openCancelReserveBetConfirm,
   } = useBetHistoryMethods();
 
-  const isReserveEditing = reserveEdit?.orderId === order.orderId;
+  // 目前仅 FB 支持修改预约注单，OB（EB）只保留取消（对齐 App）
+  const canEditReserve = activeVenue === EVenue.FB;
+  const isReserveEditing = canEditReserve && reserveEdit?.orderId === order.orderId;
   const firstDetail = order.orderDetails[0];
 
   // #region 提前结算
@@ -175,16 +183,13 @@ const SidebarBetCard = ({ order }: Props) => {
   const isUnsettled = activeTab === EBetHistoryTab.UNSETTLED;
   const activeReserveEarlySettle = order.reserveEarlySettles?.find((r) => r.status === 1);
 
+  const earlyStats = calcEarlySettleStats(order, earlySettleMaxCount);
   const {
-    history: _earlySettleHistory,
     count: earlySettleCount,
-    usedStake,
-    earlyPayout,
     remainingStake: maxStake,
     hasPartialEarlySettle,
     remainingPayable,
-    remainingCount: remainingEarlySettleCount,
-  } = calcEarlySettleStats(order, earlySettleMaxCount);
+  } = earlyStats;
   const minStake = order.isParlayOrder
     ? (earlySettleConfig?.parlayMinStake ?? 0)
     : (earlySettleConfig?.singleMinStake ?? 0);
@@ -206,6 +211,8 @@ const SidebarBetCard = ({ order }: Props) => {
     order.supportEarlySettle &&
     earlySettleConfig?.cashOutRate &&
     earlySettleCount < earlySettleMaxCount;
+  // OB（EB 体育）只有全额提前结算，没有预约提前结算（对齐 App）
+  const showReserveEarlySettle = activeVenue === EVenue.FB;
   // 金额面板显隐统一由各自 entry 的 showPanel 控制（与 step 解耦）：
   // 贯穿 selecting/confirming/submitting，使确认弹窗弹出/提交 loading 期间面板不隐藏；仅关闭或提交成功移除 entry 时消失。
   // per-order，PC 支持多个注单同时展开
@@ -248,7 +255,7 @@ const SidebarBetCard = ({ order }: Props) => {
     if (order.isParlayOrder) {
       return (
         <p className="_tf[12] font-medium leading-[1.33] text-[var(--Text-Main-10)]">
-          @<span className="din-pro">{bigNB(order.orderOdds).toFixed(2)}</span>
+          @<span className="din-pro">{getOrderDisplayOdds(order.orderOdds, order)}</span>
         </p>
       );
     }
@@ -382,30 +389,14 @@ const SidebarBetCard = ({ order }: Props) => {
               </button>
               {showEarlySettleDetail && (
                 <div className="flex flex-col gap-4px mt-4px pb-8px border-b-solid border-b-0.5px border-color-[var(--Line-200)]">
-                  <div className="flex justify-between">
-                    <span className="text-[var(--Text-800)]">提前结算本金</span>
-                    <span className="font-medium din-pro text-[var(--ThemeColor-Main)]">
-                      {bigNB(usedStake).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--Text-800)]">提前结算返还</span>
-                    <span className="font-medium din-pro text-[var(--ThemeColor-Main)]">
-                      {bigNB(earlyPayout).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--Text-800)]">剩余提前结算次数</span>
-                    <span className="font-medium din-pro text-[var(--ThemeColor-Main)]">
-                      {remainingEarlySettleCount}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--Text-800)]">初始本金</span>
-                    <span className="font-medium din-pro text-[var(--ThemeColor-Main)]">
-                      {bigNB(+order.orderBetAmount).toFixed(2)}
-                    </span>
-                  </div>
+                  {getEarlySettleDetailItems(order, earlyStats).map(({ label, value }) => (
+                    <div key={label} className="flex justify-between">
+                      <span className="text-[var(--Text-800)]">{label}</span>
+                      <span className="font-medium din-pro text-[var(--ThemeColor-Main)]">
+                        {value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -444,28 +435,29 @@ const SidebarBetCard = ({ order }: Props) => {
                     </>
                   )}
                 </Button>
-                {showEarlySettleSlider || showReserveSlider ? (
-                  <Button
-                    size="small"
-                    className="w-[44px] h-[28px] rounded-[4px] px-[1px]"
-                    onClick={
-                      showEarlySettleSlider
-                        ? () => closeEarlySettle(order.orderId)
-                        : () => closeReserveEarlySettleSheet()
-                    }
-                  >
-                    返回
-                  </Button>
-                ) : (
-                  <Button
-                    size="small"
-                    className="w-[44px] h-[28px] rounded-[4px] px-[1px]"
-                    disabled={isEarlySettleDisabled}
-                    onClick={() => openReserveEarlySettleSheet(order.orderId)}
-                  >
-                    {activeReserveEarlySettle ? '预约中' : '预约'}
-                  </Button>
-                )}
+                {showReserveEarlySettle &&
+                  (showEarlySettleSlider || showReserveSlider ? (
+                    <Button
+                      size="small"
+                      className="w-[44px] h-[28px] rounded-[4px] px-[1px]"
+                      onClick={
+                        showEarlySettleSlider
+                          ? () => closeEarlySettle(order.orderId)
+                          : () => closeReserveEarlySettleSheet()
+                      }
+                    >
+                      返回
+                    </Button>
+                  ) : (
+                    <Button
+                      size="small"
+                      className="w-[44px] h-[28px] rounded-[4px] px-[1px]"
+                      disabled={isEarlySettleDisabled}
+                      onClick={() => openReserveEarlySettleSheet(order.orderId)}
+                    >
+                      {activeReserveEarlySettle ? '预约中' : '预约'}
+                    </Button>
+                  ))}
               </div>
 
               {/* 立即结算 — selecting 阶段：内联滑条 */}
@@ -752,19 +744,24 @@ const SidebarBetCard = ({ order }: Props) => {
                     <Button
                       type="third"
                       size="small"
-                      className="w-[56px] h-[30px] rounded-[4px] text-[var(--ThemeColor-Main)]"
+                      className={clsx(
+                        'h-[30px] rounded-[4px] text-[var(--ThemeColor-Main)]',
+                        canEditReserve ? 'w-[56px]' : 'flex-1',
+                      )}
                       onClick={handleCancelReserve}
                     >
                       取消
                     </Button>
-                    <Button
-                      type="primary"
-                      size="small"
-                      className="flex-1 h-[30px] rounded-[4px]"
-                      onClick={() => openReserveEditOrder({ venue: activeVenue, order })}
-                    >
-                      修改
-                    </Button>
+                    {canEditReserve && (
+                      <Button
+                        type="primary"
+                        size="small"
+                        className="flex-1 h-[30px] rounded-[4px]"
+                        onClick={() => openReserveEditOrder({ venue: activeVenue, order })}
+                      >
+                        修改
+                      </Button>
+                    )}
                   </>
                 )}
               </div>

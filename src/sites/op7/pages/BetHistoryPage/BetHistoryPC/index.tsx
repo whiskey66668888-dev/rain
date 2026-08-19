@@ -1,6 +1,5 @@
-import { usePopupChannel } from '@/common/hooks/popupWindows/usePopupChannel';
-import { EPopupWindowKey, getPopupChannelName } from '@/common/hooks/popupWindows/windowManager';
 import useBetHistory from '@/common/hooks/betHistory/useBetHistory';
+import { useBetHistoryPopupVenue } from '@/common/hooks/betHistory/useBetHistoryPopupVenue';
 import { BetHistoryContext } from '@/common/hooks/betHistory/context/BetHistoryContext';
 import { EBetHistoryType, tabListPC } from '@/common/hooks/betHistory/constants';
 import PageHeader from './components/PageHeader';
@@ -18,7 +17,8 @@ import ReserveEditConfirmModal from '../components/ReserveEditConfirmModal';
 import CancelReserveBetConfirmModal from '../components/CancelReserveBetConfirmModal';
 
 const BetHistoryPcPage = () => {
-  usePopupChannel(getPopupChannelName(EPopupWindowKey.BetHistory));
+  // URL ↔ 主窗口广播维持弹窗场馆一致（内部同时承担心跳应答）
+  useBetHistoryPopupVenue();
 
   const all = useBetHistory(EBetHistoryType.PC_PAGE);
   const { activeTab, activeVenue, changeActiveTab } = all;

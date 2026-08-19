@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { FBSportIdValue } from '@/apis/fbSports/common/constants';
+import { OBSportIdValue } from '@/apis/obSports/common/constants';
 import {
+  getDiscoverVenueType,
   useDiscoverChatConfigQuery,
   useDiscoverMatchTabsQuery,
   useDiscoverNmMatchIdQuery,
@@ -18,6 +20,8 @@ import {
 export interface UseDiscoverTabOptions {
   matchId: string;
   sportId?: number;
+  /** 场馆：决定 nm_match_id 的 type（1=OB 2=FB） */
+  venue?: string | null;
 }
 
 export interface UseDiscoverTabResult {
@@ -39,8 +43,18 @@ export interface UseDiscoverTabResult {
 
 const getDiscoverSportType = (sportId?: number): number | null => {
   const normalizedSportId = Number(sportId);
-  if (normalizedSportId === Number(FBSportIdValue.Football)) return 1;
-  if (normalizedSportId === Number(FBSportIdValue.Basketball)) return 2;
+  if (
+    normalizedSportId === Number(FBSportIdValue.Football) ||
+    normalizedSportId === Number(OBSportIdValue.Football)
+  ) {
+    return 1;
+  }
+  if (
+    normalizedSportId === Number(FBSportIdValue.Basketball) ||
+    normalizedSportId === Number(OBSportIdValue.Basketball)
+  ) {
+    return 2;
+  }
   return null;
 };
 
@@ -50,8 +64,10 @@ const getDiscoverSportType = (sportId?: number): number | null => {
 export const useDiscoverTab = ({
   matchId,
   sportId,
+  venue,
 }: UseDiscoverTabOptions): UseDiscoverTabResult => {
   const discoverSportType = getDiscoverSportType(sportId);
+  const discoverVenueType = getDiscoverVenueType(venue);
   const isSupportedSport = discoverSportType !== null && !!matchId;
   // 对齐 Flutter getSportType：全站只有一个公共聊天室，配置统一用足球 sport_type=1
   const chatConfigSportType = isSupportedSport ? 1 : null;
@@ -68,6 +84,7 @@ export const useDiscoverTab = ({
 
   const { data: resultMatchId, isLoading: isNmMatchIdLoading } = useDiscoverNmMatchIdQuery(
     matchId,
+    discoverVenueType,
     shouldFetchNmMatchId,
   );
 

@@ -19,6 +19,13 @@
     border-top-right-radius: 10px;
     justify-content: center;
     align-items: center;
+    transition:
+      background-color 0.18s ease,
+      color 0.18s ease,
+      transform 0.18s ease;
+    &:active {
+      transform: scale(0.98);
+    }
     & > span:first-of-type {
       font-family: 'DINPro';
     }

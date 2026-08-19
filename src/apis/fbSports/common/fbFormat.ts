@@ -87,6 +87,7 @@ import {
   EFbOutcome,
   EFbReserveOrderStatus,
   EFbSeriesType,
+  fbOddsFormatToOddsType,
 } from './constants/enum';
 import { EFbSelectionType } from './constants/selectionType';
 import { FB_LANGUAGE_TYPE } from '@/utils/constants/local';
@@ -602,7 +603,7 @@ export function formatFBSportItem(
     homeLogo: (teamList[0] && teamList[0]['lurl']) || '',
     awayName: teamList[1] && teamList[1]['na'],
     awayLogo: (teamList[1] && teamList[1]['lurl']) || '',
-    matchId: value['id'],
+    matchId: String(value['id']),
     matchNum: value['tms'] ?? 0,
     marketCount: value['tms'] ?? 0,
     matchDate: getFBTime(value['bt']),
@@ -1968,6 +1969,7 @@ export const formatBetHistoryRespFb = ({ data }: { data: TOrderBetListFbData }) 
             awayName: bItem.te?.[1]?.na ?? '',
             isLive: bItem.ip,
             isChampion: bItem.mtp === EFbMatchType.Outright,
+            // 注单已成交，展示值不需要再按当前盘口换算
             isSupportHK: false,
             canParlay: false,
             canPreBet: false,
@@ -1979,7 +1981,9 @@ export const formatBetHistoryRespFb = ({ data }: { data: TOrderBetListFbData }) 
             betItemFullName: bItem.onm,
             // 跟单/晒单匹配用 `${mrid}_${ty}`（对齐 Flutter playOptionsId）
             betItemId: `${bItem.mrid}_${bItem.ty}`,
+            // od 恒为欧赔（接口另有 bo 是按盘口展示的赔率，展示层自己换算，这里不用）
             baseOdds: bItem.od,
+            bettingOddsType: fbOddsFormatToOddsType(bItem.of),
             matchStartTime: bItem.bt,
             resultScore: bItem.rs || undefined,
             scoreWhileBetting: getScoreWhileBetting(bItem),
@@ -2043,6 +2047,7 @@ export const formatBetHistoryRespReserveFb = ({ data }: { data: TOrderReserveBet
             awayName: bItem.te?.[1]?.na ?? '',
             isLive: bItem.ip,
             isChampion: bItem.mtp === EFbMatchType.Outright,
+            // 预约赔率已按注单盘口下发，展示值不需要再换算
             isSupportHK: false,
             canParlay: false,
             canPreBet: false,
@@ -2053,13 +2058,16 @@ export const formatBetHistoryRespReserveFb = ({ data }: { data: TOrderReserveBet
             betItemShortName: bItem.on,
             betItemFullName: bItem.onm,
             betItemId: `${bItem.mrid}_${bItem.ty}`,
+            // od 恒为欧赔（接口另有 bo 是按盘口展示的赔率，展示层自己换算，这里不用）
             baseOdds: bItem.od,
+            bettingOddsType: fbOddsFormatToOddsType(bItem.of),
             oddsStatus: EOddsStatus.Open,
             matchStartTime: bItem.bt,
             fb: {
               mty: bItem.mty,
               pe: bItem.pe,
               ty: bItem.ty,
+              of: bItem.of,
             },
             orderSettleResult: EBetSettleResult.NoResulted,
           };
@@ -2169,7 +2177,7 @@ export function formatFBChampionItem(
     homeLogo: '',
     awayName: '',
     awayLogo: '',
-    matchId: value['id'],
+    matchId: String(value['id']),
     matchNum: value['tms'] ?? 0,
     marketCount: value['tms'] ?? 0,
     matchDate: getFBTime(value['bt']),

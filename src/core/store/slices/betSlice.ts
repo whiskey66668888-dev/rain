@@ -8,6 +8,7 @@ import {
   TBetItem,
   TbetData,
   TFbPreBetLimitMap,
+  TObPreBetLimit,
 } from '@/apis/commonSports/types';
 import { BET_DATA_KEY } from '@/utils/constants/cacheKey';
 
@@ -67,6 +68,8 @@ export type TVenueBetState = {
   expandedOrderIds: string[];
   /** fb 预约投注限额配置 */
   fbPreBetLimitMap: TFbPreBetLimitMap;
+  /** ob 预约投注限额（只针对当前开启预约的那个投注项） */
+  obPreBetLimit: TObPreBetLimit | null;
 };
 
 export type TBetStore = Record<EVenue, TVenueBetState>;
@@ -112,6 +115,7 @@ const venueInitialState: TVenueBetState = {
   betResultTips: [],
   expandedOrderIds: [],
   fbPreBetLimitMap: {},
+  obPreBetLimit: null,
 };
 
 type TStorageBetStore = Record<EVenue, TStorageVenueBetState>;
@@ -345,6 +349,15 @@ const betSlice = createSlice({
       const { venue, preBetLimitMap } = action.payload;
       const data = state[venue];
       data.fbPreBetLimitMap = preBetLimitMap;
+    },
+
+    /** 设置OB预约投注限额，传 null 表示清空 */
+    setObPreBetLimit: (
+      state,
+      action: PayloadAction<{ venue: EVenue; preBetLimit: TObPreBetLimit | null }>,
+    ) => {
+      const { venue, preBetLimit } = action.payload;
+      state[venue].obPreBetLimit = preBetLimit;
     },
     // #endregion
 
@@ -778,6 +791,7 @@ export const {
   setPreBetStatus,
   setPreBetOdds,
   setFbPreBetLimitMap,
+  setObPreBetLimit,
   setSingleFocusId,
   setSingleIndex,
   setDefaultAmount,

@@ -114,7 +114,6 @@ const IndexOddsHistorySheet: React.FC<Props> = ({
       // 对齐 App showLoading:false：轮询/静默刷新不清空列表、不展示骨架，避免弹窗闪烁
       if (!silent) {
         setLoading(true);
-        setList([]);
         setIsShowTime(false);
       }
       setPage(0);
@@ -127,7 +126,10 @@ const IndexOddsHistorySheet: React.FC<Props> = ({
           playType,
           page: 0,
         });
-        if (!res) return;
+        if (!res) {
+          // 请求失败时保留已有列表，避免只剩「初/赛前」空窗
+          return;
+        }
         setList(res.content);
         setNoMore(res.last || res.content.length === 0);
         setPage(res.number + 1);
