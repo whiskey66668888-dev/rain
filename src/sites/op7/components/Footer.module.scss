@@ -1,0 +1,11 @@
+@use '@/common/styles/mixins' as *;
+
+.licenseItem {
+  width: calc((100% - 16px) / 3);
+  min-width: 95px;
+  height: 48px;
+
+  @include rwd-min('lg') {
+    width: max(95px, calc((100% - (var(--license-columns) - 1) * 8px) / var(--license-columns)));
+  }
+}

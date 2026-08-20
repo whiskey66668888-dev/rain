@@ -23,6 +23,10 @@
     flex: none;
     background: var(--Background-300);
 
+    .clickableTitle {
+      cursor: pointer;
+    }
+
     .actions {
       position: absolute;
       right: 12px;
@@ -44,6 +48,8 @@
   }
 
   section {
+    min-height: 0;
+    max-height: 80vh;
     flex: 1;
     padding: 12px;
     display: flex;

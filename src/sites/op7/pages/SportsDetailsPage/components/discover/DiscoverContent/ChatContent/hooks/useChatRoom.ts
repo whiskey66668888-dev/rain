@@ -803,10 +803,12 @@ export const useChatRoom = ({
     [],
   );
 
+  const pendingMessagesRef = useRef(pendingMessages);
+  pendingMessagesRef.current = pendingMessages;
   const flushPendingMessages = useCallback(() => {
-    if (pendingMessages.length === 0) return;
+    if (pendingMessagesRef.current.length === 0) return;
     setPendingMessages([]);
-  }, [pendingMessages.length]);
+  }, []);
 
   return {
     chatConfig,

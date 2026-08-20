@@ -2,6 +2,7 @@
 import styles from './PromotionPage.module.scss';
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation, useOutlet } from 'react-router-dom';
+import clsx from 'clsx';
 
 import PrimaryTabs from './components/PrimaryTabs/PrimaryTabs';
 
@@ -68,7 +69,9 @@ const PromotionPage = () => {
   };
 
   return (
-    <div className={styles.promotionPage}>
+    <div
+      className={clsx(styles.promotionPage, lastSegment === 'hotEventApp' && styles.hotEventLayout)}
+    >
       {/* 一级 Tabs */}
       <div className={styles.tabs}>
         <PrimaryTabs tabs={primaryTabs} active={primaryTab} onChange={handlePrimaryChange} />

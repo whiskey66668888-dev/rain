@@ -27,6 +27,7 @@ export const PRIMARY_TABS: PrimaryTabItem[] = [
 ];
 
 export const PRIMARY_TABS_PC: PrimaryTabItem[] = [
+  { label: '热门', value: 'hotEventApp', path: PATHS.promotionHotEvent },
   { label: '赞助', value: 'sponsor', path: PATHS.promotionSponsor },
   { label: '优惠', value: 'discount', path: PATHS.promotionDiscount },
 ];

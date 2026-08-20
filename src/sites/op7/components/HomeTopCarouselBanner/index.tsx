@@ -11,6 +11,7 @@ import { getSystemTheme } from '@/utils';
 import { useNavigateWithLanguage } from '@/common/hooks/useNavigateWithLanguage';
 import { generatePath } from 'react-router-dom';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
+import styles from './index.module.scss';
 
 interface HomeTopCarouselBannerProps {
   className?: string;
@@ -104,9 +105,10 @@ const HomeTopCarouselBanner: React.FC<HomeTopCarouselBannerProps> = ({ className
       }
       itemWidth={351}
       gap={12}
+      itemClassName={styles.bannerItem}
       autoplayInterval={5000}
       showDots={false}
-      className={clsx('aspect-ratio-[374/186]', className)}
+      className={clsx(styles.responsiveBanner, className)}
     />
   );
 };

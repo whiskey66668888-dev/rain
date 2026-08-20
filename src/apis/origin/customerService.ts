@@ -45,10 +45,7 @@ export const getServiceInfoReq = (
 export const prefetchServiceInfo = (queryClient: QueryClient, belongingScene = 1): void => {
   queryClient.prefetchQuery({
     queryKey: [...SERVICE_INFO_QUERY_KEY, belongingScene],
-    queryFn: () =>
-      getServiceInfoReq(belongingScene)
-        .then((res) => res.data ?? {})
-        .catch(() => ({})),
+    queryFn: () => getServiceInfoReq(belongingScene).then((res) => res.data ?? {}),
     staleTime: 5 * 60 * 1000,
   });
 };
@@ -62,10 +59,7 @@ export const useServiceInfoQuery = (
 ): ReturnType<typeof useQueryHook<ServiceInfoResponse, Error>> =>
   useQueryHook<ServiceInfoResponse, Error>({
     queryKey: [...SERVICE_INFO_QUERY_KEY, belongingScene],
-    queryFn: () =>
-      getServiceInfoReq(belongingScene)
-        .then((res) => res.data ?? {})
-        .catch(() => ({})),
+    queryFn: () => getServiceInfoReq(belongingScene).then((res) => res.data ?? {}),
     staleTime: 5 * 60 * 1000,
     retry: false,
     enabled,

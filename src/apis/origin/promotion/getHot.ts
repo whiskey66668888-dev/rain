@@ -11,11 +11,22 @@ export interface HotEventItem {
   eventId: number;
   subIcon: string;
   subTitle: string;
-  imageUrl: string;
-  imageUrl2: string | null;
-  imageUrl3: string | null;
-  imageUrl4: string | null;
-  imageUrl5: string | null;
+  /** @deprecated 改用 h5ImgList / webImgList */
+  imageUrl?: string;
+  /** @deprecated 改用 h5ImgList / webImgList */
+  imageUrl2?: string | null;
+  /** @deprecated 改用 h5ImgList / webImgList */
+  imageUrl3?: string | null;
+  /** @deprecated 改用 h5ImgList / webImgList */
+  imageUrl4?: string | null;
+  /** @deprecated 改用 h5ImgList / webImgList */
+  imageUrl5?: string | null;
+  /** H5 端活动图列表 */
+  h5ImgList?: string[];
+  /** PC 端活动图列表 */
+  webImgList?: string[];
+  h5ImgBlackList?: string[];
+  webImgBlackList?: string[];
   subIconBlack: string | null;
   subBeginTime: number;
   subEndTime: number;

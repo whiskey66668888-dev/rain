@@ -1,18 +1,6 @@
-@use '@/common/styles/rwd' as *;
-
 .depositPage {
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px 12px 0;
-  }
-
-  @include rwd-min('lg') {
-    section {
-      background: var(--Background-300);
-      border-radius: 12px;
-      padding: 12px;
-    }
-  }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }

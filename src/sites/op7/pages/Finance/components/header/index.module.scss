@@ -13,6 +13,10 @@
   z-index: 10;
   color: var(--Text-Main-10);
 
+  .titleClickable {
+    cursor: pointer;
+  }
+
   .bnBack {
     position: absolute;
     left: 12px;

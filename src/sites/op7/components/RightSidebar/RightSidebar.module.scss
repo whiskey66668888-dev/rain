@@ -1,5 +1,5 @@
 .rightSidebarContainer {
-  @include rwd-min('lg') {
+  @include rwd-between('lg', 'xl') {
     position: fixed;
     inset: 0;
     background-color: var(--Black-60);
@@ -8,6 +8,16 @@
     flex-direction: column;
     align-items: end;
     width: 100%;
+    height: 100%;
+  }
+}
+
+.rightSidebarDocked {
+  @include rwd-min('lg') {
+    position: relative;
+    z-index: var(--z-right-sidebar);
+    display: flex;
+    flex-shrink: 0;
     height: 100%;
   }
 }

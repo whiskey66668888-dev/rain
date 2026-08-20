@@ -178,11 +178,7 @@ export const useGetSportRecommendQuery = (params: GetSportRecommendParams | null
   return useQueryHook<SportRecommendItemRaw[], Error>({
     queryKey: ['fb', 'sport', 'recommend', params?.matchId, params?.homeTeamCn, params?.awayTeamCn],
     queryFn: () =>
-      params
-        ? getSportRecommendReq(params)
-            .then((res) => res.data)
-            .catch(() => [])
-        : Promise.resolve([]),
+      params ? getSportRecommendReq(params).then((res) => res.data ?? []) : Promise.resolve([]),
     enabled: !!(
       params &&
       Number(params.matchId) > 0 &&

@@ -52,14 +52,15 @@ const ValueDeals: React.FC = () => {
       }
       viewAllText="全部"
       onViewAll={() => navigate(PATHS.promotionDiscount)}
-      className="mt-16px"
+      className="mt-16px px-12px"
+      listItemClassName="lg:w-[calc((100%-16px)/3)]"
       flushEndOnMobile
     >
       {DISCOUNT_IDS.map((id, idx) => (
         <button
           key={id}
           type="button"
-          className="aspect-[390/156] w-[calc(100vw-24px)] max-w-390px cursor-pointer overflow-hidden rounded-12px border-none bg-[var(--Background-100)] p-0 shadow-none lg:w-390px"
+          className="aspect-[390/156] w-[calc(100vw-24px)] cursor-pointer overflow-hidden rounded-12px border-none bg-[var(--Background-100)] p-0 shadow-none lg:w-full"
           onClick={() => handleTabClick(id)}
         >
           <ClientOnly

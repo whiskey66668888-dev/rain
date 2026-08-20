@@ -2,20 +2,29 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
   -webkit-overflow-scrolling: touch;
   height: 100%;
   @include rwd-min('lg') {
-    max-width: 1005px;
+    max-width: 1200px;
+    padding: 0 12px;
     margin: 0 auto;
-    overflow: visible;
+    overflow: hidden;
+    width: 100%;
+    flex-shrink: 0;
+    min-height: calc(100vh - 92px); // header 48 + 一级 tab 44
+    height: calc(100vh - 92px);
   }
   > div {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
     @include rwd-min('lg') {
+      display: flex;
+      flex-direction: column;
       flex: 1;
+      min-height: 0;
+      overflow: hidden;
     }
   }
   :global {
@@ -30,18 +39,27 @@
 
 .hotEventPage {
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
   padding: 8px 0 16px;
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: left center;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   position: relative;
   //   background-image: url(./images/default.png);
   transition: background 0.3s ease;
   @include rwd-min('lg') {
-    height: calc(100vh - 250px);
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    padding: 12px 0 12px;
+    > :first-child {
+      flex-shrink: 0;
+    }
   }
   .imgBox {
     position: absolute;
@@ -51,12 +69,36 @@
     // max-height: 100vh;
     @include rwd-min('lg') {
       position: static;
+      flex: 0 1 auto;
+      min-height: 0;
+
       width: 100%;
-      height: 200px;
-    }
-    .imgBg {
-      @include rwd-min('lg') {
-        max-height: 200px;
+      overflow: hidden;
+
+      .imgBg {
+        width: 100%;
+        height: auto;
+
+        :global {
+          .adm-swiper,
+          .adm-swiper-track,
+          .adm-swiper-track-inner,
+          .adm-swiper-slide,
+          .adm-swiper-item {
+            height: auto !important;
+          }
+        }
+
+        img {
+          width: 100%;
+          height: auto;
+
+          display: block;
+        }
+      }
+
+      .customIndicator {
+        bottom: 12px;
       }
     }
     .customIndicator {
@@ -105,6 +147,7 @@
   // }
   .commentWrap {
     flex: 1;
+    min-height: 0;
     // max-height: calc(100% - 48px);
     height: 120px;
     display: flex;
@@ -112,13 +155,17 @@
     justify-content: flex-end;
     padding: 0 10px;
     // position: relative;
-    z-index: 19;
+    z-index: 10;
     width: 100%;
     transition: all 0.5s;
     @include rwd-min('lg') {
+      flex: 1 1 0;
+      min-height: 0;
       padding: 0;
     }
     .comment {
+      display: flex;
+      flex-direction: column;
       transition: height 0.5s ease;
       height: 0px;
       background: var(--Background-300);
@@ -126,10 +173,11 @@
       border-radius: 12px;
       overflow: hidden;
       &.open {
-        overflow: visible;
+        overflow: hidden;
         height: 100%;
       }
       .commentTop {
+        flex-shrink: 0;
         border-radius: 12px 12px 0px 0px;
         border-bottom: 0.5px solid var(--Line-100);
         background: linear-gradient(var(--ThemeColor-90) 0%, var(--ThemeColor-10) 50%);
@@ -154,14 +202,16 @@
           transition: transform 0.3s ease;
           transform-origin: center center;
           margin-left: 4px;
-          transform: rotate(180deg);
+          transform: rotate(0); // 展开：朝上
           &.down {
-            transform: rotate(0);
+            transform: rotate(180deg); // 收起：朝下
           }
         }
       }
 
       .commontList {
+        flex: 1;
+        min-height: 0;
         height: calc(100% - 30px);
         border-radius: 0px 0px 12px 12px;
         background: var(--Background-300, #1e1e21);
@@ -213,12 +263,9 @@
             align-items: flex-start;
             padding-bottom: 13px;
             padding: 12px;
-            &:first-child {
+            &.isTop {
               background: var(--ThemeColor-90);
             }
-            // &.isTop {
-            //   background: rgba(82, 158, 250, 0.1);
-            // }
 
             .avatar {
               width: 32px;
@@ -277,7 +324,11 @@
                       width: auto;
                     }
                   }
-
+                  .name {
+                    color: var(--Text-800);
+                    font-size: 12px;
+                    font-weight: 400;
+                  }
                   .nameGF {
                     color: #1a81ff;
                     font-size: 12px;
@@ -305,8 +356,12 @@
                     margin-left: 4px;
 
                     .likeIcon {
-                      width: 12px;
-
+                      width: 14px;
+                      height: 14px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      cursor: pointer;
                       img {
                         width: 100%;
                         display: block;
@@ -316,6 +371,11 @@
                     .likeNum {
                       margin-left: 2px;
                       font-family: 'DINPro';
+                      color: var(--Text-800, #ccc);
+                      font-size: 12px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 16px;
                     }
                   }
                 }
@@ -324,7 +384,7 @@
               .commontDetails {
                 color: var(--Text-800, #596980);
                 text-align: justify;
-
+                padding-top: 8px;
                 /* 最小辅助文字 */
                 font-family: 'PingFang SC';
                 font-size: 12px;
@@ -413,7 +473,12 @@
         color: #fff;
         font-size: 12px;
         border: 1px solid transparent;
-
+        @include rwd-min('lg') {
+          height: 40px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 500;
+        }
         img {
           margin-right: 7px;
         }
@@ -425,6 +490,12 @@
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+      }
+      @include rwd-min('lg') {
+        height: 40px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
       }
     }
   }

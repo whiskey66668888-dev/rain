@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { type CSSProperties, useMemo } from 'react';
 import clsx from 'clsx';
 
 import Icon from '@/common/components/Icon';
@@ -28,7 +28,14 @@ const HomeGameProvidersSection: React.FC = () => {
         <Icon size="18px" color="var(--ThemeColor-Main)" src="/images/common/yxgys.svg" />
         <p className={clsx('_tf[14]', styles.title)}>游戏供应商</p>
       </div>
-      <ul className={styles.list}>
+      <ul
+        className={styles.list}
+        style={
+          {
+            '--provider-columns': Math.min(visibleProviders.length, 10),
+          } as CSSProperties
+        }
+      >
         {visibleProviders.map((gameProvider) => (
           <li className={styles.item} key={gameProvider.id}>
             <LazyImage height={24} width={74} src={gameProvider.logo} lazy={false} />

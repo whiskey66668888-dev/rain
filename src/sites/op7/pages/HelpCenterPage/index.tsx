@@ -6,7 +6,6 @@ import H5Header from '@/sites/op7/components/H5Header';
 import styles from './HelpCenterPage.module.scss';
 import {
   useHelpToolsList,
-  useSecurityCenter,
   useQuestions,
   QuestionType,
   QuestionDetail,
@@ -41,7 +40,6 @@ const HelpCenterPage: React.FC = () => {
 
   // ✅ 获取数据
   const { data: helpToolsList } = useHelpToolsList();
-  const { data: securityData2 } = useSecurityCenter();
   const { data: questionsData } = useQuestions();
 
   // ✅ 状态管理
@@ -225,7 +223,6 @@ const HelpCenterPage: React.FC = () => {
     }
   };
 
-  console.log('securityData2', securityData2);
   console.log('helpToolsList', helpToolsList?.data);
 
   useEffect(() => {
@@ -290,11 +287,7 @@ const HelpCenterPage: React.FC = () => {
                 <span className={styles.heroSearchPlaceholder}>请输入你想搜索的内容</span>
               </button>
             </div>
-            <Tools
-              data={helpToolsList?.data || []}
-              overlapHeroSearch
-              // securityData={securityData2?.data ?? ({} as SecurityCenterData)}
-            />
+            <Tools data={helpToolsList?.data || []} overlapHeroSearch />
           </div>
         </div>
 

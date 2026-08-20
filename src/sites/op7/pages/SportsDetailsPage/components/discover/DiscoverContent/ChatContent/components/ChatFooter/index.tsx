@@ -1,4 +1,13 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useChatRoomActions, useChatRoomFields } from '../../ChatRoomProvider';
 import clsx from 'clsx';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
@@ -414,4 +423,33 @@ const ChatFooter: React.FC<ChatFooterProps> = ({
   );
 };
 
-export default ChatFooter;
+const ChatFooterView = memo(ChatFooter);
+
+const ChatFooterConnected = memo(function ChatFooterConnected() {
+  const { hotWords, chatConfig, sendDisabledHint, sending, quotedMessage } = useChatRoomFields(
+    'hotWords',
+    'chatConfig',
+    'sendDisabledHint',
+    'sending',
+    'quotedMessage',
+  );
+  const { setQuotedMessage, sendText, sendHotWord, sendMatchShare, sendBetShare } =
+    useChatRoomActions();
+
+  return (
+    <ChatFooterView
+      hotWords={hotWords}
+      chatConfig={chatConfig ?? null}
+      sendDisabledHint={sendDisabledHint}
+      sending={sending}
+      quotedMessage={quotedMessage}
+      onClearQuote={() => setQuotedMessage(null)}
+      onSendText={sendText}
+      onSendHotWord={sendHotWord}
+      onSendMatchShare={sendMatchShare}
+      onSendBetShare={sendBetShare}
+    />
+  );
+});
+
+export default ChatFooterConnected;

@@ -1,0 +1,44 @@
+.activityList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+
+  img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+}
+
+.activityButton {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.carouselWrap {
+  height: 44px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.carousel,
+.slide {
+  width: 100%;
+  height: 44px;
+}
+
+.slide {
+  display: flex;
+}
+
+.carouselImage {
+  display: block;
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+}

@@ -1,46 +1,35 @@
-import React, { useMemo } from 'react';
+import { memo } from 'react';
 import ChatSkeleton from '../ChatSkeleton';
 import ChatMessageList from '../ChatMessageList';
 import styles from './ChatBody.module.scss';
-import type { ChatFilterType } from '../../types';
-import type { ChatConfigInfo, ChatMessage, ChatMuteInfo } from '@/core/sdk/IMManager';
+import { useOpenCustomerService } from '@/sites/op7/hooks/useOpenCustomerService';
+import {
+  useChatFilterContext,
+  useChatRoomActions,
+  useChatRoomFields,
+  useChatRoomSelector,
+  type TChatRoom,
+} from '../../ChatRoomProvider';
 
-interface ChatBodyProps {
-  loading: boolean;
-  isFilteredLoading?: boolean;
-  filterType: ChatFilterType;
-  chatConfig?: ChatConfigInfo | null;
-  messages: ChatMessage[];
-  shareMessages: ChatMessage[];
-  bigMessages: ChatMessage[];
-  pendingCount: number;
-  muteInfo?: ChatMuteInfo | null;
-  onBottomStateChange: (isBottom: boolean) => void;
-  onFlushPending: () => void;
-  onQuoteMessage?: (message: ChatMessage) => void;
-  onContactService?: () => void;
-}
+const ChatBodyView = memo(function ChatBodyView() {
+  const { chatFilterType } = useChatFilterContext();
+  const { setIsAtBottom, flushPendingMessages, setQuotedMessage } = useChatRoomActions();
+  const openCustomerService = useOpenCustomerService();
+  const { isInitializing, isFilteredLoading, chatConfig, muteInfo } = useChatRoomFields(
+    'isInitializing',
+    'isFilteredLoading',
+    'chatConfig',
+    'muteInfo',
+  );
+  const messages = useChatRoomSelector((state: TChatRoom) => {
+    if (chatFilterType === 'share') return state.filteredBetMessages;
+    if (chatFilterType === 'big') return state.filteredBigOrderMessages;
+    return state.messages;
+  });
+  const pendingCount = useChatRoomSelector((state: TChatRoom) =>
+    chatFilterType === 'chat' ? state.pendingMessages.length : 0,
+  );
 
-const ChatBody: React.FC<ChatBodyProps> = ({
-  loading,
-  isFilteredLoading,
-  filterType,
-  chatConfig,
-  messages,
-  shareMessages,
-  bigMessages,
-  pendingCount,
-  muteInfo,
-  onBottomStateChange,
-  onFlushPending,
-  onQuoteMessage,
-  onContactService,
-}) => {
-  const currentMessages = useMemo(() => {
-    if (filterType === 'share') return shareMessages;
-    if (filterType === 'big') return bigMessages;
-    return messages;
-  }, [bigMessages, filterType, messages, shareMessages]);
   // 对齐 Flutter：chatSwitch != 1 未开放；配置未返回时不在此拦截（由 loading 骨架承接）
   if (chatConfig != null && chatConfig.chatSwitch !== 1) {
     return (
@@ -50,7 +39,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
     );
   }
 
-  if (loading || isFilteredLoading) {
+  if (isInitializing || isFilteredLoading) {
     return (
       <div className={styles.body}>
         <ChatSkeleton />
@@ -58,7 +47,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
     );
   }
 
-  if (currentMessages.length === 0) {
+  if (messages.length === 0) {
     return (
       <div className={styles.body}>
         <div className={styles.stateText}>暂无聊天内容</div>
@@ -69,17 +58,17 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   return (
     <div className={styles.body}>
       <ChatMessageList
-        key={filterType}
-        messages={currentMessages}
-        pendingCount={filterType === 'chat' ? pendingCount : 0}
+        key={chatFilterType}
+        messages={messages}
+        pendingCount={pendingCount}
         muteInfo={muteInfo}
-        onBottomStateChange={onBottomStateChange}
-        onFlushPending={onFlushPending}
-        onQuoteMessage={onQuoteMessage}
-        onContactService={onContactService}
+        onBottomStateChange={setIsAtBottom}
+        onFlushPending={flushPendingMessages}
+        onQuoteMessage={setQuotedMessage}
+        onContactService={openCustomerService}
       />
     </div>
   );
-};
+});
 
-export default ChatBody;
+export default ChatBodyView;

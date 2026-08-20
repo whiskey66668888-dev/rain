@@ -1,11 +1,12 @@
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import { memo } from 'react';
+import { useBettingDataFields } from '@/common/hooks/bet/context/BettingDataContext';
 import BetPanelActionBar from '../BetPanelActionBar';
 import BetPanelParlay from '../BetPanelParlay';
 import BetPanelSingle from '../BetPanelSingle';
 import BetTabsBar from '../BetTabsBar';
 
 const BetPanel = () => {
-  const { isParlay } = useBettingData();
+  const { isParlay } = useBettingDataFields('isParlay');
 
   return (
     <div className="flex-1-col-hidden">
@@ -16,4 +17,4 @@ const BetPanel = () => {
   );
 };
 
-export default BetPanel;
+export default memo(BetPanel);

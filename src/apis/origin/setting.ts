@@ -73,10 +73,7 @@ export const usePreInfoQuery = (): ReturnType<
 > => {
   return useQueryHook<PreInfoResponse | null, Error>({
     queryKey: ['origin', 'website', 'setting'],
-    queryFn: () =>
-      getPreInfoReq()
-        .then((res) => res.data)
-        .catch(() => null),
+    queryFn: () => getPreInfoReq().then((res) => res.data ?? null),
     staleTime: 5 * 60 * 1000,
     retry: false,
   });

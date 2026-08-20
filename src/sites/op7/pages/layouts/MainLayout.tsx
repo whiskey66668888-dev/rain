@@ -14,6 +14,7 @@ import SidebarMenu from '../../components/SidebarMenu';
 import RightSidebar from '../../components/RightSidebar';
 import clsx from 'clsx';
 import { getSystemTheme, scrollToTopLayoutMainContent } from '@/utils';
+import { BREAKPOINTS } from '@/utils/constants/breakpoints';
 import FloatingButton from '@/common/components/FloatingButton';
 import { ClientOnly } from '@/common/components/ClientOnly';
 import { useWebsiteSwitchListQuery } from '@/apis/origin/websiteSwitch';
@@ -40,6 +41,8 @@ const H5_NOTCH_COLOR_ENTERTAIN = 'var(--Background-700)';
 const H5_NOTCH_COLOR_SPORTS_LIGHT = '#CBD8ED';
 const H5_NOTCH_COLOR_SPORTS_DARK = '#18181B';
 const H5_NOTCH_COLOR_DEFAULT = 'var(--Background-300, #fff)';
+
+const getViewportWidth = () => (typeof window === 'undefined' ? 0 : window.innerWidth);
 
 /**
  * 带头底侧边栏的主布局组件
@@ -95,6 +98,7 @@ const MainLayout: React.FC = () => {
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
   const [messageCenterLoaded, setMessageCenterLoaded] = useState(false);
   const [showPwaInstallBanner, setShowPwaInstallBanner] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(getViewportWidth);
 
   useEffect(() => {
     if (messageCenterVisible) {
@@ -203,6 +207,27 @@ const MainLayout: React.FC = () => {
 
   const showH5NotchBar = isMobile && h5ShowHeader;
   const mainScrollRef = useRef<HTMLElement | null>(null);
+  const isRightSidebarDocked = useMemo(() => {
+    if (isMobile) return false;
+    return viewportWidth > BREAKPOINTS.xl;
+  }, [isMobile, viewportWidth]);
+
+  useEffect(() => {
+    if (isMobile) return;
+
+    let rafId = 0;
+    const updateViewportWidth = () => {
+      window.cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(() => setViewportWidth(getViewportWidth()));
+    };
+
+    updateViewportWidth();
+    window.addEventListener('resize', updateViewportWidth);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', updateViewportWidth);
+    };
+  }, [isMobile]);
 
   useEffect(() => {
     const scrollEl = mainScrollRef.current;
@@ -240,7 +265,7 @@ const MainLayout: React.FC = () => {
       {/* 大于lg时显示侧边栏 */}
       <SidebarMenu />
 
-      <div className={clsx('flex-1-col-hidden')}>
+      <div className={clsx(styles.mainContentShell, 'flex-1-col-hidden')}>
         <main
           ref={mainScrollRef}
           className={clsx(
@@ -268,7 +293,7 @@ const MainLayout: React.FC = () => {
                 : 'var(--Background-300)',
             }}
           >
-            <Header />
+            <Header rightSidebarDocked={isRightSidebarDocked} />
           </header>
           <div
             className={clsx('flex-1 flex flex-col', {
@@ -306,7 +331,7 @@ const MainLayout: React.FC = () => {
           </Suspense>
         ) : null
       ) : (
-        <RightSidebar />
+        <RightSidebar presentation={isRightSidebarDocked ? 'docked' : 'overlay'} />
       )}
 
       {/* 小于lg时h5显示底部菜单 */}

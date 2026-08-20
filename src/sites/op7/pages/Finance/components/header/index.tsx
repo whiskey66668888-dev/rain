@@ -14,7 +14,7 @@ import { ETransRecordType } from '@/apis/commonSports/constants';
  * 头部 钱包头部
  */
 interface HeaderProps {
-  title: string;
+  title: React.ReactNode;
   showRecord?: boolean;
   recordType?: ETransRecordType; // 记录类型，决定跳转到充值记录还是提现记录页
   showCustomer?: boolean;
@@ -22,6 +22,7 @@ interface HeaderProps {
   autoHide?: boolean; // 桌面端自动隐藏
   onBack?: () => void;
   onClose?: () => void;
+  onTitleClick?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -33,6 +34,7 @@ const Header: React.FC<HeaderProps> = ({
   autoHide = true,
   onBack,
   onClose,
+  onTitleClick,
 }) => {
   const navigate = useNavigateWithLanguage();
   const openCustomerService = useOpenCustomerService();
@@ -51,7 +53,9 @@ const Header: React.FC<HeaderProps> = ({
       >
         <Icon src="/images/common/back.svg" size="18px" color="var(--Text-Main-10)" />
       </div>
-      <span>{title}</span>
+      <span className={onTitleClick ? styles.titleClickable : ''} onClick={onTitleClick}>
+        {title}
+      </span>
 
       <div className={styles.actions}>
         {showRecord && (

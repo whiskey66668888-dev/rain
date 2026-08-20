@@ -1,0 +1,21 @@
+@use '@/common/styles/mixins' as *;
+
+.responsiveBanner {
+  height: auto !important;
+  aspect-ratio: auto !important;
+
+  :global(.swiper),
+  :global(.swiper-wrapper) {
+    height: auto;
+  }
+}
+
+.bannerItem {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 351 / 175;
+
+  @include rwd-min('lg') {
+    width: calc((100% - 24px) / 3) !important;
+  }
+}

@@ -1,8 +1,9 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { CSSProperties, lazy, Suspense, useEffect, useState } from 'react';
 
 import LazyImage from '@/common/components/LazyImage';
 import clsx from 'clsx';
 import { LEGAL_LINK_ITEMS, type LegalLinkKey } from './Footer/legalContents';
+import styles from './Footer.module.scss';
 
 const LegalContentPopup = lazy(() => import('./Footer/LegalContentPopup'));
 
@@ -63,12 +64,20 @@ const Footer: React.FC = () => {
             <p className="_tf[14] m-0 font-600 leading-[1.5] text-[var(--Text-Main-10)]">
               游戏牌照
             </p>
-            <div className="flex w-full flex-row items-center gap-8px overflow-x-auto overflow-y-hidden">
+            <div
+              className="flex w-full flex-row items-center gap-8px overflow-x-auto overflow-y-hidden"
+              style={
+                {
+                  '--license-columns': Math.min(licenseImages.length, 10),
+                } as CSSProperties
+              }
+            >
               {licenseImages.map((item, index) => (
                 <div
                   key={index}
                   className={clsx(
-                    'flex h-48px w-15% min-w-95px flex-shrink-0 items-center justify-center rounded-10px bg-[var(--Background-300)]',
+                    styles.licenseItem,
+                    'flex flex-shrink-0 items-center justify-center rounded-10px bg-[var(--Background-300)]',
                     item.url && 'cursor-pointer',
                   )}
                 >

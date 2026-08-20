@@ -37,7 +37,6 @@
       font-style: normal;
       font-weight: 600;
       line-height: 150%; /* 24px */
-      margin-left: 10px;
     }
     .sendHeaderRight {
       position: relative;
@@ -59,6 +58,7 @@
       outline: none;
       resize: none;
       color: var(--Text-Main-10);
+      caret-color: var(--ThemeColor-Main);
 
       /* 主文字辅助文字 */
       font-family: 'PingFang SC';

@@ -251,6 +251,7 @@ const HomePage: React.FC = () => {
                         [styles.showMenuCards as string]: isShowMenuCards,
                         [styles.resetAnimation as string]: isResetAnimation,
                         [styles.currentItemActive as string]: isCurrentItem,
+                        'mt-16px px-12px': true,
                       })}
                       title={item.label}
                       labelList={item.promotionList}
@@ -366,7 +367,8 @@ const HomePage: React.FC = () => {
           {/* 推荐赛事 */}
           {hasPopularEvents && (
             <HorizontalScrollSection
-              listClassName="!gap-12px"
+              listClassName="!gap-12px ![scroll-padding-left:0px]"
+              listItemClassName="w-351px min-w-351px lg:w-[calc((100%-24px)/3)]"
               title={t('common.recommendedEvents')}
               icon={
                 <Icon
@@ -375,12 +377,13 @@ const HomePage: React.FC = () => {
                   src="/images/common/recommend.svg"
                 />
               }
-              className={clsx(styles.cardWrapper, 'mb-16px')}
+              className={clsx(styles.cardWrapper, 'mb-16px px-12px')}
               viewAllText="全部"
+              scrollItemsPerPage={3}
               onViewAll={() => navigate(PATHS.sports)}
             >
               {popularEventsLiveList.map((matchInfo, index: number) => (
-                <div className="h-154px w-351px" key={index}>
+                <div className="h-154px w-full" key={index}>
                   <SportsCard matchInfo={matchInfo} type="bigCard" />
                 </div>
               ))}

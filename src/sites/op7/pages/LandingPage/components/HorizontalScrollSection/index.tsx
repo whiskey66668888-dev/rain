@@ -21,6 +21,7 @@ interface HorizontalScrollSectionProps {
   onViewAll?: () => void;
   flushEndOnMobile?: boolean;
   viewNav?: boolean;
+  scrollItemsPerPage?: number;
 }
 
 const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({
@@ -37,6 +38,7 @@ const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({
   onViewAll,
   flushEndOnMobile = false,
   viewNav = true,
+  scrollItemsPerPage,
 }) => {
   const scrollRef = useRef<HTMLUListElement | null>(null);
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
@@ -83,16 +85,32 @@ const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({
     };
   }, [items.length, syncScrollState]);
 
-  const handleScrollByPage = useCallback((direction: 'prev' | 'next') => {
-    const node = scrollRef.current;
-    if (!node) return;
+  const handleScrollByPage = useCallback(
+    (direction: 'prev' | 'next') => {
+      const node = scrollRef.current;
+      if (!node) return;
 
-    const pageWidth = Math.max(node.clientWidth - 16, 120);
-    node.scrollBy({
-      left: direction === 'prev' ? -pageWidth : pageWidth,
-      behavior: 'smooth',
-    });
-  }, []);
+      const children = Array.from(node.children) as HTMLElement[];
+      const firstItem = children[0];
+      const secondItem = children[1];
+      const itemStep =
+        firstItem && secondItem ? secondItem.offsetLeft - firstItem.offsetLeft : node.clientWidth;
+      const pageWidth = scrollItemsPerPage
+        ? Math.max(itemStep * scrollItemsPerPage, itemStep)
+        : Math.max(node.clientWidth - 16, 120);
+      const maxScrollLeft = Math.max(0, node.scrollWidth - node.clientWidth);
+      const targetScrollLeft = Math.min(
+        maxScrollLeft,
+        Math.max(0, node.scrollLeft + (direction === 'prev' ? -pageWidth : pageWidth)),
+      );
+
+      node.scrollTo({
+        left: targetScrollLeft,
+        behavior: 'smooth',
+      });
+    },
+    [scrollItemsPerPage],
+  );
 
   const showNav =
     viewNav && (isDesktop && canScrollPrev !== canScrollNext ? true : isDesktop && canScrollNext);
@@ -100,7 +118,7 @@ const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({
   return (
     <section className={clsx(className || 'mt-12px')}>
       {!hideHeader && (
-        <div className="mb-12px flex items-center justify-between gap-12px pl-12px pr-12px h-[25px]">
+        <div className="mb-12px flex items-center justify-between gap-12px h-[25px]">
           <div className="flex items-center gap-10px font-600 text-[var(--Text-Main-10)]">
             {icon}
             <p className="_tf[14] m-0">{title}</p>
@@ -189,10 +207,10 @@ const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({
       <ul
         ref={scrollRef}
         className={clsx(
-          'm-0 flex list-none gap-8px overflow-x-auto overflow-y-hidden p-0 pl-12px scrollbar-none [scroll-snap-type:x_mandatory] [scroll-padding-left:12px]',
+          'm-0 w-full flex list-none gap-8px overflow-x-auto overflow-y-hidden p-0 scrollbar-none [scroll-snap-type:x_mandatory] [scroll-padding-left:12px]',
           flushEndOnMobile
             ? clsx(styles.flushEndOnMobile, '[scroll-padding-right:14px]')
-            : 'pr-12px [scroll-padding-right:12px]',
+            : '[scroll-padding-right:12px]',
           listClassName,
         )}
       >

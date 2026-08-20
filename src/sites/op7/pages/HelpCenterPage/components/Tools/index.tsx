@@ -9,7 +9,7 @@ import { BindData, HelpToolItem } from '@/apis/origin/helpCenter/helpCenterInfo'
 import { useSearchParams } from 'react-router-dom';
 import Modal from '@/common/components/Modal';
 import Button from '@/common/components/Button';
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { getSecurityCenterReq, SecurityCenterResponse } from '@/apis/origin/login';
 
 import BindPaymentPasswordModal from '@/sites/op7/components/security/BindPaymentPasswordModal';
@@ -79,26 +79,25 @@ const Tools = ({
   const paymentFromVerifyRef = useRef(false);
 
   // -------- 安全状态判断（对齐 SecurityCenterPage）--------
-  const { Microsoft_Token, Pay_Password, Safety_Email, Safety_Phone } =
-    securityData?.bindData ?? {};
+  const { Pay_Password } = securityData?.bindData ?? {};
 
   const hasCashPassword = Pay_Password === true;
-  const hasAnySafetyVerification =
-    Safety_Email === true || Safety_Phone === true || Microsoft_Token === true;
-
-  const refreshSecurityData = useCallback(() => {
-    getSecurityCenterReq()
+  const refreshSecurityData = useCallback(async () => {
+    return getSecurityCenterReq()
       .then((res) => {
         if (res?.data) {
-          setSecurityData(res.data as ExtendedSecurityCenterResponse);
+          const nextSecurityData = res.data as ExtendedSecurityCenterResponse;
+          setSecurityData(nextSecurityData);
+          return nextSecurityData;
         }
+        setSecurityData(undefined);
+        return undefined;
       })
-      .catch(() => setSecurityData(undefined));
+      .catch(() => {
+        setSecurityData(undefined);
+        return undefined;
+      });
   }, []);
-
-  useEffect(() => {
-    refreshSecurityData();
-  }, [refreshSecurityData]);
 
   const clearForceBindState = useCallback(() => {
     setPendingUnbindType(null);
@@ -125,41 +124,6 @@ const Tools = ({
     setShowPaymentPasswordModal(true);
     setPaymentFromSecurityTip(true);
   }, []);
-
-  // -------- 手机 --------
-  const handleOpenPhoneFlow = useCallback(() => {
-    if (!hasCashPassword) {
-      setShowSecurityTipModal(true);
-      return;
-    }
-    setVerifyPurpose('securityPhone');
-    setShowVerifyPaymentModal(true);
-  }, [hasCashPassword]);
-
-  const handleSecurityPhoneClick = useCallback(() => {
-    if (Safety_Phone) {
-      setShowPhoneResetModal(true);
-    } else {
-      handleOpenPhoneFlow();
-    }
-  }, [Safety_Phone, handleOpenPhoneFlow]);
-
-  // -------- 邮箱 --------
-  const handleOpenEmailFlow = useCallback(() => {
-    if (!hasCashPassword) {
-      setShowSecurityTipModal(true);
-      return;
-    }
-    setShowEmailBindModal(true);
-  }, [hasCashPassword]);
-
-  const handleSecurityEmailClick = useCallback(() => {
-    if (Safety_Email) {
-      setShowEmailResetModal(true);
-    } else {
-      handleOpenEmailFlow();
-    }
-  }, [Safety_Email, handleOpenEmailFlow]);
 
   // -------- 微软安全令牌 --------
   const handleMicrosoftVerifySuccess = useCallback((token?: string) => {
@@ -197,23 +161,6 @@ const Tools = ({
     [],
   );
 
-  const handleMicrosoftTokenClick = useCallback(() => {
-    console.log('点击了微软安全令牌');
-    if (!hasCashPassword) {
-      setShowSecurityTipModal(true);
-      return;
-    }
-    if (Microsoft_Token) {
-      setShowMicrosoftResetModal(true);
-    } else {
-      microsoftFromGestureRef.current = false;
-      setVerifyPurpose('microsoft');
-      setTimeout(() => {
-        setShowVerifyPaymentModal(true);
-      }, 0);
-    }
-  }, [hasCashPassword, Microsoft_Token]);
-
   const handleRequireDynamicRebind = useCallback(
     (unbindType: string) => {
       const nextUnbindType = unbindType.trim();
@@ -249,10 +196,20 @@ const Tools = ({
   }, []);
 
   // -------- 工具项点击路由 --------
-  const handleSecurityItemClick = (item: HelpToolItem) => {
-    console.log('点击了工具项：', item, hasCashPassword, hasAnySafetyVerification, isLogin);
+  const handleSecurityItemClick = async (item: HelpToolItem) => {
     if (isLogin || (isInFlutter() && !!token)) {
-      if (!hasCashPassword && !isInFlutter()) {
+      const latestSecurityData = securityData ?? (await refreshSecurityData());
+      const {
+        Microsoft_Token: latestMicrosoftToken,
+        Pay_Password: latestPayPassword,
+        Safety_Email: latestSafetyEmail,
+        Safety_Phone: latestSafetyPhone,
+      } = latestSecurityData?.bindData ?? {};
+      const latestHasCashPassword = latestPayPassword === true;
+      const latestHasAnySafetyVerification =
+        latestSafetyEmail === true || latestSafetyPhone === true || latestMicrosoftToken === true;
+
+      if (!latestHasCashPassword && !isInFlutter()) {
         const modal = Modal.open({
           title: renderTitle('安全提示'),
           content: (
@@ -287,20 +244,23 @@ const Tools = ({
         });
         return;
       }
-      console.log(item.toolsKey, 'item.toolsKey');
       if (item.toolsKey === 'phone') {
-        console.log('点击了手机验证工具项');
         if (isInFlutter()) {
           sendToFlutter('onMobileCardHandle');
           return;
         }
-        handleSecurityPhoneClick();
+        if (latestSafetyPhone) {
+          setShowPhoneResetModal(true);
+        } else {
+          setVerifyPurpose('securityPhone');
+          setShowVerifyPaymentModal(true);
+        }
       } else if (item.toolsKey === 'password') {
         if (isInFlutter()) {
           sendToFlutter('toCashPwdVerify');
           return;
         }
-        if (hasCashPassword) {
+        if (latestHasCashPassword) {
           setShowModifyPaymentPasswordModal(true);
         } else {
           handleOpenPaymentModal();
@@ -310,14 +270,25 @@ const Tools = ({
           sendToFlutter('toEmailVerify');
           return;
         }
-        handleSecurityEmailClick();
+        if (latestSafetyEmail) {
+          setShowEmailResetModal(true);
+        } else {
+          setShowEmailBindModal(true);
+        }
       } else if (item.toolsKey === 'microsoft_token') {
-        console.log('点击了微软安全令牌工具项');
         if (isInFlutter()) {
           sendToFlutter('onMicrosoftHandle');
           return;
         }
-        handleMicrosoftTokenClick();
+        if (latestMicrosoftToken) {
+          setShowMicrosoftResetModal(true);
+        } else {
+          microsoftFromGestureRef.current = false;
+          setVerifyPurpose('microsoft');
+          setTimeout(() => {
+            setShowVerifyPaymentModal(true);
+          }, 0);
+        }
       } else if (item.toolsKey === 'auto_order') {
         // 自动投注 - 待接入
       } else if (
@@ -325,7 +296,7 @@ const Tools = ({
         item.toolsKey === 'bank_card' ||
         item.toolsKey === 'digital_currency'
       ) {
-        if (!hasAnySafetyVerification && !isInFlutter()) {
+        if (!latestHasAnySafetyVerification && !isInFlutter()) {
           const modal = Modal.open({
             title: renderTitle('安全提示'),
             content: <div>为了您的账号安全，请至少绑定 1 种安全验证。</div>,
@@ -436,7 +407,9 @@ const Tools = ({
                   <div
                     key={itemIndex}
                     className={styles.toolItem}
-                    onClick={() => handleSecurityItemClick(item)}
+                    onClick={() => {
+                      void handleSecurityItemClick(item);
+                    }}
                   >
                     <div className={styles.toolIcon}>
                       <LazyImage src={item.icon} alt="" width={40} height={40} />
@@ -472,14 +445,16 @@ const Tools = ({
         }}
         onSuccess={() => {
           setPaymentFromSecurityTip(false);
-          refreshSecurityData();
+          void refreshSecurityData();
         }}
       />
 
       <ModifyPaymentPasswordModal
         show={showModifyPaymentPasswordModal}
         onClose={() => setShowModifyPaymentPasswordModal(false)}
-        onSuccess={refreshSecurityData}
+        onSuccess={() => {
+          void refreshSecurityData();
+        }}
         onForgotPassword={() => {
           setShowModifyPaymentPasswordModal(false);
           setPaymentPasswordModalMode('forgot');
@@ -494,7 +469,7 @@ const Tools = ({
           verifyPurpose === 'securityPhone'
             ? () => {
                 clearForceBindState();
-                refreshSecurityData();
+                void refreshSecurityData();
               }
             : undefined
         }
@@ -567,21 +542,25 @@ const Tools = ({
         onSuccess={() => {
           microsoftFromGestureRef.current = false;
           clearForceBindState();
-          refreshSecurityData();
+          void refreshSecurityData();
         }}
       />
 
       <SecurityPhoneResetModal
         visible={showPhoneResetModal}
         onClose={() => setShowPhoneResetModal(false)}
-        onSuccess={refreshSecurityData}
+        onSuccess={() => {
+          void refreshSecurityData();
+        }}
         onRequireRebind={handleRequireDynamicRebind}
       />
       {/* 安全微软重置 */}
       <SecurityMicrosoftResetModal
         visible={showMicrosoftResetModal}
         onClose={() => setShowMicrosoftResetModal(false)}
-        onSuccess={refreshSecurityData}
+        onSuccess={() => {
+          void refreshSecurityData();
+        }}
         onRequireRebind={handleRequireDynamicRebind}
         securityData={securityData}
       />
@@ -595,7 +574,7 @@ const Tools = ({
         }}
         onSuccess={() => {
           clearForceBindState();
-          refreshSecurityData();
+          void refreshSecurityData();
         }}
         hasPaymentPassword={hasCashPassword}
         onForgotPassword={() => {
@@ -608,7 +587,9 @@ const Tools = ({
       <SecurityEmailResetModal
         visible={showEmailResetModal}
         onClose={() => setShowEmailResetModal(false)}
-        onSuccess={refreshSecurityData}
+        onSuccess={() => {
+          void refreshSecurityData();
+        }}
         onRequireRebind={handleRequireDynamicRebind}
       />
 
@@ -616,7 +597,7 @@ const Tools = ({
       <AccountManagementModal
         handleClose={() => {
           setAccountManagementModalShowType(null);
-          refreshSecurityData();
+          void refreshSecurityData();
         }}
         showType={accountManagementModalShowType}
         onForgotPaymentPassword={() => {

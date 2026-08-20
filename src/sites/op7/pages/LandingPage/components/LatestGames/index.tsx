@@ -38,17 +38,20 @@ const LatestGames: React.FC = () => {
           }),
         )
       }
-      className="mt-16px"
+      className="mt-16px px-12px"
+      listClassName="![scroll-padding-left:0px]"
+      listItemClassName="w-[calc((100%-24px)/4)] lg:w-[calc((100%-104px)/14)]"
+      scrollItemsPerPage={14}
       flushEndOnMobile
     >
       {trialGames.map((game, index) => (
         <button
           key={`${game.id}-${index}`}
           type="button"
-          className="w-76px cursor-pointer border-none bg-transparent p-0 text-left can-hover:transition-transform can-hover:duration-200 can-hover:ease can-hover:hover:-translate-y-1"
+          className="w-full cursor-pointer border-none bg-transparent p-0 text-left can-hover:transition-transform can-hover:duration-200 can-hover:ease can-hover:hover:-translate-y-1"
           onClick={() => handleOpenGame(game, true)}
         >
-          <div className="relative h-94px w-76px overflow-hidden rounded-12px bg-[var(--Background-100)]">
+          <div className="relative aspect-[76/94] w-full overflow-hidden rounded-12px bg-[var(--Background-100)]">
             <LazyImage
               src={game.imageUrl}
               alt={game.name}

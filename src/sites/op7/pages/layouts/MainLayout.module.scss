@@ -17,6 +17,12 @@
   }
 }
 
+.mainContentShell {
+  @include rwd-min('lg') {
+    min-width: 0;
+  }
+}
+
 .header {
   --header-bg-opacity: 0;
   position: sticky;

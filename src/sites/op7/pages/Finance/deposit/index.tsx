@@ -306,7 +306,6 @@ const Deposit: React.FC<{ inModal?: boolean }> = ({ inModal = false }) => {
           styles.deposit,
           inModal ? styles.inModal : '',
           !inModal ? styles.autoPC : '',
-          !inModal ? styles.pageLayout : '',
         )}
       >
         <div className={styles.depositTypeList}>

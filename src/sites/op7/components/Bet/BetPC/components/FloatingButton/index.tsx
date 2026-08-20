@@ -1,7 +1,11 @@
-import { useRef, useCallback, useState } from 'react';
+import { memo, useRef, useCallback, useState } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import {
+  shallowEqual,
+  useBettingDataSelector,
+} from '@/common/hooks/bet/context/BettingDataContext';
+import type { TUseVenueBetData } from '@/common/hooks/bet/useVenueBetData';
 import useBetMethods from '@/common/hooks/bet/useBetMethods';
 import { zIndexMap } from '@/utils/constants/zIndex';
 import { BET_FLOATING_BUTTON_Y_KEY } from '@/utils/constants/cacheKey';
@@ -20,14 +24,18 @@ const getStoredY = (): number => {
 };
 
 const FloatingButton = () => {
-  const {
-    floatingBetCount,
-    showBetDrawer,
-    singleBetData,
-    parlayBetData,
-    syncSingleParlay,
-    isParlay,
-  } = useBettingData();
+  const { floatingBetCount, showBetDrawer, singleCount, parlayCount, syncSingleParlay, isParlay } =
+    useBettingDataSelector(
+      (state: TUseVenueBetData) => ({
+        floatingBetCount: state.floatingBetCount,
+        showBetDrawer: state.showBetDrawer,
+        singleCount: state.singleBetData.ids.length,
+        parlayCount: state.parlayBetData.ids.length,
+        syncSingleParlay: state.syncSingleParlay,
+        isParlay: state.isParlay,
+      }),
+      shallowEqual,
+    );
   const { showBetDrawerFn } = useBetMethods();
   const constraintRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +49,7 @@ const FloatingButton = () => {
     } catch {}
   }, [y]);
 
-  if ((!singleBetData.ids.length && !parlayBetData.ids.length) || showBetDrawer) return null;
+  if ((!singleCount && !parlayCount) || showBetDrawer) return null;
 
   const showParlayIcon = !syncSingleParlay && isParlay;
 
@@ -126,4 +134,4 @@ const FloatingButton = () => {
   return createPortal(content, document.body);
 };
 
-export default FloatingButton;
+export default memo(FloatingButton);

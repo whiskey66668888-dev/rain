@@ -53,7 +53,8 @@ const LandingPage: React.FC = () => {
 
           {(isPopularEventsLoading || hasPopularEvents) && (
             <HorizontalScrollSection
-              listClassName="!gap-12px"
+              listClassName="!gap-12px ![scroll-padding-left:0px]"
+              listItemClassName="w-351px min-w-351px lg:w-[calc((100%-24px)/3)]"
               title={t('common.recommendedEvents')}
               icon={
                 <Icon
@@ -64,7 +65,9 @@ const LandingPage: React.FC = () => {
               }
               flushEndOnMobile
               viewAllText="全部"
+              scrollItemsPerPage={3}
               onViewAll={() => navigate(PATHS.sports)}
+              className="mt-16px px-12px"
             >
               {isPopularEventsLoading
                 ? Array.from({ length: 2 }).map((_, index) => (

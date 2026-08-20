@@ -46,7 +46,8 @@
       height: 180px;
     }
     .carouselBanner {
-      aspect-ratio: 350/163 !important;
+      height: auto !important;
+      aspect-ratio: auto !important;
       & > div {
         padding: 0 12px;
       }
@@ -497,7 +498,7 @@
           }
         }
         & > ul.cardContent {
-          padding: 0 10px;
+          // padding: 0 10px;
           display: flex;
           flex-wrap: wrap;
           gap: 5px;

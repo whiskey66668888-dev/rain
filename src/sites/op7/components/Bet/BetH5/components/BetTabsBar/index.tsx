@@ -1,4 +1,9 @@
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import { memo } from 'react';
+import {
+  shallowEqual,
+  useBettingDataSelector,
+} from '@/common/hooks/bet/context/BettingDataContext';
+import type { TUseVenueBetData } from '@/common/hooks/bet/useVenueBetData';
 import { useGetVenueBalance, useVenueBalanceLoading } from '@/common/hooks/sports/useVenueBalance';
 import { useOneClickTransferLoading } from '@/common/hooks/sports/useOneClickTransfer';
 import useBetMethods from '@/common/hooks/bet/useBetMethods';
@@ -11,8 +16,18 @@ import { useAppSelector } from '@/core/store/hooks';
 
 const BetTabsBar = () => {
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
-  const { singleBetData, parlayBetData, isParlay, totalBalance, venue, isChatBet } =
-    useBettingData();
+  const { singleCount, parlayCount, isParlay, totalBalance, venue, isChatBet } =
+    useBettingDataSelector(
+      (state: TUseVenueBetData) => ({
+        singleCount: state.singleBetData.ids.length,
+        parlayCount: state.parlayBetData.ids.length,
+        isParlay: state.isParlay,
+        totalBalance: state.totalBalance,
+        venue: state.venue,
+        isChatBet: state.isChatBet,
+      }),
+      shallowEqual,
+    );
   const { switchParlay, switchSingle } = useBetMethods();
   const { getVenueBalance } = useGetVenueBalance();
   const { balanceLoading } = useVenueBalanceLoading();
@@ -23,10 +38,10 @@ const BetTabsBar = () => {
       <BetSwitch
         options={
           isChatBet
-            ? [{ label: '单关', count: singleBetData.ids.length }]
+            ? [{ label: '单关', count: singleCount }]
             : [
-                { label: '单关', count: singleBetData.ids.length },
-                { label: '串关', count: parlayBetData.ids.length },
+                { label: '单关', count: singleCount },
+                { label: '串关', count: parlayCount },
               ]
         }
         activeIndex={isParlay ? 1 : 0}
@@ -65,4 +80,4 @@ const BetTabsBar = () => {
   );
 };
 
-export default BetTabsBar;
+export default memo(BetTabsBar);

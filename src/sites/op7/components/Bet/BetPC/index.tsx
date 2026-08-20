@@ -1,5 +1,9 @@
 import { memo } from 'react';
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import {
+  shallowEqual,
+  useBettingDataSelector,
+} from '@/common/hooks/bet/context/BettingDataContext';
+import type { TUseVenueBetData } from '@/common/hooks/bet/useVenueBetData';
 import BetPanel from './components/BetPanel';
 import OrdersPanel from './components/OrdersPanel';
 import './BetPC.scss';
@@ -9,7 +13,15 @@ import { ESportsLeftPanelType } from '@/apis/commonSports/constants';
 
 const BetPc = () => {
   const sportsLeftPanelType = useAppSelector((state) => state.sport.sportsLeftPanelType);
-  const { showBetDrawer, showBetPanel, showOrdersPanel, currStep } = useBettingData();
+  const { showBetDrawer, showBetPanel, showOrdersPanel, fetching } = useBettingDataSelector(
+    (state: TUseVenueBetData) => ({
+      showBetDrawer: state.showBetDrawer,
+      showBetPanel: state.showBetPanel,
+      showOrdersPanel: state.showOrdersPanel,
+      fetching: state.currStep.fetching,
+    }),
+    shallowEqual,
+  );
 
   if (!showBetDrawer || sportsLeftPanelType !== ESportsLeftPanelType.ORDER_CART) {
     return null;
@@ -18,7 +30,7 @@ const BetPc = () => {
   return (
     <div
       className={clsx('flex-1-col-hidden bg-[var(--Background-300)] shrink-0 ', {
-        'pointer-events-none': currStep.fetching,
+        'pointer-events-none': fetching,
       })}
     >
       {showBetPanel && <BetPanel />}

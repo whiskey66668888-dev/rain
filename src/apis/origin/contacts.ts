@@ -19,12 +19,7 @@ export const getContactsReq = () => {
 export const useContactsQuery = () => {
   return useQueryHook<TContactsData, Error>({
     queryKey: ['origin', 'contacts'],
-    queryFn: () =>
-      getContactsReq()
-        .then((res) => res.data)
-        .catch(() => {
-          return {} as TContactsData;
-        }),
+    queryFn: () => getContactsReq().then((res) => res.data),
     staleTime: 0,
     retry: false,
     // refetchOnMount: 'always', // 对于一些实效性比较高的数据，即使服务端注入了数据，客户端接手后也立即重新请求

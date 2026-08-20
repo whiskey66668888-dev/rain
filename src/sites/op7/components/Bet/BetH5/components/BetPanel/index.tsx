@@ -1,4 +1,5 @@
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import { memo } from 'react';
+import { useBettingDataFields } from '@/common/hooks/bet/context/BettingDataContext';
 import BetPanelActionBar from '../BetPanelActionBar';
 import BetPanelParlay from '../BetPanelParlay';
 import BetPanelSingle from '../BetPanelSingle';
@@ -6,7 +7,7 @@ import BetTabsBar from '../BetTabsBar';
 import clsx from 'clsx';
 
 const BetPanel = () => {
-  const { isParlay, currStep } = useBettingData();
+  const { isParlay, currStep } = useBettingDataFields('isParlay', 'currStep');
 
   return (
     <div
@@ -25,4 +26,4 @@ const BetPanel = () => {
   );
 };
 
-export default BetPanel;
+export default memo(BetPanel);

@@ -38,19 +38,29 @@ import VideoPlayerWeb from '../VideoPlayerWeb';
 const SportDetail = lazy(() => import('../../pages/SportsDetailsPage'));
 const MessageCenter = lazy(() => import('../../pages/MessageCenter'));
 
+export const RIGHT_SIDEBAR_AD_WIDTH = 351;
+export const RIGHT_SIDEBAR_DETAIL_WIDTH = 391;
+
+interface RightSidebarProps {
+  presentation?: 'overlay' | 'docked';
+}
+
 // PC端右侧边栏，一定不是mobile
-const RightSidebar: React.FC = () => {
+const RightSidebar: React.FC<RightSidebarProps> = ({ presentation = 'overlay' }) => {
   const dispatch = useAppDispatch();
   const messageCenterVisible = useAppSelector((state) => state.messageCenter.messageCenterVisible);
   const rightSidebarVisible = useAppSelector((state) => state.config.rightSidebarVisible);
   const [sidebarClosing, setSidebarClosing] = useState(false);
   const venue = useAppSelector((state) => state.sport.venue);
   const isOb = venue === EVenue.OB;
+  const isDocked = presentation === 'docked';
 
   const closeRightSidebar = useCallback(() => {
+    if (isDocked) return;
     if (!rightSidebarVisible) return;
     setSidebarClosing(true);
-  }, [rightSidebarVisible]);
+    dispatch(setRightSidebarVisible(false));
+  }, [dispatch, isDocked, rightSidebarVisible]);
   const isMobile = useAppSelector((state) => state.config.isMobile);
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
   const currentPlayType = useAppSelector((state) => state.sport.mainList.settings.playType);
@@ -286,34 +296,57 @@ const RightSidebar: React.FC = () => {
   const isH5 = screenBreakpoint === 'md';
   const show = showSportsHomeSidebarDetail || showSportsDetailsMatchList;
   const showAdvertise = !showSportsHomeSidebarDetail && !showSportsDetailsMatchList;
-  const sidebarTargetWidth = messageCenterVisible || showAdvertise ? 351 : 391;
+  const sidebarTargetWidth =
+    messageCenterVisible || showAdvertise ? RIGHT_SIDEBAR_AD_WIDTH : RIGHT_SIDEBAR_DETAIL_WIDTH;
   const [sidebarMounted, setSidebarMounted] = useState(rightSidebarVisible);
 
   useLayoutEffect(() => {
     if (rightSidebarVisible) {
       setSidebarMounted(true);
       setSidebarClosing(false);
+      return;
     }
-  }, [rightSidebarVisible]);
+    if (sidebarMounted) {
+      setSidebarClosing(true);
+    }
+  }, [isDocked, rightSidebarVisible, sidebarMounted]);
 
   const handleSidebarTransitionEnd = useCallback(
     (event: React.TransitionEvent<HTMLDivElement>) => {
-      if (event.propertyName !== 'transform') return;
+      if (event.propertyName !== (isDocked ? 'width' : 'transform')) return;
       if (sidebarClosing) {
         setSidebarMounted(false);
         setSidebarClosing(false);
-        dispatch(setRightSidebarVisible(false));
       }
     },
-    [dispatch, sidebarClosing],
+    [isDocked, sidebarClosing],
   );
   const sidebarShown = rightSidebarVisible && !sidebarClosing;
+  const sidebarTransform = isDocked
+    ? 'translate3d(0, 0, 0)'
+    : sidebarShown
+      ? 'translate3d(0, 0, 0)'
+      : 'translate3d(100%, 0, 0)';
 
   return (
     <ClientOnly>
       <div
-        className={clsx('h-full', sidebarMounted && styles.rightSidebarContainer)}
-        onClick={closeRightSidebar}
+        className={clsx(
+          'h-full',
+          sidebarMounted && !isDocked && styles.rightSidebarContainer,
+          sidebarMounted && isDocked && styles.rightSidebarDocked,
+        )}
+        onClick={isDocked ? undefined : closeRightSidebar}
+        onTransitionEnd={isDocked ? handleSidebarTransitionEnd : undefined}
+        style={
+          isDocked
+            ? {
+                width: sidebarMounted ? (sidebarShown ? sidebarTargetWidth : 0) : 0,
+                transition: 'width 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+                willChange: 'width',
+              }
+            : undefined
+        }
       >
         {sidebarMounted ? (
           <div
@@ -327,9 +360,9 @@ const RightSidebar: React.FC = () => {
             )}
             style={{
               width: sidebarTargetWidth,
-              transform: sidebarShown ? 'translate3d(0, 0, 0)' : 'translate3d(100%, 0, 0)',
-              transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
-              willChange: 'transform',
+              transform: sidebarTransform,
+              transition: isDocked ? undefined : 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+              willChange: isDocked ? undefined : 'transform',
             }}
           >
             <div className="relative flex-1 min-h-0 overflow-hidden">

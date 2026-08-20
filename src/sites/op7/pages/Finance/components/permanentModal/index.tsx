@@ -48,7 +48,7 @@ const PermanentModal = () => {
         if (blob) {
           // 使用 file-saver 保存为文件
           saveAs(blob, `永久域名.png`);
-          toast({ type: 'success', description: '图片已保存' });
+          toast({ type: 'success', description: '已保至相册' });
         } else {
           toast({ type: 'warning', description: '保存失败，请重试' });
         }
@@ -62,7 +62,7 @@ const PermanentModal = () => {
   const onCopy = async (text: string) => {
     await copyToClipboard(text);
     toast({
-      title: '复制成功',
+      title: '复制成功，粘贴保存永久访问',
       type: 'success',
     });
   };

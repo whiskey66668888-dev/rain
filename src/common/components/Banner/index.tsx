@@ -42,6 +42,8 @@ export interface BannerProps {
   className?: string;
   /** 手机模式下之展示1张 */
   isMobileOnlyOne?: boolean;
+  /** 自定义轮播项类名，用于响应式尺寸覆盖 */
+  itemClassName?: string;
 }
 
 /**
@@ -56,6 +58,7 @@ export const Banner: React.FC<BannerProps> = ({
   showDots = true,
   className = '',
   isMobileOnlyOne = true,
+  itemClassName,
 }) => {
   const swiperRef = useRef<SwiperRef | null>(null);
   // 在ssr初始化时需要添加间隙，避免样式闪烁
@@ -95,6 +98,7 @@ export const Banner: React.FC<BannerProps> = ({
         modules={[Autoplay, Navigation, Pagination]}
         spaceBetween={gap}
         slidesPerView="auto"
+        slidesPerGroup={1}
         loop={canNavigate}
         autoplay={
           autoplayInterval > 0
@@ -126,6 +130,7 @@ export const Banner: React.FC<BannerProps> = ({
                 'mr-10px': isInit,
               },
               isMobileOnlyOne ? styles.mobileOnlyOne : '',
+              itemClassName,
             )}
             style={{
               width: `${itemWidth}px`,

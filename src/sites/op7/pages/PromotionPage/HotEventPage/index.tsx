@@ -12,9 +12,8 @@ import LazyImage from '@/common/components/LazyImage';
 import MyPullToRefresh from '@/common/components/MyPullToRefresh';
 import styles from './HotEvent.module.scss';
 import likeIcon from '/images/common/promotion/hotEvent/like.png';
-import unlikeIcon from '/images/common/promotion/hotEvent/unlike.png';
-// ✅ 导入类型
-import type { HotEventItem } from '@/apis/origin/promotion/getHot';
+import unlikeLight from '/images/light/hotEvent/unlike.png';
+import unlikeDark from '/images/dark/hotEvent/unlike.png';
 import MyInfiniteScroll from './MyInfiniteScroll';
 
 import dayjs from 'dayjs';
@@ -214,7 +213,7 @@ const HotEventPage = () => {
                     {item.myLike ? (
                       <LazyImage src={likeIcon} alt="" />
                     ) : (
-                      <LazyImage src={unlikeIcon} alt="" />
+                      <LazyImage src={theme === 'dark' ? unlikeDark : unlikeLight} alt="" />
                     )}
                   </div>
                   <div className={styles.likeNum}>{item.likeNum ? item.likeNum : null}</div>
@@ -246,22 +245,14 @@ const HotEventPage = () => {
           onChange={handleSwitchEvent}
           disabled={pending}
         />
-        <div className={styles.imgBox}>
-          {(() => {
-            // ✅ 使用导入的类型
-            const imgKeys: (keyof HotEventItem)[] = [
-              'imageUrl',
-              'imageUrl2',
-              'imageUrl3',
-              'imageUrl4',
-              'imageUrl5',
-            ];
-
-            const imgList = imgKeys
-              .map((key) => hotData?.[key])
-              .filter((url): url is string => typeof url === 'string' && !!url);
-
-            return (
+        {(() => {
+          const rawList = isMobile ? hotData?.h5ImgList : hotData?.webImgList;
+          const imgList = (rawList ?? []).filter(
+            (url): url is string => typeof url === 'string' && !!url,
+          );
+          if (!isMobile && imgList.length === 0) return null;
+          return (
+            <div className={styles.imgBox}>
               <Swiper
                 className={styles.imgBg}
                 loop={imgList.length > 1}
@@ -280,18 +271,13 @@ const HotEventPage = () => {
               >
                 {imgList.map((item, i) => (
                   <Swiper.Item key={i}>
-                    <LazyImage
-                      src={item}
-                      alt={`image${i + 1}`}
-                      // placeholder="blur"
-                      className={styles.imgBg}
-                    />
+                    <LazyImage src={item} alt={`image${i + 1}`} className={styles.imgBg} />
                   </Swiper.Item>
                 ))}
               </Swiper>
-            );
-          })()}
-        </div>
+            </div>
+          );
+        })()}
 
         <div
           className={clsx(
@@ -302,12 +288,12 @@ const HotEventPage = () => {
         >
           {allcomment?.length > 0 || pending ? (
             <div
-              className={clsx(styles.comment, open ? styles.open : '')}
+              className={clsx(styles.comment, (open || !isMobile) && styles.open)}
               style={{
-                height: isMobile ? (open ? '100%' : twoChildHeight + 'px') : '100%', // ✅ PC 端固定 408px
+                height: isMobile ? (open ? '100%' : `${twoChildHeight}px`) : '100%',
               }}
             >
-              {isMobile && (
+              {isMobile ? (
                 <div
                   className={styles.commentTop}
                   onClick={() => {
@@ -332,7 +318,7 @@ const HotEventPage = () => {
                     />
                   </div>
                 </div>
-              )}
+              ) : null}
 
               <div className={clsx(styles.commontList)}>
                 <div
@@ -404,7 +390,7 @@ const HotEventPage = () => {
                     <Icon
                       src={item.iocn}
                       color={index === 2 ? 'var(--White-100)' : 'var(--Text-Main-10)'}
-                      size={14}
+                      size={isMobile ? 14 : 20}
                     />
                     {item.text}
                   </>

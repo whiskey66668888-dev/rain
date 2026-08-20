@@ -4,7 +4,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  overflow: hidden;
+  overflow: auto;
+  padding: 12px;
 
   .depositTypeList {
     display: grid;
@@ -73,17 +74,16 @@
 
   .main {
     flex: 1;
-    overflow: auto;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-bottom: 12px;
   }
 
   &.inModal {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
+    padding: 0;
 
     .depositTypeList {
       flex: none;
@@ -92,16 +92,17 @@
     .main {
       flex: none;
       overflow: visible;
-      padding-bottom: 0;
     }
   }
 
   &.autoPC {
     @include rwd-min('lg') {
-      padding: 0;
+      padding: 12px;
+      background: var(--Background-300);
+      border-radius: 12px;
+
       .depositTypeList {
         border-radius: 20px;
-        background: var(--Background-300);
         padding: 2px;
 
         .depositTypeItem {
@@ -136,19 +137,6 @@
           }
         }
       }
-    }
-  }
-
-  /** 独立充值页（DepositPage），与转账页 section 内内容一致，由外层滚动 */
-  &.pageLayout {
-    flex: none;
-    min-height: auto;
-    overflow: visible;
-
-    .main {
-      flex: none;
-      overflow: visible;
-      padding-bottom: 12px;
     }
   }
 }

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { useDebounce } from 'ahooks';
 import { useVenueBetData } from '@/common/hooks/bet/useVenueBetData';
-import { BettingDataContext } from '@/common/hooks/bet/context/BettingDataContext';
+import { BettingDataProvider } from '@/common/hooks/bet/context/BettingDataContext';
 import BetPc from './BetPC';
 import BetH5 from './BetH5';
 import { useQuery } from '@tanstack/react-query';
@@ -82,7 +82,7 @@ const Bet = () => {
   }
 
   return (
-    <BettingDataContext.Provider value={betData}>
+    <BettingDataProvider value={betData}>
       {isMobile ? (
         <>
           <FloatingButton />
@@ -91,7 +91,7 @@ const Bet = () => {
       ) : (
         <BetPc key="pc" />
       )}
-    </BettingDataContext.Provider>
+    </BettingDataProvider>
   );
 };
 

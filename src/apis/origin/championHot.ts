@@ -46,10 +46,7 @@ export const getChampionHotReq = (
 export const useChampionHotQuery = (sportId: number) => {
   return useQueryHook<string[], Error>({
     queryKey: ['origin', 'champion', 'hot', sportId],
-    queryFn: () =>
-      getChampionHotReq({ sportType: 'OP', sportId })
-        .then((res) => res.data ?? [])
-        .catch(() => []),
+    queryFn: () => getChampionHotReq({ sportType: 'OP', sportId }).then((res) => res.data ?? []),
     enabled: Number.isFinite(sportId) && sportId > 0,
     staleTime: 60 * 1000,
     retry: false,

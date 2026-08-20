@@ -65,7 +65,7 @@ const RulesDialog: React.FC<DialogProps> = ({
       onMaskClick={onClose}
       onClose={onClose}
       bodyStyle={{
-        width: '600px',
+        width: '450px',
       }}
     >
       <ContentWrapper />

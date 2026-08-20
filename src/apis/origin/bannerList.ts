@@ -43,12 +43,7 @@ export const useBannerListQuery = (
 ): ReturnType<typeof useQueryHook<GetBannerListResponse, Error>> => {
   return useQuery<GetBannerListResponse, Error>({
     queryKey: ['origin', 'banner', 'list', params],
-    queryFn: () =>
-      getBannerListReq(params)
-        .then((res) => res.data)
-        .catch(() => {
-          return [];
-        }),
+    queryFn: () => getBannerListReq(params).then((res) => res.data ?? []),
     staleTime: 5 * 60 * 1000,
     retry: false,
     enabled,

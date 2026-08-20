@@ -4,22 +4,40 @@ import useBetMethods from '@/common/hooks/bet/useBetMethods';
 import clsx from 'clsx';
 import BetPanel from './components/BetPanel';
 import OrdersPanel from './components/OrdersPanel';
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import {
+  shallowEqual,
+  useBettingDataGet,
+  useBettingDataSelector,
+} from '@/common/hooks/bet/context/BettingDataContext';
+import type { TUseVenueBetData } from '@/common/hooks/bet/useVenueBetData';
 import { zIndexMap } from '@/utils/constants/zIndex';
 
 const BetH5 = memo(() => {
-  const { showBetDrawer, showBetPanel, showOrdersPanel, currStep, venue, isParlay, betOrders } =
-    useBettingData();
+  const getBettingData = useBettingDataGet();
+  const { showBetDrawer, showBetPanel, showOrdersPanel } = useBettingDataSelector(
+    (state: TUseVenueBetData) => ({
+      showBetDrawer: state.showBetDrawer,
+      showBetPanel: state.showBetPanel,
+      showOrdersPanel: state.showOrdersPanel,
+    }),
+    shallowEqual,
+  );
   const { hideBetDrawer, confirmClick } = useBetMethods();
 
   // #region 点击弹窗蒙层
   const betPopupMaskClick = useCallback(() => {
-    if (currStep.fetching) return;
+    const data: TUseVenueBetData = getBettingData();
+    if (data.currStep.fetching) return;
     hideBetDrawer();
-    if (showOrdersPanel) {
-      confirmClick({ venue, isParlay, betOrders, isMaskClick: true });
+    if (data.showOrdersPanel) {
+      confirmClick({
+        venue: data.venue,
+        isParlay: data.isParlay,
+        betOrders: data.betOrders,
+        isMaskClick: true,
+      });
     }
-  }, [currStep.fetching, venue, hideBetDrawer, showOrdersPanel, confirmClick, isParlay, betOrders]);
+  }, [getBettingData, hideBetDrawer, confirmClick]);
   // #endregion
 
   return (

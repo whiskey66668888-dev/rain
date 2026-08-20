@@ -30,8 +30,9 @@
 }
 
 .item {
-  width: 109px;
-  height: 42px;
+  width: calc((100% - 16px) / 3);
+  min-width: 109px;
+  aspect-ratio: 109 / 42;
   display: flex;
   flex: none;
   flex-shrink: 0;
@@ -40,4 +41,8 @@
   border-radius: 10px;
   background: var(--Background-300);
   cursor: default;
+
+  @include rwd-min('lg') {
+    width: max(109px, calc((100% - (var(--provider-columns) - 1) * 8px) / var(--provider-columns)));
+  }
 }

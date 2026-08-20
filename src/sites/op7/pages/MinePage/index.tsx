@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PageTransition } from '@/common/components/animations/PageTransition';
@@ -17,8 +17,14 @@ import {
   hasAnySecurityVerification,
   hasCashPassword,
 } from '@/sites/op7/pages/MinePage/utils/securityStatus';
+import VersionChangeModal from '@/sites/op7/pages/Finance/deposit/components/versionChange';
+import {
+  getInitialDepositVersion,
+  setSessionDepositVersion,
+} from '@/sites/op7/pages/Finance/deposit/version';
 
 const ICON_BASE = '/images/common/mine/icon_pc';
+const DEPOSIT_VERSION_CLICK_WINDOW = 1200;
 
 type TNavItem = { label: string; path: AppPath; icon: string; requiresAuth?: boolean };
 
@@ -71,6 +77,9 @@ const MinePage: React.FC = () => {
   const [securityTipMode, setSecurityTipMode] = useState<'cashPassword' | 'securityVerify' | null>(
     null,
   );
+  const [depositVersionModalVisible, setDepositVersionModalVisible] = useState(false);
+  const [depositVersion, setDepositVersion] = useState(getInitialDepositVersion);
+  const depositClickRef = useRef({ count: 0, lastAt: 0 });
   const isMineH5Route = pathname === PATHS.mine || pathname.includes(PATHS.mineH5);
   const haveCashPass = useAppSelector((state) => state.user.memberInfo.haveCashPass);
   const isMobile = useAppSelector((state) => state.config.isMobile);
@@ -111,6 +120,24 @@ const MinePage: React.FC = () => {
   }, [isMobile, pathname]);
 
   const handleNavClick = async (item: TNavItem) => {
+    if (item.path === PATHS.mineDeposit) {
+      const now = Date.now();
+      const nextCount =
+        now - depositClickRef.current.lastAt <= DEPOSIT_VERSION_CLICK_WINDOW
+          ? depositClickRef.current.count + 1
+          : 1;
+      depositClickRef.current = { count: nextCount, lastAt: now };
+
+      if (nextCount >= 3) {
+        depositClickRef.current = { count: 0, lastAt: 0 };
+        setDepositVersion(getInitialDepositVersion());
+        setDepositVersionModalVisible(true);
+        return;
+      }
+    } else {
+      depositClickRef.current = { count: 0, lastAt: 0 };
+    }
+
     if (item.requiresAuth) {
       authNavigate(item.path);
       return;
@@ -257,6 +284,15 @@ const MinePage: React.FC = () => {
         onGo={() => {
           setSecurityTipMode(null);
           navigate(PATHS.mineSecurity);
+        }}
+      />
+      <VersionChangeModal
+        visible={depositVersionModalVisible}
+        value={depositVersion}
+        onClose={() => setDepositVersionModalVisible(false)}
+        onChange={(version) => {
+          setSessionDepositVersion(version);
+          setDepositVersion(version);
         }}
       />
     </>

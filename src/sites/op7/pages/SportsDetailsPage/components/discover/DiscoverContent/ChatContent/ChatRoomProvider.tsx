@@ -1,5 +1,6 @@
-import React, { createContext, useCallback, useContext } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useRef } from 'react';
 import type { ChatConfigInfo, MatchShareInfo } from '@/core/sdk/IMManager';
+import { createContextStore } from '@/common/hooks/createContextStore';
 import { useChatFilter } from './hooks/useChatFilter';
 import { useChatRoom } from './hooks/useChatRoom';
 
@@ -10,11 +11,46 @@ interface ChatRoomProviderProps {
   matchShareInfo?: MatchShareInfo | null;
 }
 
-type ChatRoomContextValue = ReturnType<typeof useChatFilter> & ReturnType<typeof useChatRoom>;
+export type TChatFilter = ReturnType<typeof useChatFilter>;
+export type TChatRoom = ReturnType<typeof useChatRoom>;
+export type TChatRoomActions = Pick<
+  TChatRoom,
+  | 'setQuotedMessage'
+  | 'setIsAtBottom'
+  | 'flushPendingMessages'
+  | 'sendText'
+  | 'sendHotWord'
+  | 'sendMatchShare'
+  | 'sendBetShare'
+>;
 
-const ChatRoomContext = createContext<ChatRoomContextValue | null>(null);
+const ChatFilterContext = createContext<TChatFilter | null>(null);
+const ChatRoomActionsContext = createContext<TChatRoomActions | null>(null);
+const chatRoomStore = createContextStore<TChatRoom>('ChatRoom');
 
-/** 聊天室局部状态：filter + 消息/发送/禁言，不进 Redux */
+function useStableChatRoomActions(room: TChatRoom): TChatRoomActions {
+  const roomRef = useRef(room);
+  roomRef.current = room;
+  return useMemo<TChatRoomActions>(
+    () => ({
+      setQuotedMessage: (...args: Parameters<TChatRoom['setQuotedMessage']>) =>
+        roomRef.current.setQuotedMessage(...args),
+      setIsAtBottom: (...args: Parameters<TChatRoom['setIsAtBottom']>) =>
+        roomRef.current.setIsAtBottom(...args),
+      flushPendingMessages: () => roomRef.current.flushPendingMessages(),
+      sendText: (...args: Parameters<TChatRoom['sendText']>) => roomRef.current.sendText(...args),
+      sendHotWord: (...args: Parameters<TChatRoom['sendHotWord']>) =>
+        roomRef.current.sendHotWord(...args),
+      sendMatchShare: (...args: Parameters<TChatRoom['sendMatchShare']>) =>
+        roomRef.current.sendMatchShare(...args),
+      sendBetShare: (...args: Parameters<TChatRoom['sendBetShare']>) =>
+        roomRef.current.sendBetShare(...args),
+    }),
+    [],
+  );
+}
+
+/** 聊天室局部状态：filter 与消息分开展示，避免新消息带动筛选栏/输入区重渲染 */
 export const ChatRoomProvider: React.FC<ChatRoomProviderProps> = ({
   children,
   sportId,
@@ -22,7 +58,7 @@ export const ChatRoomProvider: React.FC<ChatRoomProviderProps> = ({
   matchShareInfo,
 }) => {
   const filterState = useChatFilter();
-  const { setChatFilterType } = filterState;
+  const { setChatFilterType, chatFilterType, isChatTab, isShareTab, isBigTab } = filterState;
   const onSwitchToChatTab = useCallback(() => {
     setChatFilterType('chat');
   }, [setChatFilterType]);
@@ -30,27 +66,56 @@ export const ChatRoomProvider: React.FC<ChatRoomProviderProps> = ({
   const roomState = useChatRoom({
     sportId,
     chatConfig,
-    activeFilterType: filterState.chatFilterType,
+    activeFilterType: chatFilterType,
     matchShareInfo,
     onSwitchToChatTab,
   });
 
+  const filterValue = useMemo<TChatFilter>(
+    () => ({
+      chatFilterType,
+      setChatFilterType,
+      isChatTab,
+      isShareTab,
+      isBigTab,
+    }),
+    [chatFilterType, setChatFilterType, isChatTab, isShareTab, isBigTab],
+  );
+
+  const actions = useStableChatRoomActions(roomState);
+
   return (
-    <ChatRoomContext.Provider
-      value={{
-        ...filterState,
-        ...roomState,
-      }}
-    >
-      {children}
-    </ChatRoomContext.Provider>
+    <ChatFilterContext.Provider value={filterValue}>
+      <ChatRoomActionsContext.Provider value={actions}>
+        <chatRoomStore.Provider value={roomState}>{children}</chatRoomStore.Provider>
+      </ChatRoomActionsContext.Provider>
+    </ChatFilterContext.Provider>
   );
 };
 
-export const useChatRoomContext = (): ChatRoomContextValue => {
-  const ctx = useContext(ChatRoomContext);
+export const useChatFilterContext = (): TChatFilter => {
+  const ctx = useContext(ChatFilterContext);
   if (!ctx) {
-    throw new Error('useChatRoomContext must be used in ChatRoomProvider');
+    throw new Error('useChatFilterContext must be used in ChatRoomProvider');
   }
   return ctx;
+};
+
+export function useChatRoomSelector<S>(
+  selector: (state: TChatRoom) => S,
+  isEqual: (left: S, right: S) => boolean = Object.is,
+): S {
+  return chatRoomStore.useSelector(selector, isEqual);
+}
+
+export function useChatRoomFields<K extends keyof TChatRoom>(...keys: K[]): Pick<TChatRoom, K> {
+  return chatRoomStore.useFields(...keys);
+}
+
+export const useChatRoomActions = (): TChatRoomActions => {
+  const actions = useContext(ChatRoomActionsContext);
+  if (!actions) {
+    throw new Error('useChatRoomActions must be used in ChatRoomProvider');
+  }
+  return actions;
 };

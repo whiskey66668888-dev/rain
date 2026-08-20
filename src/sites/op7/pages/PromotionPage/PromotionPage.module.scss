@@ -2,7 +2,6 @@
   flex: 1;
   flex-direction: column;
   display: flex;
-  overflow: hidden;
   .tabs {
     height: 44px;
     display: flex;
@@ -14,7 +13,7 @@
     position: sticky;
     top: 0;
     width: 100%;
-    max-width: 1176px;
+    // max-width: 1176px;
     margin: 0 auto;
     @include rwd-min('lg') {
       position: static;
@@ -50,6 +49,29 @@
   @include rwd-min('lg') {
     .header {
       display: none;
+    }
+  }
+}
+
+// 热门活动：H5 锁在剩余视口内，展开评论不顶走底部按钮；PC 撑满顶栏下方一屏，footer 到第二屏
+.hotEventLayout {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+
+  .content {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  @include rwd-min('lg') {
+    flex-shrink: 0;
+    min-height: calc(100vh - 48px);
+    overflow: visible;
+
+    .content {
+      overflow: visible;
+      min-height: calc(100vh - 92px); // header 48 + tab 44
     }
   }
 }

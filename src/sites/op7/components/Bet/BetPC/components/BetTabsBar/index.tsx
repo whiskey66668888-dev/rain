@@ -1,16 +1,28 @@
 import clsx from 'clsx';
-import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import {
+  shallowEqual,
+  useBettingDataSelector,
+} from '@/common/hooks/bet/context/BettingDataContext';
+import type { TUseVenueBetData } from '@/common/hooks/bet/useVenueBetData';
 import useBetMethods from '@/common/hooks/bet/useBetMethods';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 const BetTabsBar = () => {
-  const { singleBetData, parlayBetData, isParlay, isChatBet } = useBettingData();
+  const { singleCount, parlayCount, isParlay, isChatBet } = useBettingDataSelector(
+    (state: TUseVenueBetData) => ({
+      singleCount: state.singleBetData.ids.length,
+      parlayCount: state.parlayBetData.ids.length,
+      isParlay: state.isParlay,
+      isChatBet: state.isChatBet,
+    }),
+    shallowEqual,
+  );
   const { switchParlay, switchSingle } = useBetMethods();
 
   const tabs = useMemo(() => {
     const singleTab = {
       label: '单关',
-      count: singleBetData.ids.length,
+      count: singleCount,
       active: !isParlay,
       onClick: switchSingle,
     };
@@ -19,19 +31,12 @@ const BetTabsBar = () => {
       singleTab,
       {
         label: '串关',
-        count: parlayBetData.ids.length,
+        count: parlayCount,
         active: isParlay,
         onClick: switchParlay,
       },
     ];
-  }, [
-    singleBetData.ids.length,
-    parlayBetData.ids.length,
-    isParlay,
-    isChatBet,
-    switchSingle,
-    switchParlay,
-  ]);
+  }, [singleCount, parlayCount, isParlay, isChatBet, switchSingle, switchParlay]);
 
   return (
     <div data-desc="投注单导航栏" className="shrink-0 px-12px py-8px">
@@ -72,4 +77,4 @@ const BetTabsBar = () => {
   );
 };
 
-export default BetTabsBar;
+export default memo(BetTabsBar);

@@ -1,0 +1,109 @@
+.deposit {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+}
+
+.confirmContent {
+  color: var(--Text-800);
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+}
+
+.realNameConfirmContent {
+  margin-top: 12px;
+  color: var(--Text-800);
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+}
+
+.confirmFooter {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.confirmButton {
+  flex: 1;
+}
+
+.resultInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--Text-800);
+  word-break: break-all;
+
+  img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.submitBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: var(--Background-300);
+  padding: 8px 12px 16px 12px;
+}
+
+.submitButton {
+  width: 100%;
+}
+
+.inModal {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+
+  .main {
+    flex: none;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .submitBar {
+    padding: 12px;
+    background: var(--Background-400);
+  }
+}
+
+.autoPC {
+  @include rwd-min('lg') {
+    padding: 12px;
+    background: var(--Background-300);
+    border-radius: 12px;
+
+    .main {
+      padding: 0;
+    }
+
+    .submitBar {
+      position: static;
+      background: transparent;
+      padding: 0;
+    }
+  }
+}

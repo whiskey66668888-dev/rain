@@ -60,9 +60,7 @@ export const getLoginBannerReq = (
 };
 
 const fetchLoginBannerData = (params: GetLoginBannerParams): Promise<GetLoginBannerResponse> =>
-  getLoginBannerReq(params)
-    .then((res) => res.data || [])
-    .catch(() => []);
+  getLoginBannerReq(params).then((res) => res.data || []);
 
 /**
  * 获取登录注册页面 Banner 列表的 React Query Hook

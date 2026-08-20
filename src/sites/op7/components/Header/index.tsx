@@ -10,7 +10,11 @@ import HeaderPC from './HeaderPC';
 /**
  * 头部组件
  */
-const Header: React.FC = () => {
+interface HeaderProps {
+  rightSidebarDocked?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ rightSidebarDocked = false }) => {
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
   const rightSidebarVisible = useAppSelector((state) => state.config.rightSidebarVisible);
   const themeMode = useAppSelector((state) => state.config.system.themeMode);
@@ -20,8 +24,10 @@ const Header: React.FC = () => {
       : 'light';
 
   const isMobile = useMemo(
-    () => screenBreakpoint === 'md' || (rightSidebarVisible && screenBreakpoint === 'lg'),
-    [screenBreakpoint, rightSidebarVisible],
+    () =>
+      screenBreakpoint === 'md' ||
+      (!rightSidebarDocked && rightSidebarVisible && screenBreakpoint === 'lg'),
+    [screenBreakpoint, rightSidebarDocked, rightSidebarVisible],
   );
 
   return (
@@ -34,7 +40,7 @@ const Header: React.FC = () => {
       {isMobile ? (
         <HeaderH5 theme={theme} />
       ) : (
-        <HeaderPC theme={theme} rightSidebarVisible={rightSidebarVisible} />
+        <HeaderPC theme={theme} rightSidebarVisible={!rightSidebarDocked && rightSidebarVisible} />
       )}
     </div>
   );
