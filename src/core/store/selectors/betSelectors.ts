@@ -108,3 +108,24 @@ export function selectSelectedBetsForMatch(
 ): TSelectedBetHighlight[] {
   return selectSelectedBetsForMatchImpl(state, matchId);
 }
+
+/** 按 ids 顺序取出投注项。无 sortComparer 时与 Object.values(entities) 同序；不用 adapter getSelectors / createSelector，避免类型被打成 any */
+export function selectAllSingleBetItems(data: EntityState<TBetItem, string>): TBetItem[] {
+  const list: TBetItem[] = [];
+  for (const id of data.ids) {
+    const item = data.entities[id];
+    if (item) list.push(item);
+  }
+  return list;
+}
+
+export function selectSingleBetItemById(
+  data: EntityState<TBetItem, string>,
+  id: string,
+): TBetItem | undefined {
+  return data.entities[id];
+}
+
+export function selectAllParlayBetItems(data: EntityState<TBetItem, string>): TBetItem[] {
+  return selectAllSingleBetItems(data);
+}

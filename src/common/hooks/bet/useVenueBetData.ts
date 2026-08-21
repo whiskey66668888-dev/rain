@@ -1,18 +1,61 @@
 import { useMemo } from 'react';
 import {
+  EAcceptOddsPrefer,
   EBetOrderStatus,
   EBetStep,
   EBetType,
   EOddsStatus,
   EVenue,
 } from '@/apis/commonSports/constants';
+import type { TBetItem, TBetOrderItem, TParlayItem } from '@/apis/commonSports/types';
 import { useAppSelector } from '@/core/store/hooks';
-import { selectVenueBetState } from '@/core/store/selectors/betSelectors';
+import {
+  selectAllSingleBetItems,
+  selectSingleBetItemById,
+  selectVenueBetState,
+} from '@/core/store/selectors/betSelectors';
+import type { TVenueBetState } from '@/core/store/slices/betSlice';
 import { selectSportVenue, selectSyncSingleParlay } from '@/core/store/selectors/sportSelectors';
 import { selectAcceptOddsPrefer, selectVenueBalance } from '@/core/store/selectors/userSelectors';
 import bigMath, { bigNB } from '@/utils/bet/bigMath';
+import _ from 'lodash';
 
-export const useVenueBetData = () => {
+export type TUseVenueBetData = TVenueBetState & {
+  allBetItemIds: string[];
+  venue: EVenue;
+  acceptOddsPrefer: EAcceptOddsPrefer;
+  isParlay: boolean;
+  currParlayBetItem: TParlayItem | undefined;
+  currSingleId: string;
+  currSingleBetItem: TBetItem | undefined;
+  totalBalance: string;
+  currStep: {
+    normal: boolean;
+    fetching: boolean;
+    polling: boolean;
+    confirmed: boolean;
+  };
+  floatingBetCount: number;
+  showBetPanel: boolean;
+  showOrdersPanel: boolean;
+  preBetItem: TBetItem | undefined;
+  totalBetAmount: string;
+  totalCanWinAmount: string;
+  betBtnDisabled: boolean;
+  totalBetAmountH5: string;
+  totalCanWinAmountH5: string;
+  betBtnDisabledH5: boolean;
+  totalOrdersStatus: {
+    text: string;
+    status: EBetOrderStatus;
+    statusColor: string;
+  };
+  onlyOneSingleBetItem: TBetItem | undefined;
+  syncSingleParlay: boolean;
+  currPreBetOrder: TBetOrderItem | undefined;
+};
+
+export function useVenueBetData(): TUseVenueBetData {
   const venue = useAppSelector(selectSportVenue);
   const syncSingleParlay = useAppSelector(selectSyncSingleParlay);
   const venueBetStore = useAppSelector(selectVenueBetState);
@@ -45,9 +88,9 @@ export const useVenueBetData = () => {
     return venueBetStore.singleBetData.ids[venueBetStore.singleIndex] ?? '';
   }, [venueBetStore.singleBetData.ids, venueBetStore.singleIndex]);
 
-  const currSingleBetItem = useMemo(() => {
-    return venueBetStore.singleBetData.entities[currSingleId];
-  }, [venueBetStore.singleBetData.entities, currSingleId]);
+  const currSingleBetItem = useMemo((): TBetItem | undefined => {
+    return selectSingleBetItemById(venueBetStore.singleBetData, currSingleId);
+  }, [venueBetStore.singleBetData, currSingleId]);
 
   const currStep = useMemo(() => {
     return {
@@ -72,11 +115,11 @@ export const useVenueBetData = () => {
     [currStep.polling, currStep.confirmed],
   );
 
-  const preBetItem = useMemo(() => {
+  const preBetItem = useMemo((): TBetItem | undefined => {
     if (isParlay) {
       return undefined;
     }
-    let _preBetItem = _.find(
+    let _preBetItem: TBetItem | undefined = _.find(
       venueBetStore.singleBetData.entities,
       (item) => !!item.preBetInfo?.preBetEnabled,
     );
@@ -182,7 +225,8 @@ export const useVenueBetData = () => {
         bigNB(preBetItem.betAmount).lt(preBetItem?.preBetInfo?.preBetMinAmount || 0) ||
         bigNB(preBetItem.betAmount).gt(preBetItem?.preBetInfo?.preBetMaxAmount || 0);
     } else {
-      for (const item of Object.values(venueBetStore.singleBetData.entities)) {
+      const singleItems: TBetItem[] = selectAllSingleBetItems(venueBetStore.singleBetData);
+      for (const item of singleItems) {
         if (item.oddsStatus === EOddsStatus.Open && +item.betAmount > 0) {
           hasInput = true;
           _totalBetAmount = _totalBetAmount.add(item.betAmount || 0);
@@ -239,7 +283,7 @@ export const useVenueBetData = () => {
     isParlay,
     preBetItem,
     venueBetStore.parlayList,
-    venueBetStore.singleBetData.entities,
+    venueBetStore.singleBetData,
     currSingleBetItem,
   ]);
 
@@ -273,11 +317,11 @@ export const useVenueBetData = () => {
   }, [venueBetStore.betOrders]);
 
   /** 单关模式，并且只存在一个投注项 */
-  const onlyOneSingleBetItem = useMemo(() => {
+  const onlyOneSingleBetItem: TBetItem | undefined = useMemo((): TBetItem | undefined => {
     return !isParlay && venueBetStore.singleBetData.ids.length === 1
-      ? venueBetStore.singleBetData.entities[venueBetStore.singleBetData.ids[0]!]
+      ? selectSingleBetItemById(venueBetStore.singleBetData, venueBetStore.singleBetData.ids[0]!)
       : undefined;
-  }, [isParlay, venueBetStore.singleBetData.entities, venueBetStore.singleBetData.ids]);
+  }, [isParlay, venueBetStore.singleBetData]);
 
   return {
     ...venueBetStore,
@@ -305,6 +349,4 @@ export const useVenueBetData = () => {
     syncSingleParlay,
     currPreBetOrder,
   };
-};
-
-export type TUseVenueBetData = ReturnType<typeof useVenueBetData>;
+}

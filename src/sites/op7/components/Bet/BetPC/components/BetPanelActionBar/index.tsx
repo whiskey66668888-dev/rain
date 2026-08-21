@@ -2,6 +2,7 @@ import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
 import useBetMethods, { usePlaceBet } from '@/common/hooks/bet/useBetMethods';
 import clsx from 'clsx';
 import { EOddsStatus, ESportsLeftPanelType } from '@/apis/commonSports/constants';
+import type { TBetItem } from '@/apis/commonSports/types';
 import { useGetVenueBalance } from '@/common/hooks/sports/useVenueBalance';
 import { useCallback, useMemo } from 'react';
 import Button from '@/common/components/Button';
@@ -10,6 +11,10 @@ import { ClearInputXSvg, CloseSvg } from '@/sites/op7/components/SvgIcons';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
 import useSportsMainListControl from '@/common/hooks/useSportsMainListControl';
+import {
+  selectAllParlayBetItems,
+  selectAllSingleBetItems,
+} from '@/core/store/selectors/betSelectors';
 
 const BetPanelActionBar = () => {
   const {
@@ -38,18 +43,20 @@ const BetPanelActionBar = () => {
   const { placeBet } = usePlaceBet();
 
   const invalidBetItemIds = useMemo(() => {
-    const entities = isParlay ? parlayBetData.entities : singleBetData.entities;
-    return Object.values(entities)
+    const items: TBetItem[] = isParlay
+      ? selectAllParlayBetItems(parlayBetData)
+      : selectAllSingleBetItems(singleBetData);
+    return items
       .filter((item) => item.oddsStatus !== EOddsStatus.Open)
       .map((item) => item.betItemId);
-  }, [isParlay, parlayBetData.entities, singleBetData.entities]);
+  }, [isParlay, parlayBetData, singleBetData]);
 
   const singleBatchLimitInfo = useMemo(() => {
-    const entities = singleBetData.entities;
+    const items: TBetItem[] = selectAllSingleBetItems(singleBetData);
     let minBet = 0;
     let maxBet = 999999;
     let hasNewlyAdded = false;
-    Object.values(entities).forEach((item) => {
+    items.forEach((item) => {
       minBet = Math.max(minBet, item.minBet);
       maxBet = Math.min(maxBet, item.maxBet);
       hasNewlyAdded = hasNewlyAdded || item.isNewlyAdded;
@@ -60,22 +67,22 @@ const BetPanelActionBar = () => {
       maxBet: err ? 0 : maxBet,
       hasNewlyAdded,
     };
-  }, [singleBetData.entities]);
+  }, [singleBetData]);
 
   const handleBet = useCallback(() => {
     if (!isLogin) {
       dispatch(openLoginModal());
       return;
     }
+    const parlayItems: TBetItem[] = selectAllParlayBetItems(parlayBetData);
+    const singleItems: TBetItem[] = selectAllSingleBetItems(singleBetData);
     placeBet({
       venue,
       acceptOddsPrefer,
       isParlay,
       betItemList: isParlay
-        ? Object.values(parlayBetData.entities)
-        : Object.values(singleBetData.entities).filter(
-            (item) => item.oddsStatus === EOddsStatus.Open && +item.betAmount > 0,
-          ),
+        ? parlayItems
+        : singleItems.filter((item) => item.oddsStatus === EOddsStatus.Open && +item.betAmount > 0),
       parlayList: isParlay ? parlayList.filter((item) => +item.betAmount > 0) : [],
       callback: () => {
         getVenueBalance({ venue });
@@ -100,7 +107,7 @@ const BetPanelActionBar = () => {
     (!isParlay && singleBetData.ids.length < 1) ||
     (!isParlay &&
       singleBetData.ids.length === 1 &&
-      singleBetData.ids[0] === preBetItem?.betItemId) ||
+      singleBetData.ids[0] === (preBetItem ? preBetItem.betItemId : undefined)) ||
     (isParlay && parlayBetData.ids.length < 1)
   ) {
     return null;

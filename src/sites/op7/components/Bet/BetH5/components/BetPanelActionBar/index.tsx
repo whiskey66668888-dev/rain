@@ -1,15 +1,18 @@
+import { TBetItem } from '@/apis/commonSports/types';
 import { useBettingData } from '@/common/hooks/bet/context/BettingDataContext';
+import type { TUseVenueBetData } from '@/common/hooks/bet/useVenueBetData';
 import useBetMethods, { usePlaceBet, usePlacePreBet } from '@/common/hooks/bet/useBetMethods';
 import clsx from 'clsx';
 import { useCallback } from 'react';
 import { useGetVenueBalance } from '@/common/hooks/sports/useVenueBalance';
 import Switch from '@/common/components/Switch';
-import { TBetItem } from '@/apis/commonSports/types';
 import Button from '@/common/components/Button';
 import { useAppDispatch, useAppSelector } from '@/core/store/hooks';
 import { openLoginModal } from '@/core/store/slices/authUISlice';
+import { selectAllParlayBetItems } from '@/core/store/selectors/betSelectors';
 
 const BetPanelActionBar = () => {
+  const bettingData: TUseVenueBetData = useBettingData();
   const {
     venue,
     isParlay,
@@ -26,7 +29,9 @@ const BetPanelActionBar = () => {
     acceptOddsPrefer,
     currSingleBetItem,
     isChatBet,
-  } = useBettingData();
+  } = bettingData;
+  const currentSingleBetItem: TBetItem | undefined = currSingleBetItem;
+  const currentPreBetItem: TBetItem | undefined = preBetItem;
   const dispatch = useAppDispatch();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
   const isMobile = useAppSelector((state) => state.config.isMobile);
@@ -45,15 +50,15 @@ const BetPanelActionBar = () => {
       dispatch(openLoginModal());
       return;
     }
-    if (!!preBetItem) {
-      placePreBet({ venue, betItem: preBetItem, callback, isMobile, autoFollowMatch });
+    if (!!currentPreBetItem) {
+      placePreBet({ venue, betItem: currentPreBetItem, callback, isMobile, autoFollowMatch });
       return;
     }
     let betItemList: TBetItem[] = [];
     if (isParlay) {
-      betItemList = Object.values(parlayBetData.entities);
-    } else if (currSingleBetItem?.betAmount) {
-      betItemList = [currSingleBetItem];
+      betItemList = selectAllParlayBetItems(parlayBetData);
+    } else if (currentSingleBetItem?.betAmount) {
+      betItemList = [currentSingleBetItem];
     } else {
       return;
     }
@@ -64,16 +69,16 @@ const BetPanelActionBar = () => {
       betItemList,
       parlayList: isParlay ? parlayList.filter((item) => +item.betAmount > 0) : [],
       /** 默认金额功能开启状态，并且单关单项投注时，更新默认金额 */
-      updatedDefaultAmount: !!defaultAmount ? currSingleBetItem?.betAmount : '',
+      updatedDefaultAmount: !!defaultAmount ? currentSingleBetItem?.betAmount : '',
       callback,
       autoFollowMatch,
     });
   }, [
     dispatch,
     isLogin,
-    preBetItem,
+    currentPreBetItem,
     isParlay,
-    currSingleBetItem,
+    currentSingleBetItem,
     placeBet,
     venue,
     acceptOddsPrefer,
@@ -81,23 +86,23 @@ const BetPanelActionBar = () => {
     defaultAmount,
     callback,
     placePreBet,
-    parlayBetData.entities,
+    parlayBetData,
     autoFollowMatch,
     isMobile,
   ]);
 
   const onChange = useCallback(() => {
-    if (!currSingleBetItem) {
+    if (!currentSingleBetItem) {
       return;
     }
-    toggleDefaultAmount({ venue, betItem: currSingleBetItem, defaultAmount });
-  }, [toggleDefaultAmount, venue, currSingleBetItem, defaultAmount]);
+    toggleDefaultAmount({ venue, betItem: currentSingleBetItem, defaultAmount });
+  }, [toggleDefaultAmount, venue, currentSingleBetItem, defaultAmount]);
 
   return (
     <div className="absolute bottom-0 inset-x-0 px-12px pt-10px h-98px bg-[var(--Background-300)]">
       <div className={clsx('flex items-center gap-8px justify-between')}>
         <div className="min-h-24px">
-          {!isParlay && !isChatBet && !!currSingleBetItem && !currSingleBetItem?.canParlay && (
+          {!isParlay && !isChatBet && !!currentSingleBetItem && !currentSingleBetItem.canParlay && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -124,7 +129,7 @@ const BetPanelActionBar = () => {
               {totalBetAmount}
             </p>
           </div>
-        ) : currSingleBetItem ? (
+        ) : currentSingleBetItem ? (
           <div className="flex items-center gap-4px">
             <p className="_tf[14] text-[var(--Text-Main-10)]">设置为默认金额</p>
             <Switch checked={!!defaultAmount} onChange={onChange} />
@@ -139,15 +144,15 @@ const BetPanelActionBar = () => {
               '_tf[16] font-semibold text-[var(--Text-800)]',
             )}
             onClick={() => {
-              if (!!preBetItem) {
-                closePreBet({ venue, betItemId: preBetItem.betItemId });
+              if (!!currentPreBetItem) {
+                closePreBet({ venue, betItemId: currentPreBetItem.betItemId });
               } else {
                 hideBetDrawer();
                 clearBet();
               }
             }}
           >
-            {!!preBetItem ? '关闭预约' : '清除'}
+            {!!currentPreBetItem ? '关闭预约' : '清除'}
           </button>
         </div>
         <Button
@@ -161,7 +166,7 @@ const BetPanelActionBar = () => {
           {isLogin ? (
             <div className="flex gap-2px flex-col items-center justify-center">
               <p className="_tf[16] font-500 leading-[1] text-[var(--White-100)]">
-                {!!preBetItem ? '预约投注' : '投注'}
+                {!!currentPreBetItem ? '预约投注' : '投注'}
               </p>
               <p
                 className={clsx(
