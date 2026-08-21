@@ -25,6 +25,12 @@ import { syncSocialUnreadCount } from '@/apis/origin/social/getSocialUnreadCount
 import { clearSecurityCenterQueries, clearSocialConfigQueries } from '@/core/query/utils';
 import { PATHS } from '@/sites/op7/routes/paths';
 import { useFingerprint } from '@/sites/op7/hooks/useFingerprint';
+import {
+  safeGetSessionJSON,
+  safeRemoveLocal,
+  safeRemoveSession,
+  safeSetLocalString,
+} from '@/utils/storage/webStorage';
 
 const USERNAME_REGEX = /^(?:[A-Za-z]{5,16}|\d{5,16}|[A-Za-z\d]{5,16})$/;
 
@@ -47,8 +53,7 @@ const validateLoginForm = (loginName: string, password: string): boolean => {
 };
 
 const getStoredParams = (): LoginParams | null => {
-  const stored = sessionStorage.getItem('params');
-  return stored ? (JSON.parse(stored) as LoginParams) : null;
+  return safeGetSessionJSON<LoginParams | null>('params', null);
 };
 
 export const useLogin = (): {
@@ -102,7 +107,7 @@ export const useLogin = (): {
           visitorId,
           ...(mouseAction ? { mouseAction } : {}),
         });
-        sessionStorage.removeItem('params');
+        safeRemoveSession('params');
         // 登录成功后刷新客服配置（belongingScene=1 与全站默认一致）
         void getServiceInfoReq(1)
           .then((serviceRes) => {
@@ -114,24 +119,24 @@ export const useLogin = (): {
 
         // 保存记住密码功能 (localStorage)
         // 1. 无论是否记住密码，都保存用户的"开关状态偏好"
-        localStorage.setItem('isKeepLogin', keepLogin === '1' ? '1' : '0');
+        safeSetLocalString('isKeepLogin', keepLogin === '1' ? '1' : '0');
 
         if (keepLogin === '1') {
           // 2. 如果勾选了记住密码，保存账号和加密后的密码
-          localStorage.setItem('userName', loginName);
+          safeSetLocalString('userName', loginName);
           try {
             const encryptedPwd = encryption.zip_data({ password });
             if (encryptedPwd) {
-              localStorage.setItem('userPwd', encryptedPwd);
+              safeSetLocalString('userPwd', encryptedPwd);
             }
           } catch (error) {
             console.error('密码加密失败', error);
-            localStorage.removeItem('userPwd');
+            safeRemoveLocal('userPwd');
           }
         } else {
           // 3. 用户未勾选记住密码，清除账号密码数据，但保留 isKeepLogin=0 的状态
-          localStorage.removeItem('userName');
-          localStorage.removeItem('userPwd');
+          safeRemoveLocal('userName');
+          safeRemoveLocal('userPwd');
         }
 
         const authRedirectPath = consumeAuthRedirectPath();

@@ -35,6 +35,14 @@ import Button from '@/common/components/Button';
 import { zIndexMap } from '@/utils/constants/zIndex';
 import { usePreInfoQuery } from '@/apis/origin/setting';
 import { CustomerServiceHeadsetSvg, PersonSvg, ToRegisterSvg } from '../../components/SvgIcons';
+import {
+  safeGetLocalString,
+  safeGetSessionJSON,
+  safeRemoveLocal,
+  safeRemoveSession,
+  safeSetLocalString,
+  safeSetSessionJSON,
+} from '@/utils/storage/webStorage';
 
 const USERNAME_REGEX = /^[A-Za-z\d]{5,16}$/;
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,16}$/;
@@ -174,7 +182,7 @@ const LoginPage: React.FC = () => {
   const handleRememberPasswordChange = (checked: boolean): void => {
     setRememberPassword(checked);
     // 实时保存用户的偏好设置
-    localStorage.setItem('isKeepLogin', checked ? '1' : '0');
+    safeSetLocalString('isKeepLogin', checked ? '1' : '0');
   };
 
   const handleSubmit = (e: React.FormEvent): void => {
@@ -260,11 +268,9 @@ const LoginPage: React.FC = () => {
     };
 
     try {
-      const storedParams = sessionStorage.getItem('params');
-      const nextParams = storedParams
-        ? { ...(JSON.parse(storedParams) as Record<string, unknown>), token }
-        : fallbackParams;
-      sessionStorage.setItem('params', JSON.stringify(nextParams));
+      const storedParams = safeGetSessionJSON<Record<string, unknown> | null>('params', null);
+      const nextParams = storedParams ? { ...storedParams, token } : fallbackParams;
+      safeSetSessionJSON('params', nextParams);
 
       setIsSubmitting(true);
       const result = await login({
@@ -283,7 +289,7 @@ const LoginPage: React.FC = () => {
       if (result.code === API_CODE_ORIGIN_SECURITY_CENTER_NEED_SET_PASSWORD) {
         setShowLoginSecurityVerify(true);
       } else {
-        sessionStorage.removeItem('params');
+        safeRemoveSession('params');
         setShowLoginSecurityVerify(false);
       }
     } catch (error) {
@@ -351,9 +357,9 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    const userName = localStorage.getItem('userName');
-    const userPwd = localStorage.getItem('userPwd');
-    const isKeepLoginStore = localStorage.getItem('isKeepLogin');
+    const userName = safeGetLocalString('userName');
+    const userPwd = safeGetLocalString('userPwd');
+    const isKeepLoginStore = safeGetLocalString('isKeepLogin');
 
     // 优先设置开关状态
     if (isKeepLoginStore !== null) {
@@ -375,7 +381,7 @@ const LoginPage: React.FC = () => {
           setFormData((prev) => ({ ...prev, password: decryptedPwd }));
         } else {
           console.warn('密码解密失败，已清除旧数据');
-          localStorage.removeItem('userPwd');
+          safeRemoveLocal('userPwd');
         }
       }
     }

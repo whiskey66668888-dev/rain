@@ -15,6 +15,7 @@ import {
 import { TNewsMsgItem } from '@/apis/origin/msgCenter/newsInbox';
 import { EMessageStatus } from '@/apis/commonSports/constants';
 import { TNewsInboxChildItem } from '@/apis/origin/msgCenter/newsInboxChild';
+import { clearUserInfo } from './userSlice';
 
 // 公告tabs
 export enum ENoticeTabKey {
@@ -186,6 +187,7 @@ const messageCenterSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(clearUserInfo, () => initialState);
     builder.addCase(getNoticeListThunk.pending, (state) => {
       state.noticeLoading = true;
     });

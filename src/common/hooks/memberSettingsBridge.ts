@@ -33,6 +33,7 @@ import {
   resolveEmcAvatarIdFromSrc,
   resolveEmcAvatarSrc,
 } from '@/common/utils/emcAvatar';
+import { safeSetLocalString } from '@/utils/storage/webStorage';
 import { FontScaleType } from '@/utils/constants/system';
 import { hasAppAuthToken } from '@/utils/appEmbed';
 import { getSystemTheme } from '@/utils';
@@ -239,8 +240,8 @@ export const applyThemeModeToDocument = (
   if (typeof document === 'undefined') return;
   document.documentElement.setAttribute('data-theme', resolvedThemeMode);
   document.documentElement.setAttribute('data-prefers-color-scheme', resolvedThemeMode);
-  localStorage.setItem('themeMode', resolvedThemeMode);
-  localStorage.setItem('memberThemeMode', themeMode);
+  safeSetLocalString('themeMode', resolvedThemeMode);
+  safeSetLocalString('memberThemeMode', themeMode);
 };
 
 /**

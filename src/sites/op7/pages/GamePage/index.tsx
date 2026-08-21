@@ -42,6 +42,7 @@ const GamePage: React.FC = (
   const trialInterface = useAppSelector((state) => state.config.system.trialInterface);
   const location = useLocation();
   const { handleCollectGame } = useEntertainmentHooks();
+  const h5GameWrapperRef = useRef<HTMLDivElement>(null);
   const gameContentRef = useRef<HTMLDivElement>(null);
   const previousPathnameRef = useRef(location.pathname);
   const [iframeKey, setIframeKey] = useState(0);
@@ -216,7 +217,7 @@ const GamePage: React.FC = (
     }, 1000);
   });
   const handleFullscreen = useMemoizedFn(() => {
-    const el = gameContentRef.current;
+    const el = isMobile ? h5GameWrapperRef.current : gameContentRef.current;
     const usedNativeFullscreen = toggleFullscreenForElement(el);
     // iOS 等不支持原生 Fullscreen API 的场景：退化为页面内“伪全屏”状态
     if (!usedNativeFullscreen) {
@@ -607,9 +608,9 @@ const GamePage: React.FC = (
           )}
         </div>
         {isMobile && isGamePlaying && (
-          <div className={styles.h5GameWrapper}>
+          <div className={styles.h5GameWrapper} ref={h5GameWrapperRef}>
             <div
-              className={clsx(styles.h5GameHeader, isFullscreen && 'important:hidden')}
+              className={styles.h5GameHeader}
               style={{ backgroundColor: currentGameInfo?.backgroundColor }}
             >
               <div onClick={() => handleLeaveGame(false)} className={styles.headerBtn}>
@@ -646,14 +647,14 @@ const GamePage: React.FC = (
                 </span>
               </div>
             </div>
+            {gameInitLoading && (
+              <div className={styles.h5GameInitLoading}>
+                <img src={`/images/${leaveGameTheme}/loading.png`} alt="loading" />
+              </div>
+            )}
             <div className={styles.h5GameContent} ref={gameContentRef}>
-              {gameInitLoading && (
-                <div className={styles.gameInitLoading}>
-                  <img src={`/images/${leaveGameTheme}/loading.png`} alt="loading" />
-                </div>
-              )}
               {/* 全屏的时候展示悬浮球 */}
-              {isFullscreen && (
+              {isFullscreen && !gameInitLoading && (
                 <SuspendedBall
                   toggleTransfer={handleTransfer}
                   toggleRefresh={handleRefresh}

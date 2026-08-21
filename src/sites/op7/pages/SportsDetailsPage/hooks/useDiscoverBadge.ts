@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { DISCOVER_BADGE_SEEN_KEY } from '../components/discover/constants';
+import { safeGetSessionString, safeSetSessionString } from '@/utils/storage/webStorage';
 
 interface UseDiscoverBadgeResult {
   /** 是否展示发现 tab 的引导红点 */
@@ -21,21 +22,13 @@ export const useDiscoverBadge = (): UseDiscoverBadgeResult => {
   const [showDiscoverBadge, setShowDiscoverBadge] = useState(false);
 
   useEffect(() => {
-    try {
-      setShowDiscoverBadge(sessionStorage.getItem(DISCOVER_BADGE_SEEN_KEY) !== '1');
-    } catch {
-      setShowDiscoverBadge(true);
-    }
+    setShowDiscoverBadge(safeGetSessionString(DISCOVER_BADGE_SEEN_KEY) !== '1');
   }, []);
 
   const dismissDiscoverBadge = useCallback(() => {
     setShowDiscoverBadge((prev) => {
       if (!prev) return prev;
-      try {
-        sessionStorage.setItem(DISCOVER_BADGE_SEEN_KEY, '1');
-      } catch {
-        /* 忽略隐私模式等写入失败 */
-      }
+      safeSetSessionString(DISCOVER_BADGE_SEEN_KEY, '1');
       return false;
     });
   }, []);

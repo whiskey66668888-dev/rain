@@ -8,6 +8,7 @@ import { NEW_FRIEND_ROUTE_KEY } from './paths';
 import styles from './report.module.scss';
 import BonusReportPanel from './components/BonusReportPanel';
 import { KefuIcon } from '@/sites/op7/pages/MinePage/InviteFriendsPage/components/icons';
+import { safeGetLocalString } from '@/utils/storage/webStorage';
 
 function BonusReportPage() {
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
@@ -17,7 +18,7 @@ function BonusReportPage() {
   const { sendToFlutter, isInFlutter } = useFlutterBridge();
 
   const onBack = () => {
-    const prev = localStorage.getItem(NEW_FRIEND_ROUTE_KEY) || '';
+    const prev = safeGetLocalString(NEW_FRIEND_ROUTE_KEY) || '';
     if (isInFlutter()) {
       sendToFlutter(prev);
     }

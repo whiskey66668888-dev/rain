@@ -3,6 +3,7 @@ import pako from 'pako';
 import type { RequestConf } from './config';
 import { basicConfig } from './config';
 import { ResponseData } from './model';
+import { safeGetLocalString, safeSetLocalString } from '@/utils/storage/webStorage';
 
 // pako 类型定义
 interface PakoType {
@@ -149,14 +150,8 @@ export const uuid = (lowercase = false): string => {
 
 export const readUUID = (): string | null => {
   const UUID = uuid();
-  try {
-    if (localStorage.getItem('_uuid')) {
-      return localStorage.getItem('_uuid');
-    } else {
-      localStorage.setItem('_uuid', UUID);
-      return UUID;
-    }
-  } catch (_e) {
-    return UUID;
-  }
+  const storedUUID = safeGetLocalString('_uuid');
+  if (storedUUID) return storedUUID;
+  safeSetLocalString('_uuid', UUID);
+  return UUID;
 };

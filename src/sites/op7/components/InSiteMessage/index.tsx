@@ -9,6 +9,7 @@ import {
   type UnreadMessageResponse,
 } from '@/apis/origin/message';
 import { MSG_SAVE_ID_KEY } from '@/utils/constants/cacheKey';
+import { safeGetSessionString, safeSetSessionString } from '@/utils/storage/webStorage';
 import { useEmcRichText } from '@/common/hooks/useEmcRichText';
 import { useOpenMessageCenter } from '@/common/hooks/messageCenter/useOpenMessageCenter';
 import { EMessageTabKey } from '@/core/store/slices/messageCenterSlice';
@@ -84,7 +85,7 @@ const NewMessageModal: React.FC<{
 
   const handleMore = useCallback(() => {
     readSingleMessageReq(message.id);
-    sessionStorage.setItem(MSG_SAVE_ID_KEY, String(message.id));
+    safeSetSessionString(MSG_SAVE_ID_KEY, String(message.id));
     onClose();
     openMessageCenter({ initialSubTab: EMessageTabKey.INBOX });
   }, [message.id, onClose, openMessageCenter]);
@@ -143,7 +144,7 @@ const InSiteMessage: React.FC<InSiteMessageProps> = ({
     }
 
     if (unreadMessage?.id) {
-      const savedMsgId = sessionStorage.getItem(MSG_SAVE_ID_KEY);
+      const savedMsgId = safeGetSessionString(MSG_SAVE_ID_KEY);
       if (!savedMsgId || unreadMessage.id > parseInt(savedMsgId, 10)) {
         setShowNew(true);
         return;
@@ -157,7 +158,7 @@ const InSiteMessage: React.FC<InSiteMessageProps> = ({
     setShowMust(false);
 
     if (unreadMessage?.id) {
-      const savedMsgId = sessionStorage.getItem(MSG_SAVE_ID_KEY);
+      const savedMsgId = safeGetSessionString(MSG_SAVE_ID_KEY);
       if (!savedMsgId || unreadMessage.id > parseInt(savedMsgId, 10)) {
         setShowNew(true);
         return;

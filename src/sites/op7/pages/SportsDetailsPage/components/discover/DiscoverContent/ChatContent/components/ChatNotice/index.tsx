@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/common/components/Icon';
 import type { ChatNotice } from '@/core/sdk/IMManager';
+import {
+  safeGetLocalString,
+  safeRemoveLocal,
+  safeSetLocalString,
+} from '@/utils/storage/webStorage';
 import styles from './ChatNotice.module.scss';
 
 interface ChatNoticeProps {
@@ -21,30 +26,18 @@ const INITIAL_PAUSE_SEC = 2;
 const SEPARATOR_WIDTH = 40;
 
 const readHiddenUntil = (): number | null => {
-  try {
-    const raw = localStorage.getItem(NOTICE_HIDDEN_UNTIL_KEY);
-    if (!raw) return null;
-    const value = Number(raw);
-    return Number.isFinite(value) ? value : null;
-  } catch {
-    return null;
-  }
+  const raw = safeGetLocalString(NOTICE_HIDDEN_UNTIL_KEY);
+  if (!raw) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) ? value : null;
 };
 
 const writeHiddenUntil = (until: number) => {
-  try {
-    localStorage.setItem(NOTICE_HIDDEN_UNTIL_KEY, String(until));
-  } catch {
-    // ignore quota / private mode
-  }
+  safeSetLocalString(NOTICE_HIDDEN_UNTIL_KEY, String(until));
 };
 
 const clearHiddenUntil = () => {
-  try {
-    localStorage.removeItem(NOTICE_HIDDEN_UNTIL_KEY);
-  } catch {
-    // ignore
-  }
+  safeRemoveLocal(NOTICE_HIDDEN_UNTIL_KEY);
 };
 
 /**

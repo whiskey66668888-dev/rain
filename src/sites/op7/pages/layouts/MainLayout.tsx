@@ -52,6 +52,9 @@ const MainLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const isLogin = useAppSelector((state) => state.user.userInfo.isLogin);
   const isMobile = useAppSelector((state) => state.config.isMobile);
+  const hasEntertainmentGameInfo = useAppSelector(
+    (state) => state.entertainment.currentGameInfo !== null,
+  );
   const messageCenterVisible = useAppSelector((state) => state.messageCenter.messageCenterVisible);
   const themeMode = useAppSelector((state) => state.config.system.themeMode);
   const outlet = useOutlet();
@@ -63,6 +66,12 @@ const MainLayout: React.FC = () => {
   const h5ShowFooter = !!handle?.h5ShowFooter;
   const h5NoBottomMenu = !!handle?.h5NoBottomMenu;
   const lineGradient = !!handle?.lineGradient;
+  // 游戏容器有自己的顶部栏，H5 外层 Header 会把实际游戏页向下挤一层。
+  const isH5EntertainmentGameShell =
+    isMobile && handle?.module === 'entertainment' && hasEntertainmentGameInfo;
+  const effectiveH5ShowHeader = h5ShowHeader && !isH5EntertainmentGameShell;
+  const effectiveH5ShowFooter = h5ShowFooter && !isH5EntertainmentGameShell;
+  const effectiveH5NoBottomMenu = h5NoBottomMenu || isH5EntertainmentGameShell;
   const fbSwitchItem = useMemo(
     () => websiteSwitchList.find((item) => typeof item?.FB !== 'undefined'),
     [websiteSwitchList],
@@ -72,8 +81,8 @@ const MainLayout: React.FC = () => {
     [fbSwitchItem],
   );
   const pageKind = useMemo(
-    () => (h5ShowHeader ? getNotchPageKind(location.pathname, handle?.module) : 'default'),
-    [h5ShowHeader, location.pathname, handle?.module],
+    () => (effectiveH5ShowHeader ? getNotchPageKind(location.pathname, handle?.module) : 'default'),
+    [effectiveH5ShowHeader, location.pathname, handle?.module],
   );
   const isDark = themeMode === 'dark' || (themeMode === 'system' && getSystemTheme() === 'dark');
   const h5HeaderBgColor = useMemo(() => {
@@ -125,7 +134,7 @@ const MainLayout: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!isMobile || h5NoBottomMenu || !isRouteUnderH5BottomTabs(location.pathname)) {
+    if (!isMobile || effectiveH5NoBottomMenu || !isRouteUnderH5BottomTabs(location.pathname)) {
       setShowPwaInstallBanner(false);
       return undefined;
     }
@@ -133,7 +142,7 @@ const MainLayout: React.FC = () => {
     setShowPwaInstallBanner(false);
     const timerId = window.setTimeout(() => setShowPwaInstallBanner(true), 220);
     return () => window.clearTimeout(timerId);
-  }, [h5NoBottomMenu, isMobile, location.pathname]);
+  }, [effectiveH5NoBottomMenu, isMobile, location.pathname]);
 
   /**
    * 「自动」主题：getSystemTheme() 随本地小时变化，但 html 的 data-theme 仅在首屏脚本 / setTheme 时写入，
@@ -146,7 +155,7 @@ const MainLayout: React.FC = () => {
       const resolved = getSystemTheme();
       document.documentElement.setAttribute('data-theme', resolved);
       document.documentElement.setAttribute('data-prefers-color-scheme', resolved);
-      if (isMobile && h5ShowHeader) {
+      if (isMobile && effectiveH5ShowHeader) {
         applyH5NotchColor(
           getH5NotchSolidColor(pageKind, resolved === 'dark', {
             isMobile,
@@ -165,7 +174,14 @@ const MainLayout: React.FC = () => {
       window.clearInterval(timer);
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [themeMode, location.pathname, isMobile, h5ShowHeader, pageKind, isFBSportsMaintenance]);
+  }, [
+    themeMode,
+    location.pathname,
+    isMobile,
+    effectiveH5ShowHeader,
+    pageKind,
+    isFBSportsMaintenance,
+  ]);
 
   useEffect(() => {
     if (isMobile) return;
@@ -205,7 +221,7 @@ const MainLayout: React.FC = () => {
     return () => window.cancelAnimationFrame(id);
   }, []);
 
-  const showH5NotchBar = isMobile && h5ShowHeader;
+  const showH5NotchBar = isMobile && effectiveH5ShowHeader;
   const mainScrollRef = useRef<HTMLElement | null>(null);
   const isRightSidebarDocked = useMemo(() => {
     if (isMobile) return false;
@@ -270,9 +286,9 @@ const MainLayout: React.FC = () => {
           ref={mainScrollRef}
           className={clsx(
             {
-              [styles.h5MainSafePaddingTop as string]: h5ShowHeader && isMobile,
-              'pt-48px': h5ShowHeader && !isMobile,
-              'pb-bottom-menu': !h5NoBottomMenu,
+              [styles.h5MainSafePaddingTop as string]: effectiveH5ShowHeader && isMobile,
+              'pt-48px': effectiveH5ShowHeader && !isMobile,
+              'pb-bottom-menu': !effectiveH5NoBottomMenu,
             },
             { [styles.sportMainLayout as string]: lineGradient && !isFBSportsMaintenance },
             'flex-1 flex flex-col lg:pb-0 lg:pt-0 overflow-y-auto overflow-x-hidden',
@@ -282,7 +298,7 @@ const MainLayout: React.FC = () => {
           <header
             key={pageKind === 'entertainment' ? 'entertainment-header' : 'default-header'}
             className={clsx('w-full lg:block', {
-              ['hidden']: !h5ShowHeader,
+              ['hidden']: !effectiveH5ShowHeader,
               [styles.header as string]: true,
             })}
             style={{
@@ -297,7 +313,7 @@ const MainLayout: React.FC = () => {
           </header>
           <div
             className={clsx('flex-1 flex flex-col', {
-              'overflow-hidden lg:overflow-initial': !h5ShowFooter,
+              'overflow-hidden lg:overflow-initial': !effectiveH5ShowFooter,
             })}
           >
             {outlet}
@@ -306,8 +322,8 @@ const MainLayout: React.FC = () => {
             className={clsx(
               'w-full shrink-0 flex-col items-center gap-10px lg:flex  bg-[var(--Background-400)] ',
               {
-                ['flex']: h5ShowFooter,
-                ['hidden']: !h5ShowFooter,
+                ['flex']: effectiveH5ShowFooter,
+                ['hidden']: !effectiveH5ShowFooter,
               },
             )}
           >
@@ -335,7 +351,7 @@ const MainLayout: React.FC = () => {
       )}
 
       {/* 小于lg时h5显示底部菜单 */}
-      <div className={clsx({ ['hidden']: h5NoBottomMenu })}>
+      <div className={clsx({ ['hidden']: effectiveH5NoBottomMenu })}>
         <BottomMenu />
       </div>
     </div>

@@ -1,7 +1,10 @@
 import type { MatchResultLeagueItem } from '@/apis/fbSports/betRecord/getFBResultList';
+import { safeGetLocalJSON, safeRemoveLocal, safeSetLocalJSON } from '@/utils/storage/webStorage';
 import type { ResultDateRange } from '../types/resultFilter';
 
 export const RESULT_LEAGUE_FILTER_STORAGE_KEY = 'op7:betHistoryH5:resultLeagueFilter';
+const RESULT_LEAGUE_FILTER_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const MAX_RESULT_LEAGUE_FILTER_OPTIONS = 100;
 
 export type ResultLeagueFilterMode = 'all' | 'partial';
 
@@ -21,8 +24,6 @@ export interface ResultLeagueFilterStorage {
   searchText: string;
   updatedAt: number;
 }
-
-const isBrowser = () => typeof window !== 'undefined' && Boolean(window.localStorage);
 
 const normalizeDateRange = (value: unknown): ResultDateRange | undefined => {
   if (!value || typeof value !== 'object') return undefined;
@@ -60,47 +61,43 @@ const normalizeLeagueOptions = (value: unknown): ResultLeagueOption[] => {
     });
   });
 
-  return normalized;
+  return normalized.slice(0, MAX_RESULT_LEAGUE_FILTER_OPTIONS);
 };
 
 export const readResultLeagueFilterStorage = (): ResultLeagueFilterStorage | null => {
-  if (!isBrowser()) return null;
+  const parsed = safeGetLocalJSON<Partial<ResultLeagueFilterStorage> | null>(
+    RESULT_LEAGUE_FILTER_STORAGE_KEY,
+    null,
+  );
+  if (!parsed || typeof parsed.sportId !== 'number') return null;
 
-  try {
-    const raw = window.localStorage.getItem(RESULT_LEAGUE_FILTER_STORAGE_KEY);
-    if (!raw) return null;
-
-    const parsed = JSON.parse(raw) as Partial<ResultLeagueFilterStorage>;
-    if (typeof parsed.sportId !== 'number') return null;
-
-    return {
-      sportId: parsed.sportId,
-      sportName: parsed.sportName || '足球',
-      mode: parsed.mode === 'partial' ? 'partial' : 'all',
-      leagueIds: Array.isArray(parsed.leagueIds)
-        ? parsed.leagueIds.filter((item): item is number => typeof item === 'number')
-        : [],
-      leagueOptions: normalizeLeagueOptions(parsed.leagueOptions),
-      searchText: parsed.searchText || '',
-      dateRange: normalizeDateRange(parsed.dateRange),
-      updatedAt: typeof parsed.updatedAt === 'number' ? parsed.updatedAt : Date.now(),
-    };
-  } catch {
+  const updatedAt = typeof parsed.updatedAt === 'number' ? parsed.updatedAt : Date.now();
+  if (Date.now() - updatedAt > RESULT_LEAGUE_FILTER_TTL_MS) {
+    safeRemoveLocal(RESULT_LEAGUE_FILTER_STORAGE_KEY);
     return null;
   }
+
+  return {
+    sportId: parsed.sportId,
+    sportName: parsed.sportName || '足球',
+    mode: parsed.mode === 'partial' ? 'partial' : 'all',
+    leagueIds: Array.isArray(parsed.leagueIds)
+      ? parsed.leagueIds.filter((item): item is number => typeof item === 'number')
+      : [],
+    leagueOptions: normalizeLeagueOptions(parsed.leagueOptions),
+    searchText: parsed.searchText || '',
+    dateRange: normalizeDateRange(parsed.dateRange),
+    updatedAt,
+  };
 };
 
 export const writeResultLeagueFilterStorage = (value: ResultLeagueFilterStorage) => {
-  if (!isBrowser()) return;
-
-  window.localStorage.setItem(
-    RESULT_LEAGUE_FILTER_STORAGE_KEY,
-    JSON.stringify({
-      ...value,
-      leagueIds: value.mode === 'all' ? [] : value.leagueIds,
-      updatedAt: Date.now(),
-    }),
-  );
+  safeSetLocalJSON(RESULT_LEAGUE_FILTER_STORAGE_KEY, {
+    ...value,
+    leagueIds: value.mode === 'all' ? [] : value.leagueIds,
+    leagueOptions: normalizeLeagueOptions(value.leagueOptions),
+    updatedAt: Date.now(),
+  });
 };
 
 export const getEffectiveResultLeagueIds = (value: ResultLeagueFilterStorage | null) => {

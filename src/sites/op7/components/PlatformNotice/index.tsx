@@ -9,6 +9,7 @@ import clsx from 'clsx';
 
 import type { TNoticeListResponse } from '@/apis/origin/noticeList';
 import { NOTICE_SHOW_LOCK_KEY } from '@/utils/constants/cacheKey';
+import { safeRemoveSession, safeSetSessionString } from '@/utils/storage/webStorage';
 
 import styles from './PlatformNotice.module.scss';
 import CommonDialog from '../CommonDialog';
@@ -45,10 +46,10 @@ const PlatformNotice: React.FC<PlatformNoticeProps> = ({
 
     try {
       if (dontRemind) {
-        sessionStorage.setItem(NOTICE_SHOW_LOCK_KEY, '1');
+        safeSetSessionString(NOTICE_SHOW_LOCK_KEY, '1');
         Cookies.set(NOTICE_ONE_DAY_COOKIE_KEY, '1', { expires: 1 });
       } else {
-        sessionStorage.removeItem(NOTICE_SHOW_LOCK_KEY);
+        safeRemoveSession(NOTICE_SHOW_LOCK_KEY);
       }
     } catch {
       // ignore

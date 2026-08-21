@@ -10,46 +10,51 @@ import LazyImage from '@/common/components/LazyImage';
 import { useAppSelector } from '@/core/store/hooks';
 import { ThemeMode } from '@/core/store/slices/configSlice';
 import { SLOT_SEARCH_HISTORY_KEY } from '@/utils/constants/cacheKey';
+import { safeGetLocalJSON, safeSetLocalJSON } from '@/utils/storage/webStorage';
 import { useMemoizedFn } from 'ahooks';
 import GameList from '../GameList';
 
 type SearchHistoryItem = Record<string, string[]>;
+const MAX_KEYWORD_HISTORY_PER_GAME = 10;
+
+const normalizeKeywordList = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return Array.from(
+    new Set(
+      value
+        .filter((item): item is string => typeof item === 'string')
+        .map((item) => item.trim())
+        .filter(Boolean),
+    ),
+  ).slice(0, MAX_KEYWORD_HISTORY_PER_GAME);
+};
 
 // 读取当前 gameId 的搜索历史（value 为 string[]）
 function readKeywordListByGameId(gameId: number): string[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = window.localStorage.getItem(SLOT_SEARCH_HISTORY_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as unknown;
+  const parsed = safeGetLocalJSON<unknown>(SLOT_SEARCH_HISTORY_KEY, {});
 
-    // 兼容旧结构：直接存的是 string[]
-    if (Array.isArray(parsed)) return parsed as string[];
+  // 兼容旧结构：直接存的是 string[]
+  if (Array.isArray(parsed)) return normalizeKeywordList(parsed);
 
-    if (parsed && typeof parsed === 'object') {
-      const dict = parsed as SearchHistoryItem;
-      return dict[String(gameId)] ?? [];
-    }
-  } catch {}
+  if (parsed && typeof parsed === 'object') {
+    const dict = parsed as SearchHistoryItem;
+    return normalizeKeywordList(dict[String(gameId)]);
+  }
   return [];
 }
 
 // 写入当前 gameId 的搜索历史
 function writeKeywordListByGameId(gameId: number, nextList: string[]) {
-  if (typeof window === 'undefined') return;
-  try {
-    const raw = window.localStorage.getItem(SLOT_SEARCH_HISTORY_KEY);
-    const parsed = raw ? (JSON.parse(raw) as unknown) : {};
+  const parsed = safeGetLocalJSON<unknown>(SLOT_SEARCH_HISTORY_KEY, {});
 
-    const dict: SearchHistoryItem = Array.isArray(parsed)
-      ? {}
-      : parsed && typeof parsed === 'object'
-        ? (parsed as SearchHistoryItem)
-        : {};
+  const dict: SearchHistoryItem = Array.isArray(parsed)
+    ? {}
+    : parsed && typeof parsed === 'object'
+      ? (parsed as SearchHistoryItem)
+      : {};
 
-    dict[String(gameId)] = nextList;
-    window.localStorage.setItem(SLOT_SEARCH_HISTORY_KEY, JSON.stringify(dict));
-  } catch {}
+  dict[String(gameId)] = normalizeKeywordList(nextList);
+  safeSetLocalJSON(SLOT_SEARCH_HISTORY_KEY, dict);
 }
 
 export type KeywordFilterHandle = {

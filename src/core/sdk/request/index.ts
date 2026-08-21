@@ -2,6 +2,11 @@
 import { toast } from '@/common/components/Toast';
 
 import { RequestConf, RequestMethod } from './config';
+import {
+  buildInflightRequestKey,
+  createInflightStore,
+  isInflightDedupableBody,
+} from './inflightDedup';
 import { RequestOptions, ResponseData, ResponseError } from './model';
 import { encryption, getBaseUrl, getHeaders } from './util';
 
@@ -33,6 +38,8 @@ export type RequestInstance = {
  * @returns 请求实例对象
  */
 export function createRequest(config: RequestConf): RequestInstance {
+  const inflight = createInflightStore();
+
   // 通用处理
   async function handleFetch<TTransformResponse, TBody, TResponse>({
     url,
@@ -143,30 +150,51 @@ export function createRequest(config: RequestConf): RequestInstance {
       clearTimeout(_ajaxTimeoutId);
     }
   }
+
+  /**
+   * 相同 method/url/body/用户身份 的请求若仍在进行中，直接复用 Promise。
+   * 请求结束后不保留结果，不会拦截后续的主动刷新或轮询。
+   */
+  function requestWithDedup<TTransformResponse, TBody, TResponse>(
+    options: RequestOptions<TBody, TTransformResponse, TResponse>,
+  ): Promise<ResponseData<TResponse>> {
+    const canDedupe = isInflightDedupableBody(options.body);
+    const key = canDedupe
+      ? buildInflightRequestKey({
+          method: options.method ?? '',
+          url: options.url,
+          body: options.body,
+          identity: config.getRequestIdentity?.() ?? '',
+        })
+      : null;
+
+    return inflight.run(key, () => handleFetch(options));
+  }
+
   return {
     get: (url, options = {}) => {
-      return handleFetch({
+      return requestWithDedup({
         url,
         ...options,
         method: RequestMethod.get,
       });
     },
     post: (url, options = {}) => {
-      return handleFetch({
+      return requestWithDedup({
         url,
         ...options,
         method: RequestMethod.post,
       });
     },
     put: (url, options = {}) => {
-      return handleFetch({
+      return requestWithDedup({
         url,
         ...options,
         method: RequestMethod.put,
       });
     },
     delete: (url, options = {}) => {
-      return handleFetch({
+      return requestWithDedup({
         url,
         ...options,
         method: RequestMethod.delete,

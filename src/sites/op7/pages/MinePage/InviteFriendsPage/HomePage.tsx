@@ -43,6 +43,7 @@ import bannerLight from '@/sites/op7/images/light/inviteFriends/banner.webp';
 import bannerH5Dark from '@/sites/op7/images/dark/inviteFriends/banner_h5.webp';
 import bannerH5Light from '@/sites/op7/images/light/inviteFriends/banner_h5.webp';
 import { getSystemTheme } from '@/utils';
+import { safeSetLocalString } from '@/utils/storage/webStorage';
 import { PATHS } from '@/sites/op7/routes/paths';
 import { CloseSvg } from '@/sites/op7/components/SvgIcons';
 import { FollowIcon } from '@/sites/op7/pages/MinePage/InviteFriendsPage/components/icons';
@@ -107,7 +108,7 @@ function InviteFriendsHomePage() {
   });
 
   useEffect(() => {
-    localStorage.setItem(NEW_FRIEND_ROUTE_KEY, 'newFriend');
+    safeSetLocalString(NEW_FRIEND_ROUTE_KEY, 'newFriend');
   }, []);
 
   useEffect(() => {

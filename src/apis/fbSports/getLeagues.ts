@@ -1,4 +1,5 @@
 import { useQueryHook } from '@/core/query/hooks';
+import { safeGetLocalJSON, safeSetLocalJSON } from '@/utils/storage/webStorage';
 import { MatchBaseInfo } from '../commonSports/types';
 import { ResponseData } from '@/core/sdk/request/model';
 import requestFB from '@/core/sdk/requestFB';
@@ -196,30 +197,16 @@ export function useLocalHistoryList(): [string[], Dispatch<SetStateAction<string
   const key = 'search_history_list';
   // 初始化状态：优先从 localStorage 读取，没有则用初始值
   const [storedValue, setStoredValue] = useState<string[]>(() => {
-    try {
-      // 从 localStorage 获取数据
-      const item: string = window.localStorage.getItem(key) ?? '';
-      // 反序列化：如果有值则解析为原本的类型（对象/数组/基本类型），否则用初始值
-      const result = (item ? JSON.parse(item) : []) as string[];
-      return result;
-    } catch (error) {
-      // 捕获读取异常（如数据格式错误），返回初始值并打印错误
-      console.error('读取 localStorage 失败:', error);
-      return [];
-    }
+    const result = safeGetLocalJSON<unknown>(key, []);
+    return Array.isArray(result)
+      ? result.filter((item): item is string => typeof item === 'string')
+      : [];
   });
 
   // 定义更新 localStorage 的函数
   const setValue: Dispatch<SetStateAction<string[]>> = (value) => {
-    try {
-      // 更新 React 状态
-      setStoredValue(value);
-      // 序列化并写入 localStorage
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      // 捕获写入异常
-      console.error('写入 localStorage 失败:', error);
-    }
+    setStoredValue(value);
+    safeSetLocalJSON(key, value);
   };
 
   return [storedValue, setValue];

@@ -11,6 +11,11 @@ import { isAndroid, isIos } from '@/utils/env';
 import styles from './PwaInstall.module.scss';
 import Icon from '@/common/components/Icon';
 import SegmentedControl from '@/common/components/SegmentedControl';
+import {
+  safeGetLocalString,
+  safeRemoveLocal,
+  safeSetLocalString,
+} from '@/utils/storage/webStorage';
 // import type { SegmentedControlOption } from '@/common/components/SegmentedControl';
 
 type InstallPromptOutcome = 'accepted' | 'dismissed';
@@ -119,25 +124,25 @@ const usesSafariPwaStandaloneModel = (): boolean => {
 };
 
 const shouldShowByFrequency = (): boolean => {
-  const suppressUntil = Number(localStorage.getItem(SUPPRESS_UNTIL_KEY) || 0);
+  const suppressUntil = Number(safeGetLocalString(SUPPRESS_UNTIL_KEY) || 0);
   return Date.now() >= suppressUntil;
 };
 
 const markInstalled = (): void => {
   singletonInstalled = true;
-  localStorage.setItem(INSTALLED_KEY, '1');
+  safeSetLocalString(INSTALLED_KEY, '1');
 };
 
 const markCloseForH5 = (): void => {
   const now = Date.now();
-  const lastCloseAt = Number(localStorage.getItem(CLOSE_AT_KEY) || 0);
-  const prevCount = Number(localStorage.getItem(CLOSE_COUNT_KEY) || 0);
+  const lastCloseAt = Number(safeGetLocalString(CLOSE_AT_KEY) || 0);
+  const prevCount = Number(safeGetLocalString(CLOSE_COUNT_KEY) || 0);
   const nextCount = now - lastCloseAt <= HIDE_24H ? prevCount + 1 : 1;
   const suppressDuration = nextCount >= 3 ? HIDE_7D : HIDE_24H;
 
-  localStorage.setItem(CLOSE_AT_KEY, String(now));
-  localStorage.setItem(CLOSE_COUNT_KEY, String(nextCount));
-  localStorage.setItem(SUPPRESS_UNTIL_KEY, String(now + suppressDuration));
+  safeSetLocalString(CLOSE_AT_KEY, String(now));
+  safeSetLocalString(CLOSE_COUNT_KEY, String(nextCount));
+  safeSetLocalString(SUPPRESS_UNTIL_KEY, String(now + suppressDuration));
 };
 
 /** 单步文案 + 可选示意图（无图时 UI 显示占位） */
@@ -446,7 +451,7 @@ const syncSingletonInstalledFromStorage = (): void => {
     singletonInstalled = isStandalone();
     return;
   }
-  singletonInstalled = localStorage.getItem(INSTALLED_KEY) === '1' || isStandalone();
+  singletonInstalled = safeGetLocalString(INSTALLED_KEY) === '1' || isStandalone();
 };
 
 const notifyPwaSubscribers = (): void => {
@@ -467,8 +472,8 @@ const showPwaInstallSuccessToast = (): void => {
 /** 供 MainLayout 调用：独立窗口首次进入时提示（覆盖 Safari 添加到程序坞无 appinstalled 的情况） */
 export const runStandaloneWelcomeToastOnce = (): void => {
   if (!isStandalone()) return;
-  if (localStorage.getItem(STANDALONE_WELCOME_KEY) === '1') return;
-  localStorage.setItem(STANDALONE_WELCOME_KEY, '1');
+  if (safeGetLocalString(STANDALONE_WELCOME_KEY) === '1') return;
+  safeSetLocalString(STANDALONE_WELCOME_KEY, '1');
 
   const env = getDeviceEnv();
   const description =
@@ -489,7 +494,7 @@ const attachPwaWindowListenersOnce = (): void => {
   window.addEventListener('beforeinstallprompt', (event: Event) => {
     event.preventDefault();
     /** 再次可安装时（常见：用户已卸载 PWA），勿继续把页签当成「已安装」 */
-    localStorage.removeItem(INSTALLED_KEY);
+    safeRemoveLocal(INSTALLED_KEY);
     syncSingletonInstalledFromStorage();
     singletonDeferredPrompt = event as BeforeInstallPromptEvent;
     notifyPwaSubscribers();
@@ -552,7 +557,7 @@ const usePwaInstallState = () => {
       return true;
     }
     if (getDeviceEnv().isAndroidPhone) {
-      localStorage.setItem(SUPPRESS_UNTIL_KEY, String(Date.now() + HIDE_72H));
+      safeSetLocalString(SUPPRESS_UNTIL_KEY, String(Date.now() + HIDE_72H));
     }
     return false;
   }, [promptEvent]);

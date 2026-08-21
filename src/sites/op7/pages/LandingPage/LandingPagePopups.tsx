@@ -10,6 +10,7 @@ import PlatformNotice from '../../components/PlatformNotice';
 import InSiteMessage from '../../components/InSiteMessage';
 import { ClientOnly } from '@/common/components/ClientOnly';
 import { MSG_SAVE_ID_KEY } from '@/utils/constants/cacheKey';
+import { safeGetSessionString } from '@/utils/storage/webStorage';
 
 const IMPORTANT_ONE_DAY_KEY = 'importantOneDay';
 const NOTICE_ONE_DAY_KEY = 'noticeOneDay';
@@ -72,8 +73,8 @@ const LandingPagePopups: React.FC<LandingPagePopupsProps> = ({
     const hasMustMessage = !!mustMessage?.id;
     let hasUnreadMessage = false;
 
-    if (unreadMessage?.id && typeof window !== 'undefined') {
-      const savedMsgId = sessionStorage.getItem(MSG_SAVE_ID_KEY);
+    if (unreadMessage?.id) {
+      const savedMsgId = safeGetSessionString(MSG_SAVE_ID_KEY);
       hasUnreadMessage = !savedMsgId || unreadMessage.id > parseInt(savedMsgId, 10);
     }
 

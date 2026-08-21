@@ -29,6 +29,14 @@ import { TMemberInfoResp } from '@/apis/origin/member/membetInfo';
 import { EGender } from '@/apis/origin/constants';
 import { TInviterInfo } from '@/apis/origin/inviter/inviterInfo';
 import { LoginResponse } from '@/apis/origin/login';
+import {
+  safeGetLocalJSON,
+  safeGetLocalString,
+  safeRemoveLocal,
+  safeRemoveSession,
+  safeSetLocalJSON,
+  safeSetLocalString,
+} from '@/utils/storage/webStorage';
 
 export interface TVenueUserState {
   balance: string;
@@ -66,15 +74,15 @@ type TStorageUserState = Pick<
 >;
 
 const getInitialState = (): TStorageUserState => {
-  const acceptOddsPreferStr = localStorage.getItem(ACCEPT_ODDS_PREFER_KEY);
-  const userAvatar = localStorage.getItem(USER_AVATAR_KEY);
-  const autoFollowMatch = localStorage.getItem(AUTO_FOLLOW_MATCH_KEY);
-  const loginInfoStr = localStorage.getItem(LOGIN_INFO_KEY);
-  const loginInfo = loginInfoStr ? (JSON.parse(loginInfoStr) as LoginResponse) : undefined;
+  const acceptOddsPrefer = safeGetLocalJSON<EAcceptOddsPrefer>(
+    ACCEPT_ODDS_PREFER_KEY,
+    EAcceptOddsPrefer.Better,
+  );
+  const userAvatar = safeGetLocalString(USER_AVATAR_KEY);
+  const autoFollowMatch = safeGetLocalString(AUTO_FOLLOW_MATCH_KEY);
+  const loginInfo = safeGetLocalJSON<LoginResponse | undefined>(LOGIN_INFO_KEY, undefined);
   return {
-    acceptOddsPrefer: acceptOddsPreferStr
-      ? (JSON.parse(acceptOddsPreferStr) as EAcceptOddsPrefer)
-      : EAcceptOddsPrefer.Better,
+    acceptOddsPrefer,
     userAvatar: userAvatar || '',
     autoFollowMatch: autoFollowMatch === 'true',
     loginInfo,
@@ -196,7 +204,7 @@ const userSlice = createSlice({
       Cookies.remove('userPwd');
       Cookies.remove('password');
       needRemoveSession.forEach((item) => {
-        sessionStorage.removeItem(item);
+        safeRemoveSession(item);
       });
       state.userInfo = {
         ...state.userInfo,
@@ -207,7 +215,7 @@ const userSlice = createSlice({
       state.memberInfo = { ...initialMemberInfo };
       state.inviterInfo = undefined;
       state.userAvatar = '';
-      localStorage.removeItem(USER_AVATAR_KEY);
+      safeRemoveLocal(USER_AVATAR_KEY);
       state[EVenue.OB] = {
         balance: '0',
         balanceLoading: false,
@@ -228,11 +236,11 @@ const userSlice = createSlice({
     },
     setLoginInfo: (state, action: PayloadAction<LoginResponse>) => {
       state.loginInfo = action.payload;
-      localStorage.setItem(LOGIN_INFO_KEY, JSON.stringify(action.payload));
+      safeSetLocalJSON(LOGIN_INFO_KEY, action.payload);
     },
     clearLoginInfo: (state) => {
       state.loginInfo = undefined;
-      localStorage.removeItem(LOGIN_INFO_KEY);
+      safeRemoveLocal(LOGIN_INFO_KEY);
     },
     setVenueBalance: (state, action: PayloadAction<{ venue: EVenue; balance: string }>) => {
       const { venue, balance } = action.payload;
@@ -242,21 +250,21 @@ const userSlice = createSlice({
     // #region 设置接受赔率更改偏好
     setAcceptOddsPreferAction: (state, action: PayloadAction<EAcceptOddsPrefer>) => {
       state.acceptOddsPrefer = action.payload;
-      localStorage.setItem(ACCEPT_ODDS_PREFER_KEY, String(action.payload));
+      safeSetLocalJSON(ACCEPT_ODDS_PREFER_KEY, action.payload);
     },
     // #endregion
 
     // #region 设置投注成功后自动关注赛事
     setAutoFollowMatchAction: (state, action: PayloadAction<boolean>) => {
       state.autoFollowMatch = action.payload;
-      localStorage.setItem(AUTO_FOLLOW_MATCH_KEY, action.payload ? 'true' : 'false');
+      safeSetLocalString(AUTO_FOLLOW_MATCH_KEY, action.payload ? 'true' : 'false');
     },
     // #endregion
 
     // #region 设置用户头像
     setUserAvatar: (state, action: PayloadAction<string>) => {
       state.userAvatar = action.payload;
-      localStorage.setItem(USER_AVATAR_KEY, action.payload);
+      safeSetLocalString(USER_AVATAR_KEY, action.payload);
     },
     setShowAvatarPopup: (state, action: PayloadAction<boolean>) => {
       state.showAvatarPopup = action.payload;

@@ -27,6 +27,7 @@ import { clearLoginInfo, clearUserInfo } from '../store/slices/userSlice';
 import { clearThirdPartyApiConfig } from '../store/slices/thirdApiConfigSlice';
 import { resetOpenImSession } from '@/core/sdk/IMManager/utils/resetOpenImSession';
 import { isEmbeddedInNativeApp } from '@/utils/appEmbed';
+import { safeGetLocalString, safeRemoveSession } from '@/utils/storage/webStorage';
 const _successCode: ReadonlyArray<number | string> = [
   1,
   '1',
@@ -92,7 +93,7 @@ const originConfig: RequestConf = {
     let colorType = '';
 
     if (typeof window !== 'undefined') {
-      const theme = localStorage.getItem('themeMode');
+      const theme = safeGetLocalString('themeMode');
       colorType = theme === 'dark' ? 'black' : '';
     }
     if (method === RequestMethod.get) {
@@ -108,7 +109,7 @@ const originConfig: RequestConf = {
     let colorType = '';
 
     if (typeof window !== 'undefined') {
-      const theme = localStorage.getItem('themeMode');
+      const theme = safeGetLocalString('themeMode');
       colorType = theme === 'dark' ? 'black' : '';
     }
     const isEncrypted = url.includes('/v3/');
@@ -172,6 +173,16 @@ const originConfig: RequestConf = {
     }
     return data;
   },
+  /** 进行中请求去重用：登录前后、不同账号不会复用同一 Promise */
+  getRequestIdentity: () => {
+    try {
+      const userInfo = getGlobalStoreForApiRequest()?.getState()?.user?.userInfo;
+      if (!userInfo?.isLogin) return 'guest';
+      return `user:${userInfo.loginName || ''}`;
+    } catch {
+      return 'guest';
+    }
+  },
   handleResponseSuccess: <TTransformResponse = unknown>(
     data: ResponseData<TTransformResponse>,
     url?: string,
@@ -212,7 +223,7 @@ const originConfig: RequestConf = {
         Cookies.remove(item);
       }
       for (const item of needRemoveSession) {
-        sessionStorage.removeItem(item);
+        safeRemoveSession(item);
       }
       getGlobalStoreForApiRequest().dispatch(clearUserInfo());
       getGlobalStoreForApiRequest().dispatch(clearLoginInfo());

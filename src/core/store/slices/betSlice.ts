@@ -11,6 +11,7 @@ import {
   TObPreBetLimit,
 } from '@/apis/commonSports/types';
 import { BET_DATA_KEY } from '@/utils/constants/cacheKey';
+import { safeGetLocalJSON, safeSetLocalJSON } from '@/utils/storage/webStorage';
 
 // 创建单关投注项 EntityAdapter
 const singleBetAdapter = createEntityAdapter<TBetItem, string>({
@@ -127,12 +128,15 @@ const defaultStorageBetStore: TStorageBetStore = {
 
 /** 从 localStorage 读取已持久化的投注状态，SSR 或解析失败时返回默认值 */
 const getStorageBetStore = (): TStorageBetStore => {
-  try {
-    const raw = localStorage.getItem(BET_DATA_KEY);
-    return raw ? (JSON.parse(raw) as TStorageBetStore) : defaultStorageBetStore;
-  } catch {
-    return defaultStorageBetStore;
-  }
+  const parsed = safeGetLocalJSON<unknown>(BET_DATA_KEY, defaultStorageBetStore);
+  const store =
+    parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? (parsed as Partial<TStorageBetStore>)
+      : defaultStorageBetStore;
+  return {
+    [EVenue.OB]: { ...defaultStorageVenueState, ...store[EVenue.OB] },
+    [EVenue.FB]: { ...defaultStorageVenueState, ...store[EVenue.FB] },
+  };
 };
 
 const storageBetStore = getStorageBetStore();
@@ -143,11 +147,10 @@ const initialState: TBetStore = {
 };
 
 export const persistBetState = _.debounce((state: TBetStore) => {
-  if (typeof localStorage === 'undefined') return;
   const saveData: TStorageBetStore = _.mapValues(state, (venueState) => {
     return _.pick(venueState, VENUE_PERSIST_KEYS);
   });
-  localStorage.setItem(BET_DATA_KEY, JSON.stringify(saveData));
+  safeSetLocalJSON(BET_DATA_KEY, saveData);
 }, 300);
 
 const betSlice = createSlice({

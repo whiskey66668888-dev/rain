@@ -10,6 +10,7 @@ import RebateReportPanel from './components/RebateReportPanel';
 import { KefuIcon } from '@/sites/op7/pages/MinePage/InviteFriendsPage/components/icons';
 import { clsx } from 'clsx';
 import { useMemo } from 'react';
+import { safeGetLocalString } from '@/utils/storage/webStorage';
 
 function RebateReportPage() {
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
@@ -19,7 +20,7 @@ function RebateReportPage() {
   const { sendToFlutter, isInFlutter } = useFlutterBridge();
 
   const onBack = () => {
-    const prev = localStorage.getItem(NEW_FRIEND_ROUTE_KEY) || '';
+    const prev = safeGetLocalString(NEW_FRIEND_ROUTE_KEY) || '';
     if (isInFlutter()) {
       sendToFlutter(prev);
     }

@@ -1,3 +1,5 @@
+import { safeGetSessionString } from '@/utils/storage/webStorage';
+
 /**
  * 站点 APP 下载链接：拼接 session 中的代理参数，与 MainLayout URL 写入的 sysAgentName 一致。
  */
@@ -5,7 +7,7 @@ export function buildDownloadAppUrl(rawDownUrl?: string | null): string {
   const baseUrl = typeof rawDownUrl === 'string' ? rawDownUrl.trim() : '';
   if (!baseUrl) return '';
   if (typeof window === 'undefined') return baseUrl;
-  const sessionSysAgentName = sessionStorage.getItem('sysAgentName');
+  const sessionSysAgentName = safeGetSessionString('sysAgentName');
   const params = sessionSysAgentName
     ? `?sysAgentName=${encodeURIComponent(sessionSysAgentName)}`
     : '';

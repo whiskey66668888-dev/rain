@@ -4,6 +4,7 @@ import { defaultLocale, Locale } from '@/core/i18n';
 import { SYSTEM_CONFIG_KEY } from '@/utils/constants/cacheKey';
 import type { TScreenBreakpoint } from '@/utils/constants/breakpoints';
 import { FontScaleType, ThemeMode } from '@/utils/constants/system';
+import { safeGetLocalJSON, safeSetLocalJSON } from '@/utils/storage/webStorage';
 
 export type { ThemeMode };
 export type EntertainmentCardStyle = 'color' | 'mono';
@@ -40,8 +41,10 @@ export const initialSystemConfig: ConfigState['system'] = {
   entertainmentCardStyle: 'color',
 };
 const getInitialSystemConfig = (): ConfigState['system'] => {
-  const systemConfig = localStorage.getItem(SYSTEM_CONFIG_KEY);
-  return systemConfig ? (JSON.parse(systemConfig) as ConfigState['system']) : initialSystemConfig;
+  return {
+    ...initialSystemConfig,
+    ...safeGetLocalJSON<ConfigState['system']>(SYSTEM_CONFIG_KEY, initialSystemConfig),
+  };
 };
 const initialState: ConfigState = {
   system: getInitialSystemConfig(),
@@ -60,7 +63,7 @@ const configSlice = createSlice({
         ...state.system,
         ...action.payload,
       };
-      localStorage.setItem(SYSTEM_CONFIG_KEY, JSON.stringify(state.system));
+      safeSetLocalJSON(SYSTEM_CONFIG_KEY, state.system);
     },
     setCanHover: (state, action: PayloadAction<boolean>) => {
       state.canHover = action.payload;

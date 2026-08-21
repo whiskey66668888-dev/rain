@@ -37,6 +37,7 @@ import {
   ScanIcon,
   ZsllIcon,
 } from './components/icons';
+import { safeSetLocalString } from '@/utils/storage/webStorage';
 import styles from './invite.module.scss';
 import { toDisplayString } from './stringUtils';
 import registerDark from '@/sites/op7/images/dark/inviteFriends/register.png';
@@ -176,7 +177,7 @@ function InviteSubPage({ embedded = false }: InviteSubPageProps) {
   });
 
   useEffect(() => {
-    localStorage.setItem(NEW_FRIEND_ROUTE_KEY, 'invite');
+    safeSetLocalString(NEW_FRIEND_ROUTE_KEY, 'invite');
   }, []);
 
   const summary = invitationDataDSummary ?? {};

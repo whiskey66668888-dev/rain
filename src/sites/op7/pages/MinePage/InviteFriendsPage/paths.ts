@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { appendPathSearch } from '@/utils/appendPathSearch';
 import { isEmbeddedInNativeApp } from '@/utils/appEmbed';
 import { COOKIE_EXPIRES, TOKEN_KEY } from '@/utils/constants/cacheKey';
+import { safeGetSessionString, safeSetSessionString } from '@/utils/storage/webStorage';
 
 /** 呼朋唤友静态资源（public/images/op7/inviteFriends） */
 export function inviteFriendsImg(name: string): string {
@@ -24,12 +25,8 @@ export function persistInviteFriendsAppQuery(searchParams: URLSearchParams): voi
   const token = searchParams.get('token')?.trim();
   if (!token) return;
 
-  try {
-    sessionStorage.setItem(INVITE_FRIENDS_APP_TOKEN_KEY, token);
-    Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRES });
-  } catch {
-    // ignore quota / private mode
-  }
+  safeSetSessionString(INVITE_FRIENDS_APP_TOKEN_KEY, token);
+  Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRES });
 }
 
 /** 合并当前 URL query 与已持久化的 App token / isApp */
@@ -40,12 +37,8 @@ export function buildInviteFriendsSearch(base?: URLSearchParams | string): URLSe
       : new URLSearchParams(base?.toString() ?? '');
 
   if (!params.get('token')) {
-    try {
-      const stored = sessionStorage.getItem(INVITE_FRIENDS_APP_TOKEN_KEY);
-      if (stored) params.set('token', stored);
-    } catch {
-      // ignore
-    }
+    const stored = safeGetSessionString(INVITE_FRIENDS_APP_TOKEN_KEY);
+    if (stored) params.set('token', stored);
   }
 
   if (!params.get('isApp') && isEmbeddedInNativeApp()) {

@@ -32,6 +32,7 @@ import {
   CustomerServiceHeadsetSvg,
   PersonSvg,
 } from '../../components/SvgIcons';
+import { safeGetSessionString, safeRemoveSession } from '@/utils/storage/webStorage';
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation();
@@ -254,7 +255,7 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
     try {
       const uuid = readUUID();
-      const sessionSysAgentName = sessionStorage.getItem('sysAgentName');
+      const sessionSysAgentName = safeGetSessionString('sysAgentName');
       const params = {
         loginName: formData.username.trim(),
         password: formData.password,
@@ -273,7 +274,7 @@ const RegisterPage: React.FC = () => {
       await registerReq(params);
 
       if (sessionSysAgentName) {
-        sessionStorage.removeItem('sysAgentName');
+        safeRemoveSession('sysAgentName');
       }
 
       toastRegisterSuccess();

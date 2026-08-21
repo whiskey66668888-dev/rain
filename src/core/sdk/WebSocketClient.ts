@@ -1,3 +1,5 @@
+import { safeGetLocalString } from '@/utils/storage/webStorage';
+
 export type WSStatus = 'idle' | 'connecting' | 'open' | 'closing' | 'closed' | 'reconnecting';
 
 interface WebSocketClientOptions {
@@ -246,7 +248,7 @@ export const createWSClient = (
   options?: Partial<WebSocketClientOptions>,
 ): WebSocketClient => {
   const url: () => string = () => {
-    const token = localStorage.getItem('token') ?? '';
+    const token = safeGetLocalString('token') ?? '';
     return `${location.origin.replace('http', 'ws')}/ws${path}?token=${encodeURIComponent(token)}`;
   };
 

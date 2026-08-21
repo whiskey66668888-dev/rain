@@ -403,21 +403,32 @@
     }
 
     .h5GameWrapper {
+      --h5-game-header-height: 52px;
+
       position: fixed;
       z-index: calc(var(--z-header) + 2);
       top: 0;
       left: 0;
-      height: 100%;
+      height: 100vh;
       width: 100%;
       display: flex;
       background-color: var(--Background-300);
       flex-direction: column;
+      overflow: hidden;
+
       .h5GameHeader {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px;
+        width: 100%;
+        height: var(--h5-game-header-height);
+        padding: 0 12px;
         background-color: var(--Background-300);
+
         & > div {
           display: flex;
           align-items: center;
@@ -429,9 +440,30 @@
         }
       }
       .h5GameContent {
+        position: absolute;
+        inset: 0;
         width: 100%;
-        height: 100%;
-        position: relative;
+        height: 100vh;
+      }
+
+      .h5GameInitLoading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--Background-300);
+
+        img {
+          width: 110px;
+          height: auto;
+          display: block;
+          object-fit: contain;
+        }
       }
     }
   }
@@ -458,7 +490,9 @@
     background-color: var(--Background-300);
     img {
       width: 110px;
-      margin-top: -44px;
+      height: auto;
+      display: block;
+      object-fit: contain;
     }
   }
 }

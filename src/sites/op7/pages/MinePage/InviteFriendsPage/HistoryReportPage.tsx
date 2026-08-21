@@ -9,6 +9,7 @@ import HistoryReportPanel from './components/HistoryReportPanel';
 import { KefuIcon } from '@/sites/op7/pages/MinePage/InviteFriendsPage/components/icons';
 import { useMemo } from 'react';
 import { clsx } from 'clsx';
+import { safeGetLocalString } from '@/utils/storage/webStorage';
 
 function HistoryReportPage() {
   const screenBreakpoint = useAppSelector((state) => state.config.screenBreakpoint);
@@ -18,7 +19,7 @@ function HistoryReportPage() {
   const { sendToFlutter, isInFlutter } = useFlutterBridge();
 
   const onBack = () => {
-    const prev = localStorage.getItem(NEW_FRIEND_ROUTE_KEY) || '';
+    const prev = safeGetLocalString(NEW_FRIEND_ROUTE_KEY) || '';
     if (isInFlutter()) {
       sendToFlutter(prev);
     }

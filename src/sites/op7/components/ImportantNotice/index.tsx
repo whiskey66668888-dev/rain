@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import LazyImage from '@/common/components/LazyImage';
 import { usePreInfoQuery, type PreInfoResponse } from '@/apis/origin/setting';
 import { IMPORTANT_SHOW_LOCK_KEY } from '@/utils/constants/cacheKey';
+import { safeRemoveSession, safeSetSessionString } from '@/utils/storage/webStorage';
 
 import styles from './ImportantNotice.module.scss';
 import CommonDialog from '../CommonDialog';
@@ -61,10 +62,10 @@ const ImportantNotice: React.FC<ImportantNoticeProps> = ({
 
     try {
       if (showCheck && dontRemind) {
-        sessionStorage.setItem(IMPORTANT_SHOW_LOCK_KEY, '1');
+        safeSetSessionString(IMPORTANT_SHOW_LOCK_KEY, '1');
         Cookies.set(IMPORTANT_ONE_DAY_COOKIE_KEY, '1', { expires: 1 });
       } else if (showCheck) {
-        sessionStorage.removeItem(IMPORTANT_SHOW_LOCK_KEY);
+        safeRemoveSession(IMPORTANT_SHOW_LOCK_KEY);
       }
     } catch {
       // ignore

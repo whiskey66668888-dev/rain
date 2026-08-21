@@ -15,23 +15,28 @@
 
       const html = document.documentElement;
       // 保证ssr的html在第一时间内加载正确样式相关配置，并同时支持ssg的静态页面
-      const systemConfig = localStorage.getItem('SYSTEM_CONFIG');
+      let systemConfig = null;
+      try {
+        systemConfig = localStorage.getItem('SYSTEM_CONFIG');
+      } catch {}
       const pathname = window.location.pathname;
       const pathnameParts = pathname.split('/');
       const pathnameLanguage = pathnameParts[1];
       if (systemConfig) {
-        const { fontScaleType, themeMode: _themeMode, language } = JSON.parse(systemConfig);
-        // RICO_TODO: 极端情况的临时方案，后期可以优化到nginx判断后重定向返回正确的cache html
-        if (language !== pathnameLanguage) {
-          if (language === 'zh' && pathnameLanguage === '') {
-            // 如果语言是中文且路径为空，则替静默替换路径为中文，方便ssr下次正确加载
-            window.history.replaceState(null, '', `/zh`);
-          } else {
-            window.location.href = `/${language}`;
+        try {
+          const { fontScaleType, themeMode: _themeMode, language } = JSON.parse(systemConfig);
+          // RICO_TODO: 极端情况的临时方案，后期可以优化到nginx判断后重定向返回正确的cache html
+          if (language !== pathnameLanguage) {
+            if (language === 'zh' && pathnameLanguage === '') {
+              // 如果语言是中文且路径为空，则替静默替换路径为中文，方便ssr下次正确加载
+              window.history.replaceState(null, '', `/zh`);
+            } else {
+              window.location.href = `/${language}`;
+            }
           }
-        }
-        html.style.setProperty('--text-scale', fontScaleType.toString());
-        themeMode = _themeMode === 'system' ? themeMode : _themeMode;
+          html.style.setProperty('--text-scale', fontScaleType.toString());
+          themeMode = _themeMode === 'system' ? themeMode : _themeMode;
+        } catch {}
       } else if (pathnameLanguage === '') {
         window.history.replaceState(null, '', `/zh`);
       }

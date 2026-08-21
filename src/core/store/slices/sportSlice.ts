@@ -33,6 +33,13 @@ import {
   getFollowMatchStorageKey,
   type FollowGameType,
 } from '@/common/hooks/follow/followGameType';
+import {
+  safeGetLocalJSON,
+  safeGetLocalString,
+  safeRemoveLocal,
+  safeSetLocalJSON,
+  safeSetLocalString,
+} from '@/utils/storage/webStorage';
 
 /**
  * 娱乐大厅State
@@ -69,6 +76,9 @@ export interface TFollowMatch {
 
 /** 关注赛事保留时长：开赛时间 + 24h（与 app 口径一致） */
 const FOLLOW_MATCH_KEEP_MS = 24 * 60 * 60 * 1000;
+const MAX_FOLLOW_MATCHES_PER_VENUE = 100;
+const MAX_PINNED_SPORTS = 20;
+const MAX_PINNED_MATCHES = 50;
 
 /** 从 matchData 快照里解析开赛时间戳（解析失败返回 undefined） */
 const parseSnapshotBt = (matchData?: string): number | undefined => {
@@ -113,28 +123,65 @@ const normalizeFollowMatch = (raw: unknown): TFollowMatch | null => {
   return { matchId: r.matchId, sportId: Number(r.sportId) || 0, bt, source, matchData };
 };
 
+const limitFollowMatches = (list: TFollowMatch[]): TFollowMatch[] =>
+  list.slice(-MAX_FOLLOW_MATCHES_PER_VENUE);
+
+const readArrayFromStorage = (key: string): unknown[] => {
+  const value = safeGetLocalJSON<unknown>(key, []);
+  return Array.isArray(value) ? value : [];
+};
+
 /** 从 localStorage 读取并归一化某场馆关注列表（跳过脏数据），再按开赛+24h 过滤 */
 const readFollowMatchFromStorage = (gameType: FollowGameType): TFollowMatch[] => {
-  const key = getFollowMatchStorageKey(gameType);
-  const raw = localStorage.getItem(key);
-  const list = JSON.parse(raw ?? '[]') as unknown[];
+  const list = readArrayFromStorage(getFollowMatchStorageKey(gameType));
   const normalized = list.reduce<TFollowMatch[]>((acc, item) => {
     const fm = normalizeFollowMatch(item);
     if (fm) acc.push(fm);
     return acc;
   }, []);
-  return filterExpiredFollowMatch(normalized);
+  return limitFollowMatches(filterExpiredFollowMatch(normalized));
 };
 
 /** 把当前关注列表写入对应场馆本地桶 */
 const persistFollowMatch = (gameType: FollowGameType, list: TFollowMatch[]) => {
-  localStorage.setItem(getFollowMatchStorageKey(gameType), JSON.stringify(list));
+  safeSetLocalJSON(getFollowMatchStorageKey(gameType), limitFollowMatches(list));
 };
 
 /** 过滤掉已过期的关注赛事 */
 const filterExpiredFollowMatch = (list: TFollowMatch[]): TFollowMatch[] => {
   const now = Date.now();
   return list.filter((item) => !isFollowMatchExpired(item, now));
+};
+
+const readNumberArrayFromStorage = (key: string, maxItems: number): number[] =>
+  readArrayFromStorage(key)
+    .filter((item): item is number => typeof item === 'number' && Number.isFinite(item))
+    .slice(-maxItems);
+
+const normalizePinnedMatch = (raw: unknown): PinnedMatch | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  const item = raw as Partial<PinnedMatch>;
+  if (typeof item.matchId !== 'string' || !item.matchId) return null;
+  if (typeof item.sportId !== 'number' || !Number.isFinite(item.sportId)) return null;
+  if (!Object.values(PlayType).includes(item.playType as PlayType)) return null;
+  return { matchId: item.matchId, sportId: item.sportId, playType: item.playType as PlayType };
+};
+
+const readPinnedMatchesFromStorage = (): PinnedMatch[] =>
+  readArrayFromStorage(PINNED_MATCH_IDS_KEY)
+    .reduce<PinnedMatch[]>((acc, item) => {
+      const pinnedMatch = normalizePinnedMatch(item);
+      if (pinnedMatch) acc.push(pinnedMatch);
+      return acc;
+    }, [])
+    .slice(-MAX_PINNED_MATCHES);
+
+const persistPinnedSports = (list: number[]) => {
+  safeSetLocalJSON(PINNED_SPORT_IDS_KEY, _.uniq(list).slice(-MAX_PINNED_SPORTS));
+};
+
+const persistPinnedMatches = (list: PinnedMatch[]) => {
+  safeSetLocalJSON(PINNED_MATCH_IDS_KEY, list.slice(-MAX_PINNED_MATCHES));
 };
 
 /** 取已过期（开赛 + 24h）的关注赛事，供调用方在本地移除前调用服务器删除接口 */
@@ -209,27 +256,27 @@ const deriveCurrentOddsType = (venue: EVenue, bettingOddsSettings: number): EOdd
 
 /** 从 localStorage 恢复场馆；非法值回落 FB */
 const readVenueFromStorage = (): EVenue => {
-  const raw = localStorage.getItem(SPORT_VENUE_KEY);
+  const raw = safeGetLocalString(SPORT_VENUE_KEY);
   if (raw === EVenue.OB || raw === EVenue.FB) return raw;
   return EVenue.FB;
 };
 
 const persistVenue = (venue: EVenue) => {
-  localStorage.setItem(SPORT_VENUE_KEY, venue);
+  safeSetLocalString(SPORT_VENUE_KEY, venue);
 };
 
 const getInitialState = (): TStorageSportState => {
-  const storedBettingOddsSettings = Number(localStorage.getItem(BETTING_ODDS_SETTINGS_KEY));
+  const storedBettingOddsSettings = Number(safeGetLocalString(BETTING_ODDS_SETTINGS_KEY));
   return {
     syncSingleParlay:
-      localStorage.getItem(SYNC_SINGLE_PARLAY_KEY) === 'true' ||
-      localStorage.getItem(SYNC_SINGLE_PARLAY_KEY) === null,
-    isOpenGoalSound: localStorage.getItem(IS_OPEN_GOAL_SOUND_KEY) === 'true',
+      safeGetLocalString(SYNC_SINGLE_PARLAY_KEY) === 'true' ||
+      safeGetLocalString(SYNC_SINGLE_PARLAY_KEY) === null,
+    isOpenGoalSound: safeGetLocalString(IS_OPEN_GOAL_SOUND_KEY) === 'true',
     bettingOddsSettings:
       BETTING_ODDS_SETTINGS_TO_ODDS_TYPE[storedBettingOddsSettings] === undefined
         ? DEFAULT_BETTING_ODDS_SETTINGS
         : storedBettingOddsSettings,
-    hideBetDrawerDownloadApp: localStorage.getItem(HIDE_BET_DRAWER_APP_DOWNLOAD_KEY) === 'true',
+    hideBetDrawerDownloadApp: safeGetLocalString(HIDE_BET_DRAWER_APP_DOWNLOAD_KEY) === 'true',
   };
 };
 
@@ -255,12 +302,12 @@ export const initialState: SportState = {
       simpleActiveItem: null,
       orderBy: 1, // 排序 0 按开赛时间排序，1 按联赛排序，传：0或1 默认 1 按联赛
       filterTime: [], // 早盘 时间筛选 空数组为全部 否则传13位时间戳
-      isSimpleOdds: localStorage.getItem(IS_SIMPLE_ODDS_KEY) === 'true',
+      isSimpleOdds: safeGetLocalString(IS_SIMPLE_ODDS_KEY) === 'true',
       hasHotList: false,
     },
     datas: {
-      pinnedSportIds: JSON.parse(localStorage.getItem(PINNED_SPORT_IDS_KEY) ?? '[]') as number[],
-      pinnedMatchs: JSON.parse(localStorage.getItem(PINNED_MATCH_IDS_KEY) ?? '[]') as PinnedMatch[],
+      pinnedSportIds: readNumberArrayFromStorage(PINNED_SPORT_IDS_KEY, MAX_PINNED_SPORTS),
+      pinnedMatchs: readPinnedMatchesFromStorage(),
       menuInfo: {
         hotSportMatchIds: [],
         menus: {
@@ -348,7 +395,7 @@ const sportSlice = createSlice({
       const isSet = type === 'set';
 
       if (isSet && allMatchInfos !== undefined) {
-        state.mainList.settings.followMatch = allMatchInfos;
+        state.mainList.settings.followMatch = limitFollowMatches(allMatchInfos);
       } else if (isAdd && matchInfos) {
         const existingIds = new Set(state.mainList.settings.followMatch.map((m) => m.matchId));
         matchInfos?.forEach((m) => {
@@ -365,6 +412,7 @@ const sportSlice = createSlice({
         );
       }
 
+      state.mainList.settings.followMatch = limitFollowMatches(state.mainList.settings.followMatch);
       persistFollowMatch(getFollowGameType(state.venue), state.mainList.settings.followMatch);
       const { sportId, playType, followMatch } = state.mainList.settings;
 
@@ -406,10 +454,10 @@ const sportSlice = createSlice({
           sportId,
         ]);
       }
-      localStorage.setItem(
-        PINNED_SPORT_IDS_KEY,
-        JSON.stringify(state.mainList.datas.pinnedSportIds),
+      state.mainList.datas.pinnedSportIds = _.uniq(state.mainList.datas.pinnedSportIds).slice(
+        -MAX_PINNED_SPORTS,
       );
+      persistPinnedSports(state.mainList.datas.pinnedSportIds);
     },
     // 添加/移除置顶比赛
     setPinnedMatchIds: (
@@ -436,7 +484,9 @@ const sportSlice = createSlice({
           state.mainList.datas.pinnedMatchs = allMatchInfos ?? [];
           break;
       }
-      localStorage.setItem(PINNED_MATCH_IDS_KEY, JSON.stringify(state.mainList.datas.pinnedMatchs));
+      state.mainList.datas.pinnedMatchs =
+        state.mainList.datas.pinnedMatchs.slice(-MAX_PINNED_MATCHES);
+      persistPinnedMatches(state.mainList.datas.pinnedMatchs);
     },
     // 设置菜单数据
     setMenus: (state, action: PayloadAction<MenuInfo>) => {
@@ -459,12 +509,12 @@ const sportSlice = createSlice({
     toggleSyncSingleParlayAction: (state) => {
       const _syncSingleParlay = !state.syncSingleParlay;
       state.syncSingleParlay = _syncSingleParlay;
-      localStorage.setItem(SYNC_SINGLE_PARLAY_KEY, JSON.stringify(_syncSingleParlay));
+      safeSetLocalJSON(SYNC_SINGLE_PARLAY_KEY, _syncSingleParlay);
     },
     // 直接设置同步单串状态，供游客配置/会员配置同步使用
     setSyncSingleParlayAction: (state, action: PayloadAction<boolean>) => {
       state.syncSingleParlay = action.payload;
-      localStorage.setItem(SYNC_SINGLE_PARLAY_KEY, JSON.stringify(action.payload));
+      safeSetLocalJSON(SYNC_SINGLE_PARLAY_KEY, action.payload);
     },
     // #endregion
 
@@ -472,27 +522,24 @@ const sportSlice = createSlice({
     toggleHideBetDrawerDownloadAppAction: (state) => {
       const _hideBetDrawerDownloadApp = !state.hideBetDrawerDownloadApp;
       state.hideBetDrawerDownloadApp = _hideBetDrawerDownloadApp;
-      localStorage.setItem(
-        HIDE_BET_DRAWER_APP_DOWNLOAD_KEY,
-        JSON.stringify(_hideBetDrawerDownloadApp),
-      );
+      safeSetLocalJSON(HIDE_BET_DRAWER_APP_DOWNLOAD_KEY, _hideBetDrawerDownloadApp);
     },
     // #endregion
 
     toggleIsOpenGoalSoundAction: (state) => {
       const _isOpenGoalSound = !state.isOpenGoalSound;
       state.isOpenGoalSound = _isOpenGoalSound;
-      localStorage.setItem(IS_OPEN_GOAL_SOUND_KEY, JSON.stringify(_isOpenGoalSound));
+      safeSetLocalJSON(IS_OPEN_GOAL_SOUND_KEY, _isOpenGoalSound);
     },
     // 直接设置进球铃声状态，供游客配置/会员配置同步使用
     setIsOpenGoalSoundAction: (state, action: PayloadAction<boolean>) => {
       state.isOpenGoalSound = action.payload;
-      localStorage.setItem(IS_OPEN_GOAL_SOUND_KEY, JSON.stringify(action.payload));
+      safeSetLocalJSON(IS_OPEN_GOAL_SOUND_KEY, action.payload);
     },
     // 直接设置盘口样式，供游客配置/会员配置同步使用
     setIsSimpleOddsAction: (state, action: PayloadAction<boolean>) => {
       state.mainList.settings.isSimpleOdds = action.payload;
-      localStorage.setItem(IS_SIMPLE_ODDS_KEY, action.payload ? 'true' : 'false');
+      safeSetLocalString(IS_SIMPLE_ODDS_KEY, action.payload ? 'true' : 'false');
     },
     /**
      * 设置盘口（欧洲盘/香港盘），供设置弹窗与游客配置/会员配置同步使用。
@@ -504,15 +551,15 @@ const sportSlice = createSlice({
       const bettingOddsSettings = ODDS_TYPE_TO_BETTING_ODDS_SETTINGS[action.payload];
       state.bettingOddsSettings = bettingOddsSettings;
       state.currentOddsType = deriveCurrentOddsType(state.venue, bettingOddsSettings);
-      localStorage.setItem(BETTING_ODDS_SETTINGS_KEY, String(bettingOddsSettings));
+      safeSetLocalString(BETTING_ODDS_SETTINGS_KEY, String(bettingOddsSettings));
     },
   },
   extraReducers: (builder) => {
     // 退出登录 / 会话失效：清空当前内存列表与 FB/EB 本地桶（含旧单桶），避免串账号
     builder.addCase(clearUserInfo, (state) => {
       state.mainList.settings.followMatch = [];
-      localStorage.removeItem(FOLLOW_MATCH_IDS_FB_KEY);
-      localStorage.removeItem(FOLLOW_MATCH_IDS_EB_KEY);
+      safeRemoveLocal(FOLLOW_MATCH_IDS_FB_KEY);
+      safeRemoveLocal(FOLLOW_MATCH_IDS_EB_KEY);
       // 若正停在关注 tab，关注列表已空，把选中赛种归零，避免按 sportId 过滤后空列表卡住
       if (state.mainList.settings.playType === PlayType.Follow) {
         state.mainList.settings.sportId = 0;

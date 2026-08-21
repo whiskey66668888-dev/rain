@@ -1,4 +1,5 @@
 import { GUEST_MEMBER_SETTINGS_KEY } from '@/utils/constants/cacheKey';
+import { safeGetLocalJSON, safeSetLocalJSON } from '@/utils/storage/webStorage';
 
 export interface GuestMemberSettings {
   appNotice?: boolean;
@@ -26,17 +27,14 @@ export interface GuestMemberSettings {
  * 读取未登录用户的系统配置草稿。
  */
 export const readGuestMemberSettings = (): GuestMemberSettings => {
-  if (typeof window === 'undefined') return {};
-  const raw = localStorage.getItem(GUEST_MEMBER_SETTINGS_KEY);
-  return raw ? (JSON.parse(raw) as GuestMemberSettings) : {};
+  return safeGetLocalJSON<GuestMemberSettings>(GUEST_MEMBER_SETTINGS_KEY, {});
 };
 
 /**
  * 覆盖保存未登录用户的系统配置草稿。
  */
 export const writeGuestMemberSettings = (settings: GuestMemberSettings): void => {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(GUEST_MEMBER_SETTINGS_KEY, JSON.stringify(settings));
+  safeSetLocalJSON(GUEST_MEMBER_SETTINGS_KEY, settings);
 };
 
 /**

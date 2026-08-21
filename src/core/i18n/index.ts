@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next';
 
 import { SYSTEM_CONFIG_KEY } from '@/utils/constants/cacheKey';
 import { locales, defaultLocale, type Locale, LOCALE_FILE_MAP } from '@/utils/constants/local';
+import { safeGetLocalJSON, safeSetLocalJSON } from '@/utils/storage/webStorage';
 
 import { ConfigState } from '../store/slices/configSlice';
 import { initialSystemConfig } from '../store/slices/configSlice';
@@ -23,12 +24,12 @@ const initI18nClientInit = (): void => {
     name: 'systemConfigStorage',
     lookup: () => {
       try {
-        const systemConfigStr = localStorage.getItem(SYSTEM_CONFIG_KEY);
-        if (systemConfigStr) {
-          const systemConfig = JSON.parse(systemConfigStr) as ConfigState['system'];
-          if (systemConfig?.language) {
-            return systemConfig.language;
-          }
+        const systemConfig = safeGetLocalJSON<ConfigState['system'] | null>(
+          SYSTEM_CONFIG_KEY,
+          null,
+        );
+        if (systemConfig?.language) {
+          return systemConfig.language;
         }
         const pathname = window.location.pathname;
         const pathnameParts = pathname.split('/');
@@ -41,13 +42,13 @@ const initI18nClientInit = (): void => {
     },
     cacheUserLanguage: (lng: Locale) => {
       try {
-        const systemConfigStr = localStorage.getItem(SYSTEM_CONFIG_KEY);
-        const systemConfig = systemConfigStr
-          ? (JSON.parse(systemConfigStr) as ConfigState['system'])
-          : (JSON.parse(JSON.stringify(initialSystemConfig)) as ConfigState['system']);
+        const systemConfig = safeGetLocalJSON<ConfigState['system']>(
+          SYSTEM_CONFIG_KEY,
+          JSON.parse(JSON.stringify(initialSystemConfig)) as ConfigState['system'],
+        );
         systemConfig.language = lng;
 
-        localStorage.setItem(SYSTEM_CONFIG_KEY, JSON.stringify(systemConfig));
+        safeSetLocalJSON(SYSTEM_CONFIG_KEY, systemConfig);
       } catch (error) {
         console.error('cacheUserLanguage error', error);
       }

@@ -21,6 +21,7 @@ import {
 } from '@/utils/constants/system';
 import { zIndexMap } from '@/utils/constants/zIndex';
 import { useOpenCustomerService } from '@/sites/op7/hooks/useOpenCustomerService';
+import { safeGetLocalJSON, safeRemoveLocal, safeSetLocalJSON } from '@/utils/storage/webStorage';
 
 import { CloseSvg } from '../SvgIcons';
 import styles from './index.module.scss';
@@ -133,16 +134,15 @@ const DevSystemSettingsFloat: React.FC = () => {
   }, [clearOpenTimer]);
 
   useEffect(() => {
-    const rawPosition = localStorage.getItem(POSITION_STORAGE_KEY);
-    if (!rawPosition) return;
-
-    try {
-      const parsedPosition = JSON.parse(rawPosition) as Partial<FloatPosition>;
-      if (typeof parsedPosition.x === 'number' && typeof parsedPosition.y === 'number') {
-        setPosition(clampPosition({ x: parsedPosition.x, y: parsedPosition.y }));
-      }
-    } catch {
-      localStorage.removeItem(POSITION_STORAGE_KEY);
+    const parsedPosition = safeGetLocalJSON<Partial<FloatPosition> | null>(
+      POSITION_STORAGE_KEY,
+      null,
+    );
+    if (!parsedPosition) return;
+    if (typeof parsedPosition.x === 'number' && typeof parsedPosition.y === 'number') {
+      setPosition(clampPosition({ x: parsedPosition.x, y: parsedPosition.y }));
+    } else {
+      safeRemoveLocal(POSITION_STORAGE_KEY);
     }
   }, [clampPosition]);
 
@@ -153,7 +153,7 @@ const DevSystemSettingsFloat: React.FC = () => {
       setPosition((currentPosition) => {
         if (!currentPosition) return currentPosition;
         const nextPosition = clampPosition(currentPosition);
-        localStorage.setItem(POSITION_STORAGE_KEY, JSON.stringify(nextPosition));
+        safeSetLocalJSON(POSITION_STORAGE_KEY, nextPosition);
         return nextPosition;
       });
     };
@@ -220,7 +220,7 @@ const DevSystemSettingsFloat: React.FC = () => {
       });
       suppressNextClickRef.current = true;
       setPosition(finalPosition);
-      localStorage.setItem(POSITION_STORAGE_KEY, JSON.stringify(finalPosition));
+      safeSetLocalJSON(POSITION_STORAGE_KEY, finalPosition);
     }
     if (shouldOpen) {
       suppressNextClickRef.current = true;

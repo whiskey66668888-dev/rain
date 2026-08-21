@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 
 import { COOKIE_EXPIRES, TOKEN_KEY } from '@/utils/constants/cacheKey';
+import { safeGetSessionString, safeSetSessionString } from '@/utils/storage/webStorage';
 
 const EMBEDDED_SESSION_KEY = 'op7:embeddedInApp';
 
@@ -33,20 +34,12 @@ export const isEmbeddedInNativeApp = (): boolean => {
     return true;
   }
 
-  try {
-    if (sessionStorage.getItem(EMBEDDED_SESSION_KEY) === '1') {
-      return true;
-    }
-  } catch {
-    // ignore
+  if (safeGetSessionString(EMBEDDED_SESSION_KEY) === '1') {
+    return true;
   }
 
   if (hasEmbeddedQuery()) {
-    try {
-      sessionStorage.setItem(EMBEDDED_SESSION_KEY, '1');
-    } catch {
-      // ignore
-    }
+    safeSetSessionString(EMBEDDED_SESSION_KEY, '1');
     return true;
   }
 
@@ -72,12 +65,8 @@ export const getTokenFromSearch = (search?: string): string | null => {
 export const persistAppAuthFromUrl = (search?: string): void => {
   const token = getTokenFromSearch(search);
   if (!token) return;
-  try {
-    sessionStorage.setItem(APP_URL_TOKEN_SESSION_KEY, token);
-    Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRES });
-  } catch {
-    // ignore
-  }
+  safeSetSessionString(APP_URL_TOKEN_SESSION_KEY, token);
+  Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRES });
 };
 
 /** 当前是否具备 App token 会话（URL、Cookie 或 session 备份） */
@@ -85,12 +74,8 @@ export const hasAppAuthToken = (search?: string): boolean => {
   if (getTokenFromSearch(search)) return true;
   const fromCookie = Cookies.get(TOKEN_KEY)?.trim();
   if (fromCookie) return true;
-  try {
-    return !!(
-      sessionStorage.getItem(APP_URL_TOKEN_SESSION_KEY)?.trim() ||
-      sessionStorage.getItem(LEGACY_INVITE_FRIENDS_APP_TOKEN_KEY)?.trim()
-    );
-  } catch {
-    return false;
-  }
+  return !!(
+    safeGetSessionString(APP_URL_TOKEN_SESSION_KEY)?.trim() ||
+    safeGetSessionString(LEGACY_INVITE_FRIENDS_APP_TOKEN_KEY)?.trim()
+  );
 };

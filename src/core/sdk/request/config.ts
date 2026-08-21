@@ -11,6 +11,11 @@ export interface RequestConf {
     data: BodyInit | null | undefined,
   ) => BodyInit | null | undefined;
   /**
+   * 当前请求的用户身份，用于进行中请求去重。
+   * 登录态变化后身份不同，不会复用尚未完成的旧请求。
+   */
+  getRequestIdentity?: () => string;
+  /**
    * 兼容接口数据结构字段定义
    * 现实场景中不同的后端团队定义接口数据结构有自己的命名习惯
    */

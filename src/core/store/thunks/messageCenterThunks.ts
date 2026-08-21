@@ -9,6 +9,18 @@ import { getNewsInboxChildReq } from '@/apis/origin/msgCenter/newsInboxChild';
 import { readMessageAllReq } from '@/apis/origin/msgCenter/readMessageAll';
 import { inboxDelMulReq } from '@/apis/origin/msgCenter/inboxDelMul';
 import { outboxDelMulReq } from '@/apis/origin/msgCenter/outboxDelMul';
+import type { RootState } from '../index';
+import {
+  getMessageCenterCacheScope,
+  readInboxCache,
+  readInboxChildCache,
+  readOutboxCache,
+  removeInboxCache,
+  removeOutboxCache,
+  writeInboxCache,
+  writeInboxChildCache,
+  writeOutboxCache,
+} from './messageCenterCache';
 
 export const getNoticeListThunk = createAsyncThunk(
   'messageCenter/getNoticeList',
@@ -42,14 +54,22 @@ export const getFBNoticeListThunk = createAsyncThunk(
 
 export const getNewsInboxThunk = createAsyncThunk(
   'messageCenter/getNewsInbox',
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const res = await getNewsInboxReq();
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
       }
+      if (scope) {
+        void writeInboxCache(scope, res.data).catch(() => undefined);
+      }
       return res.data;
     } catch (error: unknown) {
+      if (scope) {
+        const cached = await readInboxCache(scope).catch(() => null);
+        if (cached) return cached;
+      }
       return rejectWithValue(error instanceof Error ? error.message : '获取站内信列表失败');
     }
   },
@@ -57,14 +77,22 @@ export const getNewsInboxThunk = createAsyncThunk(
 
 export const getNewsOutboxThunk = createAsyncThunk(
   'messageCenter/getNewsOutbox',
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const res = await getNewsOutboxReq();
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
       }
+      if (scope) {
+        void writeOutboxCache(scope, res.data).catch(() => undefined);
+      }
       return res.data;
     } catch (error: unknown) {
+      if (scope) {
+        const cached = await readOutboxCache(scope).catch(() => null);
+        if (cached) return cached;
+      }
       return rejectWithValue(error instanceof Error ? error.message : '获取已发消息列表失败');
     }
   },
@@ -87,11 +115,15 @@ export const getUnreadInboxCountThunk = createAsyncThunk(
 
 export const readSingleMessageThunk = createAsyncThunk(
   'messageCenter/readSingleMessage',
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const res = await findMessageReq(id);
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
+      }
+      if (scope) {
+        void removeInboxCache(scope).catch(() => undefined);
       }
       return res.data;
     } catch (error: unknown) {
@@ -103,11 +135,15 @@ export const readSingleMessageThunk = createAsyncThunk(
 // 全部已读
 export const readMessageAllThunk = createAsyncThunk(
   'messageCenter/readMessageAll',
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const res = await readMessageAllReq();
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
+      }
+      if (scope) {
+        void removeInboxCache(scope).catch(() => undefined);
       }
       return res.data;
     } catch (error: unknown) {
@@ -118,14 +154,22 @@ export const readMessageAllThunk = createAsyncThunk(
 
 export const getNewsInboxChildThunk = createAsyncThunk(
   'messageCenter/getNewsInboxChild',
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const res = await getNewsInboxChildReq({ id });
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
       }
+      if (scope) {
+        void writeInboxChildCache(scope, id, res.data).catch(() => undefined);
+      }
       return res.data;
     } catch (error: unknown) {
+      if (scope) {
+        const cached = await readInboxChildCache(scope, id).catch(() => null);
+        if (cached) return cached;
+      }
       return rejectWithValue(error instanceof Error ? error.message : '获取站内信子列表失败');
     }
   },
@@ -133,7 +177,8 @@ export const getNewsInboxChildThunk = createAsyncThunk(
 
 export const deleteInboxMessageThunk = createAsyncThunk(
   'messageCenter/deleteInboxMessage',
-  async (idsMap: Partial<Record<number, boolean>>, { rejectWithValue }) => {
+  async (idsMap: Partial<Record<number, boolean>>, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const ids = Object.entries(idsMap).reduce((prev, [key, value]) => {
         if (value) {
@@ -149,6 +194,9 @@ export const deleteInboxMessageThunk = createAsyncThunk(
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
       }
+      if (scope) {
+        void removeInboxCache(scope).catch(() => undefined);
+      }
       return res.data;
     } catch (error: unknown) {
       return rejectWithValue(error instanceof Error ? error.message : '删除站内信失败');
@@ -158,7 +206,8 @@ export const deleteInboxMessageThunk = createAsyncThunk(
 
 export const deleteOutboxMessageThunk = createAsyncThunk(
   'messageCenter/deleteOutboxMessage',
-  async (idsMap: Partial<Record<number, boolean>>, { rejectWithValue }) => {
+  async (idsMap: Partial<Record<number, boolean>>, { getState, rejectWithValue }) => {
+    const scope = getMessageCenterCacheScope(getState() as RootState);
     try {
       const ids = Object.entries(idsMap).reduce((prev, [key, value]) => {
         if (value) {
@@ -173,6 +222,9 @@ export const deleteOutboxMessageThunk = createAsyncThunk(
       const res = await outboxDelMulReq({ ids });
       if (res.code !== API_CODE_ORIGIN_SUCCESS) {
         return rejectWithValue(res.info);
+      }
+      if (scope) {
+        void removeOutboxCache(scope).catch(() => undefined);
       }
       return res.data;
     } catch (error: unknown) {
